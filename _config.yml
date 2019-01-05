@@ -3,8 +3,8 @@
 
 host: 0.0.0.0
 
-title: Frisco Template
-url: "https://kuros.github.io"
+title: Kuros.in
+url: "https://kuros.in"
 baseurl:
 google_analytics_key:
 google_maps_javascript_api_key:
