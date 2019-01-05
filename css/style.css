@@ -1,0 +1,63 @@
+.short-info ul li {
+    width: 50%;
+    float: left;
+}
+
+ul, ol {
+    margin     : 0;
+    padding    : 0;
+    list-style : none;
+}
+
+
+ul.list-check {
+}
+
+ul.list-check li{
+    position: relative;
+    font-size: 18px;
+    line-height: 32px;
+}
+ul.list-check li::before {
+    content: "\f00c";
+    font-family: fontawesome;
+    color: rgba(41, 41, 41, 0.82);
+    margin-right: 10px;
+}
+
+.shadow-home {
+    -webkit-background-attachment: fixed;
+    background-attachment: fixed;
+    /*background-color: #222;*/
+    background-size: cover;
+    padding: 0;
+    position: relative;
+}
+.shadow-home:before {
+    content: "";
+    /*background-color: rgba(26, 30, 35, 0.50);*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.shadow {
+    -webkit-background-attachment: fixed;
+    background-attachment: fixed;
+    background-color: #222;
+    background-size: cover;
+    padding: 0;
+    position: relative;
+}
+
+.shadow:before {
+    content: "";
+    background-color: rgba(26, 30, 35, 0.50);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
