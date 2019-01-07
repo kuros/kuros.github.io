@@ -27,7 +27,7 @@ The initial class statement is actually quite a bit more than that since this "p
     
     }
 ```
-When you are saving the file then remember two things, first, your file name should be same as you class name (HelloJava). Second, you ,must save the file with the extension .java (HelloJava.java).
+When you are saving the file then remember two things, first, your file name should be same as you class name (HelloJava). Second, you ,must save the file with the extension _.java_ (HelloJava.java).
 
 ### Output
 ```bash
