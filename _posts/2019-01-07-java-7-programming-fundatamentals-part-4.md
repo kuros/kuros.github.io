@@ -72,7 +72,7 @@ The environment variables can also be added by adding to the system environment 
 
 ![System Environment](/images/java/j-1.png)
 
-Go to Computer properties  Environment Variables add a new variable JAVA_HOME and add the path to <jdk>\bin to the path variable.
+Go to Computer -> properties -> Environment Variables add a new variable JAVA_HOME and add the path to <jdk>\bin to the path variable.
 
 ![System Environment](/images/java/j-2.png)
 
