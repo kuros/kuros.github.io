@@ -3,14 +3,14 @@
     float: left;
 }
 
-.short-info ul, ol {
+.short-info ul ol {
     margin     : 0;
     padding    : 0;
-    list-style : none;
 }
 
 
 ul.list-check {
+    list-style : none;
 }
 
 ul.list-check li{
