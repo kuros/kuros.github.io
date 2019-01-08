@@ -1,7 +1,7 @@
 ---
 title: Java - Data Types
 date: 2019-01-08
-description: Setup
+description: Data Types supported in Java
 categories:
   - java
 image: https://source.unsplash.com/random/1500x1000
