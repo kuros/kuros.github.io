@@ -81,19 +81,19 @@ Suppose we have a package named as javaDocTest which has a class TestDoc and now
 $ javadoc -d keepDocFolder javaDocTest
 ```
 
-<img alt="String-2" src="/images/java/j-28.png" lazyload width="600px"/>
+<img alt="Comment-1" src="/images/java/j-28.png" lazyload width="600px"/>
 
 After this command is executed the following structure will be created 
 
-<img alt="String-2" src="/images/java/j-29.png" lazyload width="600px"/>
+<img alt="Comment-2" src="/images/java/j-29.png" lazyload width="600px"/>
 
 This folder will contain the entire document for classes and methods,
 
-<img alt="String-2" src="/images/java/j-30.png" lazyload width="600px"/>
+<img alt="Comment-3" src="/images/java/j-30.png" lazyload width="600px"/>
 
 Now if we click on the TestDoc link it will give the details of all the methods declared in the class.
 
-<img alt="String-2" src="/images/java/j-31.png" lazyload width="600px"/>
+<img alt="Comment-4" src="/images/java/j-31.png" lazyload width="600px"/>
 
 
 
