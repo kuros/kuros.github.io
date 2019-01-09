@@ -92,7 +92,7 @@ th {
     border-radius: 3px;
     line-height: 1.45;
     overflow: auto;
-    margin: 2px 0px;
+    margin: 10px 0px;
     padding: 5px;
 }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
