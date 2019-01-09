@@ -9,6 +9,7 @@ author_staff_member: rohit
 ---
 
 An exception is a problem that arises during the execution of a program. An exception can occur for many different reasons, including the following:
+
 - A user has entered invalid data.
 - A file that needs to be opened cannot be found.
 - A network connection has been lost in the middle of communications, or the JVM has run out of memory.
