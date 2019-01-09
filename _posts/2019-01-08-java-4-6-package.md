@@ -4,7 +4,7 @@ date: 2019-01-08
 description: How to manage growing number of classes 
 categories:
   - java
-image: https://source.unsplash.com/random/1500x1000
+image: https://source.unsplash.com/random/1200x900
 author_staff_member: rohit
 ---
 

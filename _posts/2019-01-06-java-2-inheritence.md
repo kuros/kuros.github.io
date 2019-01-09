@@ -4,7 +4,7 @@ date: 2019-01-06
 description: Why Inheritance?
 categories:
   - java
-image: https://source.unsplash.com/random/1500x1000
+image: https://source.unsplash.com/random/1200x900
 author_staff_member: rohit
 ---
 Inheritance is the concept of a child class (sub class) automatically inheriting the variables and methods defined in its parent class (super class).

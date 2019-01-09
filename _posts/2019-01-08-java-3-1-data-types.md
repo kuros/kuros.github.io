@@ -4,7 +4,7 @@ date: 2019-01-08
 description: Data Types supported in Java
 categories:
   - java
-image: https://source.unsplash.com/random/1500x1000
+image: https://source.unsplash.com/random/1200x900
 author_staff_member: rohit
 ---
 Java is a strongly typed language. This means that every variable must have a declared type. There are eight primitive types in Java. Four of them are integer types; two are floating-point number types; one is the character type char, used for code units in the Unicode encoding scheme and one is a boolean type for truth values.

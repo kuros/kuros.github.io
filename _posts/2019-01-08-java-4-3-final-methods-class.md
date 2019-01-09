@@ -4,7 +4,7 @@ date: 2019-01-08
 description: The keyword "final" in Java is used in different ways depending on the context
 categories:
   - java
-image: https://source.unsplash.com/random/1500x1000
+image: https://source.unsplash.com/random/1200x900
 author_staff_member: rohit
 ---
 
