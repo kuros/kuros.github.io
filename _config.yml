@@ -34,7 +34,7 @@ plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
   - jekyll-feed
-  - jekyll-paginate
+  - jekyll-paginate-v2
   - jekyll-archives
 
 exclude:
@@ -43,12 +43,13 @@ exclude:
   - README.md
   - LICENCE
 
-collections:
-  staff_members:
-    _hide_content: true
-
-paginate: 10
-paginate_path: "/blog/:num/"
+pagination:
+  enabled: true
+  permalink: '/page/:num/'
+  per_page: 10
+  limit: 0
+  sort_field: 'date'
+  sort_reverse: true
 
 jekyll-archives:
   enabled: ['categories']
