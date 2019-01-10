@@ -1,6 +1,6 @@
 ---
 title: Java - Exception Types
-date: 2019-01-08
+date: 2019-01-10
 description: Predefined, User defined, Checked & Unchecked Exception
 categories:
   - java

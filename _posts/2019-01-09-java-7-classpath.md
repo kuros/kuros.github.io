@@ -1,6 +1,6 @@
 ---
 title: Java - Classpath
-date: 2019-01-08
+date: 2019-01-09
 description: Tell Java where to search for programs.
 categories:
   - java

@@ -1,6 +1,6 @@
 ---
 title: Java - Package - the class Management
-date: 2019-01-08
+date: 2019-01-09
 description: How to manage growing number of classes 
 categories:
   - java

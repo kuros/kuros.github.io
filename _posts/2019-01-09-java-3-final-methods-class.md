@@ -1,6 +1,6 @@
 ---
 title: Java - final variable, method and final class
-date: 2019-01-08
+date: 2019-01-09
 description: The keyword "final" in Java is used in different ways depending on the context
 categories:
   - java
