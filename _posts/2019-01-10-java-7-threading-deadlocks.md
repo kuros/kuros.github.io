@@ -1,5 +1,5 @@
 ---
-title: Thread wait and join
+title: Thread - wait, join & deadlocks
 date: 2019-01-10
 description: Diving deep into the thread methods wait & join and how they work in sync to give desired result. 
 categories:
