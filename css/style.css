@@ -159,3 +159,29 @@ th {
     height: 30vh;
     min-height: 350px;
 }
+
+#back2Top {
+    width: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    z-index: 999;
+    display: none;
+    cursor: pointer;
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+    position: fixed;
+    bottom: 60px;
+    right: 0;
+    background-color: #FFF;
+    color: #6ba1f3;
+    text-align: center;
+    font-size: 30px;
+    text-decoration: none;
+}
+#back2Top:hover {
+    background-color: #6ba1f3;
+    color: #FFF;
+}
