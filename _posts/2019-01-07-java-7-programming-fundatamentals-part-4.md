@@ -70,11 +70,11 @@ where possible options include:
 
 The environment variables can also be added by adding to the system environment variables on windows:-
 
-![System Environment](/images/java/j-1.png)
+![System Environment](/images/java/j-1.webp)
 
 Go to Computer -> properties -> Environment Variables add a new variable JAVA_HOME and add the path to <jdk>\bin to the path variable.
 
-![System Environment](/images/java/j-2.png)
+![System Environment](/images/java/j-2.webp)
 
 ### Compiling the program
 Now the Environment variables have been added and we have to compile the program.
@@ -84,7 +84,7 @@ $ javac RunnerClass.java
 ```
 When you compile the main class i.e. RunnerClass.java the subordinate class gets compile automatically (Person class). You will observe that two .class files are created.
 
-![Class files](/images/java/j-3.png)
+![Class files](/images/java/j-3.webp)
 
 The every java file is converted into a bytecode and is represented as .class files.
 

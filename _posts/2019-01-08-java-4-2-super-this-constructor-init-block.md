@@ -38,7 +38,7 @@ In this code we use **super** keyword to call the Animal version of the method.
 
 The keyword this is used to reference the current working object, suppose for the given code.
 
-<img alt="this impl" src="/images/java/j-16.png" lazyload width="400px"/>
+<img alt="this impl" src="/images/java/j-16.webp" lazyload width="400px"/>
 
 Here we have kept the name of instance and local variable same (val) but in the method setVal() we need to assign the value of local variable to the instance variable so to distinguish between the local and instance variable we use this key word. The Key word this refers to the current working object of a in this case.
 
@@ -100,7 +100,7 @@ In the Monkey overloaded Constructor
 Note: - we have never called Animal constructor but still we could see that Animal constructor is being executed, how?
 Let us see how it works
 
-<img alt="this impl" src="/images/java/j-17.png" lazyload width="600px"/>
+<img alt="this impl" src="/images/java/j-17.webp" lazyload width="600px"/>
 
 1. Moneky constructor is invoked. Every constructor invokes the constructor of its superclass with an (implicit) call to super().
 

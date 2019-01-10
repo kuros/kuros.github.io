@@ -18,11 +18,11 @@ Some of these exceptions are caused by user error, others by programmer error, a
 
 Let’s take an example of the Car, in which the engine of the car explodes due to heat if the speed of the car reaches beyond 100 miles/hour. Thus, explosion of the car is the exception that is caused against the normal speeding up of the car. 
 
-<img alt="Comment-4" src="/images/java/j-32.png" lazyload width="600px"/>
+<img alt="Comment-4" src="/images/java/j-32.webp" lazyload width="600px"/>
 
 In order to avoid that explosion what one can do is when the car reaches 90 miles/hour, an indicator glows and the driver is forced to retard the car speed. 
 
-<img alt="Comment-4" src="/images/java/j-33.png" lazyload width="600px"/>
+<img alt="Comment-4" src="/images/java/j-33.webp" lazyload width="600px"/>
 
 Hence the analogy that would be apt here would be explosion of the car as the creation of exception and glowing of the indicator as catching the exception in order to avoid that exception to hamper the proper functioning of the car.
 

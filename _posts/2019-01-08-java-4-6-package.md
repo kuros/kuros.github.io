@@ -48,7 +48,7 @@ import java.util.Date;
 
 Most of the time, you just import the packages that you need, without worrying too much about them. But if we want to import two classes with the same name from two different packages we have a problem.
 
-<img alt="import multiple class with same name" src="/images/java/j-20.png" lazyload width="600px"/>
+<img alt="import multiple class with same name" src="/images/java/j-20.webp" lazyload width="600px"/>
     
 So we see compilation error in the above case. To resolve this case what we do is we use the full package name to every class name
 
@@ -106,9 +106,9 @@ A class with default access has no modifier preceding it in the declaration! It'
 
 Let us consider that
 
-<img alt="import multiple class with same name" src="/images/java/j-21.png" lazyload width="400px"/>
+<img alt="import multiple class with same name" src="/images/java/j-21.webp" lazyload width="400px"/>
 
-<img alt="import multiple class with same name" src="/images/java/j-22.png" lazyload width="400px"/> 
+<img alt="import multiple class with same name" src="/images/java/j-22.webp" lazyload width="400px"/> 
 
 So the class is not visible in the other package if we use the default access specifier, but if we try to access the ClassA in inc.chapter5 package only then all the methods will be visible to the classes declared in the same package
 
@@ -157,9 +157,9 @@ public class TestPack1 {
 	}	
 }
 ```
-<img alt="import multiple class with same name" src="/images/java/j-23.png" lazyload width="600px" style="margin-bottom: 20px"/> 
-<img alt="import multiple class with same name" src="/images/java/j-24.png" lazyload width="600px" style="margin-bottom: 20px"/> 
-<img alt="import multiple class with same name" src="/images/java/j-25.png" lazyload width="600px"/> 
+<img alt="import multiple class with same name" src="/images/java/j-23.webp" lazyload width="600px" style="margin-bottom: 20px"/> 
+<img alt="import multiple class with same name" src="/images/java/j-24.webp" lazyload width="600px" style="margin-bottom: 20px"/> 
+<img alt="import multiple class with same name" src="/images/java/j-25.webp" lazyload width="600px"/> 
 
 In the above code we have shown:-
 - In the same package, available methods are of public, protected and default access modifiers.

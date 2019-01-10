@@ -12,7 +12,7 @@ Object-oriented programming (OOP) is a programming style that uses "objects" (da
 
 ## Classes
 A class is a construct that is used as a blueprint (or template) to create objects of that class. This blueprint describes the state and behavior that the objects of the class all share. An object of a given class is called an instance of the class. The class that contains (and was used to create) that instance can be considered as the type of that object. For e.g. the class BIRD would consist of traits shared by all birds, such as beaks, legs  and wings (characteristics), and the ability to fly (behavior). 
-![Bird Image](/images/java/bird.png)
+![Bird Image](/images/java/bird.webp)
 
 ## Objects
 A pattern (exemplar) of a class. The class BIRD defines all possible birds by listing the characteristics and behaviors they can have; the object Eagle is one particular bird, with particular versions of the characteristics. A Bird has beak; Eagle has hooked beaks.

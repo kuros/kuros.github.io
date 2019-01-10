@@ -12,7 +12,7 @@ The Object class sits at the top of the class hierarchy tree in the Java develop
 
 It has some important method declared which are:-
 
-<img alt="this impl" src="/images/java/j-19.png" lazyload width="600px"/>
+<img alt="this impl" src="/images/java/j-19.webp" lazyload width="600px"/>
 
 ## The equals Method
 Use the equals to compare two objects for equality. This method returns true if the objects are equal, false otherwise. Note that equality does not mean that the objects are the same object. Consider this code that tests two Integers, one and anotherOne, for equality: 

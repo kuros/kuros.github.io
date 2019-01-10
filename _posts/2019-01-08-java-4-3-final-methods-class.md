@@ -24,7 +24,7 @@ public class FinalBase {
 }
 
 ``` 
-<img alt="this impl" src="/images/java/j-18.png" lazyload width="400px"/>
+<img alt="this impl" src="/images/java/j-18.webp" lazyload width="400px"/>
 
 In this code area we wrote a FinalBase class and a FinalInherit Class but when we try to access the list of methods which we could override we did not get to see the method which we have declared as final in FinalBase class.
 

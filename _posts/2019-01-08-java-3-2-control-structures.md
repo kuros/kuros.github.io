@@ -33,7 +33,7 @@ statement2
 }
 ```
 
-<img alt="if condition" src="/images/java/j-4.png" width="250">
+<img alt="if condition" src="/images/java/j-4.webp" width="250">
 
 ```java
 if (yourSales >= target)
@@ -58,7 +58,7 @@ else
 <statement action>
 ```
 
-<img alt="if else condition" src="/images/java/j-5.png" width="250">
+<img alt="if else condition" src="/images/java/j-5.webp" width="250">
 
 ```java
 public class IfElseStatementDemo {

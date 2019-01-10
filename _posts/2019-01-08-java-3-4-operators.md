@@ -123,14 +123,14 @@ Truth Table:
 ### Left Shift (<<)
 In a left arithmetic shift, zeros are shifted in on the right. The leftmost digit was shifted past the end of the register, and a new 0 was shifted into the rightmost position.
 
-<img alt="left shift" src="/images/java/j-9.png" width = "250px"/>
+<img alt="left shift" src="/images/java/j-9.webp" width = "250px"/>
 
 A left arithmetic shift by n is equivalent to multiplying by 2^n.
 
 ### Right Shift (>>)
 In a right arithmetic shift, the sign bit is shifted in on the left, thus preserving the sign of the operand. The rightmost 1 was shifted out (perhaps into the carry flag), and a new 0 was copied into the leftmost position, preserving the sign of the number.
 
-<img alt="right shift" src="/images/java/j-10.png" width = "250px"/>
+<img alt="right shift" src="/images/java/j-10.webp" width = "250px"/>
 
 A right arithmetic shift by n of a two's complement value is equivalent to dividing by 2n and rounding toward negative infinity.
 

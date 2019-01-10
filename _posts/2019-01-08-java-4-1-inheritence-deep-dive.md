@@ -13,7 +13,7 @@ We see this kind of reaction every time we someone is first told about, Let us u
 
 Suppose you are a Zoo manager and you want to store the data about the animal of the zoo:-
 
-<img alt="Animal family picture" src="/images/java/j-13.png" lazyload width="250px"/>
+<img alt="Animal family picture" src="/images/java/j-13.webp" lazyload width="250px"/>
 
 To solve this we create a class with the name of Animal and it will have some features which is common to all the animals, so all the animals will have a common method.
  
@@ -67,7 +67,7 @@ Interface implementation is not a part of inheritance tree and does not follow I
 
 So now
 
-<img alt="Animal family picture" src="/images/java/j-14.png" lazyload width="400px"/>
+<img alt="Animal family picture" src="/images/java/j-14.webp" lazyload width="400px"/>
 
 "Monkey extends Animal" means "Monkey IS-A Animal."
 
@@ -80,7 +80,7 @@ HAS-A relationships are based on usage, rather than inheritance. In other words,
 
 Has-A Relationship is also called as Aggregation. And a monkey has teeth hands legs etc.
 
-<img alt="Animal family picture" src="/images/java/j-15.png" lazyload width="400px"/>
+<img alt="Animal family picture" src="/images/java/j-15.webp" lazyload width="400px"/>
 
 ```java
 public class Monkey {
