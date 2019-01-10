@@ -381,6 +381,61 @@ In this piece of code we have added synchronized key word followed by the (Accou
 
 What we are doing here is we are trying to lock the Object Account so that no other thread can access it and then we are executing the thread safe piece of code.
 
+## Understanding Deadlocks
+
+<img alt="this impl" src="/images/java/j-39.webp" lazyload width="600px"/>
+
+We say that a set of processes or threads is deadlocked when each thread is waiting for an event that only another process in the set can cause. Another way to illustrate a deadlock is to build a directed graph whose vertices are threads or processes and whose edges represent the "is-waiting-for" relation. If this graph contains a cycle, the system is deadlocked. Unless the system is designed to recover from deadlocks, a deadlock causes the program or system to hang.
+
+```java
+public class Main {
+	public static void main(String[] args) {
+	    final Object resource1 = "resource1";
+	    final Object resource2 = "resource2";
+	    // t1 tries to lock resource1 then resource2
+	    Thread t1 = new Thread() {
+	      public void run() {
+	        // Lock resource 1
+	        synchronized (resource1) {
+	          System.out.println("Thread 1: locked resource 1");
+
+	          try {
+	            Thread.sleep(50);
+	          } catch (InterruptedException e) {
+	          }
+
+	          synchronized (resource2) {
+	            System.out.println("Thread 1: locked resource 2");
+	          }
+	        }
+	      }
+	    };
+
+	    // t2 tries to lock resource2 then resource1
+	    Thread t2 = new Thread() {
+	      public void run() {
+	        synchronized (resource2) {
+	          System.out.println("Thread 2: locked resource 2");
+
+	          try {
+	            Thread.sleep(50);
+	          } catch (InterruptedException e) {
+	          }
+
+	          synchronized (resource1) {
+	            System.out.println("Thread 2: locked resource 1");
+	          }
+	        }
+	      }
+	    };
+
+	    // If all goes as planned, deadlock will occur,
+	    // and the program will never exit.
+	    t1.start();
+	    t2.start();
+	  }
+}
+```
 
 
 
