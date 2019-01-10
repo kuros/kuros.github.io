@@ -1,78 +1,78 @@
 .short-info ul li {
-    width: 50%;
-    float: left;
+  width: 50%;
+  float: left;
 }
 
 .short-info ul ol {
-    margin     : 0;
-    padding    : 0;
+  margin     : 0;
+  padding    : 0;
 }
 
 
 ul.list-check {
-    list-style : none;
+  list-style : none;
 }
 
 ul.list-check li{
-    position: relative;
-    font-size: 18px;
-    line-height: 32px;
+  position: relative;
+  font-size: 18px;
+  line-height: 32px;
 }
 ul.list-check li::before {
-    content: "\f00c";
-    font-family: fontawesome;
-    color: rgba(41, 41, 41, 0.82);
-    margin-right: 10px;
+  content: "\f00c";
+  font-family: fontawesome;
+  color: rgba(41, 41, 41, 0.82);
+  margin-right: 10px;
 }
 
 .shadow-home {
-    -webkit-background-attachment: fixed;
-    background-attachment: fixed;
-    /*background-color: #222;*/
-    background-size: cover;
-    padding: 0;
-    position: relative;
+  -webkit-background-attachment: fixed;
+  background-attachment: fixed;
+  /*background-color: #222;*/
+  background-size: cover;
+  padding: 0;
+  position: relative;
 }
 .shadow-home:before {
-    content: "";
-    /*background-color: rgba(26, 30, 35, 0.50);*/
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  content: "";
+  /*background-color: rgba(26, 30, 35, 0.50);*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .shadow {
-    -webkit-background-attachment: fixed;
-    background-attachment: fixed;
-    background-color: #222;
-    background-size: cover;
-    padding: 0;
-    position: relative;
+  -webkit-background-attachment: fixed;
+  background-attachment: fixed;
+  background-color: #222;
+  background-size: cover;
+  padding: 0;
+  position: relative;
 }
 
 .shadow:before {
-    content: "";
-    background-color: rgba(26, 30, 35, 0.50);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  content: "";
+  background-color: rgba(26, 30, 35, 0.50);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 
 /*Table*/
 table {
-    border-collapse: collapse;
-    margin-bottom: 20px;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 td, th {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 
 tr:nth-child(even){background-color: #f2f2f2;}
@@ -80,20 +80,20 @@ tr:nth-child(even){background-color: #f2f2f2;}
 tr:hover {background-color: #ddd;}
 
 th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #888888;
-    color: white;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #888888;
+  color: white;
 }
 
 .highlight  {
-    background-color: #f6f8fa;
-    border-radius: 3px;
-    line-height: 1.45;
-    overflow: auto;
-    margin: 10px 0px;
-    padding: 5px;
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  line-height: 1.45;
+  overflow: auto;
+  margin: 10px 0px;
+  padding: 5px;
 }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
 .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
@@ -156,32 +156,32 @@ th {
 .highlight .il { color: #009999 }
 
 .page-hero {
-    height: 30vh;
-    min-height: 350px;
+  height: 30vh;
+  min-height: 350px;
 }
 
 #back2Top {
-    width: 40px;
-    line-height: 40px;
-    overflow: hidden;
-    z-index: 999;
-    display: none;
-    cursor: pointer;
-    -moz-transform: rotate(270deg);
-    -webkit-transform: rotate(270deg);
-    -o-transform: rotate(270deg);
-    -ms-transform: rotate(270deg);
-    transform: rotate(270deg);
-    position: fixed;
-    bottom: 60px;
-    right: 0;
-    background-color: #FFF;
-    color: #6ba1f3;
-    text-align: center;
-    font-size: 30px;
-    text-decoration: none;
+  width: 40px;
+  line-height: 40px;
+  overflow: hidden;
+  z-index: 999;
+  display: none;
+  cursor: pointer;
+  -moz-transform: rotate(270deg);
+  -webkit-transform: rotate(270deg);
+  -o-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+  position: fixed;
+  bottom: 60px;
+  right: 0;
+  background-color: #FFF;
+  color: #6ba1f3;
+  text-align: center;
+  font-size: 30px;
+  text-decoration: none;
 }
 #back2Top:hover {
-    background-color: #6ba1f3;
-    color: #FFF;
+  background-color: #6ba1f3;
+  color: #FFF;
 }
