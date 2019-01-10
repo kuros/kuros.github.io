@@ -1,6 +1,6 @@
 ---
 title: Java - Assertions
-date: 2019-01-08
+date: 2019-01-10
 description: Help the programmer to debug the application
 categories:
   - java

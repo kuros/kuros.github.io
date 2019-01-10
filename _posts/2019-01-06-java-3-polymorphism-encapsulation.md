@@ -1,6 +1,6 @@
 ---
 title: Java - Polymorphism & Encapsulation
-date: 2019-01-07
+date: 2019-01-06
 description: Understanding Polymorphism & Encapsulation in real life
 categories:
   - java

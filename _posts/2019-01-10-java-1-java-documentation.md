@@ -1,6 +1,6 @@
 ---
 title: Java - Documentation
-date: 2019-01-08
+date: 2019-01-10
 description: Introduction to Java documentation
 categories:
   - java

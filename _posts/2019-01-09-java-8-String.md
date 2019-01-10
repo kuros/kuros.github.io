@@ -1,6 +1,6 @@
 ---
 title: Java - Handling String
-date: 2019-01-08
+date: 2019-01-09
 description: Manage String values in the java.
 categories:
   - java
