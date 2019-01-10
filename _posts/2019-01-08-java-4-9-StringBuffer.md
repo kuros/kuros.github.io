@@ -1,6 +1,6 @@
 ---
 title: Java - StringBuffer
-date: 2019-01-09
+date: 2019-01-08
 description: Manage Strings using StringBuffer.
 categories:
   - java

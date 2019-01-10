@@ -1,6 +1,6 @@
 ---
 title: Java - Exception Hierarchy
-date: 2019-01-10
+date: 2019-01-08
 description: Error vs Exception
 categories:
   - java

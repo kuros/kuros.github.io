@@ -1,6 +1,6 @@
 ---
 title: Java - Exception mechanism
-date: 2019-01-10
+date: 2019-01-08
 description: try-catch-throw-throws-finally
 categories:
   - java

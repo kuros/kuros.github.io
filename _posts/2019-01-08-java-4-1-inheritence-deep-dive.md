@@ -1,6 +1,6 @@
 ---
 title: Java - Inheritance deep dive
-date: 2019-01-09
+date: 2019-01-08
 description: A deep dive in inheritance and method overriding
 categories:
   - java

@@ -2,8 +2,6 @@
 title: Blog
 description: Keep up with the latest news.
 image: https://source.unsplash.com/MqJX_8EaStM/1200x900?a=.png
-pagination:
- enabled: true
 ---
 
 <section class="hero page-hero" style="background-image: url({% include relative-src.html src=page.image %})">
@@ -17,6 +15,7 @@ pagination:
 
 <section>
 	<div class="text-container">
+		<p class="editor-link"><a href="collections/_posts" class="btn"><strong>&#9998;</strong> Add Post</a></p>
 		<ul class="blog-posts">
 			{% include list-posts.html posts=paginator.posts %}
 		</ul>

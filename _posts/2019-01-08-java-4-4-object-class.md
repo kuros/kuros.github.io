@@ -1,6 +1,6 @@
 ---
 title: Java - Object class
-date: 2019-01-09
+date: 2019-01-08
 description: Understanding methods of object class.
 categories:
   - java

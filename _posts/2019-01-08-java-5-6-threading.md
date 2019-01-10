@@ -1,6 +1,6 @@
 ---
 title: Java - Multi Threading
-date: 2019-01-10
+date: 2019-01-08
 description: Explores the basics of threads 
 categories:
   - java
