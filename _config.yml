@@ -46,12 +46,16 @@ exclude:
 collections:
   staff_members:
     _hide_content: true
+  category:
+    output: true
+  tag:
+    output: true
 
 paginate: 10
 paginate_path: "/blog/:num/"
 
 jekyll-archives:
-  enabled: ['categories']
+  enabled: ['categories', 'tags']
 
 defaults:
   -
