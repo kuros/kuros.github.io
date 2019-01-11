@@ -42,6 +42,9 @@ exclude:
   - Gemfile.lock
   - README.md
   - LICENCE
+  - Dockerfile
+  - docker-compose.yml
+  - docker-entrypoint.sh
 
 collections:
   staff_members:
