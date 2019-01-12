@@ -47,9 +47,16 @@
     $(document).ready(function() {
         $("#back2Top").click(function(event) {
             event.preventDefault();
-            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("html, body").animate({ scrollTop: 0 }, "fast");
             return false;
         });
 
 	});
+
+    $(document).ready(function() {
+        var images = ['face-1.jpg', 'face-2.jpg', 'face-3.jpg', 'face-4.jpg', 'face-5.jpg', 'face-6.jpg', 'face-7.jpg'];
+
+        $('.random-images').css({'background-image': 'url(/images/random/' + Math.floor(Math.random() * 13) + '.webp)'});
+    });
 })();
+
