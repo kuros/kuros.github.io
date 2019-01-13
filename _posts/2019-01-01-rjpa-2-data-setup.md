@@ -1,9 +1,10 @@
 ---
 title: Setup database & spring boot application
-date: 2019-01-12
+date: 2019-01-1
 description: We are going to setup a simple spring boot application
 image: https://source.unsplash.com/random/1200x900
 author_staff_member: rohit
+category: random-jpa
 tag:
  - spring-boot
  - spring-data-jpa
