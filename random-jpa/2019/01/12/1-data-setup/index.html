@@ -201,25 +201,63 @@ so our repository looks like</p>
 <p>you will get this response on your browser</p>
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
   "_embedded" : {
-    "employee" : [ ]
+    "employee" : [ {
+      "birthDate" : "1953-09-02",
+      "firstName" : "Georgi",
+      "lastName" : "Facello",
+      "gender" : null,
+      "hireDate" : "1986-06-26",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/employee/10001"
+        },
+        "employees" : {
+          "href" : "http://localhost:8080/employee/10001"
+        }
+      }
+    }, {
+      "birthDate" : "1964-06-02",
+      "firstName" : "Bezalel",
+      "lastName" : "Simmel",
+      "gender" : null,
+      "hireDate" : "1985-11-21",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/employee/10002"
+        },
+        "employees" : {
+          "href" : "http://localhost:8080/employee/10002"
+        }
+      }
+    } ]
   },
   "_links" : {
+    "first" : {
+      "href" : "http://localhost:8080/employee?page=0&amp;size=2"
+    },
     "self" : {
-      "href" : "http://localhost:8080/employee{?page,size,sort}",
+      "href" : "http://localhost:8080/employee{&amp;sort}",
       "templated" : true
+    },
+    "next" : {
+      "href" : "http://localhost:8080/employee?page=1&amp;size=2"
+    },
+    "last" : {
+      "href" : "http://localhost:8080/employee?page=7&amp;size=2"
     },
     "profile" : {
       "href" : "http://localhost:8080/profile/employee"
     }
   },
   "page" : {
-    "size" : 20,
-    "totalElements" : 0,
-    "totalPages" : 0,
+    "size" : 2,
+    "totalElements" : 15,
+    "totalPages" : 8,
     "number" : 0
   }
 }
 </code></pre></div></div>
+<p>We have a total of 15 employees in this database. So this request give two employee details with links to fetch rest of records under <strong>_link</strong></p>
 
 <p>Congrats you have your first app running. 
 <a href="https://github.com/kuros/random-jpa-example/tree/955b8944aa59cf307aaa3d642cc74ef5c908ca2c">View latest code</a></p>
@@ -233,6 +271,9 @@ so our repository looks like</p>
 					
 					<a class="prev" href="/random-jpa/2019/01/09/1-birth/">&laquo; Why Random-JPA?</a>
 					
+
+					
+					<a class="next" href="/random-jpa/2019/01/14/rjpa-1-integration/">Random-JPA Integration &raquo;</a>
 
 					
 				
