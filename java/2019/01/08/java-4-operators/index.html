@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Java - Operators (Part - 1) | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Java - Operators (Part - 1)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Operators to manipulate variables" />
+<meta property="og:description" content="Operators to manipulate variables" />
+<link rel="canonical" href="http://0.0.0.0:4000/java/2019/01/08/java-4-operators/" />
+<meta property="og:url" content="http://0.0.0.0:4000/java/2019/01/08/java-4-operators/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:image" content="https://source.unsplash.com/random/1200x900" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-08T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Operators to manipulate variables","@type":"BlogPosting","url":"http://0.0.0.0:4000/java/2019/01/08/java-4-operators/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Operators (Part - 1)","dateModified":"2019-01-08T00:00:00+00:00","datePublished":"2019-01-08T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/java/2019/01/08/java-4-operators/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+		<!--<link rel="stylesheet" href="/css/style.css">-->
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', 'UA-131802948-1');
+		</script>
+
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<script>
+			(adsbygoogle = window.adsbygoogle || []).push({
+				google_ad_client: "ca-pub-4166026699724584",
+				enable_page_level_ads: true
+			});
+		</script>
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<!--<span class="dark-logo"><img width="104" height="38" src="/images/logo/dark.svg" alt="dark frisco logo"></span>-->
+						<!--<span class="light-logo"><img width="104" height="38" src="/images/logo/light.svg" alt="light frisco logo"></span>-->
+						<span class="dark-logo">Kuros.in</span>
+						<span class="light-logo">Kuros.in</span>
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>Java - Operators (Part - 1)</h1>
+			<p class="subtext">Operators to manipulate variables</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="editor-link"><a href="collections/_posts/2019-01-08-java-4-operators.md" class="btn"><strong>&#9998;</strong> Edit Post</a></p>
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/java/">Java</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		January 08, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>Java provides a rich set of operators to manipulate variables. We can divide all the Java operators into the following groups:</p>
+
+<ul>
+  <li>Arithmetic Operators</li>
+  <li>Relational Operators</li>
+  <li>Bitwise Operators</li>
+  <li>Logical Operators</li>
+  <li>Assignment Operators</li>
+  <li>Misc Operators</li>
+</ul>
+
+<h2 id="the-arithmetic-operators">The Arithmetic Operators</h2>
+
+<p>Arithmetic operators are used in mathematical expressions in the same way that they are used in algebra. The following table lists the arithmetic operators:</p>
+
+<p>Assume integer variable A holds 10 and variable B holds 20 then:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Operator</th>
+      <th style="text-align: left">Description</th>
+      <th style="text-align: left">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">+</td>
+      <td style="text-align: left">Addition - Adds values on either side of the operator</td>
+      <td style="text-align: left">A + B = 30</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">-</td>
+      <td style="text-align: left">Subtracts - Subtract right hand operand from left hand operand</td>
+      <td style="text-align: left">A - B = 10</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">*</td>
+      <td style="text-align: left">Multiplication - Multiplies values on either side of the operator</td>
+      <td style="text-align: left">A * B = 200</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">/</td>
+      <td style="text-align: left">Division - Divides left hand operand by right hand operand</td>
+      <td style="text-align: left">B / A = 2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">%</td>
+      <td style="text-align: left">Modulus - Divides left hand operand by right hand operand and return remainder</td>
+      <td style="text-align: left">B % A = 0</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">++</td>
+      <td style="text-align: left">Increment - Increase value of operand by 1</td>
+      <td style="text-align: left">B++ = 21</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">–</td>
+      <td style="text-align: left">Decrement - Decrease value of operand by 1</td>
+      <td style="text-align: left">B– = 19</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="pre-and-post-incrementdecrement">Pre and Post Increment/Decrement</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Operators</th>
+      <th style="text-align: center">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">x++</td>
+      <td style="text-align: center">Post increment: add 1 to the value, The value is returned <em>before</em> the increment is made e.g x= 1, y = x++,  then value of y = 1 &amp; value of x = 2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">x–</td>
+      <td style="text-align: center">Post decrement: subtract 1 from the value, The value is returned <em>before</em> the decrement is made e.g x= 1, y = x–,  then value of y = 1 &amp; value of x = 0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">++x</td>
+      <td style="text-align: center">Pre increment: add 1 to the value, The value is returned <em>after</em> the increment is made e.g x= 1, y = ++x,  then value of y = 2 &amp; value of x = 2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">–x</td>
+      <td style="text-align: center">Pre decrement: subtract 1 from the value, The value is returned <em>after</em> the decrement is made e.g x= 1, y = –x,  then value of y = 0 &amp; value of x = 0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="the-relational-operators">The Relational Operators</h2>
+
+<p>There are following relational operators supported by Java language. Whenever the relational operators are used, the output results to a Boolean value.</p>
+
+<p>Assume variable A holds 10 and variable B holds 20 then:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Operator</th>
+      <th style="text-align: left">Description</th>
+      <th style="text-align: left">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">==</td>
+      <td style="text-align: left">Checks if the value of two operands are equal, if yes the condition becomes true</td>
+      <td style="text-align: left">(A == B) is false</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">==</td>
+      <td style="text-align: left">Checks if the value of two operands are not equal, if yes the condition becomes true</td>
+      <td style="text-align: left">(A == B) is true</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&gt;</td>
+      <td style="text-align: left">Checks if the value of left operand is greater than right operand, if yes the condition becomes true</td>
+      <td style="text-align: left">(A &gt; B) is false</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&lt;</td>
+      <td style="text-align: left">Checks if the value of left operand is lesser than right operand, if yes the condition becomes true</td>
+      <td style="text-align: left">(A &lt; B) is true</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&gt;=</td>
+      <td style="text-align: left">Checks if the value of left operand is greater or equal to right operand, if yes the condition becomes true</td>
+      <td style="text-align: left">(A &gt; B) is false</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&lt;=</td>
+      <td style="text-align: left">Checks if the value of left operand is less or equal to right operand, if yes the condition becomes true</td>
+      <td style="text-align: left">(A &lt; B) is true</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="the-bitwise-operators">The Bitwise Operators</h2>
+
+<p>Java defines several bitwise operators which can be applied to the integer types, long, int, short, char, and byte.</p>
+
+<p>Bitwise operator works on bits and perform bit by bit operation. Assume if a = 60; and b = 13; Now in binary format they will be as follows:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a = 0011 1100
+b = 0000 1101
+-----------------
+a&amp;b = 0000 1000
+a|b = 0011 1101
+a^b = 0011 0001
+~a = 1100 0011
+</code></pre></div></div>
+
+<h3 id="bitwise-and-">Bitwise AND (&amp;)</h3>
+<p>A bitwise AND takes two binary representations of equal length and performs the logical AND operation on each pair of corresponding bits. In each pair, the result is 1 if the first bit is 1 AND the second bit is 1. Otherwise, the result is 0.</p>
+
+<p>Truth table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A</th>
+      <th style="text-align: center">B</th>
+      <th style="text-align: center">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="bitwise-or-">Bitwise OR (|)</h3>
+<p>A bitwise OR takes two bit patterns of equal length, and produces another one of the same length by matching up corresponding bits (the first of each; the second of each; and so on) and performing the logical inclusive OR operation on each pair of corresponding bits. In each pair, the result is 1 if the first bit is 1 OR the second bit is 1 OR both bits are 1, and otherwise the result is 0.</p>
+
+<p>Truth Table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A</th>
+      <th style="text-align: center">B</th>
+      <th style="text-align: center">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="bitwise-xor-">Bitwise XOR (^)</h3>
+<p>A bitwise exclusive or takes two bit patterns of equal length and performs the logical XOR operation on each pair of corresponding bits. The result in each position is 1 if the two bits are different, and 0 if they are the same.</p>
+
+<p>Truth Table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A</th>
+      <th style="text-align: center">B</th>
+      <th style="text-align: center">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="bitwise-not-">Bitwise NOT (~)</h3>
+<p>The bitwise NOT, or complement, is a unary operation that performs logical negation on each bit, forming the ones’ complement of the given binary value. Digits which were 0 become 1, and vice versa.</p>
+
+<p>Truth Table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Input</th>
+      <th style="text-align: center">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="left-shift-">Left Shift («)</h3>
+<p>In a left arithmetic shift, zeros are shifted in on the right. The leftmost digit was shifted past the end of the register, and a new 0 was shifted into the rightmost position.</p>
+
+<p><img alt="left shift" src="/images/java/j-9.webp" width="250px" /></p>
+
+<p>A left arithmetic shift by n is equivalent to multiplying by 2^n.</p>
+
+<h3 id="right-shift-">Right Shift (»)</h3>
+<p>In a right arithmetic shift, the sign bit is shifted in on the left, thus preserving the sign of the operand. The rightmost 1 was shifted out (perhaps into the carry flag), and a new 0 was copied into the leftmost position, preserving the sign of the number.</p>
+
+<p><img alt="right shift" src="/images/java/j-10.webp" width="250px" /></p>
+
+<p>A right arithmetic shift by n of a two’s complement value is equivalent to dividing by 2n and rounding toward negative infinity.</p>
+
+<p>The following table lists the bitwise operators, Assume integer variable A holds 60 and variable B holds 13 then:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Operator</th>
+      <th style="text-align: center">Description</th>
+      <th style="text-align: center">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">&amp;</td>
+      <td style="text-align: center">Binary AND Operator copies a bit to the result if it exists in both operand</td>
+      <td style="text-align: center">(A &amp; B) will give 12 which is 0000 1100</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">|</td>
+      <td style="text-align: center">Binary OR Operator copies a bit if it exists in either operand</td>
+      <td style="text-align: center">(A | B) will give 61 which is 0011 1101</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">^</td>
+      <td style="text-align: center">Binary XOR Operator copies a bit if it is set in one operand but not both</td>
+      <td style="text-align: center">(A ^ B) will give 49 which is 0011 0001</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">~</td>
+      <td style="text-align: center">Binary ones complements Operator is Unary and has effect of ‘flipping’ bits</td>
+      <td style="text-align: center">(~A ) will give -60 which is 1100 0011</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">«</td>
+      <td style="text-align: center">Binary Left shift operator. The left operand value is moved left by number of bits specified by right operand</td>
+      <td style="text-align: center">A « 2 will give 240 which is 1111 0000</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">»</td>
+      <td style="text-align: center">Binary Right shift operator. The left operand value is moved right by number of bits specified by right operand</td>
+      <td style="text-align: center">A » 2 will give 15 which is 1111</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">»&gt;</td>
+      <td style="text-align: center">Shift right zero fill operator. the left operands value is moved right by the number of bits specified by the right operand and shifted values are filled up with zeros</td>
+      <td style="text-align: center">A »&gt; 2 will give 15 which is 0000 1111</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Entry</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		  <span class="c1">// create truth table for &amp; (boolean logical AND) operator</span>
+	      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span> <span class="s">"%s\n%s: %b\n%s: %b\n%s: %b\n%s: %b\n\n"</span><span class="o">,</span>
+	         <span class="s">"Boolean logical AND (&amp;)"</span><span class="o">,</span> <span class="s">"false &amp; false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">&amp;</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"false &amp; true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">&amp;</span> <span class="kc">true</span> <span class="o">),</span>
+	         <span class="s">"true &amp; false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">&amp;</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"true &amp; true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">&amp;</span> <span class="kc">true</span> <span class="o">)</span> <span class="o">);</span>
+
+	      <span class="c1">// create truth table for | (boolean logical inclusive OR) operator</span>
+	      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span> <span class="s">"%s\n%s: %b\n%s: %b\n%s: %b\n%s: %b\n\n"</span><span class="o">,</span>
+	         <span class="s">"Boolean logical inclusive OR (|)"</span><span class="o">,</span>
+	         <span class="s">"false | false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">|</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"false | true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">|</span> <span class="kc">true</span> <span class="o">),</span>
+	         <span class="s">"true | false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">|</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"true | true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">|</span> <span class="kc">true</span> <span class="o">)</span> <span class="o">);</span>
+
+	      <span class="c1">// create truth table for ^ (boolean logical exclusive OR) operator</span>
+	      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span> <span class="s">"%s\n%s: %b\n%s: %b\n%s: %b\n%s: %b\n\n"</span><span class="o">,</span>
+	         <span class="s">"Boolean logical exclusive OR (^)"</span><span class="o">,</span> 
+	         <span class="s">"false ^ false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">^</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"false ^ true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">^</span> <span class="kc">true</span> <span class="o">),</span>
+	         <span class="s">"true ^ false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">^</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"true ^ true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">^</span> <span class="kc">true</span> <span class="o">)</span> <span class="o">);</span>    
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Boolean logical AND <span class="o">(</span>&amp;<span class="o">)</span>
+<span class="nb">false</span> &amp; <span class="nb">false</span>: <span class="nb">false
+false</span> &amp; <span class="nb">true</span>: <span class="nb">false
+true</span> &amp; <span class="nb">false</span>: <span class="nb">false
+true</span> &amp; <span class="nb">true</span>: <span class="nb">true
+
+</span>Boolean logical inclusive OR <span class="o">(</span>|<span class="o">)</span>
+<span class="nb">false</span> | <span class="nb">false</span>: <span class="nb">false
+false</span> | <span class="nb">true</span>: <span class="nb">true
+true</span> | <span class="nb">false</span>: <span class="nb">true
+true</span> | <span class="nb">true</span>: <span class="nb">true
+
+</span>Boolean logical exclusive OR <span class="o">(</span>^<span class="o">)</span>
+<span class="nb">false</span> ^ <span class="nb">false</span>: <span class="nb">false
+false</span> ^ <span class="nb">true</span>: <span class="nb">true
+true</span> ^ <span class="nb">false</span>: <span class="nb">true
+true</span> ^ <span class="nb">true</span>: <span class="nb">false</span>
+</code></pre></div></div>
+
+
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/java/2019/01/08/java-3-loops/">&laquo; Java - Loop</a>
+
+					
+
+					
+					<a class="next" href="/java/2019/01/08/java-5-operators-2/">Java - Operators (Part - 2) &raquo;</a>
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.webp')"></div>
+				<p class="blurb">I like long drives, bike trip & good food.</p>
+			</div>
+
+
+
+
+
+
+
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "http://0.0.0.0:4000/java/2019/01/08/java-4-operators/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/java/2019/01/08/java-4-operators"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>
