@@ -8,19 +8,20 @@
 		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
 
 		<!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>Blog | Kuros.in</title>
+<title>Java - Classpath | Kuros.in</title>
 <meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Blog" />
+<meta property="og:title" content="Java - Classpath" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Keep up with the latest news." />
-<meta property="og:description" content="Keep up with the latest news." />
-<link rel="canonical" href="http://0.0.0.0:4000/blog/" />
-<meta property="og:url" content="http://0.0.0.0:4000/blog/" />
+<meta name="description" content="Tell Java where to search for programs." />
+<meta property="og:description" content="Tell Java where to search for programs." />
+<link rel="canonical" href="http://0.0.0.0:4000/java/2019/01/09/java-7-classpath/" />
+<meta property="og:url" content="http://0.0.0.0:4000/java/2019/01/09/java-7-classpath/" />
 <meta property="og:site_name" content="Kuros.in" />
-<meta property="og:image" content="https://source.unsplash.com/MqJX_8EaStM/1200x900?a=.png" />
-<link rel="next" href="http://0.0.0.0:4000/blog/2/index.html" />
+<meta property="og:image" content="https://source.unsplash.com/random/1200x900" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-09T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Keep up with the latest news.","@type":"WebPage","url":"http://0.0.0.0:4000/blog/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/siteicon.png"}},"image":"https://source.unsplash.com/MqJX_8EaStM/1200x900?a=.png","headline":"Blog","@context":"http://schema.org"}</script>
+{"description":"Tell Java where to search for programs.","@type":"BlogPosting","url":"http://0.0.0.0:4000/java/2019/01/09/java-7-classpath/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://0.0.0.0:4000/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Classpath","dateModified":"2019-01-09T00:00:00+00:00","datePublished":"2019-01-09T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/java/2019/01/09/java-7-classpath/"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="Kuros.in" />
@@ -97,22 +98,18 @@
 			</div>
 		</header>
 
-		<section class="hero page-hero" style="background-image: url(https://source.unsplash.com/MqJX_8EaStM/1200x900?a=.png)">
+		<section class="hero page-hero random-images" >
 	<div class="inner-hero text-container">
 		<div class="hero-text-container">
-			<h1 class="editable">The latest blogs</h1>
-			<p class="subtext editable">There is always something new to learn and experiment</p>
+			<h1>Java - Classpath</h1>
+			<p class="subtext">Tell Java where to search for programs.</p>
 		</div>
 	</div>
 </section>
 
 <section>
-	<div class="text-container">
-		<p class="editor-link"><a href="collections/_posts" class="btn"><strong>&#9998;</strong> Add Post</a></p>
-		<ul class="blog-posts">
-			
-	<li class="blog-post">
-		<h2><a href="/java/2019/01/13/java-file-handling/">File Handling</a></h2>
+	<div class="blog-post text-container">
+		<p class="editor-link"><a href="collections/_posts/2019-01-09-java-7-classpath.md" class="btn"><strong>&#9998;</strong> Edit Post</a></p>
 		<p class="post-details">
 	
 		<span class="blog-filter">
@@ -122,69 +119,97 @@
 
 	
 	<span class="post-date">
-		January 13, 2019
+		January 09, 2019
 	</span>
 </p>
 
-		<div class="post-content">
-			<p>To write anything to a file first of all we need a file name we want to use. The file name is a simple string like like this:</p>
-
-
-			<div class="button"><a href="/java/2019/01/13/java-file-handling/">Read More</a></div>
-		</div>
-	</li>
-
-	<li class="blog-post">
-		<h2><a href="/random-jpa/2019/01/12/1-data-setup/">Setup database & spring boot application</a></h2>
-		<p class="post-details">
-	
-		<span class="blog-filter">
-			<a href="/category/random-jpa/">Random-jpa</a>
-		</span>
-	
-
-	
-	<span class="blog-filter">
-			<a href="/tag/spring-boot/">Spring-boot</a>
-		</span>
-	
-	<span class="blog-filter">
-			<a href="/tag/spring-data-jpa/">Spring-data-jpa</a>
-		</span>
-	
-	<span class="blog-filter">
-			<a href="/tag/spring-data-rest/">Spring-data-rest</a>
-		</span>
-	
-	<span class="post-date">
-		January 12, 2019
-	</span>
-</p>
 
 		<div class="post-content">
-			<p>Before we start with Random-JPA, we need to simulate an application. I will be creating a simple spring boot application using MySql as my database for this purpose.</p>
+			<p>CLASSPATH tells Java where to search for programs.</p>
+
+<p>The Java runtime system needs to know where to find programs that you want to run and libraries that are needed. It knows where the predefined Java packages are, but if you are using additional packages, you must tell specify where they are located.</p>
+
+<p>For example, suppose you want the Java runtime to find a class named Cool.class in the package utility.myapp. If the path to that directory is C:\java\MyClasses\utility\myapp, you would set the class path so that it contains /src/java/MyClasses. To run that app, you could use the following JVM command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-classpath</span> /src/java/MyClasses utility.myapp.Cool 
+</code></pre></div></div>
+
+<p>When the app runs, the JVM uses the class path settings to find any other classes defined in the utility.myapp package that are used by the Cool class.</p>
+
+<h2 id="adding-folders-and-archive-files-to-classpath">Adding Folders and archive files to classpath</h2>
+<p>When classes are stored in a directory (folder), like /src/java/MyClasses/utility/myapp, then the class path entry points to the directory that contains the first element of the package name. (in this case, /src/java/MyClasses, since the package name is utility.myapp.)</p>
+
+<p>But when classes are stored in an archive file (a .zip or .jar file) the class path entry is the path to and including the .zip or .jar file. For example, to use a class library that is in a .jar file, the command would look something like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-classpath</span> /src/java/MyClasses/myclasses.jar utility.myapp.Cool
+</code></pre></div></div>
+
+<h2 id="multiple-specifications">Multiple specifications</h2>
+<p>To find class files in the directory /src/java/MyClasses as well as classes in /src/java/OtherClasses, you would set the class path to:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-classpath</span> /src/java/MyClasses<span class="p">;</span>/src/java/OtherClasses 
+</code></pre></div></div>
+<p>Note that the two paths are separated by a semicolon.</p>
+
+<h2 id="using-the-classpath-environment-variable">Using the CLASSPATH environment variable</h2>
+<p>Use the below command to set the CLASSPATH for the system variable.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">set </span><span class="nv">CLASSPATH</span><span class="o">=</span>classpath1<span class="p">;</span>classpath2...
+</code></pre></div></div>
+<p>For e.g. if my classes are located at the location /src/java/myAppClasses, then to set the classpath in the command line use the following command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">set </span><span class="nv">CLASSPATH</span><span class="o">=</span>/src/java/myAppClasses<span class="p">;</span>
+</code></pre></div></div>
 
 
-			<div class="button"><a href="/random-jpa/2019/01/12/1-data-setup/">Read More</a></div>
-		</div>
-	</li>
 
 
-		</ul>
-
-		
-			<div class="pagination">
+			<div class="blog-navigation">
 				
-
-				<span class="page_number ">1 of 18</span>
-
+				<a class="prev" href="/java/2019/01/09/java-6-package/">&laquo; Java - Package - the class Management</a>
 				
-					<a href="/blog/2/index.html" class="next btn">Older posts &rarr;</a>
+				
+				<a class="next" href="/java/2019/01/09/java-8-String/">Java - Handling String &raquo;</a>
 				
 			</div>
-		
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.webp')"></div>
+				<p class="blurb">I like long drives, bike trip & good food.</p>
+			</div>
+
+
+
+
+
+
+
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "http://0.0.0.0:4000/java/2019/01/09/java-7-classpath/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/java/2019/01/09/java-7-classpath"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+		</div>
 	</div>
 </section>
+
 
 
 		<footer>

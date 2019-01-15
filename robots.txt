@@ -1,6 +1,2 @@
----
-layout: null
-sitemap: false
----
 User-agent: *
-Sitemap: {{ site.url }}/sitemap.xml
+Sitemap: http://0.0.0.0:4000/sitemap.xml
