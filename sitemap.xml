@@ -153,8 +153,16 @@
 <lastmod>2019-01-15T00:00:00+00:00</lastmod>
 </url>
 <url>
-<loc>https://kuros.in/random-jpa/2019/01/15/custom_generators/</loc>
-<lastmod>2019-01-15T00:00:00+00:00</lastmod>
+<loc>https://kuros.in/random-jpa/2019/01/20/custom_generators/</loc>
+<lastmod>2019-01-20T00:00:00+00:00</lastmod>
+</url>
+<url>
+<loc>https://kuros.in/random-jpa/2019/01/21/trigger-tables/</loc>
+<lastmod>2019-01-21T00:00:00+00:00</lastmod>
+</url>
+<url>
+<loc>https://kuros.in/random-jpa/2019/01/22/preconditions/</loc>
+<lastmod>2019-01-22T00:00:00+00:00</lastmod>
 </url>
 <url>
 <loc>https://kuros.in/about/</loc>
@@ -206,5 +214,8 @@
 </url>
 <url>
 <loc>https://kuros.in/blog/4/</loc>
+</url>
+<url>
+<loc>https://kuros.in/blog/5/</loc>
 </url>
 </urlset>
