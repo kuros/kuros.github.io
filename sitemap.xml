@@ -174,9 +174,6 @@
 <loc>https://kuros.in/contact/</loc>
 </url>
 <url>
-<loc>https://kuros.in/</loc>
-</url>
-<url>
 <loc>https://kuros.in/tag/i-o/</loc>
 </url>
 <url>
@@ -217,5 +214,8 @@
 </url>
 <url>
 <loc>https://kuros.in/blog/5/</loc>
+</url>
+<url>
+<loc>https://kuros.in/</loc>
 </url>
 </urlset>
