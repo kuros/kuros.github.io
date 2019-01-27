@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>gRPC Authorization using Interceptors in Java | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="gRPC Authorization using Interceptors in Java" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Time to look at authorization of clients connected." />
+<meta property="og:description" content="Time to look at authorization of clients connected." />
+<link rel="canonical" href="https://kuros.in/grpc/2019/01/26/grpc-interceptors/" />
+<meta property="og:url" content="https://kuros.in/grpc/2019/01/26/grpc-interceptors/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-26T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Time to look at authorization of clients connected.","@type":"BlogPosting","url":"https://kuros.in/grpc/2019/01/26/grpc-interceptors/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"gRPC Authorization using Interceptors in Java","dateModified":"2019-01-26T00:00:00+00:00","datePublished":"2019-01-26T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/grpc/2019/01/26/grpc-interceptors/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4166026699724584",
+                enable_page_level_ads: true
+            });
+        </script>
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<!--<span class="dark-logo"><img width="104" height="38" src="/images/logo/dark.svg" alt="dark frisco logo"></span>-->
+						<!--<span class="light-logo"><img width="104" height="38" src="/images/logo/light.svg" alt="light frisco logo"></span>-->
+						<span class="dark-logo">Kuros.in</span>
+						<span class="light-logo">Kuros.in</span>
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>gRPC Authorization using Interceptors in Java</h1>
+			<p class="subtext">Time to look at authorization of clients connected.</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/grpc/">gRPC</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		January 26, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>We have secured our application with by using ssl configuration, that’s great. But its hard to authenticate which client is making the request, after all the certificate will be shared amongst all the client.</p>
+
+<p>In order to recognize who is using our service, we need to store some type of authentication token. Normally, you will be validating tokens using IAM/Authentication services, but for this tutorial, I will use a simple token mechanism.</p>
+
+<p>Time to take care of the authorization mechanism, provided in gRPC. We wil be using Interceptors.</p>
+
+<h1 id="interceptors">Interceptors</h1>
+
+<p>By using Interceptors, you can intercept the execution of RPC methods on both the client and the server.</p>
+
+<p>There are two types of interceptors:</p>
+<ul>
+  <li>Server Interceptors</li>
+  <li>Client Interceptors</li>
+</ul>
+
+<h1 id="server-interceptors">Server Interceptors</h1>
+
+<p>As the name suggest, we are going to implement ServerInterceptor. We need to implementation interceptCall method.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.grpc.Metadata</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Metadata.Key</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerCall</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerCall.Listener</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerCallHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerInterceptor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Status</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.StatusRuntimeException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthorizationInterceptor</span> <span class="kd">implements</span> <span class="n">ServerInterceptor</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">ReqT</span><span class="o">,</span> <span class="n">RespT</span><span class="o">&gt;</span> <span class="n">Listener</span><span class="o">&lt;</span><span class="n">ReqT</span><span class="o">&gt;</span> <span class="nf">interceptCall</span><span class="o">(</span><span class="kd">final</span> <span class="n">ServerCall</span><span class="o">&lt;</span><span class="n">ReqT</span><span class="o">,</span> <span class="n">RespT</span><span class="o">&gt;</span> <span class="n">serverCall</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Metadata</span> <span class="n">metadata</span><span class="o">,</span> <span class="kd">final</span> <span class="n">ServerCallHandler</span><span class="o">&lt;</span><span class="n">ReqT</span><span class="o">,</span> <span class="n">RespT</span><span class="o">&gt;</span> <span class="n">serverCallHandler</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="n">String</span> <span class="n">auth_token</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">Key</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"auth_token"</span><span class="o">,</span> <span class="n">Metadata</span><span class="o">.</span><span class="na">ASCII_STRING_MARSHALLER</span><span class="o">));</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">auth_token</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="o">!</span><span class="n">auth_token</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"valid_token"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">StatusRuntimeException</span><span class="o">(</span><span class="n">Status</span><span class="o">.</span><span class="na">FAILED_PRECONDITION</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">serverCallHandler</span><span class="o">.</span><span class="na">startCall</span><span class="o">(</span><span class="n">serverCall</span><span class="o">,</span> <span class="n">metadata</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Its a simple validation, which expects auth_token to be present and it should be equal to ‘valid_token’</p>
+
+<p>Add to our server configuration.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.grpc.Server</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerBuilder</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcServer</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="n">ServerBuilder</span><span class="o">.</span><span class="na">forPort</span><span class="o">(</span><span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">addService</span><span class="o">(</span><span class="k">new</span> <span class="n">CalculatorImpl</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">intercept</span><span class="o">(</span><span class="k">new</span> <span class="n">AuthorizationInterceptor</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">server</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now if we run the client, we will get an error:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception in thread "main" io.grpc.StatusRuntimeException: FAILED_PRECONDITION
+	at io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)
+	at io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)
+	at io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)
+	at in.kuros.blog.grpc.CalculatorGrpc$CalculatorBlockingStub.add(CalculatorGrpc.java:157)
+	at in.kuros.blog.grpc.client.GrpcClient.main(GrpcClient.java:19)
+</code></pre></div></div>
+
+<p>Now to setup our client.</p>
+
+<h1 id="client-interceptors">Client Interceptors</h1>
+
+<p>We will create a client interceptor. Add auth_token.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.grpc.CallOptions</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Channel</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ClientCall</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ClientInterceptor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ForwardingClientCall</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Metadata</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Metadata.Key</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.MethodDescriptor</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthTokenProvideInterceptor</span> <span class="kd">implements</span> <span class="n">ClientInterceptor</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">ReqT</span><span class="o">,</span> <span class="n">RespT</span><span class="o">&gt;</span> <span class="n">ClientCall</span><span class="o">&lt;</span><span class="n">ReqT</span><span class="o">,</span> <span class="n">RespT</span><span class="o">&gt;</span> <span class="nf">interceptCall</span><span class="o">(</span><span class="kd">final</span> <span class="n">MethodDescriptor</span><span class="o">&lt;</span><span class="n">ReqT</span><span class="o">,</span> <span class="n">RespT</span><span class="o">&gt;</span> <span class="n">methodDescriptor</span><span class="o">,</span> <span class="kd">final</span> <span class="n">CallOptions</span> <span class="n">callOptions</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Channel</span> <span class="n">channel</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">ForwardingClientCall</span><span class="o">.</span><span class="na">SimpleForwardingClientCall</span><span class="o">&lt;</span><span class="n">ReqT</span><span class="o">,</span> <span class="n">RespT</span><span class="o">&gt;(</span><span class="n">channel</span><span class="o">.</span><span class="na">newCall</span><span class="o">(</span><span class="n">methodDescriptor</span><span class="o">,</span> <span class="n">callOptions</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="kd">final</span> <span class="n">Listener</span><span class="o">&lt;</span><span class="n">RespT</span><span class="o">&gt;</span> <span class="n">responseListener</span><span class="o">,</span> <span class="kd">final</span> <span class="n">Metadata</span> <span class="n">headers</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">headers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">Key</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"auth_token"</span><span class="o">,</span> <span class="n">Metadata</span><span class="o">.</span><span class="na">ASCII_STRING_MARSHALLER</span><span class="o">),</span> <span class="s">"valid_token"</span><span class="o">);</span>
+                <span class="kd">super</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">responseListener</span><span class="o">,</span> <span class="n">headers</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Run the client and you are done. Find the <a href="https://github.com/kuros/grpc/tree/master/grpc-interceptors">code here</a>.</p>
+
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/grpc/2019/01/26/grpc-authentication/">&laquo; gRPC Authentication in Java</a>
+
+					
+
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.webp')"></div>
+				<p class="blurb">I like long drives, bike trip & good food.</p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/grpc/2019/01/26/grpc-interceptors/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/grpc/2019/01/26/grpc-interceptors"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>
