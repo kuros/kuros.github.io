@@ -1,4 +1,199 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-01-26T21:13:38+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">gRPC &amp;amp; Java</title><link href="https://kuros.in/grpc/2019/01/25/grpc/" rel="alternate" type="text/html" title="gRPC &amp; Java" /><published>2019-01-25T00:00:00+00:00</published><updated>2019-01-25T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/01/25/grpc</id><content type="html" xml:base="https://kuros.in/grpc/2019/01/25/grpc/">&lt;p&gt;Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-01-27T13:33:03+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">gRPC Authentication in Java</title><link href="https://kuros.in/grpc/2019/01/26/grpc-authentication/" rel="alternate" type="text/html" title="gRPC Authentication in Java" /><published>2019-01-26T00:00:00+00:00</published><updated>2019-01-26T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/01/26/grpc-authentication</id><content type="html" xml:base="https://kuros.in/grpc/2019/01/26/grpc-authentication/">&lt;p&gt;Setting up gRPC is great and simple but what about its security. how hard it is? Lets see.&lt;/p&gt;
+
+&lt;h1 id=&quot;generating-certificates--keys&quot;&gt;Generating Certificates &amp;amp; Keys&lt;/h1&gt;
+&lt;p&gt;Similar to http server, you can configure gRPC server communication to be encrypted, Since we are developing a local example, we will generate our own certificate(you will need certificate from Certificate Authority if you want to make your api’s public).&lt;/p&gt;
+
+&lt;p&gt;For this tutorial, we will use openssl to generate our certificate &amp;amp; keys.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;openssl req &lt;span class=&quot;nt&quot;&gt;-x509&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-newkey&lt;/span&gt; rsa:4096 &lt;span class=&quot;nt&quot;&gt;-keyout&lt;/span&gt; src/main/resources/my-private-key.pem &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; src/main/resources/my-public-key-cert.pem &lt;span class=&quot;nt&quot;&gt;-days&lt;/span&gt; 365 &lt;span class=&quot;nt&quot;&gt;-nodes&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-subj&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/CN=localhost'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Our keys will be generated in resources folder, this key has expiration of 365 days, algorithm detail (RSA: 4096), format standard (X.509) and our server’s common name (CN) which is just a localhost in our case.&lt;/p&gt;
+
+&lt;h1 id=&quot;adding-certificates-to-grpc-server&quot;&gt;Adding certificates to gRPC server&lt;/h1&gt;
+
+&lt;p&gt;To enable TLS on a server, a certificate chain and private key need to be specified in PEM format, which we have generated in earlier.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Private key should not be using a password&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(When you are generating chain certificates, remember, the order of certificates in the chain matters: more specifically, the certificate at the top has to be the host CA, while the one at the very bottom has to be the root CA.)&lt;/p&gt;
+
+&lt;p&gt;For this tutorial’s purpose, we will use 8443 below to avoid needing extra permissions from the OS.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.Server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.ServerBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GrpcServer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ServerBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8443&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorImpl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+
+                &lt;span class=&quot;c1&quot;&gt;//enable TLS&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;useTransportSecurity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/my-public-key-cert.pem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//public Key&lt;/span&gt;
+                        &lt;span class=&quot;n&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/my-private-key.pem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// private key&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;awaitTermination&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GrpcServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s start the server, oops!!! we got an error:&lt;/p&gt;
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
+INFO: netty-tcnative unavailable (this may be normal)
+java.lang.ClassNotFoundException: io.netty.internal.tcnative.SSL
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at io.netty.handler.ssl.OpenSsl.&amp;lt;clinit&amp;gt;(OpenSsl.java:81)
+	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:244)
+	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
+	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
+	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
+
+Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
+INFO: Conscrypt not found (this may be normal)
+Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
+INFO: Jetty ALPN unavailable (this may be normal)
+java.lang.ClassNotFoundException: org/eclipse/jetty/alpn/ALPN
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at io.grpc.netty.JettyTlsUtil.isJettyAlpnConfigured(JettyTlsUtil.java:64)
+	at io.grpc.netty.GrpcSslContexts.findJdkProvider(GrpcSslContexts.java:266)
+	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:248)
+	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
+	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
+	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
+
+Exception in thread &quot;main&quot; java.lang.IllegalStateException: Could not find TLS ALPN provider; no working netty-tcnative, Conscrypt, or Jetty NPN/ALPN available
+	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:258)
+	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
+	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
+	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Time to fix it by providing below maven dependency in your pom file:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;io.netty&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;netty-tcnative-boringssl-static&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.0.20.Final&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The Server Starts.&lt;/p&gt;
+
+&lt;p&gt;Now let try to use our old client to execute our add method.&lt;/p&gt;
+
+&lt;h3 id=&quot;old-client&quot;&gt;Old Client&lt;/h3&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.ManagedChannel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.ManagedChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GrpcOldClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ManagedChannel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ManagedChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;localhost&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8443&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;usePlaintext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CalculatorBlockingStub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBlockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddResponse&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OperandRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setX&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;call result: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;shutdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Notice we have configured ManagedChannel as &lt;em&gt;.usePlaintext()&lt;/em&gt;, which specifies we do not want any authentication.&lt;/p&gt;
+
+&lt;p&gt;When we execute the program we get an error response like:&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Exception in thread &quot;main&quot; io.grpc.StatusRuntimeException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)
+	at io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)
+	at io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)
+	at in.kuros.blog.grpc.CalculatorGrpc$CalculatorBlockingStub.add(CalculatorGrpc.java:157)
+	at in.kuros.blog.grpc.GrpcOldClient.main(GrpcOldClient.java:15)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;ssl-enabled-clients&quot;&gt;SSL enabled clients&lt;/h1&gt;
+
+&lt;p&gt;When you are using ssl certificate with the issuing authority known to the client, simply create a ManagedChannel by&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// With server authentication SSL/TLS&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ManagedChannel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ManagedChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;localhost&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;443&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CalculatorBlockingStub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBlockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;But in our case we are using our custom certificates, so we need to provide SSL context to channel builder, for this we will use &lt;strong&gt;NettyChannelBuilder&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;We will be providing our public certificate only to the client.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.ManagedChannel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.netty.GrpcSslContexts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.netty.NettyChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.net.ssl.SSLException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GrpcNewClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SSLException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ManagedChannel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NettyChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;localhost&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8443&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sslContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GrpcSslContexts&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;trustManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/my-public-key-cert.pem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// public key&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CalculatorBlockingStub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBlockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Making call&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddResponse&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OperandRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setX&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;call result: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;shutdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GrpcNewClient&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now when we run the new client, we are able to make calls.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;So till now we have seen, how to secure our server-client communication over gRPC. Find the &lt;a href=&quot;https://github.com/kuros/grpc/tree/master/grpc-authentication&quot;&gt;code here&lt;/a&gt;.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">Setting up gRPC is great and simple but what about its security. how hard it is? Lets see.</summary></entry><entry><title type="html">gRPC &amp;amp; Java</title><link href="https://kuros.in/grpc/2019/01/25/grpc/" rel="alternate" type="text/html" title="gRPC &amp; Java" /><published>2019-01-25T00:00:00+00:00</published><updated>2019-01-25T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/01/25/grpc</id><content type="html" xml:base="https://kuros.in/grpc/2019/01/25/grpc/">&lt;p&gt;Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers.&lt;/p&gt;
 
 &lt;p&gt;If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice.&lt;/p&gt;
 
@@ -526,272 +721,7 @@ doGenerate() - how to generate random values.
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;checkout the &lt;a href=&quot;https://github.com/kuros/random-jpa-example/commit/38c9be8692f032914bc41e7e6094da7e883ca499&quot;&gt;Commit History&lt;/a&gt; on github&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">There are many systems which doesn’t have proper foreign key relationship. In order to create relationship with other entities, random-jpa provides dependencies to be added to JPAContextFactory. Based on these provided custom dependencies and foreign key relationship, a JPAContext is created.</summary></entry><entry><title type="html">Random-JPA Integration (Contd.)</title><link href="https://kuros.in/random-jpa/2019/01/14/rjpa-2-integration/" rel="alternate" type="text/html" title="Random-JPA Integration (Contd.)" /><published>2019-01-14T00:00:00+00:00</published><updated>2019-01-14T00:00:00+00:00</updated><id>https://kuros.in/random-jpa/2019/01/14/rjpa-2-integration</id><content type="html" xml:base="https://kuros.in/random-jpa/2019/01/14/rjpa-2-integration/">&lt;p&gt;In my previous post, we have written a jpa query to fetch latest salary of employees but there was an error in response, so we are first writing a failing tests to capture the error and then we will fix the bug.&lt;/p&gt;
-
-&lt;p&gt;Before we proceed with the new test, lets create a &lt;a href=&quot;https://docs.oracle.com/javaee/6/tutorial/doc/gjiup.html&quot;&gt;StaticMetaModel&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;randomjpa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blogexample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.persistence.metamodel.SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.persistence.metamodel.StaticMetamodel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.time.LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@StaticMetamodel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Salary_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;employeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;It’s time to test our query with more intensive data. In this scenario, we want to create two salary records for a given employee with custom from and to dates, and fetch his latest salary.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Transactional&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;shouldTestToFetchLatestSalaryRecordForMultipleEntry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContextFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Database&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MY_SQL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;minusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;minusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;plusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ResultMap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createAndPersist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//just for debugging&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salaryRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findLatestSalaries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmployeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmployeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertTrue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isPresent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;The salary id should match with latest salary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;And when you run the test it fails&lt;/p&gt;
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;└── *ROOT*
-    └── in.kuros.randomjpa.blogexample.entity.Employee|0 [empNo: 10019]
-        ├── in.kuros.randomjpa.blogexample.entity.Salary|0 [id: 19]
-        └── in.kuros.randomjpa.blogexample.entity.Salary|1 [id: 20]
-
-
-
-java.lang.AssertionError: The salary id should match with latest salary 
-Expected :20
-Actual   :19
- &amp;lt;Click to see difference&amp;gt;
-
-
-	at org.junit.Assert.fail(Assert.java:88)
-	at org.junit.Assert.failNotEquals(Assert.java:834)
-	at org.junit.Assert.assertEquals(Assert.java:118)
-	at in.kuros.randomjpa.blogexample.repository.SalaryRepositoryTest.shouldTestToFetchLatestSalaryRecordForMultipleEntry(SalaryRepositoryTest.java:84)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.springframework.test.context.junit4.statements.RunBeforeTestExecutionCallbacks.evaluate(RunBeforeTestExecutionCallbacks.java:74)
-	at org.springframework.test.context.junit4.statements.RunAfterTestExecutionCallbacks.evaluate(RunAfterTestExecutionCallbacks.java:84)
-	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:75)
-	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:86)
-	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:84)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:251)
-	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
-	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
-	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
-	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)
-	at com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)
-	at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)
-	at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;So now we have a failing test, but before we move to fixing our query let’s understand the syntax.&lt;/p&gt;
-
-&lt;h2 id=&quot;test-breakdown&quot;&gt;Test Breakdown&lt;/h2&gt;
-&lt;p&gt;Our aim was to create two salaries for 1 employee with different date ranges:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ResultMap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createAndPersist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Here we told random-JPA to create 2 copies of Salary, in the background it determined its parent structure and created two rows Salary object. 
-Also you are providing custom values of each attributes you want to override, for entity referenced by index of creation order.&lt;/p&gt;
-
-&lt;p&gt;So here we are saying we want to set oldFromDate/oldToDate to Salary row 1 &amp;amp; newFromDate/newToDate to salary row 2.&lt;/p&gt;
-
-&lt;p&gt;Simple isn’t it.&lt;/p&gt;
-
-&lt;p&gt;checkout the &lt;a href=&quot;https://github.com/kuros/random-jpa-example/commit/ba143f36756125c6b7a00b9600b739b4ba7727ac&quot;&gt;Commit History&lt;/a&gt; on github&lt;/p&gt;
-
-&lt;h2 id=&quot;time-to-fix-the-test&quot;&gt;Time to fix the test&lt;/h2&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@RepositoryRestResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collectionResourceRel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;salary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;salary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SalaryRepository&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PagingAndSortingRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@RestResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;latest&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;FROM Salary s WHERE NOT EXISTS (select 1 FROM Salary s2 WHERE s.employeeId = s2.employeeId and s.fromDate &amp;lt; s2.fromDate and s.toDate &amp;lt; s2.toDate) &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findLatestSalaries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;You run the test and it passes. &lt;strong&gt;Hurray !!!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;checkout the &lt;a href=&quot;https://github.com/kuros/random-jpa-example/commit/c4185eabad25089f5f51383837de4e61cdbd0896&quot;&gt;Commit History&lt;/a&gt; on github&lt;/p&gt;
-
-&lt;h2 id=&quot;make-jpacontext-singleton&quot;&gt;Make JPAContext Singleton&lt;/h2&gt;
-
-&lt;p&gt;Before we end the tutorial, one important thing remaining.&lt;/p&gt;
-
-&lt;p&gt;We should make JPAContext as a singleton object since loading the context is an heavy operation as build an internal hierarchy graph and entity mappings.&lt;/p&gt;
-
-&lt;p&gt;In this tutorial we will create JPAContext bean.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.Database&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.JPAContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.JPAContextFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.beans.factory.annotation.Autowired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.context.annotation.Bean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.context.annotation.Configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.persistence.EntityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@Configuration&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TestConfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EntityManager&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Bean&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContext&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createJpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContextFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Database&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MY_SQL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And modified our test to use autowired JPAContext. Now you made sure you are loading JPAContext only once.&lt;/p&gt;
-
-&lt;h2 id=&quot;complete-test&quot;&gt;Complete Test&lt;/h2&gt;
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;randomjpa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blogexample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.JPAContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.persistor.model.ResultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.types.Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.randomjpa.blogexample.entity.Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.randomjpa.blogexample.entity.Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.junit.Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.junit.Test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.junit.runner.RunWith&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.beans.factory.annotation.Autowired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.test.context.SpringBootTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.test.context.junit4.SpringRunner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.transaction.annotation.Transactional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.time.LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@RunWith&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SpringRunner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@SpringBootTest&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SalaryRepositoryTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SalaryRepository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salaryRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Transactional&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;shouldTestForFetchingSalaryRecordForOnlyOneEntry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ResultMap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createAndPersist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salaryRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findLatestSalaries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertTrue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isPresent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Transactional&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;shouldTestToFetchLatestSalaryRecordForMultipleEntry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;minusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;minusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;plusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ResultMap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createAndPersist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-                &lt;span class=&quot;n&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//just for debugging&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salaryRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findLatestSalaries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmployeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmployeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertTrue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isPresent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;The salary id should match with latest salary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;checkout the &lt;a href=&quot;https://github.com/kuros/random-jpa-example/commit/83efda2d2b9410a662df22c06d8cceb0112804a7&quot;&gt;Commit History&lt;/a&gt; on github&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">In my previous post, we have written a jpa query to fetch latest salary of employees but there was an error in response, so we are first writing a failing tests to capture the error and then we will fix the bug.</summary></entry><entry><title type="html">Random-JPA Integration</title><link href="https://kuros.in/random-jpa/2019/01/14/rjpa-1-integration/" rel="alternate" type="text/html" title="Random-JPA Integration" /><published>2019-01-14T00:00:00+00:00</published><updated>2019-01-14T00:00:00+00:00</updated><id>https://kuros.in/random-jpa/2019/01/14/rjpa-1-integration</id><content type="html" xml:base="https://kuros.in/random-jpa/2019/01/14/rjpa-1-integration/">&lt;p&gt;As we have already setup an application, we will go ahead to add latest random-JPA dependency &lt;a href=&quot;https://search.maven.org/search?q=g:%22com.github.kuros%22%20AND%20a:%22random-jpa%22&quot;&gt;&lt;img src=&quot;https://img.shields.io/maven-central/v/com.github.kuros/random-jpa.svg?label=Maven%20Central&quot; alt=&quot;Maven Central&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;checkout the &lt;a href=&quot;https://github.com/kuros/random-jpa-example/commit/38c9be8692f032914bc41e7e6094da7e883ca499&quot;&gt;Commit History&lt;/a&gt; on github&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">There are many systems which doesn’t have proper foreign key relationship. In order to create relationship with other entities, random-jpa provides dependencies to be added to JPAContextFactory. Based on these provided custom dependencies and foreign key relationship, a JPAContext is created.</summary></entry><entry><title type="html">Random-JPA Integration</title><link href="https://kuros.in/random-jpa/2019/01/14/rjpa-1-integration/" rel="alternate" type="text/html" title="Random-JPA Integration" /><published>2019-01-14T00:00:00+00:00</published><updated>2019-01-14T00:00:00+00:00</updated><id>https://kuros.in/random-jpa/2019/01/14/rjpa-1-integration</id><content type="html" xml:base="https://kuros.in/random-jpa/2019/01/14/rjpa-1-integration/">&lt;p&gt;As we have already setup an application, we will go ahead to add latest random-JPA dependency &lt;a href=&quot;https://search.maven.org/search?q=g:%22com.github.kuros%22%20AND%20a:%22random-jpa%22&quot;&gt;&lt;img src=&quot;https://img.shields.io/maven-central/v/com.github.kuros/random-jpa.svg?label=Maven%20Central&quot; alt=&quot;Maven Central&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Just add the dependency to your pom.xml, at the time writing this article latest version is 1.0.3&lt;/p&gt;
 &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
@@ -1062,7 +992,272 @@ Also you are providing custom values of each attributes you want to override, fo
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;And you can use this test data for writing your tests.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">As we have already setup an application, we will go ahead to add latest random-JPA dependency</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://source.unsplash.com/random/1200x900" /></entry><entry><title type="html">File Handling</title><link href="https://kuros.in/java/2019/01/13/java-file-handling/" rel="alternate" type="text/html" title="File Handling" /><published>2019-01-13T00:00:00+00:00</published><updated>2019-01-13T00:00:00+00:00</updated><id>https://kuros.in/java/2019/01/13/java-file-handling</id><content type="html" xml:base="https://kuros.in/java/2019/01/13/java-file-handling/">&lt;p&gt;To write anything to a file first of all we need a file name we want to use. The file name is a simple string like like this:&lt;/p&gt;
+&lt;p&gt;And you can use this test data for writing your tests.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">As we have already setup an application, we will go ahead to add latest random-JPA dependency</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://source.unsplash.com/random/1200x900" /></entry><entry><title type="html">Random-JPA Integration (Contd.)</title><link href="https://kuros.in/random-jpa/2019/01/14/rjpa-2-integration/" rel="alternate" type="text/html" title="Random-JPA Integration (Contd.)" /><published>2019-01-14T00:00:00+00:00</published><updated>2019-01-14T00:00:00+00:00</updated><id>https://kuros.in/random-jpa/2019/01/14/rjpa-2-integration</id><content type="html" xml:base="https://kuros.in/random-jpa/2019/01/14/rjpa-2-integration/">&lt;p&gt;In my previous post, we have written a jpa query to fetch latest salary of employees but there was an error in response, so we are first writing a failing tests to capture the error and then we will fix the bug.&lt;/p&gt;
+
+&lt;p&gt;Before we proceed with the new test, lets create a &lt;a href=&quot;https://docs.oracle.com/javaee/6/tutorial/doc/gjiup.html&quot;&gt;StaticMetaModel&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;randomjpa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blogexample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.persistence.metamodel.SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.persistence.metamodel.StaticMetamodel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.time.LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@StaticMetamodel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Salary_&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;employeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SingularAttribute&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It’s time to test our query with more intensive data. In this scenario, we want to create two salary records for a given employee with custom from and to dates, and fetch his latest salary.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Transactional&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;shouldTestToFetchLatestSalaryRecordForMultipleEntry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContextFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Database&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MY_SQL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;minusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;minusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;plusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ResultMap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createAndPersist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//just for debugging&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salaryRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findLatestSalaries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmployeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmployeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertTrue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isPresent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;The salary id should match with latest salary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;And when you run the test it fails&lt;/p&gt;
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;└── *ROOT*
+    └── in.kuros.randomjpa.blogexample.entity.Employee|0 [empNo: 10019]
+        ├── in.kuros.randomjpa.blogexample.entity.Salary|0 [id: 19]
+        └── in.kuros.randomjpa.blogexample.entity.Salary|1 [id: 20]
+
+
+
+java.lang.AssertionError: The salary id should match with latest salary 
+Expected :20
+Actual   :19
+ &amp;lt;Click to see difference&amp;gt;
+
+
+	at org.junit.Assert.fail(Assert.java:88)
+	at org.junit.Assert.failNotEquals(Assert.java:834)
+	at org.junit.Assert.assertEquals(Assert.java:118)
+	at in.kuros.randomjpa.blogexample.repository.SalaryRepositoryTest.shouldTestToFetchLatestSalaryRecordForMultipleEntry(SalaryRepositoryTest.java:84)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestExecutionCallbacks.evaluate(RunBeforeTestExecutionCallbacks.java:74)
+	at org.springframework.test.context.junit4.statements.RunAfterTestExecutionCallbacks.evaluate(RunAfterTestExecutionCallbacks.java:84)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:75)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:86)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:84)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:251)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:97)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:70)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:190)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)
+	at com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)
+	at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)
+	at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So now we have a failing test, but before we move to fixing our query let’s understand the syntax.&lt;/p&gt;
+
+&lt;h2 id=&quot;test-breakdown&quot;&gt;Test Breakdown&lt;/h2&gt;
+&lt;p&gt;Our aim was to create two salaries for 1 employee with different date ranges:&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ResultMap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createAndPersist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here we told random-JPA to create 2 copies of Salary, in the background it determined its parent structure and created two rows Salary object. 
+Also you are providing custom values of each attributes you want to override, for entity referenced by index of creation order.&lt;/p&gt;
+
+&lt;p&gt;So here we are saying we want to set oldFromDate/oldToDate to Salary row 1 &amp;amp; newFromDate/newToDate to salary row 2.&lt;/p&gt;
+
+&lt;p&gt;Simple isn’t it.&lt;/p&gt;
+
+&lt;p&gt;checkout the &lt;a href=&quot;https://github.com/kuros/random-jpa-example/commit/ba143f36756125c6b7a00b9600b739b4ba7727ac&quot;&gt;Commit History&lt;/a&gt; on github&lt;/p&gt;
+
+&lt;h2 id=&quot;time-to-fix-the-test&quot;&gt;Time to fix the test&lt;/h2&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@RepositoryRestResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collectionResourceRel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;salary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;salary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SalaryRepository&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PagingAndSortingRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@RestResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;latest&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;FROM Salary s WHERE NOT EXISTS (select 1 FROM Salary s2 WHERE s.employeeId = s2.employeeId and s.fromDate &amp;lt; s2.fromDate and s.toDate &amp;lt; s2.toDate) &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;findLatestSalaries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You run the test and it passes. &lt;strong&gt;Hurray !!!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;checkout the &lt;a href=&quot;https://github.com/kuros/random-jpa-example/commit/c4185eabad25089f5f51383837de4e61cdbd0896&quot;&gt;Commit History&lt;/a&gt; on github&lt;/p&gt;
+
+&lt;h2 id=&quot;make-jpacontext-singleton&quot;&gt;Make JPAContext Singleton&lt;/h2&gt;
+
+&lt;p&gt;Before we end the tutorial, one important thing remaining.&lt;/p&gt;
+
+&lt;p&gt;We should make JPAContext as a singleton object since loading the context is an heavy operation as build an internal hierarchy graph and entity mappings.&lt;/p&gt;
+
+&lt;p&gt;In this tutorial we will create JPAContext bean.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.Database&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.JPAContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.JPAContextFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.beans.factory.annotation.Autowired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.context.annotation.Bean&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.context.annotation.Configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.persistence.EntityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Configuration&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TestConfig&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EntityManager&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Bean&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContext&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;createJpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContextFactory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newInstance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Database&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;MY_SQL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entityManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And modified our test to use autowired JPAContext. Now you made sure you are loading JPAContext only once.&lt;/p&gt;
+
+&lt;h2 id=&quot;complete-test&quot;&gt;Complete Test&lt;/h2&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;randomjpa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blogexample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.JPAContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.persistor.model.ResultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;com.github.kuros.random.jpa.types.Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.randomjpa.blogexample.entity.Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.randomjpa.blogexample.entity.Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.junit.Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.junit.Test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.junit.runner.RunWith&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.beans.factory.annotation.Autowired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.test.context.SpringBootTest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.test.context.junit4.SpringRunner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.transaction.annotation.Transactional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.time.LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@RunWith&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SpringRunner&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@SpringBootTest&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SalaryRepositoryTest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;JPAContext&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SalaryRepository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salaryRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Transactional&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;shouldTestForFetchingSalaryRecordForOnlyOneEntry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ResultMap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createAndPersist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salaryRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findLatestSalaries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertTrue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isPresent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Test&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;@Transactional&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;shouldTestToFetchLatestSalaryRecordForMultipleEntry&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;minusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;minusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;plusDays&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ResultMap&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jpaContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;createAndPersist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;oldToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;newToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//just for debugging&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;resultMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salaryRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findLatestSalaries&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Optional&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Salary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;latestSalaries&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmployeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getEmployeeId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findFirst&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertTrue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;isPresent&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;The salary id should match with latest salary&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getSalary&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFromDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;Assert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;assertEquals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;salary2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getToDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;checkout the &lt;a href=&quot;https://github.com/kuros/random-jpa-example/commit/83efda2d2b9410a662df22c06d8cceb0112804a7&quot;&gt;Commit History&lt;/a&gt; on github&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">In my previous post, we have written a jpa query to fetch latest salary of employees but there was an error in response, so we are first writing a failing tests to capture the error and then we will fix the bug.</summary></entry><entry><title type="html">File Handling</title><link href="https://kuros.in/java/2019/01/13/java-file-handling/" rel="alternate" type="text/html" title="File Handling" /><published>2019-01-13T00:00:00+00:00</published><updated>2019-01-13T00:00:00+00:00</updated><id>https://kuros.in/java/2019/01/13/java-file-handling</id><content type="html" xml:base="https://kuros.in/java/2019/01/13/java-file-handling/">&lt;p&gt;To write anything to a file first of all we need a file name we want to use. The file name is a simple string like like this:&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;test.txt&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -1227,247 +1422,7 @@ Here is a simple BufferedWriter example:&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Test text.
 Line 2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">To write anything to a file first of all we need a file name we want to use. The file name is a simple string like like this:</summary></entry><entry><title type="html">Setup database &amp;amp; spring boot application</title><link href="https://kuros.in/random-jpa/2019/01/12/1-data-setup/" rel="alternate" type="text/html" title="Setup database &amp; spring boot application" /><published>2019-01-12T00:00:00+00:00</published><updated>2019-01-12T00:00:00+00:00</updated><id>https://kuros.in/random-jpa/2019/01/12/1-data-setup</id><content type="html" xml:base="https://kuros.in/random-jpa/2019/01/12/1-data-setup/">&lt;p&gt;Before we start with Random-JPA, we need to simulate an application. I will be creating a simple spring boot application using MySql as my database for this purpose.&lt;/p&gt;
-
-&lt;p&gt;If you want to skip, download the latest code &lt;a href=&quot;https://github.com/kuros/random-jpa-example&quot;&gt;zip&lt;/a&gt; and proceed to the next tutorial.&lt;/p&gt;
-
-&lt;p&gt;Next task is to setup our spring project, we will create a maven project with the given pom dependencies&lt;/p&gt;
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;project&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;xmlns:xsi=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt;
-         &lt;span class=&quot;na&quot;&gt;xsi:schemaLocation=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;modelVersion&amp;gt;&lt;/span&gt;4.0.0&lt;span class=&quot;nt&quot;&gt;&amp;lt;/modelVersion&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;parent&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-starter-parent&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.1.1.RELEASE&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;relativePath/&amp;gt;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- lookup parent from repository --&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/parent&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;in.kuros.randomjpa&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;blog-example&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;0.0.1-SNAPSHOT&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;blog-example&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;Demo project for Random-JPA&lt;span class=&quot;nt&quot;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;properties&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;java.version&amp;gt;&lt;/span&gt;1.8&lt;span class=&quot;nt&quot;&gt;&amp;lt;/java.version&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/properties&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependencies&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-starter-data-jpa&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-starter-data-rest&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;mysql&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;mysql-connector-java&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;runtime&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-starter-test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;test&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugins&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;plugin&amp;gt;&lt;/span&gt;
-                &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-                &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-maven-plugin&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;create-a-spring-boot-application&quot;&gt;Create a spring boot application&lt;/h2&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;randomjpa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blogexample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.SpringApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.autoconfigure.SpringBootApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@SpringBootApplication&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BlogExampleApplication&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;SpringApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BlogExampleApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Next step is to configure spring boot with mysql datasource. Create a application.properties in your resources folder&lt;/p&gt;
-&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;py&quot;&gt;spring.datasource.url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jdbc:mysql://localhost:3306/employees&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;spring.datasource.username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;root&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;spring.datasource.password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;passwd&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Let us create employee table in MySql:&lt;/p&gt;
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DATBASE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;employees&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;USE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;employees&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TABLE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;employee&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-                         &lt;span class=&quot;n&quot;&gt;emp_no&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;INT&lt;/span&gt;             &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AUTO_INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;n&quot;&gt;birth_date&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;DATE&lt;/span&gt;            &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;n&quot;&gt;first_name&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;VARCHAR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;14&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;     &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;n&quot;&gt;last_name&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;VARCHAR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;     &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;n&quot;&gt;gender&lt;/span&gt;      &lt;span class=&quot;n&quot;&gt;ENUM&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'M'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'F'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;n&quot;&gt;hire_date&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;DATE&lt;/span&gt;            &lt;span class=&quot;k&quot;&gt;NOT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;NULL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                         &lt;span class=&quot;k&quot;&gt;PRIMARY&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;KEY&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;emp_no&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Let’s respective entity class in our application:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Entity&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@Table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;employee&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Employee&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Id&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;emp_no&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@GeneratedValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strategy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GenerationType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;IDENTITY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;empNo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Basic&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;birth_date&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;birthDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Basic&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;first_name&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;firstName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Basic&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;last_name&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lastName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Basic&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;gender&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Convert&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;converter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Gender&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;GenderConverter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Gender&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gender&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Basic&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;hire_date&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDate&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;hireDate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// Getters &amp;amp; Setters ...&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;create-employee-repository&quot;&gt;Create Employee Repository&lt;/h2&gt;
-&lt;p&gt;Next step is to add a repository to access data, for now we will just add repository for Employee&lt;/p&gt;
-
-&lt;p&gt;Creating spring data repository for entity is very easy, you just need to extend Repository interface. Here we are using PagingAndSortingRepository, you just need to specify Entity and Id type and you are done.&lt;/p&gt;
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EmployeeRepository&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PagingAndSortingRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Employees&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Next we want to expose the data through rest endpoint, so will will user spring-data-rest here by adding &lt;strong&gt;@RepositoryRestResource&lt;/strong&gt; annotation to our repository.
-so our repository looks like&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;randomjpa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blogexample&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.randomjpa.blogexample.entity.Employees&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.data.repository.PagingAndSortingRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.data.rest.core.annotation.RepositoryRestResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@RepositoryRestResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collectionResourceRel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;employee&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;employee&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;EmployeeRepository&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PagingAndSortingRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Employees&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Your base application is ready to serve data, just start the application and hit the endpoint&lt;/p&gt;
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;http://localhost:8080/employee
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;you will get this response on your browser&lt;/p&gt;
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
-  &quot;_embedded&quot; : {
-    &quot;employee&quot; : [ {
-      &quot;birthDate&quot; : &quot;1953-09-02&quot;,
-      &quot;firstName&quot; : &quot;Georgi&quot;,
-      &quot;lastName&quot; : &quot;Facello&quot;,
-      &quot;gender&quot; : null,
-      &quot;hireDate&quot; : &quot;1986-06-26&quot;,
-      &quot;_links&quot; : {
-        &quot;self&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/employee/10001&quot;
-        },
-        &quot;employees&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/employee/10001&quot;
-        }
-      }
-    }, {
-      &quot;birthDate&quot; : &quot;1964-06-02&quot;,
-      &quot;firstName&quot; : &quot;Bezalel&quot;,
-      &quot;lastName&quot; : &quot;Simmel&quot;,
-      &quot;gender&quot; : null,
-      &quot;hireDate&quot; : &quot;1985-11-21&quot;,
-      &quot;_links&quot; : {
-        &quot;self&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/employee/10002&quot;
-        },
-        &quot;employees&quot; : {
-          &quot;href&quot; : &quot;http://localhost:8080/employee/10002&quot;
-        }
-      }
-    } ]
-  },
-  &quot;_links&quot; : {
-    &quot;first&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/employee?page=0&amp;amp;size=2&quot;
-    },
-    &quot;self&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/employee{&amp;amp;sort}&quot;,
-      &quot;templated&quot; : true
-    },
-    &quot;next&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/employee?page=1&amp;amp;size=2&quot;
-    },
-    &quot;last&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/employee?page=7&amp;amp;size=2&quot;
-    },
-    &quot;profile&quot; : {
-      &quot;href&quot; : &quot;http://localhost:8080/profile/employee&quot;
-    }
-  },
-  &quot;page&quot; : {
-    &quot;size&quot; : 2,
-    &quot;totalElements&quot; : 15,
-    &quot;totalPages&quot; : 8,
-    &quot;number&quot; : 0
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;sample-database-schema&quot;&gt;Sample Database Schema&lt;/h2&gt;
-&lt;p&gt;The MySQL &lt;a href=&quot;https://github.com/kuros/random-jpa-example/blob/master/database/script.sql&quot;&gt;sample database schema&lt;/a&gt; consists of the following tables:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Employees&lt;/strong&gt;: stores employee’s data.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Departments&lt;/strong&gt;: stores department details.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;dept_manager&lt;/strong&gt;: store manager of each department.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;dept_emp&lt;/strong&gt;: store employees under each department.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;titles&lt;/strong&gt;: store the titles of each employee.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;salaries&lt;/strong&gt;: store the salaries of each employee.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;customer&lt;/strong&gt;: store customer’s data.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;play_group&lt;/strong&gt;: store the list of play groups. (both employee &amp;amp; external customers can join the group).&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;play_group_member&lt;/strong&gt;: store the list of member for each group.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img alt=&quot;Comment-4&quot; src=&quot;/images/rjpa/employees.webp&quot; lazyload=&quot;&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;download-base-application&quot;&gt;Download base application&lt;/h2&gt;
-&lt;p&gt;Till now we have only added entity mapping.&lt;/p&gt;
-
-&lt;p&gt;We have a total of 15 employees in this database. So this request give two employee details with links to fetch rest of records under &lt;strong&gt;_link&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Congrats you have your first app running.&lt;/p&gt;
-
-&lt;p&gt;Now as have a &lt;a href=&quot;https://github.com/kuros/random-jpa-example&quot;&gt;base application&lt;/a&gt; to work with, we can proceed with exploring random-JPA.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><category term="spring-boot" /><category term="spring-data-jpa" /><category term="spring-data-rest" /><summary type="html">Before we start with Random-JPA, we need to simulate an application. I will be creating a simple spring boot application using MySql as my database for this purpose.</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://source.unsplash.com/random/1200x900" /></entry><entry><title type="html">Console IO</title><link href="https://kuros.in/java/2019/01/12/java-console-io/" rel="alternate" type="text/html" title="Console IO" /><published>2019-01-12T00:00:00+00:00</published><updated>2019-01-12T00:00:00+00:00</updated><id>https://kuros.in/java/2019/01/12/java-console-io</id><content type="html" xml:base="https://kuros.in/java/2019/01/12/java-console-io/">&lt;p&gt;Java was designed for graphical user interfaces (GUI) and industrial strength file and Internet I/O. No attempt was made to have simple input and output facilities like C++’s cin and cout. This isn’t a problem for big programs, but it makes small student examples large and awkward, requiring knowledge of conversion and exceptions from the beginning. In practice console input is rarely used, but programmers often use System.out.println for output during the debugging phase.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">To write anything to a file first of all we need a file name we want to use. The file name is a simple string like like this:</summary></entry><entry><title type="html">Console IO</title><link href="https://kuros.in/java/2019/01/12/java-console-io/" rel="alternate" type="text/html" title="Console IO" /><published>2019-01-12T00:00:00+00:00</published><updated>2019-01-12T00:00:00+00:00</updated><id>https://kuros.in/java/2019/01/12/java-console-io</id><content type="html" xml:base="https://kuros.in/java/2019/01/12/java-console-io/">&lt;p&gt;Java was designed for graphical user interfaces (GUI) and industrial strength file and Internet I/O. No attempt was made to have simple input and output facilities like C++’s cin and cout. This isn’t a problem for big programs, but it makes small student examples large and awkward, requiring knowledge of conversion and exceptions from the beginning. In practice console input is rarely used, but programmers often use System.out.println for output during the debugging phase.&lt;/p&gt;
 
 &lt;p&gt;There are three predefined I/O streams that use the console. These are equivalent to Unix standard input, error, and output streams.&lt;/p&gt;
 &lt;ul&gt;
