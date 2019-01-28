@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>gRPC &amp; Java | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="gRPC &amp; Java" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers. If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice." />
+<meta property="og:description" content="Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers. If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice." />
+<link rel="canonical" href="https://kuros.in/grpc/2019/01/grpc" />
+<meta property="og:url" content="https://kuros.in/grpc/2019/01/grpc" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-25T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers. If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice.","@type":"BlogPosting","url":"https://kuros.in/grpc/2019/01/grpc","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"gRPC &amp; Java","dateModified":"2019-01-25T00:00:00+00:00","datePublished":"2019-01-25T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/grpc/2019/01/grpc"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4166026699724584",
+                enable_page_level_ads: true
+            });
+        </script>
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<!--<span class="dark-logo"><img width="104" height="38" src="/images/logo/dark.svg" alt="dark frisco logo"></span>-->
+						<!--<span class="light-logo"><img width="104" height="38" src="/images/logo/light.svg" alt="light frisco logo"></span>-->
+						<span class="dark-logo">Kuros.in</span>
+						<span class="light-logo">Kuros.in</span>
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>gRPC & Java</h1>
+			<p class="subtext"></p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/grpc/">gRPC</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		January 25, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers.</p>
+
+<p>If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice.</p>
+
+<h1 id="what-is-grpc">What is gRPC?</h1>
+
+<p>In gRPC, a client application can directly call server methods as if they are local to the client. This makes developer’s task easy to create distributed services.</p>
+
+<p><img alt="String-2" src="/images/2019/grpc/grpc-1.svg" lazyload="" width="600px" /></p>
+
+<p>To put it simply, You create a prototype of a service with its request &amp; response, share it across server &amp; client and they generate respective methods and implement them, now client invokes the method with request which is transferred to server, the method executes on server and returns the response back to client, but at client’s end it would seem as working with a local method.</p>
+
+<p>In the real world, the biggest challenge is handling database in micro services, having a distributed persistence layer could work wonders.</p>
+
+<h1 id="core-feature">Core Feature</h1>
+
+<p>Some of the important features of gRPC:</p>
+
+<ol>
+  <li>It support 10+ languages, you can write your service in java and even a python client will be able to access it.</li>
+  <li>It uses http 2 protocol, its highly efficient for working with large volume of data.</li>
+  <li>It provides are very simple service declaration, easy to understand.</li>
+  <li>It support bidirectional streams.</li>
+  <li>It provides lot of plugins such as authentication, tracing, load balancing &amp; health check.</li>
+</ol>
+
+<h1 id="maven-dependencies">Maven Dependencies</h1>
+<p>Lets add grpc dependencies:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;dependencies&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>io.grpc<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>grpc-all<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>1.18.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+<h1 id="define-service">Define Service</h1>
+
+<p>Let us create a simple calculator service to add two value:</p>
+
+<p>We will start by defining a method with parameters and return value, but this has to be a prototype.</p>
+
+<p>We do this by creating .proto file using <a href="https://developers.google.com/protocol-buffers/docs/overview">protocol buffers</a>, there are used to describe messages.</p>
+
+<p>So we create <strong>calculator.proto</strong> under <strong>/src/main/proto</strong></p>
+
+<div class="language-proto highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">syntax</span> <span class="o">=</span> <span class="s">"proto3"</span><span class="p">;</span> <span class="c1">//this directs compiler to use version 3
+</span>
+<span class="k">option</span> <span class="na">java_multiple_files</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">//we want generate different java files after compilation. By default all the classes are generated in a single file.
+</span><span class="kn">package</span> <span class="nn">in</span><span class="o">.</span><span class="n">kuros.grpc</span><span class="p">;</span> <span class="c1">// defines the package structure of generated classes.
+</span>
+<span class="c1">//request payload
+</span><span class="kd">message</span> <span class="nc">OperandRequest</span> <span class="p">{</span>
+    <span class="kt">int32</span> <span class="na">X</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// message with type, along with tag: 1
+</span>    <span class="kt">int32</span> <span class="na">Y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// tag: 2
+</span><span class="p">}</span>
+
+<span class="c1">//response payload
+</span><span class="kd">message</span> <span class="nc">AddResponse</span> <span class="p">{</span>
+    <span class="kt">int64</span> <span class="na">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// service contract
+</span><span class="kd">service</span> <span class="n">Calculator</span> <span class="p">{</span>
+    <span class="k">rpc</span> <span class="n">add</span><span class="p">(</span><span class="n">OperandRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">AddResponse</span><span class="p">);</span> <span class="c1">// method name: add, parameter type: OperandRequest, response type: AddResponse 
+</span><span class="p">}</span>
+</code></pre></div></div>
+<p>A unique number needs to be assigned to each attribute, called as the tag. This tag is used by the protocol buffer to represent the attribute instead of using the attribute name.
+So, unlike JSON where we would pass attribute name <strong>X</strong> every single time, protocol buffer would use the number 1 to represent <strong>X</strong>. Response payload definition is similar to the request.</p>
+
+<p>So at the end after generation, we will have three classes (in terms of java), Operands, AddResponse &amp; Calculator which takes operands and returns addResponse;</p>
+
+<h1 id="generating-class-files-for-java">Generating class files for java.</h1>
+
+<p>Now we pass the HelloService.proto file to the protocol buffer compiler protoc to generate the Java files. There are multiple ways to trigger this.</p>
+
+<h3 id="protocol-buffer-compiler">Protocol Buffer compiler</h3>
+
+<p><a href="https://developers.google.com/protocol-buffers/docs/downloads">Download</a> the compiler, and follow readme.txt</p>
+
+<p>Use the command to generate code</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>protoc <span class="nt">-I</span><span class="o">=</span><span class="nv">$SRC_DIR</span> <span class="nt">--java_out</span><span class="o">=</span><span class="nv">$DST_DIR</span> <span class="nv">$SRC_DIR</span>/proto/calculator.proto
+</code></pre></div></div>
+
+<h3 id="maven-compiler-plugin">Maven compiler plugin</h3>
+
+<p>You don’t want to execute command to generate code every time, so we will make use of maven plugin to execute at build time</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;build&gt;</span>
+        <span class="nt">&lt;extensions&gt;</span>
+            <span class="nt">&lt;extension&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>kr.motd.maven<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>os-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>1.6.1<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/extension&gt;</span>
+        <span class="nt">&lt;/extensions&gt;</span>
+        <span class="nt">&lt;plugins&gt;</span>
+            <span class="nt">&lt;plugin&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.xolstice.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>protobuf-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>0.6.1<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;configuration&gt;</span>
+                    <span class="nt">&lt;protocArtifact&gt;</span>
+                        com.google.protobuf:protoc:3.5.1:exe:${os.detected.classifier}
+                    <span class="nt">&lt;/protocArtifact&gt;</span>
+                    <span class="nt">&lt;pluginId&gt;</span>grpc-java<span class="nt">&lt;/pluginId&gt;</span>
+                    <span class="nt">&lt;pluginArtifact&gt;</span>
+                        io.grpc:protoc-gen-grpc-java:1.18.0:exe:${os.detected.classifier}
+                    <span class="nt">&lt;/pluginArtifact&gt;</span>
+                <span class="nt">&lt;/configuration&gt;</span>
+                <span class="nt">&lt;executions&gt;</span>
+                    <span class="nt">&lt;execution&gt;</span>
+                        <span class="nt">&lt;goals&gt;</span>
+                            <span class="nt">&lt;goal&gt;</span>compile<span class="nt">&lt;/goal&gt;</span>
+                            <span class="nt">&lt;goal&gt;</span>compile-custom<span class="nt">&lt;/goal&gt;</span>
+                        <span class="nt">&lt;/goals&gt;</span>
+                    <span class="nt">&lt;/execution&gt;</span>
+                <span class="nt">&lt;/executions&gt;</span>
+            <span class="nt">&lt;/plugin&gt;</span>
+        <span class="nt">&lt;/plugins&gt;</span>
+    <span class="nt">&lt;/build&gt;</span>
+</code></pre></div></div>
+
+<p>The <em>os-maven-plugin</em> extension/plugin generates various useful platform-dependent project properties like ${os.detected.classifier}</p>
+
+<h2 id="generated-files">Generated files</h2>
+
+<p>Once you the run the generation, some key files will be generated under <strong>/target/generated-sources/protobuf</strong></p>
+<ul>
+  <li>OperandRequest.java - contains the OperandRequest definition.</li>
+  <li>AddResponse.java - contains the AddResponse definition.</li>
+  <li>CalculatorGrpc.java - this contains abstract inner class CalculatorImplBase which provides an implementation wrapper.</li>
+</ul>
+
+<h1 id="server-side-implementation">Server Side Implementation</h1>
+
+<p>Now its time write the addition logic on the server side. so we will create an implementation class <em>CalculatorImpl</em> which will extend CalculatorImplBase and provide implementation.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">in.kuros.grpc.AddResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.grpc.CalculatorGrpc.CalculatorImplBase</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.grpc.OperandRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.stub.StreamObserver</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CalculatorImpl</span> <span class="kd">extends</span> <span class="n">CalculatorImplBase</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="kd">final</span> <span class="n">OperandRequest</span> <span class="n">request</span><span class="o">,</span> <span class="kd">final</span> <span class="n">StreamObserver</span><span class="o">&lt;</span><span class="n">AddResponse</span><span class="o">&gt;</span> <span class="n">responseObserver</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getX</span><span class="o">()</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="na">getY</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="n">AddResponse</span> <span class="n">addResponse</span> <span class="o">=</span> <span class="n">AddResponse</span>
+                <span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">sum</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Sleeping to 5 sec"</span><span class="o">);</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">responseObserver</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="n">addResponse</span><span class="o">);</span>
+        <span class="n">responseObserver</span><span class="o">.</span><span class="na">onCompleted</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>We have provide a sleep of 5 sec to simulate long taking operations.</p>
+
+<h1 id="start-the-grpc-server">start the gRPC server</h1>
+<p>Next, we need to start the gRPC server to listen for incoming requests:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.grpc.Server</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerBuilder</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcServer</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="n">ServerBuilder</span><span class="o">.</span><span class="na">forPort</span><span class="o">(</span><span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">addService</span><span class="o">(</span><span class="k">new</span> <span class="n">CalculatorImpl</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">server</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>So, here we have created a serve to listen at port 8080 for incoming request, registered our calculator service. In our example, we will call awaitTermination() to keep the server running in foreground blocking the prompt.</p>
+
+<h1 id="creating-a-client">Creating a client</h1>
+
+<p>First we need to create a gRPC channel for our stub, specifying the server address and port we want to connect to.</p>
+
+<p>We use a <strong>ManagedChannelBuilder</strong> to create the channel.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ManagedChannel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">ManagedChannelBuilder</span><span class="o">.</span><span class="na">forAddress</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">usePlaintext</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</code></pre></div></div>
+<p>Now we can use the channel to create our stubs using the newStub and newBlockingStub methods provided in the RouteGuideGrpc class we generated from our .proto.</p>
+
+<h2 id="making-sync-calls">making sync calls</h2>
+
+<p>We create a blocking stub</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">final</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorBlockingStub</span> <span class="n">blockingStub</span> <span class="o">=</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">newBlockingStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making blocking call"</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="n">AddResponse</span> <span class="n">blockResponse</span> <span class="o">=</span> <span class="n">blockingStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">());</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"blocking call result: "</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h2 id="making-async-calls">making async calls</h2>
+
+<p>We use newStub method to make aysnc calls, but we need to provide a StreamObserver implementation to it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">final</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorStub</span> <span class="n">asyncStub</span> <span class="o">=</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">newStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+        
+    <span class="n">StreamObserver</span><span class="o">&lt;</span><span class="n">AddResponse</span><span class="o">&gt;</span> <span class="n">streamObserver</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StreamObserver</span><span class="o">&lt;</span><span class="n">AddResponse</span><span class="o">&gt;()</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="kd">final</span> <span class="n">AddResponse</span> <span class="n">addResponse</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"async call result: "</span> <span class="o">+</span> <span class="n">addResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+        <span class="o">}</span>
+    
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="kd">final</span> <span class="n">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span>
+        <span class="o">}</span>
+    
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCompleted</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Async call stopped listening"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">};</span>
+
+
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making blocking call"</span><span class="o">);</span>
+    <span class="n">asyncStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">(),</span> <span class="n">streamObserver</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Async invoked"</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+    <span class="n">channel</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>complete client code:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">in.kuros.grpc.AddResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.grpc.CalculatorGrpc</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.grpc.OperandRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ManagedChannel</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ManagedChannelBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.stub.StreamObserver</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.concurrent.TimeUnit</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcClient</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        <span class="n">ManagedChannel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">ManagedChannelBuilder</span><span class="o">.</span><span class="na">forAddress</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">usePlaintext</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorBlockingStub</span> <span class="n">blockingStub</span> <span class="o">=</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">newBlockingStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making blocking call"</span><span class="o">);</span>
+        <span class="kd">final</span> <span class="n">AddResponse</span> <span class="n">blockResponse</span> <span class="o">=</span> <span class="n">blockingStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"blocking call result: "</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+
+        <span class="kd">final</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorStub</span> <span class="n">asyncStub</span> <span class="o">=</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">newStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+        <span class="n">StreamObserver</span><span class="o">&lt;</span><span class="n">AddResponse</span><span class="o">&gt;</span> <span class="n">streamObserver</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StreamObserver</span><span class="o">&lt;</span><span class="n">AddResponse</span><span class="o">&gt;()</span> <span class="o">{</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="kd">final</span> <span class="n">AddResponse</span> <span class="n">addResponse</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"async call result: "</span> <span class="o">+</span> <span class="n">addResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="kd">final</span> <span class="n">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCompleted</span><span class="o">()</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Async call stopped listening"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making blocking call"</span><span class="o">);</span>
+        <span class="n">asyncStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">(),</span> <span class="n">streamObserver</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Async invoked"</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+        <span class="n">channel</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Next, we need to create a stub which we’ll use to make the actual remote call to hello(). <strong>The stub is the primary way for clients to interacts with the server</strong>. When using auto generate stubs, the stub class will have constructors for wrapping the channel.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>In this post we have learned how to work with a gRPC Server/Client in java. As usual find the <a href="https://github.com/kuros/grpc/tree/master/grpc-java">complete code</a></p>
+
+
+
+			<div class="blog-navigation">
+				
+					
+
+					
+					<a class="next" href="/grpc/2019/01/grpc-authentication">gRPC Authentication in Java &raquo;</a>
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('')"></div>
+				<p class="blurb"></p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/grpc/2019/01/grpc";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/grpc/2019/01/grpc"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>

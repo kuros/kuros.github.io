@@ -8,17 +8,20 @@
 		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
 
 		<!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>InputStream | Kuros.in</title>
+<title>Java - Classpath | Kuros.in</title>
 <meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="InputStream" />
+<meta property="og:title" content="Java - Classpath" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A place to learn new techs" />
-<meta property="og:description" content="A place to learn new techs" />
-<link rel="canonical" href="https://kuros.in/tag/inputstream/" />
-<meta property="og:url" content="https://kuros.in/tag/inputstream/" />
+<meta name="description" content="Tell Java where to search for programs." />
+<meta property="og:description" content="Tell Java where to search for programs." />
+<link rel="canonical" href="https://kuros.in/java/2019/01/java-7-classpath" />
+<meta property="og:url" content="https://kuros.in/java/2019/01/java-7-classpath" />
 <meta property="og:site_name" content="Kuros.in" />
+<meta property="og:image" content="https://source.unsplash.com/random/1200x900" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-09T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"A place to learn new techs","@type":"WebPage","url":"https://kuros.in/tag/inputstream/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"InputStream","@context":"http://schema.org"}</script>
+{"description":"Tell Java where to search for programs.","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-7-classpath","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Classpath","dateModified":"2019-01-09T00:00:00+00:00","datePublished":"2019-01-09T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-7-classpath"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -97,31 +100,17 @@
 			</div>
 		</header>
 
-		
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-4166026699724584",
-                enable_page_level_ads: true
-            });
-        </script>
-
-
-<section class="hero page-hero random-images">
+		<section class="hero page-hero random-images" >
 	<div class="inner-hero text-container">
 		<div class="hero-text-container">
-			<h1>Category: <strong>InputStream</strong></h1>
-			<p class="subtext">You're currently looking at all the posts categorised under <strong>InputStream</strong>.</p>
+			<h1>Java - Classpath</h1>
+			<p class="subtext">Tell Java where to search for programs.</p>
 		</div>
 	</div>
 </section>
 
 <section>
-	<div class="text-container">
-		<ul class="blog-posts">
-			
-	<li class="blog-post">
-		<h2><a href="/java/2019/01/java-1-stream-readers" style="color: #6ba1f3">Streams, Readers & Writers</a></h2>
+	<div class="blog-post text-container">
 		<p class="post-details">
 	
 		<span class="blog-filter">
@@ -130,34 +119,101 @@
 	
 
 	
-	<span class="blog-filter">
-			<a href="/tag/i-o/">I/O</a>
-		</span>
-	
-	<span class="blog-filter">
-			<a href="/tag/inputstream/">InputStream</a>
-		</span>
-	
-	<span class="blog-filter">
-			<a href="/tag/outputstream/">OutputStream</a>
-		</span>
-	
 	<span class="post-date">
-		January 10, 2019
+		January 09, 2019
 	</span>
 </p>
 
+
 		<div class="post-content">
-			<p>A stream represents a flow of data, or a channel of communication with (at least conceptually) a writer at one end and a reader at the other. When you are working with terminal input and output, reading or writing files, or communicating through sockets in Java, you are using a stream of one type or another.</p>
+			<p>CLASSPATH tells Java where to search for programs.</p>
+
+<p>The Java runtime system needs to know where to find programs that you want to run and libraries that are needed. It knows where the predefined Java packages are, but if you are using additional packages, you must tell specify where they are located.</p>
+
+<p>For example, suppose you want the Java runtime to find a class named Cool.class in the package utility.myapp. If the path to that directory is C:\java\MyClasses\utility\myapp, you would set the class path so that it contains /src/java/MyClasses. To run that app, you could use the following JVM command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-classpath</span> /src/java/MyClasses utility.myapp.Cool 
+</code></pre></div></div>
+
+<p>When the app runs, the JVM uses the class path settings to find any other classes defined in the utility.myapp package that are used by the Cool class.</p>
+
+<h2 id="adding-folders-and-archive-files-to-classpath">Adding Folders and archive files to classpath</h2>
+<p>When classes are stored in a directory (folder), like /src/java/MyClasses/utility/myapp, then the class path entry points to the directory that contains the first element of the package name. (in this case, /src/java/MyClasses, since the package name is utility.myapp.)</p>
+
+<p>But when classes are stored in an archive file (a .zip or .jar file) the class path entry is the path to and including the .zip or .jar file. For example, to use a class library that is in a .jar file, the command would look something like this:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-classpath</span> /src/java/MyClasses/myclasses.jar utility.myapp.Cool
+</code></pre></div></div>
+
+<h2 id="multiple-specifications">Multiple specifications</h2>
+<p>To find class files in the directory /src/java/MyClasses as well as classes in /src/java/OtherClasses, you would set the class path to:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java <span class="nt">-classpath</span> /src/java/MyClasses<span class="p">;</span>/src/java/OtherClasses 
+</code></pre></div></div>
+<p>Note that the two paths are separated by a semicolon.</p>
+
+<h2 id="using-the-classpath-environment-variable">Using the CLASSPATH environment variable</h2>
+<p>Use the below command to set the CLASSPATH for the system variable.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">set </span><span class="nv">CLASSPATH</span><span class="o">=</span>classpath1<span class="p">;</span>classpath2...
+</code></pre></div></div>
+<p>For e.g. if my classes are located at the location /src/java/myAppClasses, then to set the classpath in the command line use the following command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">set </span><span class="nv">CLASSPATH</span><span class="o">=</span>/src/java/myAppClasses<span class="p">;</span>
+</code></pre></div></div>
 
 
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/java/2019/01/java-6-package">&laquo; Java - Package - the class Management</a>
+
+					
+
+					
+					<a class="next" href="/java/2019/01/java-8-String">Java - Handling String &raquo;</a>
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('')"></div>
+				<p class="blurb"></p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/java/2019/01/java-7-classpath";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/java/2019/01/java-7-classpath"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
 		</div>
-	</li>
-
-
-		</ul>
 	</div>
 </section>
+
 
 
 		<footer>

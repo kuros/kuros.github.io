@@ -8,17 +8,20 @@
 		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
 
 		<!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>InputStream | Kuros.in</title>
+<title>Why Random-JPA? | Kuros.in</title>
 <meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="InputStream" />
+<meta property="og:title" content="Why Random-JPA?" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A place to learn new techs" />
-<meta property="og:description" content="A place to learn new techs" />
-<link rel="canonical" href="https://kuros.in/tag/inputstream/" />
-<meta property="og:url" content="https://kuros.in/tag/inputstream/" />
+<meta name="description" content="Light weight utility to generate test data." />
+<meta property="og:description" content="Light weight utility to generate test data." />
+<link rel="canonical" href="https://kuros.in/random-jpa/2019/01/1-birth" />
+<meta property="og:url" content="https://kuros.in/random-jpa/2019/01/1-birth" />
 <meta property="og:site_name" content="Kuros.in" />
+<meta property="og:image" content="https://source.unsplash.com/random/1200x900" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-09T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"A place to learn new techs","@type":"WebPage","url":"https://kuros.in/tag/inputstream/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"InputStream","@context":"http://schema.org"}</script>
+{"description":"Light weight utility to generate test data.","@type":"BlogPosting","url":"https://kuros.in/random-jpa/2019/01/1-birth","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Why Random-JPA?","dateModified":"2019-01-09T00:00:00+00:00","datePublished":"2019-01-09T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/random-jpa/2019/01/1-birth"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -97,67 +100,110 @@
 			</div>
 		</header>
 
-		
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({
-                google_ad_client: "ca-pub-4166026699724584",
-                enable_page_level_ads: true
-            });
-        </script>
-
-
-<section class="hero page-hero random-images">
+		<section class="hero page-hero random-images" >
 	<div class="inner-hero text-container">
 		<div class="hero-text-container">
-			<h1>Category: <strong>InputStream</strong></h1>
-			<p class="subtext">You're currently looking at all the posts categorised under <strong>InputStream</strong>.</p>
+			<h1>Why Random-JPA?</h1>
+			<p class="subtext">Light weight utility to generate test data.</p>
 		</div>
 	</div>
 </section>
 
 <section>
-	<div class="text-container">
-		<ul class="blog-posts">
-			
-	<li class="blog-post">
-		<h2><a href="/java/2019/01/java-1-stream-readers" style="color: #6ba1f3">Streams, Readers & Writers</a></h2>
+	<div class="blog-post text-container">
 		<p class="post-details">
 	
 		<span class="blog-filter">
-			<a href="/category/java/">java</a>
+			<a href="/category/random-jpa/">random-jpa</a>
 		</span>
 	
 
 	
-	<span class="blog-filter">
-			<a href="/tag/i-o/">I/O</a>
-		</span>
-	
-	<span class="blog-filter">
-			<a href="/tag/inputstream/">InputStream</a>
-		</span>
-	
-	<span class="blog-filter">
-			<a href="/tag/outputstream/">OutputStream</a>
-		</span>
-	
 	<span class="post-date">
-		January 10, 2019
+		January 09, 2019
 	</span>
 </p>
 
+
 		<div class="post-content">
-			<p>A stream represents a flow of data, or a channel of communication with (at least conceptually) a writer at one end and a reader at the other. When you are working with terminal input and output, reading or writing files, or communicating through sockets in Java, you are using a stream of one type or another.</p>
+			<p>In today’s software world, testing is treated as important as the production code.</p>
+
+<p>The products are moving towards the goal of continuous delivery. And the prerequisite for achieving this goal is to have a complete automation suite.</p>
+
+<p>Testing Java code is fairly easy as a developer have many tools available to achieve it, such as junit, testng, mockito. But when it comes to testing SQL queries a developer faces a lot of problems, and spends a lot of time just to create data set in order to test the queries. In most of the scenarios it takes more time to write test than writing the production code.</p>
+
+<p>To list some of the main challenges a developer has.</p>
+
+<ul>
+  <li>Know the relationship between tables.</li>
+  <li>Spends a lot of time creating test fixtures for each entity.</li>
+  <li>Management/Maintenance of relationship in complex data scenario.</li>
+  <li>Rewriting a lot of fixture if a new entity is introduced in the hierarchy.</li>
+  <li>A developer finds hard to create data if there is many joined tables.</li>
+  <li>Creating random object for unit testing.</li>
+</ul>
+
+<p><a href="https://github.com/kuros/random-jpa">Random-JPA</a> was created as a lightweight utility to help developers create test data with minimum configuration. <a href="https://github.com/kuros/random-jpa">Random-JPA</a> takes care of the relationship between tables and creates a hierarchy for all the parent entities. When using this utility a developer, will just have to specify the list of all the entities which he wants to create. Its random-JPA’s job to manage and create all the entities. It provides easy access to all the entities created and prints all the.</p>
+
+<p>A typical project will consist of hundreds of entities, thousands of queries and tens of models, and your test should focus on all the data conditions, rather focusing on the conditions, developer spends all his efforts and time in just creating a data set, in this process, miss out to test critical data condition. You can utilize random-JPA to create random data for both unit &amp; integration tests.</p>
+
+<p>This approach makes sure that every time we are working with integration test we will have a complete, new set of data to work with, reducing the chances of data corruption.</p>
+
+<p>Nothing wastes more time than to manage dependency of entities and create random data and persist it to database.</p>
+
+<p>And so Random-JPA was born…</p>
 
 
+			<div class="blog-navigation">
+				
+					
+
+					
+					<a class="next" href="/random-jpa/2019/01/1-data-setup">Setup database & spring boot application &raquo;</a>
+
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('')"></div>
+				<p class="blurb"></p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/random-jpa/2019/01/1-birth";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/random-jpa/2019/01/1-birth"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
 		</div>
-	</li>
-
-
-		</ul>
 	</div>
 </section>
+
 
 
 		<footer>
