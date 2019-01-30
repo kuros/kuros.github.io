@@ -141,6 +141,10 @@
 <lastmod>2019-01-13T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/java/2019/01/file-object</loc>
+<lastmod>2019-01-14T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/random-jpa/2019/01/rjpa-1-integration</loc>
 <lastmod>2019-01-14T00:00:00+00:00</lastmod>
 </url>
@@ -149,8 +153,16 @@
 <lastmod>2019-01-14T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/java/2019/01/formatting</loc>
+<lastmod>2019-01-15T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/random-jpa/2019/01/custom_dependecy</loc>
 <lastmod>2019-01-15T00:00:00+00:00</lastmod>
+</url>
+<url>
+<loc>https://kuros.in/java/2019/01/serialization</loc>
+<lastmod>2019-01-16T00:00:00+00:00</lastmod>
 </url>
 <url>
 <loc>https://kuros.in/random-jpa/2019/01/custom_generators</loc>
