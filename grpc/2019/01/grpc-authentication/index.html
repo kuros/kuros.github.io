@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>gRPC Authentication in Java | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="gRPC Authentication in Java" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="what about the security?" />
+<meta property="og:description" content="what about the security?" />
+<link rel="canonical" href="https://kuros.in/grpc/2019/01/grpc-authentication/" />
+<meta property="og:url" content="https://kuros.in/grpc/2019/01/grpc-authentication/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-26T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"what about the security?","@type":"BlogPosting","url":"https://kuros.in/grpc/2019/01/grpc-authentication/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"gRPC Authentication in Java","dateModified":"2019-01-26T00:00:00+00:00","datePublished":"2019-01-26T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/grpc/2019/01/grpc-authentication/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4166026699724584",
+                enable_page_level_ads: true
+            });
+        </script>
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<!--<span class="dark-logo"><img width="104" height="38" src="/images/logo/dark.svg" alt="dark frisco logo"></span>-->
+						<!--<span class="light-logo"><img width="104" height="38" src="/images/logo/light.svg" alt="light frisco logo"></span>-->
+						<span class="dark-logo">Kuros.in</span>
+						<span class="light-logo">Kuros.in</span>
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>gRPC Authentication in Java</h1>
+			<p class="subtext">what about the security?</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/grpc/">gRPC</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		January 26, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>Setting up gRPC is great and simple but what about its security. how hard it is? Lets see.</p>
+
+<h1 id="generating-certificates--keys">Generating Certificates &amp; Keys</h1>
+<p>Similar to http server, you can configure gRPC server communication to be encrypted, Since we are developing a local example, we will generate our own certificate(you will need certificate from Certificate Authority if you want to make your api’s public).</p>
+
+<p>For this tutorial, we will use openssl to generate our certificate &amp; keys.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>openssl req <span class="nt">-x509</span> <span class="nt">-newkey</span> rsa:4096 <span class="nt">-keyout</span> src/main/resources/my-private-key.pem <span class="nt">-out</span> src/main/resources/my-public-key-cert.pem <span class="nt">-days</span> 365 <span class="nt">-nodes</span> <span class="nt">-subj</span> <span class="s1">'/CN=localhost'</span>
+</code></pre></div></div>
+
+<p>Our keys will be generated in resources folder, this key has expiration of 365 days, algorithm detail (RSA: 4096), format standard (X.509) and our server’s common name (CN) which is just a localhost in our case.</p>
+
+<h1 id="adding-certificates-to-grpc-server">Adding certificates to gRPC server</h1>
+
+<p>To enable TLS on a server, a certificate chain and private key need to be specified in PEM format, which we have generated in earlier.</p>
+
+<p><strong>Private key should not be using a password</strong></p>
+
+<p>(When you are generating chain certificates, remember, the order of certificates in the chain matters: more specifically, the certificate at the top has to be the host CA, while the one at the very bottom has to be the root CA.)</p>
+
+<p>For this tutorial’s purpose, we will use 8443 below to avoid needing extra permissions from the OS.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.grpc.Server</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerBuilder</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcServer</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="n">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="n">ServerBuilder</span><span class="o">.</span><span class="na">forPort</span><span class="o">(</span><span class="mi">8443</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">addService</span><span class="o">(</span><span class="k">new</span> <span class="n">CalculatorImpl</span><span class="o">())</span>
+
+                <span class="c1">//enable TLS</span>
+                <span class="o">.</span><span class="na">useTransportSecurity</span><span class="o">(</span>
+                        <span class="n">getFile</span><span class="o">(</span><span class="s">"/my-public-key-cert.pem"</span><span class="o">),</span> <span class="c1">//public Key</span>
+                        <span class="n">getFile</span><span class="o">(</span><span class="s">"/my-private-key.pem"</span><span class="o">))</span> <span class="c1">// private key</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">server</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">File</span> <span class="nf">getFile</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">fileName</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="n">GrpcServer</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">getResource</span><span class="o">(</span><span class="n">fileName</span><span class="o">).</span><span class="na">getFile</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Let’s start the server, oops!!! we got an error:</p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
+INFO: netty-tcnative unavailable (this may be normal)
+java.lang.ClassNotFoundException: io.netty.internal.tcnative.SSL
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at io.netty.handler.ssl.OpenSsl.&lt;clinit&gt;(OpenSsl.java:81)
+	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:244)
+	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
+	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
+	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
+
+Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
+INFO: Conscrypt not found (this may be normal)
+Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
+INFO: Jetty ALPN unavailable (this may be normal)
+java.lang.ClassNotFoundException: org/eclipse/jetty/alpn/ALPN
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:348)
+	at io.grpc.netty.JettyTlsUtil.isJettyAlpnConfigured(JettyTlsUtil.java:64)
+	at io.grpc.netty.GrpcSslContexts.findJdkProvider(GrpcSslContexts.java:266)
+	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:248)
+	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
+	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
+	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
+
+Exception in thread "main" java.lang.IllegalStateException: Could not find TLS ALPN provider; no working netty-tcnative, Conscrypt, or Jetty NPN/ALPN available
+	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:258)
+	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
+	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
+	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
+	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
+</code></pre></div></div>
+
+<p>Time to fix it by providing below maven dependency in your pom file:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>io.netty<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>netty-tcnative-boringssl-static<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.0.20.Final<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>The Server Starts.</p>
+
+<p>Now let try to use our old client to execute our add method.</p>
+
+<h3 id="old-client">Old Client</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.grpc.ManagedChannel</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ManagedChannelBuilder</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcOldClient</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">ManagedChannel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">ManagedChannelBuilder</span><span class="o">.</span><span class="na">forAddress</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8443</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">usePlaintext</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorBlockingStub</span> <span class="n">blockingStub</span> <span class="o">=</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">newBlockingStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="n">AddResponse</span> <span class="n">blockResponse</span> <span class="o">=</span> <span class="n">blockingStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"call result: "</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+        <span class="n">channel</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Notice we have configured ManagedChannel as <em>.usePlaintext()</em>, which specifies we do not want any authentication.</p>
+
+<p>When we execute the program we get an error response like:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception in thread "main" io.grpc.StatusRuntimeException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)
+	at io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)
+	at io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)
+	at in.kuros.blog.grpc.CalculatorGrpc$CalculatorBlockingStub.add(CalculatorGrpc.java:157)
+	at in.kuros.blog.grpc.GrpcOldClient.main(GrpcOldClient.java:15)
+</code></pre></div></div>
+
+<h1 id="ssl-enabled-clients">SSL enabled clients</h1>
+
+<p>When you are using ssl certificate with the issuing authority known to the client, simply create a ManagedChannel by</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// With server authentication SSL/TLS</span>
+<span class="n">ManagedChannel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">ManagedChannelBuilder</span><span class="o">.</span><span class="na">forAddress</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">443</span><span class="o">)</span>
+    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+<span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorBlockingStub</span> <span class="n">blockingStub</span> <span class="o">=</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">newBlockingStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>But in our case we are using our custom certificates, so we need to provide SSL context to channel builder, for this we will use <strong>NettyChannelBuilder</strong>.</p>
+
+<p>We will be providing our public certificate only to the client.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.grpc.ManagedChannel</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.netty.GrpcSslContexts</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.netty.NettyChannelBuilder</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.net.ssl.SSLException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcNewClient</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">SSLException</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="n">ManagedChannel</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">NettyChannelBuilder</span><span class="o">.</span><span class="na">forAddress</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8443</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">sslContext</span><span class="o">(</span><span class="n">GrpcSslContexts</span>
+                        <span class="o">.</span><span class="na">forClient</span><span class="o">()</span>
+                        <span class="o">.</span><span class="na">trustManager</span><span class="o">(</span><span class="n">getFile</span><span class="o">(</span><span class="s">"/my-public-key-cert.pem"</span><span class="o">))</span> <span class="c1">// public key</span>
+                        <span class="o">.</span><span class="na">build</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorBlockingStub</span> <span class="n">blockingStub</span> <span class="o">=</span> <span class="n">CalculatorGrpc</span><span class="o">.</span><span class="na">newBlockingStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making call"</span><span class="o">);</span>
+        <span class="kd">final</span> <span class="n">AddResponse</span> <span class="n">blockResponse</span> <span class="o">=</span> <span class="n">blockingStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">());</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"call result: "</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+        <span class="n">channel</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">File</span> <span class="nf">getFile</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">fileName</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">File</span><span class="o">(</span><span class="n">GrpcNewClient</span>
+                <span class="o">.</span><span class="na">class</span>
+                <span class="o">.</span><span class="na">getResource</span><span class="o">(</span><span class="n">fileName</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">getFile</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now when we run the new client, we are able to make calls.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>So till now we have seen, how to secure our server-client communication over gRPC. Find the <a href="https://github.com/kuros/grpc/tree/master/grpc-authentication">code here</a>.</p>
+
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/grpc/2019/01/grpc/">&laquo; gRPC & Java</a>
+
+					
+
+					
+					<a class="next" href="/grpc/2019/01/grpc-interceptors/">gRPC Authorization using Interceptors in Java &raquo;</a>
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('')"></div>
+				<p class="blurb"></p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/grpc/2019/01/grpc-authentication/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/grpc/2019/01/grpc-authentication"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>

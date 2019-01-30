@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>File Handling | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="File Handling" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="One of the most frequently used task in programming is writing to and reading from a file. To do this in Java there are more possibilities. At this time only the most frequently used text file handling solutions will be presented." />
+<meta property="og:description" content="One of the most frequently used task in programming is writing to and reading from a file. To do this in Java there are more possibilities. At this time only the most frequently used text file handling solutions will be presented." />
+<link rel="canonical" href="https://kuros.in/java/2019/01/java-file-handling/" />
+<meta property="og:url" content="https://kuros.in/java/2019/01/java-file-handling/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-13T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"One of the most frequently used task in programming is writing to and reading from a file. To do this in Java there are more possibilities. At this time only the most frequently used text file handling solutions will be presented.","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-file-handling/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"File Handling","dateModified":"2019-01-13T00:00:00+00:00","datePublished":"2019-01-13T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-file-handling/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4166026699724584",
+                enable_page_level_ads: true
+            });
+        </script>
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<!--<span class="dark-logo"><img width="104" height="38" src="/images/logo/dark.svg" alt="dark frisco logo"></span>-->
+						<!--<span class="light-logo"><img width="104" height="38" src="/images/logo/light.svg" alt="light frisco logo"></span>-->
+						<span class="dark-logo">Kuros.in</span>
+						<span class="light-logo">Kuros.in</span>
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>File Handling</h1>
+			<p class="subtext">One of the most frequently used task in programming is writing to and reading from a file. To do this in Java there are more possibilities. At this time only the most frequently used text file handling solutions will be presented.</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/java/">java</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		January 13, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>To write anything to a file first of all we need a file name we want to use. The file name is a simple string like like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"test.txt"</span><span class="o">;</span>
+</code></pre></div></div>
+<p>If you want to write in a file which is located elsewhere you need to define the complete file name and path in your fileName variable:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"c:\\filedemo\\test.txt"</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p>However if you define a path in your file name then you have to take care the path separator. On windows system the ‘' is used and you need to backslash it so you need to write ‘\’, in Unix, Linux systems the separator is a simple slash ‘/’.</p>
+
+<p>To make your code OS independent you can get the separator character as follows:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">separator</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"file.separator"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h2 id="open-a-file">Open a file</h2>
+<p>To open a file for writing use the FileWriter class and create an instance from it. The file name is passed in the constructor like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FileWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileWriter</span><span class="o">(</span><span class="n">fileName</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>This code opens the file in overwrite mode. If you want to append to the file then you need to use an other constructor like this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">FileWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileWriter</span><span class="o">(</span><span class="n">fileName</span><span class="o">,</span><span class="kc">true</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Besides this the constructor can throw an IOException so we put all of the code inside a try-catch block.</p>
+
+<h2 id="write-to-file">Write to file</h2>
+<p>At this point we have a writer object and we can send real content to the file. You can do this using the write() method, which has more variant but the most commonly used requires a string as input parameter.</p>
+
+<p>Calling the write() method doesn’t mean that it immediately writes the data into the file. The output is maybe cached so if you want to send your data immediately to the file you need to call the flush() method.</p>
+
+<p>As last step you should close the file with the close() method and you are done.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">writeFile</span><span class="o">()</span> <span class="o">{</span>
+	
+		<span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"c:\\test.txt"</span><span class="o">;</span>
+	
+		<span class="k">try</span> <span class="o">{</span>
+	
+			<span class="n">FileWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileWriter</span><span class="o">(</span><span class="n">fileName</span><span class="o">,</span><span class="kc">true</span><span class="o">);</span>
+	
+			<span class="n">writer</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">"Test text."</span><span class="o">);</span>
+	
+			<span class="n">writer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+	
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+	
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+	
+		<span class="o">}</span>
+	
+	<span class="o">}</span>
+</code></pre></div></div>
+
+<p>However, in a real world situation, the FileWriter is usually not used directly. Instead of FileWriter the BufferedWriter or from Java 1.5 the PrintWriter are used. These writer objects, gives you more flexibility to handle your IO.
+Here is a simple BufferedWriter example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+     <span class="kd">public</span> <span class="kt">void</span> <span class="nf">writeFile</span><span class="o">()</span> <span class="o">{</span>
+	   
+		<span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"c:\\test.txt"</span><span class="o">;</span>
+
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">BufferedWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">FileWriter</span><span class="o">(</span><span class="n">fileName</span><span class="o">,</span><span class="kc">true</span><span class="o">));</span>
+			
+			<span class="n">writer</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">"Test text."</span><span class="o">);</span>
+			<span class="n">writer</span><span class="o">.</span><span class="na">newLine</span><span class="o">();</span>
+			<span class="n">writer</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">"Line2"</span><span class="o">);</span>
+			<span class="n">writer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+	  <span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+		  <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+	 
+	  <span class="o">}</span> 
+	<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The Buffered writer helps us to write a chunk of data at time, as the name suggest first it buffers the data and then writes it into a file.</p>
+
+<h2 id="reading-from-the-file">Reading from the file</h2>
+<p>Now it’s time to read the file content back. Not surprisingly reading from a file is very similar to writing. We only need to use *Reader objects instead of *Writer objects. It means that you can use FileReader or BufferedReader. As a simple FileReader can handle only a single character or a character array it is more convenient to use the BufferedReader which can read a complete line from a file as a string. So using a BufferedReader we can read a text file line by line with the readln() method as you can see in this example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">readFile</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"c:\\test.txt"</span><span class="o">;</span>
+	    <span class="n">String</span> <span class="n">LS</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"line.separator"</span><span class="o">);</span>
+	    <span class="n">StringBuffer</span> <span class="n">fileContent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">();</span>
+	 
+	    <span class="k">try</span> <span class="o">{</span>
+	        <span class="n">FileReader</span> <span class="n">fr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileReader</span><span class="o">(</span><span class="n">fileName</span><span class="o">);</span>
+	        <span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">FileReader</span><span class="o">(</span><span class="n">fileName</span><span class="o">));</span>
+	 
+	        <span class="n">String</span> <span class="n">line</span><span class="o">;</span>
+	        <span class="k">while</span> <span class="o">((</span><span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+	            <span class="n">fileContent</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">line</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">LS</span><span class="o">);</span>
+	        <span class="o">}</span>
+	        <span class="n">reader</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+	        <span class="n">fr</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+	    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+	        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+	    <span class="o">}</span>
+	 
+	    <span class="k">return</span> <span class="n">fileContent</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+<p>Don’t forget to close the streams after using it; the data might get corrupted if the closing action is not taken care of.</p>
+
+<p>Now since we have seen how to write and read from the file, let us compile our code as a single program which has a capability to first write the data and then read from the file and show the output on the console.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.BufferedReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.BufferedWriter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.FileReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.FileWriter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	
+		<span class="n">Main</span> <span class="n">fd</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Main</span><span class="o">();</span>
+		<span class="n">fd</span><span class="o">.</span><span class="na">writeFile</span><span class="o">();</span>
+		<span class="n">String</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="na">readFile</span><span class="o">();</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">txt</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">writeFile</span><span class="o">()</span> <span class="o">{</span>
+	
+		<span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"c:\\test.txt"</span><span class="o">;</span>
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">BufferedWriter</span> <span class="n">writer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">FileWriter</span><span class="o">(</span><span class="n">fileName</span><span class="o">,</span><span class="kc">true</span><span class="o">));</span>
+			<span class="n">writer</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">"Test text."</span><span class="o">);</span>
+			<span class="n">writer</span><span class="o">.</span><span class="na">newLine</span><span class="o">();</span>
+			<span class="n">writer</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="s">"Line2"</span><span class="o">);</span>
+			<span class="n">writer</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+		
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>		
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>		
+		<span class="o">}</span>	
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">readFile</span><span class="o">()</span> <span class="o">{</span>
+	
+		<span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">"c:\\test.txt"</span><span class="o">;</span>
+		<span class="n">String</span> <span class="n">LS</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">"line.separator"</span><span class="o">);</span>
+		<span class="n">StringBuffer</span> <span class="n">fileContent</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">();</span>
+		
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">FileReader</span> <span class="n">fr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FileReader</span><span class="o">(</span><span class="n">fileName</span><span class="o">);</span>
+			<span class="n">BufferedReader</span> <span class="n">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BufferedReader</span><span class="o">(</span><span class="k">new</span> <span class="n">FileReader</span><span class="o">(</span><span class="n">fileName</span><span class="o">));</span>
+			<span class="n">String</span> <span class="n">line</span><span class="o">;</span>
+			<span class="k">while</span> <span class="o">((</span><span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">readLine</span><span class="o">())</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">fileContent</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="n">line</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">LS</span><span class="o">);</span>
+			<span class="o">}</span>
+			
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>		
+			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>		
+		<span class="o">}</span>
+
+		<span class="k">return</span> <span class="n">fileContent</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>	
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Test text.
+Line 2
+</code></pre></div></div>
+
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/java/2019/01/java-console-io/">&laquo; Console IO</a>
+
+					
+
+					
+					<a class="next" href="/java/2019/01/file-object/">File Object &raquo;</a>
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('')"></div>
+				<p class="blurb"></p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/java/2019/01/java-file-handling/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/java/2019/01/java-file-handling"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>

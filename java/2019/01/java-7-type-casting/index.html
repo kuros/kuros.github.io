@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Java - Type Casting | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Java - Type Casting" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Casting one object to another type" />
+<meta property="og:description" content="Casting one object to another type" />
+<link rel="canonical" href="https://kuros.in/java/2019/01/java-7-type-casting/" />
+<meta property="og:url" content="https://kuros.in/java/2019/01/java-7-type-casting/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:image" content="https://source.unsplash.com/random/1200x900" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-08T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Casting one object to another type","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-7-type-casting/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Type Casting","dateModified":"2019-01-08T00:00:00+00:00","datePublished":"2019-01-08T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-7-type-casting/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4166026699724584",
+                enable_page_level_ads: true
+            });
+        </script>
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<!--<span class="dark-logo"><img width="104" height="38" src="/images/logo/dark.svg" alt="dark frisco logo"></span>-->
+						<!--<span class="light-logo"><img width="104" height="38" src="/images/logo/light.svg" alt="light frisco logo"></span>-->
+						<span class="dark-logo">Kuros.in</span>
+						<span class="light-logo">Kuros.in</span>
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>Java - Type Casting</h1>
+			<p class="subtext">Casting one object to another type</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/java/">java</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		January 08, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>The type casting comprises of two subtypes, a) Primitive type casting and b) Object Reference Type casting.</p>
+
+<h2 id="primitive-type-casting">Primitive Type casting</h2>
+<p>Casting lets you convert primitive values from one type to another. Casts can be implicit or explicit. An implicit cast means you don’t have to write code for the cast; the conversion happens automatically. Typically, an implicit cast happens when you’re doing a widening conversion. In other words, to put a smaller thing (say, a byte) into a bigger container (like an int).</p>
+
+<p>The large-value-into-small-container conversion is referred to as narrowing and requires an explicit cast, where you tell the compiler that you’re aware of the danger and accept full responsibility.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">100</span><span class="o">;</span>
+<span class="kt">long</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">;</span> <span class="c1">// Implicit cast, an int value always fits in a long</span>
+</code></pre></div></div>
+<p>Now if we want to assign an decimal value to an integer variable 
+int x = 345.456;</p>
+
+<p>the compiler will raise an error saying:-
+Incompatible type for declaration. Explicit cast needed to convert double to int.</p>
+
+<p>To resolve the issue we will have to explicitly typecast the double value to int type
+So the code now looks like this:-</p>
+<ul>
+  <li>int x =  (int)345.456;</li>
+</ul>
+
+<p>The following code demonstrates the primitive typecasting:-</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[]){</span>
+		<span class="kt">float</span> <span class="n">f</span> <span class="o">=</span> <span class="mf">123.45f</span><span class="o">;</span>
+		
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"The value of f = "</span> <span class="o">+</span> <span class="n">f</span><span class="o">);</span>
+		
+		<span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="n">f</span><span class="o">;</span> <span class="c1">// explicit typecasting </span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"The value of i = "</span> <span class="o">+</span> <span class="n">i</span><span class="o">);</span>
+		
+		<span class="kt">double</span> <span class="n">d</span> <span class="o">=</span> <span class="o">(</span><span class="kt">double</span><span class="o">)</span><span class="n">f</span><span class="o">;</span> <span class="c1">// explicitly typecasting but could also be implicit</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"The value of d = "</span> <span class="o">+</span> <span class="n">d</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The value of f = 123.45
+The value of i = 123
+The value of d = 123.44999694824219
+</code></pre></div></div>
+
+<h2 id="object-reference-type-casting">Object Reference Type casting</h2>
+<p>In java object typecasting one object reference can be type cast into another object reference. The cast can be to its own class type or to one of its subclass or superclass types or interfaces.</p>
+
+<p>When we cast a reference along the class hierarchy in a direction from the root class towards the children or subclasses, it is a downcast. When we cast a reference along the class hierarchy in a direction from the sub classes towards the root, it is an upcast. We need not use a cast operator in this case.</p>
+
+<p>The compile-time rules are there to catch attempted casts in cases that are simply not possible. This happens when we try to attempt casts on objects that are totally unrelated (that is not subclass super class relationship or a class-interface relationship) At runtime a ClassCastException is thrown if the object being cast is not compatible with the new type it is being cast to.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//X is a supper class of Y and Z which are sibblings.</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RunTimeCastDemo</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
+		<span class="n">X</span> <span class="n">x</span> <span class="o">=</span> <span class="k">new</span> <span class="n">X</span><span class="o">();</span>
+		<span class="n">Y</span> <span class="n">y</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Y</span><span class="o">();</span>
+		<span class="n">Z</span> <span class="n">z</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Z</span><span class="o">();</span>
+		<span class="n">X</span> <span class="n">xy</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Y</span><span class="o">();</span> <span class="c1">// compiles ok (up the hierarchy)</span>
+		<span class="n">X</span> <span class="n">xz</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Z</span><span class="o">();</span> <span class="c1">// compiles ok (up the hierarchy)</span>
+		<span class="c1">//		Y yz = new Z();   incompatible type (siblings)</span>
+		<span class="c1">//		Y y1 = new X();   X is not a Y</span>
+		<span class="c1">//		Z z1 = new X();   X is not a Z</span>
+		<span class="n">X</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">y</span><span class="o">;</span> <span class="c1">// compiles ok (y is subclass of X)</span>
+		<span class="n">X</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">z</span><span class="o">;</span> <span class="c1">// compiles ok (z is subclass of X)</span>
+		<span class="n">Y</span> <span class="n">y1</span> <span class="o">=</span> <span class="o">(</span><span class="n">Y</span><span class="o">)</span> <span class="n">x</span><span class="o">;</span> <span class="c1">// compiles ok but produces runtime error</span>
+		<span class="n">Z</span> <span class="n">z1</span> <span class="o">=</span> <span class="o">(</span><span class="n">Z</span><span class="o">)</span> <span class="n">x</span><span class="o">;</span> <span class="c1">// compiles ok but produces runtime error</span>
+		<span class="n">Y</span> <span class="n">y2</span> <span class="o">=</span> <span class="o">(</span><span class="n">Y</span><span class="o">)</span> <span class="n">x1</span><span class="o">;</span> <span class="c1">// compiles and runs ok (x1 is type Y)</span>
+		<span class="n">Z</span> <span class="n">z2</span> <span class="o">=</span> <span class="o">(</span><span class="n">Z</span><span class="o">)</span> <span class="n">x2</span><span class="o">;</span> <span class="c1">// compiles and runs ok (x2 is type Z)</span>
+		<span class="c1">//		Y y3 = (Y) z;     inconvertible types (siblings)</span>
+		<span class="c1">//		Z z3 = (Z) y;     inconvertible types (siblings)</span>
+		<span class="n">Object</span> <span class="n">o</span> <span class="o">=</span> <span class="n">z</span><span class="o">;</span>
+		<span class="n">Object</span> <span class="n">o1</span> <span class="o">=</span> <span class="o">(</span><span class="n">Y</span><span class="o">)</span> <span class="n">o</span><span class="o">;</span> <span class="c1">// compiles ok but produces runtime error</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>In general cast is done when an Object reference is assigned (cast) to:</p>
+<ul>
+  <li>A reference variable whose type is the same as the class from which the object was instantiated. An Object as Object is a super class of every Class.</li>
+  <li>A reference variable whose type is a super class of the class from which the object was instantiated.</li>
+  <li>A reference variable whose type is an interface that is implemented by the class from which the object was instantiated.</li>
+  <li>A reference variable whose type is an interface that is implemented by a super class of the class from which the object was instantiated.</li>
+</ul>
+
+<p>Consider an interface Vehicle, a super class Car and its subclass Ford. The following example shows the automatic conversion of object references handled by the compiler</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Vehicle</span> <span class="o">{</span>
+<span class="o">}</span>
+<span class="kd">class</span> <span class="nc">Car</span> <span class="kd">implements</span> <span class="n">Vehicle</span> <span class="o">{</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Ford</span> <span class="kd">extends</span> <span class="n">Car</span> <span class="o">{</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Let c be a variable of type Car class and f be of class Ford and v be an vehicle interface reference. We can assign the Ford reference to the Car variable:
+i.e. we can do the following</p>
+
+<h4 id="example-1">Example 1</h4>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">=</span> <span class="n">f</span><span class="o">;</span> <span class="c1">//Ok Compiles fine</span>
+</code></pre></div></div>
+
+<p>Where c = new Car();</p>
+
+<p>And, f = new Ford();</p>
+
+<p>The compiler automatically handles the conversion (assignment) since the types are compatible (sub class - super class relationship), i.e., the type Car can hold the type Ford since a Ford is a Car.</p>
+
+<h4 id="example-2">Example 2</h4>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">v</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span> <span class="c1">//Ok Compiles fine</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">v</span><span class="o">;</span> <span class="c1">// illegal conversion from interface type to class type results in compilation error</span>
+</code></pre></div></div>
+<p>Where c = new Car();</p>
+
+<p>And v is a Vehicle interface reference (Vehicle v)</p>
+
+<p>The compiler automatically handles the conversion (assignment) since the types are compatible (class – interface relationship), i.e., the type Car can be cast to Vehicle interface type since Car implements Vehicle Interface. (Car is a Vehicle).</p>
+
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/java/2019/01/java-6-arryas/">&laquo; Java - Arrays</a>
+
+					
+
+					
+					<a class="next" href="/java/2019/01/java-1-inheritence-deep-dive/">Java - Inheritance deep dive &raquo;</a>
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('')"></div>
+				<p class="blurb"></p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/java/2019/01/java-7-type-casting/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/java/2019/01/java-7-type-casting"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>
