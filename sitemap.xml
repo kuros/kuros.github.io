@@ -189,6 +189,10 @@
 <lastmod>2019-01-26T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/kubernetes/2019/01/architecture</loc>
+<lastmod>2019-01-29T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about</loc>
 </url>
 <url>
@@ -223,6 +227,9 @@
 </url>
 <url>
 <loc>https://kuros.in/category/grpc/</loc>
+</url>
+<url>
+<loc>https://kuros.in/category/kubernetes/</loc>
 </url>
 <url>
 <loc>https://kuros.in/random-jpa/</loc>

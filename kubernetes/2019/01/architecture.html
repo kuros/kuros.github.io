@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Kubernetes(k8s) Basics | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Kubernetes(k8s) Basics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn the basics of k8s with simple examples" />
+<meta property="og:description" content="Learn the basics of k8s with simple examples" />
+<link rel="canonical" href="https://kuros.in/kubernetes/2019/01/architecture" />
+<meta property="og:url" content="https://kuros.in/kubernetes/2019/01/architecture" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-29T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Learn the basics of k8s with simple examples","@type":"BlogPosting","url":"https://kuros.in/kubernetes/2019/01/architecture","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Kubernetes(k8s) Basics","dateModified":"2019-01-29T00:00:00+00:00","datePublished":"2019-01-29T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/kubernetes/2019/01/architecture"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4166026699724584",
+                enable_page_level_ads: true
+            });
+        </script>
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<!--<span class="dark-logo"><img width="104" height="38" src="/images/logo/dark.svg" alt="dark frisco logo"></span>-->
+						<!--<span class="light-logo"><img width="104" height="38" src="/images/logo/light.svg" alt="light frisco logo"></span>-->
+						<span class="dark-logo">Kuros.in</span>
+						<span class="light-logo">Kuros.in</span>
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>Kubernetes(k8s) Basics</h1>
+			<p class="subtext">Learn the basics of k8s with simple examples</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/kubernetes/">kubernetes</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		January 29, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>So we all have heard of docker, it has taken industry by a storm and completely changed the way application are deployed to servers, I mean having independent environment for every app is great, everyone loves it. But it also created challenges around managing deployments.</p>
+
+<p>Though there have been many container management tools such as Docker Swarm, CoreOs rkt, Mesos etc. But Kubernetes has emerged as favorite.</p>
+
+<p>Let take a look, what makes Kubernetes such an important player in recent times.</p>
+
+<p>If you are familiar with the basic nomenclature, you can skip this tutorial.</p>
+
+<h1 id="what-is-kubernetesk8s">What is Kubernetes(k8s)</h1>
+
+<p><a href="https://kubernetes.io/">Kubernetes (k8s)</a> is an open-source system for automating deployment, scaling, and management of containerized applications.</p>
+
+<p>Basically Kubernetes is a container orchestrator, that helps you with the deployment, lifecycle &amp; management of the container. It provides a set of services and deployment configuration for you to work with and hides all the complexity of infrastructure management such as cpu, memory, storage etc.</p>
+
+<p>K8s is directed towards reaching desired state, it could be deployment of set of webservices, database engines, caching solutions.</p>
+
+<h1 id="benefits-of-using-kubernetes">Benefits of using Kubernetes</h1>
+
+<p>Although there are many things to talk about, here are few main points I would like to mention.</p>
+<ul>
+  <li><strong>Speed of Deployment:</strong> Deployment on k8s is fast, I mean super fast. you provide the configuration, and it would bring all the application to the desired state.</li>
+  <li><strong>Version Management:</strong> Have you had troubles, deploying new version of your app to server, k8s helps you do that simply without any downtime, and you can revert to your original state if anything goes wrong, almost instantly.</li>
+  <li><strong>Ability to recover:</strong> If anything goes wrong k8s engine takes care of bringing back to the desired state, for example, if you wanted 3 instances of your service to be running at all times, and something goes wrong and instance is down, k8s would start a new instance so at the end of the day, you will have your application up &amp; running all the time.</li>
+  <li><strong>Hides complexity of cluster</strong>: Setting up application cluster is a big pain for devops, but with k8s, its very easy.</li>
+</ul>
+
+<h1 id="operating-principles">Operating principles</h1>
+
+<p>So k8s works on a very simple principle, always maintain the desired state.You provide a <em>desired state config</em>, and k8s will download image, run it, and will maintain the required number of instances.</p>
+
+<p>It provides <em>controllers(Control Loops)</em>, which has sole purpose to monitor and bring container to its desired state.</p>
+
+<p>There is an <em>api server</em>, which is the only way to communicate with k8s cluster, its core hub of all the information. You can interact with api server using rest api call or a command line tool called kubectl.</p>
+
+<h1 id="building-blocks-key-players">Building Blocks (Key Players)</h1>
+
+<p>Lets take a look at some of the building blocks of k8s:</p>
+<ul>
+  <li>Pods</li>
+  <li>Controllers</li>
+  <li>Services</li>
+  <li>Storage</li>
+</ul>
+
+<h2 id="pods">Pods</h2>
+<p>Pod forms the basic unit. It can contain one or more containers running inside it. Pods are ephemeral, i.e. once a pod is dead its not resurrected, if k8s find that the pod has died, it will start a complete new pod.</p>
+
+<p>Pods ensures the atomicity, means either the pod is available or not its not, there is no state as starting or dying, its simply up or down. Each pod maintains the health of all the apps, if any app is down, k8s drops the whole pod and starts a completely new one.</p>
+
+<h2 id="controllers">Controllers</h2>
+
+<p>Controllers are responsible for maintaining the state of the pods, number of replica’s, deployment state etc. It will monitor the state of Pod and also the health of all the apps inside a pod. Controllers also manages the change in replica-sets &amp; container versions.</p>
+
+<h2 id="services">Services</h2>
+
+<p>Services adds persistency to k8s engine, it forms the networking abstraction to pods. For e.g. if a pod dies and a new pod is generated in its place, it IP/hostname etc might change, so k8s service forms the facade, and takes care of IP &amp; DNS, it dynamically updates its mapping.</p>
+
+<p>Next important task, these services take care are scalability and load balancing.</p>
+
+<h2 id="storage">Storage</h2>
+
+<p>In the earlier version of k8s, volume was directly mapped to the containers. This created a very tight coupling between volume &amp; pods.</p>
+
+<p>But now k8s engine has come up with the concept of <strong>Persisted Volumes</strong>. It is defined at the cluster level, so whenever a new pod comes up, it claims the desired store required by it from this Persisted Volume, this is called Persisted Volume Chains.</p>
+
+<h1 id="kubernetes-cluster">Kubernetes Cluster</h1>
+<p>Now that we have seen basic building blocks, lets focus on how the k8s cluster is organized. Each custer comprises of mainly three components.</p>
+
+<ul>
+  <li>Master</li>
+  <li>Nodes</li>
+  <li>Scheduled/Ad-on services</li>
+</ul>
+
+<h2 id="master">Master</h2>
+<p>Only a single master can reside in one cluster. Master is one which co-ordinates cluster operation, monitoring and scheduling. It is the primary data access point, and provides administration of the cluster.</p>
+
+<p>A master is composed of the following components:</p>
+<ul>
+  <li>Api Server</li>
+  <li>Cluster Store</li>
+  <li>Scheduler</li>
+  <li>Controller Management</li>
+</ul>
+
+<h3 id="api-server">Api Server</h3>
+
+<p>Api Server is the communication hub of the cluster, it completely stateless, and all the configuration are passed into k8s cluster through api server. Its a simple restful endpoint, whenever it receives the request, it validates and passes the information to <em>Cluster Store(etcd)</em></p>
+
+<h3 id="cluster-store">Cluster Store</h3>
+<p>As the name suggests, a Cluster Store, persists the values as key-value pair in etcd. Cluster Store also proves watcher on keys for any change in value.</p>
+
+<h3 id="scheduler">Scheduler</h3>
+<p>The Job of scheduler is to select nodes based on prod requirement, suppose a pod requires 4gb ram to run, scheduler will decide on which is the best suited node for it within the multi node cluster.</p>
+
+<p>It also keeps a watch on <em>Api Server</em> for any changes and drives the current state to the desire state. It evaluates the resources available on nodes, and schedules the pod accordingly, we can also provide constraints, that I want two pods to be deployed on same node or different nodes.</p>
+
+<h3 id="controller-management">Controller Management</h3>
+<p>It manages the lifecycle of Controllers, and drives the current state to the desired state. Runs the controller loops (mentioned above), watches and update the api server. It also maintains the replica set.</p>
+
+<h1 id="kubectl">kubectl</h1>
+<p>Although kubectl is not the part of master, but it is the command line tool which talks with the api server (connects to master).</p>
+
+
+
+			<div class="blog-navigation">
+				
+					
+
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.webp')"></div>
+				<p class="blurb">I like long drives, bike trip & good food.</p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/kubernetes/2019/01/architecture";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/kubernetes/2019/01/architecture"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>
