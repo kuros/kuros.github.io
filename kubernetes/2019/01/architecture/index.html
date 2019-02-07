@@ -12,15 +12,15 @@
 <meta name="generator" content="Jekyll v3.8.5" />
 <meta property="og:title" content="Kubernetes(k8s) Basics" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Learn the basics of k8s with simple examples" />
-<meta property="og:description" content="Learn the basics of k8s with simple examples" />
+<meta name="description" content="Learn the basics of k8s architecture, we will look at the basic building blocks, pod, nodes, kube-proxy, kubectl etc." />
+<meta property="og:description" content="Learn the basics of k8s architecture, we will look at the basic building blocks, pod, nodes, kube-proxy, kubectl etc." />
 <link rel="canonical" href="https://kuros.in/kubernetes/2019/01/architecture/" />
 <meta property="og:url" content="https://kuros.in/kubernetes/2019/01/architecture/" />
 <meta property="og:site_name" content="Kuros.in" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-29T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Learn the basics of k8s with simple examples","@type":"BlogPosting","url":"https://kuros.in/kubernetes/2019/01/architecture/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Kubernetes(k8s) Basics","dateModified":"2019-01-29T00:00:00+00:00","datePublished":"2019-01-29T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/kubernetes/2019/01/architecture/"},"@context":"http://schema.org"}</script>
+{"description":"Learn the basics of k8s architecture, we will look at the basic building blocks, pod, nodes, kube-proxy, kubectl etc.","@type":"BlogPosting","url":"https://kuros.in/kubernetes/2019/01/architecture/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Kubernetes(k8s) Basics","dateModified":"2019-01-29T00:00:00+00:00","datePublished":"2019-01-29T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/kubernetes/2019/01/architecture/"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -103,7 +103,7 @@
 	<div class="inner-hero text-container">
 		<div class="hero-text-container">
 			<h1>Kubernetes(k8s) Basics</h1>
-			<p class="subtext">Learn the basics of k8s with simple examples</p>
+			<p class="subtext">Learn the basics of k8s architecture, we will look at the basic building blocks, pod, nodes, kube-proxy, kubectl etc.</p>
 		</div>
 	</div>
 </section>
@@ -162,12 +162,8 @@
 <h1 id="building-blocks-key-players">Building Blocks (Key Players)</h1>
 
 <p>Lets take a look at some of the building blocks of k8s:</p>
-<ul>
-  <li>Pods</li>
-  <li>Controllers</li>
-  <li>Services</li>
-  <li>Storage</li>
-</ul>
+
+<p><img alt="building-blocks" src="/images/2019/k8s/blocks.webp" lazyload="" class="img-center" /></p>
 
 <h2 id="pods">Pods</h2>
 <p>Pod forms the basic unit. It can contain one or more containers running inside it. Pods are ephemeral, i.e. once a pod is dead its not resurrected, if k8s find that the pod has died, it will start a complete new pod.</p>
@@ -193,22 +189,14 @@
 <h1 id="kubernetes-cluster">Kubernetes Cluster</h1>
 <p>Now that we have seen basic building blocks, lets focus on how the k8s cluster is organized. Each custer comprises of mainly three components.</p>
 
-<ul>
-  <li>Master</li>
-  <li>Nodes</li>
-  <li>Scheduled/Ad-on services</li>
-</ul>
+<p><img alt="cluster" src="/images/2019/k8s/k8s-cluster.webp" lazyload="" class="img-center" /></p>
 
 <h2 id="master">Master</h2>
 <p>Only a single master can reside in one cluster. Master is one which co-ordinates cluster operation, monitoring and scheduling. It is the primary data access point, and provides administration of the cluster.</p>
 
 <p>A master is composed of the following components:</p>
-<ul>
-  <li>Api Server</li>
-  <li>Cluster Store</li>
-  <li>Scheduler</li>
-  <li>Controller Management</li>
-</ul>
+
+<p><img alt="master" src="/images/2019/k8s/master.webp" lazyload="" width="100%" /></p>
 
 <h3 id="api-server">Api Server</h3>
 
@@ -225,8 +213,51 @@
 <h3 id="controller-management">Controller Management</h3>
 <p>It manages the lifecycle of Controllers, and drives the current state to the desired state. Runs the controller loops (mentioned above), watches and update the api server. It also maintains the replica set.</p>
 
-<h1 id="kubectl">kubectl</h1>
+<h3 id="kubectl">kubectl</h3>
 <p>Although kubectl is not the part of master, but it is the command line tool which talks with the api server (connects to master).</p>
+
+<h2 id="node">Node</h2>
+
+<p>Node is the place where the pods run, its the responsibility of node to monitor pods state as well as application health, the main component that runs on all the nodes are kubelet, kubeproxy, container-runtime &amp; networking.</p>
+
+<p><img alt="Nodes" src="/images/2019/k8s/nodes.webp" lazyload="" width="100%" /></p>
+
+<p>We will take a closer look at the features of each component in detail.</p>
+
+<h3 id="kubelet">Kubelet</h3>
+
+<p>Kubelet handles the pod lifecycle, reports the node &amp; pods state, monitors api server for any changes and keeps probing the pod for liveliness.</p>
+
+<h3 id="kube-proxy">Kube-proxy</h3>
+<p>Kube-proxy takes care of the networking, inside a node, a pod can die and new pod is generated in place, somehow the k8s needs to mechanism to connect to these newly connected pods, and direct the traffic to it. This is done by Kube-proxy.</p>
+
+<p>Kube-Proxy maintains an ip-table, mapping of all the ip’s of respective pods, when a pod is added or deleted, this ip-table is updated by kube-proxy.</p>
+
+<p>In addition to this kube-proxy is also manages routing and load balancing between the pods. It also listens to api-server in any change to the configuration.</p>
+
+<h3 id="container-runtime">Container-runtime</h3>
+<p>This the actual runtime environment, it will download and run the images. By default, k8s support Docker as container, but you can use any container implementation which implements Container Runtime Interface.</p>
+
+<h1 id="networking">Networking</h1>
+
+<p>Before we conclude, let see how k8s manages the networking. There are few rules to which k8s adhere:</p>
+<ol>
+  <li>No node should implement Network Address Translation (NAT).</li>
+  <li>All Pods should communicate with all the nodes in cluster.</li>
+  <li>All the nodes should communicate with all the pods in cluster.</li>
+</ol>
+
+<p>K8s uses localhost as hostname to communicate between apps within the same pod.</p>
+
+<p>K8s uses bridge network to communicate between different pods but within same node.</p>
+
+<p>k8s uses IP’s to communicate between different nodes within a cluster.</p>
+
+<p>Finally, k8s uses kube-proxy to connect cluster with external service.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>So, till now we have seen basic building blocks for kubernetes, we spent time getting to know main keywords. Next we will be looking at how to install kubernetes.</p>
 
 
 
