@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-02-11T19:23:54+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Running First Kubernetes Pod on Mac (Windows)</title><link href="https://kuros.in/kubernetes/2019/02/first-pod/" rel="alternate" type="text/html" title="Running First Kubernetes Pod on Mac (Windows)" /><published>2019-02-08T00:00:00+00:00</published><updated>2019-02-08T00:00:00+00:00</updated><id>https://kuros.in/kubernetes/2019/02/first-pod</id><content type="html" xml:base="https://kuros.in/kubernetes/2019/02/first-pod/">&lt;p&gt;All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-02-11T19:28:58+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Running First Kubernetes Pod on Mac (Windows)</title><link href="https://kuros.in/kubernetes/2019/02/first-pod/" rel="alternate" type="text/html" title="Running First Kubernetes Pod on Mac (Windows)" /><published>2019-02-08T00:00:00+00:00</published><updated>2019-02-08T00:00:00+00:00</updated><id>https://kuros.in/kubernetes/2019/02/first-pod</id><content type="html" xml:base="https://kuros.in/kubernetes/2019/02/first-pod/">&lt;p&gt;All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The minimum docker desktop version required for kubernetes is &lt;strong&gt;18.09.1&lt;/strong&gt;&lt;/p&gt;
 
@@ -1694,7 +1694,7 @@ Employee 2 name :: Mark, Age :: 20
 
 &lt;p&gt;A map does not allow duplicate keys, in other words, the keys are unique. Each key maps to one value at the most, implementing what is called a single-valued map.&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;collection&quot; src=&quot;/images/loading.gif&quot; data-src=&quot;/images/2019/java/map.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;collection&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/java/map.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;NOTE:&lt;/strong&gt; Both the keys and the values must be objects. This means that primitive values must be wrapped in their respective wrapper objects, if they are to be put in a map.&lt;/p&gt;
 
@@ -1741,7 +1741,7 @@ Employee 2 name :: Mark, Age :: 20
 
 &lt;p&gt;The HashMap gives you an unsorted, unordered Map. When you need a Map and you don’t care about the order (when you iterate through it), then HashMap is the way to go; the other maps add a little more overhead. Where the keys land in the Map is based on the key’s hashcode, so, like HashSet, the more efficient your hashCode() implementation, the better access performance you’ll get. HashMap allows one null key and multiple null values in a collection.&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;collection&quot; src=&quot;/images/loading.gif&quot; data-src=&quot;/images/2019/java/map-2.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;collection&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/java/map-2.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
@@ -1800,7 +1800,7 @@ The value at 3 is Three
 &lt;h1 id=&quot;treemap&quot;&gt;TreeMap&lt;/h1&gt;
 &lt;p&gt;You can probably guess by now that a TreeMap is a sorted Map. And you already know that by default, this means “sorted by the natural order of the elements.” Like TreeSet, TreeMap lets you define a custom sort order (via a Comparable or Comparator) when you construct a TreeMap, that specifies how the elements should be compared to one another when they’re being ordered.&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;collection&quot; src=&quot;/images/loading.gif&quot; data-src=&quot;/images/2019/java/t-map.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;collection&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/java/t-map.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.HashMap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
