@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Comparable &amp; Comparator | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Comparable &amp; Comparator" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="While writing the object-oriented programs, comparison of two instances of the same class is often required. Once instances are comparable, we can sort them in any order. Comparable interface is defined in java.lang package and is used to define the natural sort order of a class. The interface java.lang.Comparator defines an auxiliary sort order for a class." />
+<meta property="og:description" content="While writing the object-oriented programs, comparison of two instances of the same class is often required. Once instances are comparable, we can sort them in any order. Comparable interface is defined in java.lang package and is used to define the natural sort order of a class. The interface java.lang.Comparator defines an auxiliary sort order for a class." />
+<link rel="canonical" href="https://kuros.in/java/2019/01/6-collection/" />
+<meta property="og:url" content="https://kuros.in/java/2019/01/6-collection/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-01-17T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"While writing the object-oriented programs, comparison of two instances of the same class is often required. Once instances are comparable, we can sort them in any order. Comparable interface is defined in java.lang package and is used to define the natural sort order of a class. The interface java.lang.Comparator defines an auxiliary sort order for a class.","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/6-collection/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Comparable &amp; Comparator","dateModified":"2019-01-17T00:00:00+00:00","datePublished":"2019-01-17T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/6-collection/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/touch-icon.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4166026699724584",
+                enable_page_level_ads: true
+            });
+        </script>
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<!--<span class="dark-logo"><img width="104" height="38" src="/images/logo/dark.svg" alt="dark frisco logo"></span>-->
+						<!--<span class="light-logo"><img width="104" height="38" src="/images/logo/light.svg" alt="light frisco logo"></span>-->
+						<span class="dark-logo">Kuros.in</span>
+						<span class="light-logo">Kuros.in</span>
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>Comparable & Comparator</h1>
+			<p class="subtext"></p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/java/">java</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		January 17, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>While writing the object-oriented programs, comparison of two instances of the same class is often required. Once instances are comparable, we can sort them in any order. Comparable interface is defined in java.lang package and is used to define the natural sort order of a class. The interface java.lang.Comparator defines an auxiliary sort order for a class.</p>
+
+<p>Comparable interface can be implemented by implementing only one method: compareTo. Implement the existing class by defining the the natural order of that class. compareTo() method compares the two object of same type and returns a numerical result based on the comparison. If the result is negative, then the object sorts less than the other; if 0, the two are equal, and if positive, this object sorts greater than the other. To translate this into boolean, simply performs object1.compareTo(object2) <op> object,  where op is one of &lt;, &lt;=, =, !=, &gt;, or &gt;=.</op></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.TreeSet</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="kd">implements</span> <span class="n">Comparable</span> <span class="o">{</span>
+  <span class="n">String</span> <span class="n">firstName</span><span class="o">,</span> <span class="n">lastName</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="n">String</span> <span class="n">f</span><span class="o">,</span> <span class="n">String</span> <span class="n">l</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">f</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">lastName</span> <span class="o">=</span> <span class="n">l</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">firstName</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">lastName</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="s">"\n[First Name="</span> <span class="o">+</span> <span class="n">firstName</span> <span class="o">+</span> <span class="s">", Last name="</span> <span class="o">+</span> <span class="n">lastName</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compareTo</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Person</span> <span class="n">emp</span> <span class="o">=</span> <span class="o">(</span><span class="n">Person</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">deptComp</span> <span class="o">=</span> <span class="n">firstName</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">emp</span><span class="o">.</span><span class="na">getFirstName</span><span class="o">());</span>
+
+    <span class="k">return</span> <span class="o">((</span><span class="n">deptComp</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">?</span> <span class="n">lastName</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">emp</span><span class="o">.</span><span class="na">getLastName</span><span class="o">())</span>
+        <span class="o">:</span> <span class="n">deptComp</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(!(</span><span class="n">obj</span> <span class="k">instanceof</span> <span class="n">Person</span><span class="o">))</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">Person</span> <span class="n">emp</span> <span class="o">=</span> <span class="o">(</span><span class="n">Person</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
+    <span class="k">return</span> <span class="n">firstName</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">emp</span><span class="o">.</span><span class="na">getFirstName</span><span class="o">())</span>
+        <span class="o">&amp;&amp;</span> <span class="n">lastName</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">emp</span><span class="o">.</span><span class="na">getLastName</span><span class="o">());</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
+    <span class="n">Person</span> <span class="n">emps</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span> <span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">"Debbie"</span><span class="o">,</span> <span class="s">"Deg"</span><span class="o">),</span>
+        <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Geri"</span><span class="o">,</span> <span class="s">"Gradus"</span><span class="o">),</span> <span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">"Ester"</span><span class="o">,</span> <span class="s">"Exy"</span><span class="o">),</span>
+        <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Mary"</span><span class="o">,</span> <span class="s">"Meas"</span><span class="o">),</span>
+        <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Anastasia"</span><span class="o">,</span> <span class="s">"Fredo"</span><span class="o">)</span> <span class="o">};</span>
+    <span class="n">Set</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">emps</span><span class="o">));</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[
+[First Name=Anastasia, Last name=Fredo], 
+[First Name=Debbie, Last name=Deg], 
+[First Name=Ester, Last name=Exy], 
+[First Name=Geri, Last name=Gradus], 
+[First Name=Mary, Last name=Meas]]
+</code></pre></div></div>
+
+<h1 id="comparator-interface">Comparator Interface</h1>
+
+<p>While you were looking up the Collections.sort() method you might have noticed that there is an overloaded version of sort() that takes a List, AND something called a Comparator. The Comparator interface gives you the capability to sort a given collection any number of different ways. The other handy thing about the Comparator interface is that you can use it to sort instances of any class—even classes you can’t modify. The Comparator interface is also very easy to implement, having only one method, compare ().</p>
+
+<p>The compare () method returns an int with the following characteristics:</p>
+
+<ul>
+  <li>negative If thisObject &lt; anotherObject</li>
+  <li>zero If thisObject == anotherObject</li>
+  <li>positive If thisObject &gt; anotherObject</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">class</span> <span class="nc">Employee</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+	<span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+
+		<span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">age</span><span class="o">;</span>
+
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+
+		<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+
+		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">;</span>
+
+	<span class="o">}</span>
+
+<span class="o">}</span>
+
+<span class="cm">/*
+ * 
+ * User defined java comaprator.
+ * 
+ * To create custom java comparator Implement Comparator interface and
+ * 
+ * define compare method.
+ * 
+ * The below given comparator compares employees on the basis of their age.
+ */</span>
+
+<span class="kd">class</span> <span class="nc">AgeComparator</span> <span class="kd">implements</span> <span class="n">Comparator</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Object</span> <span class="n">emp1</span><span class="o">,</span> <span class="n">Object</span> <span class="n">emp2</span><span class="o">)</span> <span class="o">{</span>
+
+		<span class="c1">// parameter are of type Object, so we have to downcast it to Employee</span>
+		<span class="c1">// objects</span>
+
+		<span class="kt">int</span> <span class="n">emp1Age</span> <span class="o">=</span> <span class="o">((</span><span class="n">Employee</span><span class="o">)</span> <span class="n">emp1</span><span class="o">).</span><span class="na">getAge</span><span class="o">();</span>
+
+		<span class="kt">int</span> <span class="n">emp2Age</span> <span class="o">=</span> <span class="o">((</span><span class="n">Employee</span><span class="o">)</span> <span class="n">emp2</span><span class="o">).</span><span class="na">getAge</span><span class="o">();</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">emp1Age</span> <span class="o">&gt;</span> <span class="n">emp2Age</span><span class="o">)</span>
+
+			<span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+
+		<span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">emp1Age</span> <span class="o">&lt;</span> <span class="n">emp2Age</span><span class="o">)</span>
+
+			<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+
+		<span class="k">else</span>
+
+			<span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+
+	<span class="o">}</span>
+
+<span class="o">}</span>
+
+<span class="cm">/*
+ * 
+ * The below given comparator compares employees on the basis of their name.
+ */</span>
+
+<span class="kd">class</span> <span class="nc">NameComparator</span> <span class="kd">implements</span> <span class="n">Comparator</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Object</span> <span class="n">emp1</span><span class="o">,</span> <span class="n">Object</span> <span class="n">emp2</span><span class="o">)</span> <span class="o">{</span>
+
+		<span class="c1">// parameter are of type Object, so we have to downcast it to Employee</span>
+		<span class="c1">// objects</span>
+
+		<span class="n">String</span> <span class="n">emp1Name</span> <span class="o">=</span> <span class="o">((</span><span class="n">Employee</span><span class="o">)</span> <span class="n">emp1</span><span class="o">).</span><span class="na">getName</span><span class="o">();</span>
+
+		<span class="n">String</span> <span class="n">emp2Name</span> <span class="o">=</span> <span class="o">((</span><span class="n">Employee</span><span class="o">)</span> <span class="n">emp2</span><span class="o">).</span><span class="na">getName</span><span class="o">();</span>
+
+		<span class="c1">// uses compareTo method of String class to compare names of the</span>
+		<span class="c1">// employee</span>
+
+		<span class="k">return</span> <span class="n">emp1Name</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">emp2Name</span><span class="o">);</span>
+
+	<span class="o">}</span>
+
+<span class="o">}</span>
+
+<span class="cm">/*
+ * 
+ * This Java comparator example compares employees on the basis of
+ * 
+ * their age and name and sort it in that order.
+ */</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
+
+		<span class="cm">/*
+		 * 
+		 * Employee array which will hold employees
+		 */</span>
+
+		<span class="n">Employee</span> <span class="n">employee</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Employee</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
+
+		<span class="c1">// set different attributes of the individual employee.</span>
+
+		<span class="n">employee</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Employee</span><span class="o">();</span>
+
+		<span class="n">employee</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">setAge</span><span class="o">(</span><span class="mi">40</span><span class="o">);</span>
+
+		<span class="n">employee</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">setName</span><span class="o">(</span><span class="s">"Joe"</span><span class="o">);</span>
+
+		<span class="n">employee</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Employee</span><span class="o">();</span>
+
+		<span class="n">employee</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="na">setAge</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+
+		<span class="n">employee</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="na">setName</span><span class="o">(</span><span class="s">"Mark"</span><span class="o">);</span>
+
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Order of employee before sorting is"</span><span class="o">);</span>
+
+		<span class="c1">// print array as is.</span>
+
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">employee</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
+					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">", Age :: "</span>
+					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getAge</span><span class="o">());</span>
+
+		<span class="o">}</span>
+
+		<span class="cm">/*
+		 * 
+		 * Sorting array on the basis of employee age by passing AgeComparator
+		 */</span>
+
+		<span class="n">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">employee</span><span class="o">,</span> <span class="k">new</span> <span class="n">AgeComparator</span><span class="o">());</span>
+
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span>
+				<span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"\n\nOrder of employee after sorting by employee age is"</span><span class="o">);</span>
+
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">employee</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
+					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">", Age :: "</span>
+					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getAge</span><span class="o">());</span>
+
+		<span class="o">}</span>
+
+		<span class="cm">/*
+		 * 
+		 * Sorting array on the basis of employee Name by passing NameComparator
+		 */</span>
+
+		<span class="n">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">employee</span><span class="o">,</span> <span class="k">new</span> <span class="n">NameComparator</span><span class="o">());</span>
+
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span>
+				<span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"\n\nOrder of employee after sorting by employee name is"</span><span class="o">);</span>
+
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">employee</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+
+			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
+					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">", Age :: "</span>
+					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getAge</span><span class="o">());</span>
+
+		<span class="o">}</span>
+
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+<p>In the above code we have declared a class Employee with two variables name and age. Now we will sort the list of employee depending on his name and age for which we used two classes NameComparator and AgeComparator respectively.</p>
+
+<p>Let us take AgeComparator to understand how the comparator works. For a class to be Comparator, it must implement comparator interface. In this class we override the compareTo(object1, object2) method, So we get the Employee age from the object1 and object2. And we returned the values as -1, 0 or +1 depending on the criteria.</p>
+
+<p>Once we have our comparator ready we use this comparator and pass it through the Arrays.sort() method. Once the sorting is done the original list gets sorted according to the criteria.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Order of employee before sorting is
+Employee 1 name :: Joe, Age :: 40
+Employee 2 name :: Mark, Age :: 20
+
+
+Order of employee after sorting by employee age is
+Employee 1 name :: Mark, Age :: 20
+Employee 2 name :: Joe, Age :: 40
+
+
+Order of employee after sorting by employee name is
+Employee 1 name :: Joe, Age :: 40
+Employee 2 name :: Mark, Age :: 20
+</code></pre></div></div>
+
+<h1 id="comparator-vs-comparable">Comparator vs. Comparable</h1>
+
+<p>You say class is Comparable so it indicates that this class is self-comparable, or it is able-to-compare-it-self to some other object. It is self compared to or as its method says compareTo(Object o).</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Comparable (able-to-compares-itself) uses compareTo(Object o)
+</code></pre></div></div>
+
+<p>Secondly, you say class is Comparator because it is comparing objects of other class. So what it do is to, as its method says, compare(Object o1, Object o2). Remember that Comparator itself is not compared to anything, it just compare(…)-s two objects of some other class.</p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Comparator ( compares two other objects)uses compare(Object o1, Object o2)
+</code></pre></div></div>
+
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/java/2019/01/5-collection/">&laquo; Map collection</a>
+
+					
+
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.webp')"></div>
+				<p class="blurb">I like long drives, bike trip & good food.</p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/java/2019/01/6-collection/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/java/2019/01/6-collection"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>

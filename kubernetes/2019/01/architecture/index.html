@@ -163,7 +163,7 @@
 
 <p>Lets take a look at some of the building blocks of k8s:</p>
 
-<p><img alt="building-blocks" src="/images/2019/k8s/blocks.webp" lazyload="" class="img-center" /></p>
+<p><img alt="building-blocks" src="/images/loader.gif" data-src="/images/2019/k8s/blocks.webp" class="lazy img-center" /></p>
 
 <h2 id="pods">Pods</h2>
 <p>Pod forms the basic unit. It can contain one or more containers running inside it. Pods are ephemeral, i.e. once a pod is dead its not resurrected, if k8s find that the pod has died, it will start a complete new pod.</p>
@@ -189,14 +189,14 @@
 <h1 id="kubernetes-cluster">Kubernetes Cluster</h1>
 <p>Now that we have seen basic building blocks, lets focus on how the k8s cluster is organized. Each custer comprises of mainly three components.</p>
 
-<p><img alt="cluster" src="/images/2019/k8s/k8s-cluster.webp" lazyload="" class="img-center" /></p>
+<p><img alt="cluster" src="/images/loader.gif" data-src="/images/2019/k8s/k8s-cluster.webp" class="lazy img-center" /></p>
 
 <h2 id="master">Master</h2>
 <p>Only a single master can reside in one cluster. Master is one which co-ordinates cluster operation, monitoring and scheduling. It is the primary data access point, and provides administration of the cluster.</p>
 
 <p>A master is composed of the following components:</p>
 
-<p><img alt="master" src="/images/2019/k8s/master.webp" lazyload="" width="100%" /></p>
+<p><img alt="master" src="/images/loader.gif" data-src="/images/2019/k8s/master.webp" class="lazy" width="100%" /></p>
 
 <h3 id="api-server">Api Server</h3>
 
@@ -220,7 +220,7 @@
 
 <p>Node is the place where the pods run, its the responsibility of node to monitor pods state as well as application health, the main component that runs on all the nodes are kubelet, kubeproxy, container-runtime &amp; networking.</p>
 
-<p><img alt="Nodes" src="/images/2019/k8s/nodes.webp" lazyload="" width="100%" /></p>
+<p><img alt="Nodes" src="/images/loader.gif" data-src="/images/2019/k8s/nodes.webp" class="lazy" width="100%" /></p>
 
 <p>We will take a closer look at the features of each component in detail.</p>
 
