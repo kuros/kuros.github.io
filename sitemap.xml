@@ -221,6 +221,10 @@
 <lastmod>2019-02-08T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/react/2019/03/react-with-typescript/</loc>
+<lastmod>2019-03-17T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
@@ -258,6 +262,9 @@
 </url>
 <url>
 <loc>https://kuros.in/category/kubernetes/</loc>
+</url>
+<url>
+<loc>https://kuros.in/category/react/</loc>
 </url>
 <url>
 <loc>https://kuros.in/random-jpa/</loc>
