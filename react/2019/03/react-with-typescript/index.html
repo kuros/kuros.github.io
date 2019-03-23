@@ -227,14 +227,14 @@ To create a production build, use npm run build.
   <li>
     <p><em>/src/components/about/AboutPage.tsx</em></p>
 
-    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import React, {FunctionComponent} from "react";
+    <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">FunctionComponent</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react"</span><span class="p">;</span>
     
     
-const AboutPage: FunctionComponent = () =&gt; {
-    return (<span class="nt">&lt;div&gt;</span>This is the about Page <span class="nt">&lt;/div&gt;</span>)
-};
+<span class="kd">const</span> <span class="nx">AboutPage</span><span class="p">:</span> <span class="nx">FunctionComponent</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">(&lt;</span><span class="nt">div</span><span class="p">&gt;</span>This is the about Page <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;)</span>
+<span class="p">};</span>
     
-export default AboutPage;
+<span class="k">export</span> <span class="k">default</span> <span class="nx">AboutPage</span><span class="p">;</span>
 </code></pre></div>    </div>
 
     <p>Here We are creating AboutPage as a type of FunctionComponent, FunctionComponent is special type of component which do not maintain state. The compiled js file is very lightweight, so we must try to use FunctionComponent as much as possible.</p>
@@ -243,53 +243,80 @@ export default AboutPage;
   </li>
   <li>
     <p><em>/src/components/home/HomePage.tsx</em></p>
-    <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import React, {Component} from "react";
-import {Link} from "react-router-dom";
+    <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Link</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-router-dom"</span><span class="p">;</span>
    
-class HomePage extends Component {
+<span class="kd">class</span> <span class="nx">HomePage</span> <span class="kd">extends</span> <span class="nx">Component</span> <span class="p">{</span>
    
-    render() {
-        return (
-            <span class="nt">&lt;div</span> <span class="na">className=</span><span class="s">'container-fluid'</span><span class="nt">&gt;</span>
-                <span class="nt">&lt;div</span> <span class="na">className=</span><span class="s">'jumbotron'</span><span class="nt">&gt;</span>
-                    <span class="nt">&lt;p&gt;</span>Welcome to your first React App<span class="nt">&lt;/p&gt;</span>
-                    <span class="nt">&lt;Link</span> <span class="na">to=</span><span class="s">'about'</span>  <span class="na">className=</span><span class="s">"btn btn-primary btn-lg"</span> <span class="nt">&gt;</span>More<span class="nt">&lt;/Link&gt;</span>
-                <span class="nt">&lt;/div&gt;</span>
-            <span class="nt">&lt;/div&gt;</span>
-        );
-    }
-}
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className=</span><span class="s1">'container-fluid'</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className=</span><span class="s1">'jumbotron'</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Welcome to your first React App<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Link</span> <span class="na">to=</span><span class="s1">'about'</span>  <span class="na">className=</span><span class="s2">"btn btn-primary btn-lg"</span> <span class="p">&gt;</span>More<span class="p">&lt;/</span><span class="nc">Link</span><span class="p">&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
    
-export default HomePage;
+<span class="k">export</span> <span class="k">default</span> <span class="nx">HomePage</span><span class="p">;</span>
 </code></pre></div>    </div>
 
     <p>Whereas here we are using normal Component(this will maintain state). Also we are adding a Link to navigate to about page.</p>
   </li>
 </ol>
 
+<h1 id="routing">Routing</h1>
+
 <p>We have added both pages, now time to integrate them with our app. Earlier we added package for react-router-dom, it provides inbuilt components to care of routing.</p>
 
-<p>We will modify our <em>App.tsx</em> and replace it with our routing code:</p>
+<p>Normally, within an application your pages should be redirecting to each other, so its always a good idea to wrap your root component for routing.</p>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import React, {Component} from 'react';
-import './App.css';
-import HomePage from "./components/home/HomePage";
-import {BrowserRouter, Route} from "react-router-dom";
-import AboutPage from "./components/about/AboutPage";
-import 'bootstrap/dist/css/bootstrap.min.css';
+<p>So we will modify the <em>index.tsx</em>, and wrap the App Component with BrowserRouter provided in react-router-dom.</p>
 
-class App extends Component {
-    render() {
-        return (
-            <span class="nt">&lt;BrowserRouter&gt;</span>
-                <span class="nt">&lt;Route</span> <span class="na">exact</span> <span class="na">path=</span><span class="s">'/'</span> <span class="na">component=</span><span class="s">{HomePage}/</span><span class="nt">&gt;</span>
-                <span class="nt">&lt;Route</span> <span class="na">path=</span><span class="s">'/about'</span> <span class="na">component=</span><span class="s">{AboutPage}/</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;/BrowserRouter&gt;</span>
-        );
-    }
-}
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ReactDOM</span> <span class="k">from</span> <span class="s1">'react-dom'</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./index.css'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">App</span> <span class="k">from</span> <span class="s1">'./App'</span><span class="p">;</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">serviceWorker</span> <span class="k">from</span> <span class="s1">'./serviceWorker'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">BrowserRouter</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-router-dom"</span><span class="p">;</span>
 
-export default App;
+<span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">BrowserRouter</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">App</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">BrowserRouter</span><span class="p">&gt;,</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'root'</span><span class="p">));</span>
+
+<span class="c1">// If you want your app to work offline and load faster, you can change</span>
+<span class="c1">// unregister() to register() below. Note this comes with some pitfalls.</span>
+<span class="c1">// Learn more about service workers: https://bit.ly/CRA-PWA</span>
+<span class="nx">serviceWorker</span><span class="p">.</span><span class="nx">unregister</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Next we will modify our <em>App.tsx</em> to keep our routing urls:</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="k">from</span> <span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./App.css'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">HomePage</span> <span class="k">from</span> <span class="s2">"./components/home/HomePage"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Route</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-router-dom"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">AboutPage</span> <span class="k">from</span> <span class="s2">"./components/about/AboutPage"</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'bootstrap/dist/css/bootstrap.min.css'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Header</span> <span class="k">from</span> <span class="s2">"./components/common/Header"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">App</span> <span class="kd">extends</span> <span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className=</span><span class="s1">'container'</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Header</span><span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Route</span> <span class="nt">exact</span> <span class="na">path=</span><span class="s1">'/'</span> <span class="na">component=</span><span class="si">{</span><span class="nx">HomePage</span><span class="si">}</span><span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Route</span> <span class="na">path=</span><span class="s1">'/about'</span> <span class="na">component=</span><span class="si">{</span><span class="nx">AboutPage</span><span class="si">}</span><span class="p">/&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">App</span><span class="p">;</span>
 </code></pre></div></div>
 
 <p>Now lets review our application. It working as expected, and we can navigate to both the pages.</p>
@@ -302,22 +329,22 @@ export default App;
 
 <p>Our application is working fine, but it would be good if we can navigate easily, we will add Navigation Links. I like components to be organized so will create Header at location <em>/src/components/common/Header.tsx</em>.</p>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import React, {FunctionComponent} from "react";
-import {NavLink} from "react-router-dom";
-import './Header.css'
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">FunctionComponent</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">NavLink</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-router-dom"</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./Header.css'</span>
 
-const Header: FunctionComponent = () =&gt; {
+<span class="kd">const</span> <span class="nx">Header</span><span class="p">:</span> <span class="nx">FunctionComponent</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
 
-    const activeStyle = {color: '#F15B2A'}
-    return (
-        <span class="nt">&lt;nav</span> <span class="na">className=</span><span class="s">'space'</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;NavLink</span> <span class="na">to=</span><span class="s">'/'</span> <span class="na">activeStyle=</span><span class="s">{activeStyle}</span>  <span class="na">exact</span> <span class="nt">&gt;</span>Home<span class="nt">&lt;/NavLink&gt;</span> { " | "}
-            <span class="nt">&lt;NavLink</span> <span class="na">to=</span><span class="s">'/about'</span> <span class="na">activeStyle=</span><span class="s">{activeStyle}</span> <span class="nt">&gt;</span>About<span class="nt">&lt;/NavLink&gt;</span>
-        <span class="nt">&lt;/nav&gt;</span>
-    )
-};
+    <span class="kd">const</span> <span class="nx">activeStyle</span> <span class="o">=</span> <span class="p">{</span><span class="na">color</span><span class="p">:</span> <span class="s1">'#F15B2A'</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">nav</span> <span class="na">className=</span><span class="s1">'space'</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">NavLink</span> <span class="na">to=</span><span class="s1">'/'</span> <span class="na">activeStyle=</span><span class="si">{</span><span class="nx">activeStyle</span><span class="si">}</span>  <span class="nt">exact</span> <span class="p">&gt;</span>Home<span class="p">&lt;/</span><span class="nc">NavLink</span><span class="p">&gt;</span> <span class="si">{</span> <span class="s2">" | "</span><span class="si">}</span>
+            <span class="p">&lt;</span><span class="nc">NavLink</span> <span class="na">to=</span><span class="s1">'/about'</span> <span class="na">activeStyle=</span><span class="si">{</span><span class="nx">activeStyle</span><span class="si">}</span> <span class="p">&gt;</span>About<span class="p">&lt;/</span><span class="nc">NavLink</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">nav</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
 
-export default Header;
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Header</span><span class="p">;</span>
 </code></pre></div></div>
 
 <p>We also create a css file at location <em>/src/components/common/Header.css</em> and imported it the component.</p>
@@ -331,6 +358,116 @@ export default Header;
 <p>We have the Header ready, so lets access our first react simple application with routing.</p>
 
 <p><img alt="react first app home" src="/images/loader.gif" data-src="/images/2019/react/first-header.png" class="lazy img-center img-half" /></p>
+
+<p>But what happens when we try to access some wrong url in our application? We want to show a Page Not Found message to user, currently it just shows blank page.</p>
+
+<p>So lets create PageNotFound Component &amp; to achieve default routing we will use switch function provided in routing.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">FunctionComponent</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">NotFoundPage</span><span class="p">:</span><span class="nx">FunctionComponent</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>Oops Page Not found.<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">NotFoundPage</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>And modify the existing App.tsx as:</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="k">from</span> <span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./App.css'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">HomePage</span> <span class="k">from</span> <span class="s2">"./components/home/HomePage"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Route</span><span class="p">,</span> <span class="nx">Switch</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-router-dom"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">AboutPage</span> <span class="k">from</span> <span class="s2">"./components/about/AboutPage"</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'bootstrap/dist/css/bootstrap.min.css'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Header</span> <span class="k">from</span> <span class="s2">"./components/common/Header"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">NotFoundPage</span> <span class="k">from</span> <span class="s2">"./NotFoundPage"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">App</span> <span class="kd">extends</span> <span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className=</span><span class="s1">'container'</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Header</span><span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Switch</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Route</span> <span class="nt">exact</span> <span class="na">path=</span><span class="s1">'/'</span> <span class="na">component=</span><span class="si">{</span><span class="nx">HomePage</span><span class="si">}</span><span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Route</span> <span class="na">path=</span><span class="s1">'/about'</span> <span class="na">component=</span><span class="si">{</span><span class="nx">AboutPage</span><span class="si">}</span><span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Route</span> <span class="na">component=</span><span class="si">{</span><span class="nx">NotFoundPage</span><span class="si">}</span><span class="p">/&gt;</span>
+                <span class="p">&lt;/</span><span class="nc">Switch</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">App</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Before we close lets add another page BookPage.tsx, which will become our playground for redux integration.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/components/book/BookPage.tsx</span>
+
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">Component</span><span class="p">,</span> <span class="nx">ReactNode</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">BookPage</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="p">{</span>
+
+    <span class="nx">render</span><span class="p">():</span> <span class="nx">ReactNode</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>Books<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">BookPage</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/App.tsx</span>
+
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">Component</span><span class="p">}</span> <span class="k">from</span> <span class="s1">'react'</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./App.css'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">HomePage</span> <span class="k">from</span> <span class="s2">"./components/home/HomePage"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Route</span><span class="p">,</span> <span class="nx">Switch</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-router-dom"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">AboutPage</span> <span class="k">from</span> <span class="s2">"./components/about/AboutPage"</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'bootstrap/dist/css/bootstrap.min.css'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Header</span> <span class="k">from</span> <span class="s2">"./components/common/Header"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">NotFoundPage</span> <span class="k">from</span> <span class="s2">"./NotFoundPage"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">BookPage</span> <span class="k">from</span> <span class="s2">"./components/book/BookPage"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">App</span> <span class="kd">extends</span> <span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">div</span> <span class="na">className=</span><span class="s1">'container'</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Header</span><span class="p">/&gt;</span>
+                <span class="p">&lt;</span><span class="nc">Switch</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Route</span> <span class="nt">exact</span> <span class="na">path=</span><span class="s1">'/'</span> <span class="na">component=</span><span class="si">{</span><span class="nx">HomePage</span><span class="si">}</span><span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Route</span> <span class="na">path=</span><span class="s1">'/about'</span> <span class="na">component=</span><span class="si">{</span><span class="nx">AboutPage</span><span class="si">}</span><span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Route</span> <span class="na">path=</span><span class="s1">'/books'</span> <span class="na">component=</span><span class="si">{</span><span class="nx">BookPage</span><span class="si">}</span><span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nc">Route</span> <span class="na">component=</span><span class="si">{</span><span class="nx">NotFoundPage</span><span class="si">}</span><span class="p">/&gt;</span>
+                <span class="p">&lt;/</span><span class="nc">Switch</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">App</span><span class="p">;</span>
+</code></pre></div></div>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/components/common/Header.tsx</span>
+
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">FunctionComponent</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">NavLink</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-router-dom"</span><span class="p">;</span>
+<span class="k">import</span> <span class="s1">'./Header.css'</span>
+
+<span class="kd">const</span> <span class="nx">Header</span><span class="p">:</span> <span class="nx">FunctionComponent</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="kd">const</span> <span class="nx">activeStyle</span> <span class="o">=</span> <span class="p">{</span><span class="na">color</span><span class="p">:</span> <span class="s1">'#F15B2A'</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">&lt;</span><span class="nt">nav</span> <span class="na">className=</span><span class="s1">'space'</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">NavLink</span> <span class="na">to=</span><span class="s1">'/'</span> <span class="na">activeStyle=</span><span class="si">{</span><span class="nx">activeStyle</span><span class="si">}</span>  <span class="nt">exact</span> <span class="p">&gt;</span>Home<span class="p">&lt;/</span><span class="nc">NavLink</span><span class="p">&gt;</span> <span class="si">{</span> <span class="s2">" | "</span><span class="si">}</span>
+            <span class="p">&lt;</span><span class="nc">NavLink</span> <span class="na">to=</span><span class="s1">'/books'</span> <span class="na">activeStyle=</span><span class="si">{</span><span class="nx">activeStyle</span><span class="si">}</span> <span class="p">&gt;</span>Books<span class="p">&lt;/</span><span class="nc">NavLink</span><span class="p">&gt;</span> <span class="si">{</span> <span class="s2">" | "</span><span class="si">}</span>
+            <span class="p">&lt;</span><span class="nc">NavLink</span> <span class="na">to=</span><span class="s1">'/about'</span> <span class="na">activeStyle=</span><span class="si">{</span><span class="nx">activeStyle</span><span class="si">}</span> <span class="p">&gt;</span>About<span class="p">&lt;/</span><span class="nc">NavLink</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">nav</span><span class="p">&gt;</span>
+    <span class="p">)</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Header</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>After all these changes, our app will look like.</p>
+
+<p><img alt="react first app home" src="/images/loader.gif" data-src="/images/2019/react/first-book.png" class="lazy img-center" /></p>
 
 <h1 id="conclusion">Conclusion</h1>
 
