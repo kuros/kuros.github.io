@@ -233,6 +233,10 @@
 <lastmod>2019-03-18T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/spring/spring-security/2019/04/spring-security/</loc>
+<lastmod>2019-04-21T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
@@ -273,6 +277,12 @@
 </url>
 <url>
 <loc>https://kuros.in/category/react/</loc>
+</url>
+<url>
+<loc>https://kuros.in/category/spring/</loc>
+</url>
+<url>
+<loc>https://kuros.in/category/spring-security/</loc>
 </url>
 <url>
 <loc>https://kuros.in/random-jpa/</loc>
