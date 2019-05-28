@@ -241,6 +241,10 @@
 <lastmod>2019-04-21T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/java/streams/2019/05/custom-collector/</loc>
+<lastmod>2019-05-23T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
@@ -289,6 +293,9 @@
 <loc>https://kuros.in/category/spring-security/</loc>
 </url>
 <url>
+<loc>https://kuros.in/category/streams/</loc>
+</url>
+<url>
 <loc>https://kuros.in/random-jpa/</loc>
 </url>
 <url>
@@ -308,6 +315,9 @@
 </url>
 <url>
 <loc>https://kuros.in/blog/6/</loc>
+</url>
+<url>
+<loc>https://kuros.in/blog/7/</loc>
 </url>
 <url>
 <loc>https://kuros.in/</loc>
