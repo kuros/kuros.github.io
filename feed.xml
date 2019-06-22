@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-06-22T23:04:03+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+00:00</published><updated>2019-06-20T00:00:00+00:00</updated><id>https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-06-22T23:14:01+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+00:00</published><updated>2019-06-20T00:00:00+00:00</updated><id>https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
 
 &lt;p&gt;But life is not fair, so microservices comes with their own set of challenges. One of the most important of them is how would these microservices should interact with each other.
 Should they be using rest endpoint’s (but services fail if requested point is not available), or using messaging but configuring a broker is a pain. What if I designed my application to use rabbitmq but now I want to migrate to AWS kinesis, there is a lot of pain involved in migrating tech stack.&lt;/p&gt;
@@ -153,7 +153,7 @@ spring.rabbitmq.password=guest
     &lt;span class=&quot;c1&quot;&gt;// getter  and setters ...&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;6994418144&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 &lt;h1 id=&quot;publisher&quot;&gt;Publisher&lt;/h1&gt;
 
 &lt;p&gt;Now we create an order service to produce orders every 5 sec.&lt;/p&gt;
@@ -224,7 +224,8 @@ spring.rabbitmq.password=guest
 
 &lt;p&gt;But we are still not receiving any message?. Ok lets see what we are missing, we have created a channel for output named as &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt;, a channel for receiving the message named as &lt;code class=&quot;highlighter-rouge&quot;&gt;input&lt;/code&gt;, but we have not attached these channels, so lets do this.&lt;/p&gt;
 
-&lt;p&gt;In you &lt;code class=&quot;highlighter-rouge&quot;&gt;application.properties&lt;/code&gt; add the following properties.&lt;/p&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;6994418144&quot;&gt;&lt;/ins&gt;
+In you &lt;code class=&quot;highlighter-rouge&quot;&gt;application.properties&lt;/code&gt; add the following properties.&lt;/p&gt;
 
 &lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.cloud.stream.bindings.input.destination=order
 spring.cloud.stream.bindings.output.destination=order
@@ -241,7 +242,8 @@ Order Number: 1561241523494
 Order Number: 1561241533496
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Let’s take a look at rabbitmq, if we look into &lt;code class=&quot;highlighter-rouge&quot;&gt;order&lt;/code&gt; details, we see now it has a binding to &lt;code class=&quot;highlighter-rouge&quot;&gt;order.xxxx.xxxx&lt;/code&gt; queue rather than &lt;code class=&quot;highlighter-rouge&quot;&gt;input&lt;/code&gt; queue.&lt;/p&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;4715739164&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+Let’s take a look at rabbitmq, if we look into &lt;code class=&quot;highlighter-rouge&quot;&gt;order&lt;/code&gt; details, we see now it has a binding to &lt;code class=&quot;highlighter-rouge&quot;&gt;order.xxxx.xxxx&lt;/code&gt; queue rather than &lt;code class=&quot;highlighter-rouge&quot;&gt;input&lt;/code&gt; queue.&lt;/p&gt;
 
 &lt;p&gt;&lt;img alt=&quot;rabbit mq console input&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/rabbitmq-order.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
 
