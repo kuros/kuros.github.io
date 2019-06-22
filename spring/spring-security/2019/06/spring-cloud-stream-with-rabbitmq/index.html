@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-Control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Event Driven Microservices with Spring Cloud Stream Using Rabbitmq | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Abstracting Messaging in microservices using Spring Cloud Stream" />
+<meta property="og:description" content="Abstracting Messaging in microservices using Spring Cloud Stream" />
+<link rel="canonical" href="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" />
+<meta property="og:url" content="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-20T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Abstracting Messaging in microservices using Spring Cloud Stream","@type":"BlogPosting","url":"https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Event Driven Microservices with Spring Cloud Stream Using Rabbitmq","dateModified":"2019-06-20T00:00:00+00:00","datePublished":"2019-06-20T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/images/kuros-3.png">
+		<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({
+                google_ad_client: "ca-pub-4166026699724584",
+                enable_page_level_ads: true
+            });
+        </script>
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<span class="dark-logo"><img width="104" src="/images/logo/dark-2.svg" alt="dark frisco logo"></span>
+						<span class="light-logo"><img width="200" src="/images/logo/light-2.svg" alt="light frisco logo"></span>
+						<!--<span class="dark-logo">Kuros.in</span>-->
+						<!--<span class="light-logo">Kuros.in</span>-->
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</h1>
+			<p class="subtext">Abstracting Messaging in microservices using Spring Cloud Stream</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/spring/">spring</a>
+		</span>
+	
+		<span class="blog-filter">
+			<a href="/category/spring-security/">spring-security</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		June 20, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.</p>
+
+<p>But life is not fair, so microservices comes with their own set of challenges. One of the most important of them is how would these microservices should interact with each other.
+Should they be using rest endpoint’s (but services fail if requested point is not available), or using messaging but configuring a broker is a pain. What if I designed my application to use rabbitmq but now I want to migrate to AWS kinesis, there is a lot of pain involved in migrating tech stack.</p>
+
+<h1 id="spring-cloud-stream">Spring Cloud Stream</h1>
+<p>Spring has come up with an abstraction over messaging infrastructure, to make sure, we focus more on business goals rather than technology management. And the solution is <strong>Spring Cloud Stream</strong>.</p>
+
+<p>Spring Cloud Stream(SCS) is build over spring boot and is highly opinionated about the runtime configuration.</p>
+
+<h1 id="spring-integration">Spring Integration</h1>
+<p>Spring Cloud Stream uses spring-integration to provide connectivity to message brokers. It uses the concept of <a href="https://docs.spring.io/spring-integration/docs/5.1.2.RELEASE/reference/html/messaging-channels-section.html">MessageChannel</a> to decouples message producers from message consumers.</p>
+
+<p>It also provides the Channel Adapters, which takes in outside message and adapts them to spring message.</p>
+
+<p>There are Service Activators, which are responsible for pulling messages from message channel and call the attached method of service bean.</p>
+
+<h1 id="basic-concepts">Basic Concepts</h1>
+
+<p>When we are taking about Cloud Streams, there are some basic concepts that we need to remember:</p>
+<ul>
+  <li>Apps are going to communicate with each other via channels.</li>
+  <li>All the middleware will be abstracted by Binders, it the job of the binder to how to connect with the physical endpoints like queues, topics etc. Spring Cloud Stream auto detects the binders based on the classpath, and configures them. You can create multiple brokers of the same type, even you can configure multiple binders e.g. Kafka or Rabbitmq to send the same message on different channels.</li>
+  <li>Cloud Streams provide @StreamListener to pull objects from message channel. You can create multiple conditional listeners.</li>
+</ul>
+
+<h1 id="spring-cloud-communication-patterns">Spring Cloud Communication patterns</h1>
+<p>Spring Cloud Stream uses 3 different patterns to communicate over channels.</p>
+
+<ol>
+  <li>Publisher/Subscriber: Message is broadcast, all the listeners will be notified.
+ <img alt="pub/sub" src="/images/loader.gif" data-src="/images/2019/spring/SCS-pub-sub.png" class="lazy img-center img-half" /></li>
+  <li>Consumer Groups: This concept was introduced by Kafka for the first time. Here the message will be broadcast, but now the consumer are divided in groups, each group will receive the message, but only one of the consumer will process it. You don’t need to have Kafka, SCS provides wrapper logic to manage consumer groups internally.
+ <img alt="Consumer Group" src="/images/loader.gif" data-src="/images/2019/spring/SCS-consumer-group.png" class="lazy img-center img-half" /></li>
+  <li>Partitioning: This is a very strong feature provided by SCS, you can send the message and consumer will be partitioned based on the condition. so each partition will be handling the respective data independently. 
+ <img alt="Partition" src="/images/loader.gif" data-src="/images/2019/spring/SCS-partition.png" class="lazy img-center img-half" /></li>
+</ol>
+
+<h1 id="setting-up-rabbitmq">Setting up RabbitMQ</h1>
+<p>We are going to use RabbitMQ as our binging channel, we are going to run rabbitMQ inside docker container.</p>
+
+<p>User the following command to run docker instance.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker run <span class="nt">-d</span> <span class="nt">--hostname</span> my-rabbit <span class="nt">--name</span> some-rabbit <span class="nt">-p</span> 15672:15672 <span class="nt">-p</span> 5672:5672 rabbitmq:3-management
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Unable to find image <span class="s1">'rabbitmq:3-management'</span> locally
+3-management: Pulling from library/rabbitmq
+5b7339215d1d: Pull <span class="nb">complete 
+</span>14ca88e9f672: Pull <span class="nb">complete 
+</span>a31c3b1caad4: Pull <span class="nb">complete 
+</span>b054a26005b7: Pull <span class="nb">complete 
+</span>eef17c6cb6cf: Pull <span class="nb">complete 
+</span>2f1b018e55d1: Downloading <span class="o">[========================&gt;</span>                          <span class="o">]</span>  16.64MB/34.14MB
+6cb106540743: Download <span class="nb">complete 
+</span>88b93ace2192: Download <span class="nb">complete 
+</span>609cd90dbc7b: Download <span class="nb">complete 
+</span>c9ee32f1144b: Download <span class="nb">complete 
+</span>fefc85bff58e: Download <span class="nb">complete 
+</span>33624b12c0ed: Downloading <span class="o">[===================&gt;</span>                               <span class="o">]</span>  4.021MB/10.14MB
+Digest: sha256:a8c1e0f2cea371b4860df47a53294876d6874fe68fa12c416e39cef307e75bcd
+Status: Downloaded newer image <span class="k">for </span>rabbitmq:3-management
+fa09ea9000b27817fd22bcb623d2e844c892e22d1b9eedd22402abe19344b9b9
+</code></pre></div></div>
+
+<p>Once the download is complete, it would fire up the container. To verify your container is up:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker ps
+
+CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                                                                    NAMES
+fa09ea9000b2        rabbitmq:3-management   <span class="s2">"docker-entrypoint.s…"</span>   2 minutes ago       Up 2 minutes        4369/tcp, 5671-5672/tcp, 15671/tcp, 25672/tcp, 0.0.0.0:8080-&gt;15672/tcp   some-rabbit
+</code></pre></div></div>
+
+<p>To access the rabbitMQ console login to <em>http://localhost:15672/</em>. which is available on the standard management port of 15672, with the default username and password of guest / guest
+<img alt="rabbit mq login" src="/images/loader.gif" data-src="/images/2019/spring/rabbit-mq-login.png" class="lazy img-center img-half" /></p>
+
+<p>After login the console is available:
+<img alt="rabbit mq console" src="/images/loader.gif" data-src="/images/2019/spring/rabbitmq-console.png" class="lazy img-center img-half" /></p>
+
+<h1 id="problem-statement">Problem statement</h1>
+
+<p>Before we proceed let’s create a problem statement we are trying to solve with messaging. Assume we have an Online Order service, when someone places the order, we log the orders for auditing, send the order for packaging. We have an independent logging system and now we need to connect our main application logging system.</p>
+
+<h1 id="application">Application</h1>
+<p>Now we will create a spring boot application and add the following dependencies:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>spring-cloud-stream<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>spring-cloud-stream-binder-rabbit<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+<p>Since we have given binder for rabbitmq, spring cloud will autoconfigure the binding.</p>
+
+<p>Let’s initialize rabbitmq connection details, add the following lines in your <code class="highlighter-rouge">application.properties</code> file.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.rabbitmq.host=127.0.0.1
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+</code></pre></div></div>
+
+<p>Next step is to define channels through which we want to communicate, Spring has provided 3 types of channel out of the box(we will be using mostly custom channels in prod, but for this article we will stick to provided channel).</p>
+
+<ol>
+  <li>
+    <p>Sink: Consumer binding</p>
+
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Sink</span> <span class="o">{</span>
+    
+    <span class="n">String</span> <span class="n">INPUT</span> <span class="o">=</span> <span class="s">"input"</span><span class="o">;</span>
+    
+   <span class="nd">@Input</span><span class="o">(</span><span class="n">Sink</span><span class="o">.</span><span class="na">INPUT</span><span class="o">)</span>
+   <span class="n">SubscribableChannel</span> <span class="nf">input</span><span class="o">();</span>
+ <span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Source: Producer binding
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Source</span> <span class="o">{</span>
+   
+  <span class="n">String</span> <span class="n">OUTPUT</span> <span class="o">=</span> <span class="s">"output"</span><span class="o">;</span>
+   
+  <span class="nd">@Output</span><span class="o">(</span><span class="n">Source</span><span class="o">.</span><span class="na">OUTPUT</span><span class="o">)</span>
+  <span class="n">MessageChannel</span> <span class="nf">output</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Processor: combination of Sink &amp; Source, consumes message &amp; also produces it.
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Processor</span> <span class="kd">extends</span> <span class="n">Source</span><span class="o">,</span> <span class="n">Sink</span> <span class="o">{}</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>In our sample application we produce one event every 5 seconds with a spring Scheduler.</p>
+
+<h3 id="enable-scheduling">Enable Scheduling:</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@SpringBootApplication</span>
+<span class="nd">@EnableScheduling</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SpringCloudStreamRabbitmqPubApplication</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="n">SpringCloudStreamRabbitmqPubApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>we will create a payload class, in this case:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">orderNumber</span><span class="o">;</span>
+
+    <span class="c1">// getter  and setters ...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="publisher">Publisher</h1>
+
+<p>Now we create an order service to produce orders every 5 sec.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Component</span>
+<span class="nd">@EnableBinding</span><span class="o">(</span><span class="n">Source</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">OrderPublisher</span> <span class="o">{</span>
+
+    <span class="nd">@Autowired</span> <span class="n">Source</span> <span class="n">source</span><span class="o">;</span>
+
+    <span class="nd">@Scheduled</span><span class="o">(</span><span class="n">fixedDelay</span> <span class="o">=</span> <span class="mi">5000</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">publishOrder</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Message</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">message</span> <span class="o">=</span> <span class="n">MessageBuilder</span><span class="o">.</span><span class="na">withPayload</span><span class="o">(</span><span class="k">new</span> <span class="n">Order</span><span class="o">(</span><span class="s">"Order Number: "</span> <span class="o">+</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">())).</span><span class="na">build</span><span class="o">();</span>
+        <span class="n">source</span><span class="o">.</span><span class="na">output</span><span class="o">().</span><span class="na">send</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Order</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="n">LocalDateTime</span> <span class="n">localDateTime</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">Order</span><span class="o">(</span><span class="kd">final</span> <span class="n">LocalDateTime</span> <span class="n">localDateTime</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">localDateTime</span> <span class="o">=</span> <span class="n">localDateTime</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="n">LocalDateTime</span> <span class="nf">getLocalDateTime</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">localDateTime</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>At line 2, we used <code class="highlighter-rouge">@EnableBinding</code> and provided <code class="highlighter-rouge">Source</code> channel, then we autowired Source to publish message to channel. We have used <code class="highlighter-rouge">@Scheduled</code> to execute method every 5 sec.</p>
+
+<p>Now when we run the application we can verify if our message is getting published in rabbitmq, let’s check its management console.</p>
+
+<p>We can notice a new topic has been created in Exchanges with the name output to match the interface.</p>
+
+<p><img alt="rabbit mq console channel" src="/images/loader.gif" data-src="/images/2019/spring/rabbitmq-pub-active.png" class="lazy img-center img-half" /></p>
+
+<p>And we can see a message being published to the newly create output topic.
+<img alt="rabbit mq console channel 2" src="/images/loader.gif" data-src="/images/2019/spring/rabbitmq-pub-channel-2.png" class="lazy img-center img-half" /></p>
+
+<h1 id="consumer">Consumer</h1>
+
+<p>Now lets create a logging listener which will receive the message.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.springframework.cloud.stream.annotation.EnableBinding</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.cloud.stream.annotation.StreamListener</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.cloud.stream.messaging.Sink</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.messaging.Message</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Component</span><span class="o">;</span>
+
+<span class="nd">@Component</span>
+<span class="nd">@EnableBinding</span><span class="o">(</span><span class="n">Sink</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LoggingListener</span> <span class="o">{</span>
+
+    <span class="nd">@StreamListener</span><span class="o">(</span><span class="n">Sink</span><span class="o">.</span><span class="na">INPUT</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="n">Message</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span> <span class="n">orderMessage</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">orderMessage</span><span class="o">.</span><span class="na">getPayload</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now if we run our application again, we can see a new exchange has been added in rabbitmq
+<img alt="rabbit mq console input" src="/images/loader.gif" data-src="/images/2019/spring/rabbitmq-input.png" class="lazy img-center img-half" /></p>
+
+<p>And also a queue is generated something like this
+<img alt="rabbit mq console input" src="/images/loader.gif" data-src="/images/2019/spring/rabbitmq-input-queue.png" class="lazy img-center img-half" /></p>
+
+<p>But we are still not receiving any message?. Ok lets see what we are missing, we have created a channel for output named as <code class="highlighter-rouge">output</code>, a channel for receiving the message named as <code class="highlighter-rouge">input</code>, but we have not attached these channels, so lets do this.</p>
+
+<p>In you <code class="highlighter-rouge">application.properties</code> add the following properties.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.bindings.input.destination=order
+spring.cloud.stream.bindings.output.destination=order
+</code></pre></div></div>
+
+<p>We are saying both input.destination &amp; output.destination maps to a new channel named as <code class="highlighter-rouge">order</code></p>
+
+<p>When we run the application, messages start getting printed in console.</p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Order Number: 1561241483425
+Order Number: 1561241493487
+Order Number: 1561241503487
+Order Number: 1561241513490
+Order Number: 1561241523494
+Order Number: 1561241533496
+</code></pre></div></div>
+
+<p>Let’s take a look at rabbitmq, if we look into <code class="highlighter-rouge">order</code> details, we see now it has a binding to <code class="highlighter-rouge">order.xxxx.xxxx</code> queue rather than <code class="highlighter-rouge">input</code> queue.</p>
+
+<p><img alt="rabbit mq console input" src="/images/loader.gif" data-src="/images/2019/spring/rabbitmq-order.png" class="lazy img-center img-half" /></p>
+
+<p>Congratulations, we have created our first spring cloud stream application.</p>
+
+<p><a href="https://github.com/kuros/blog-code/tree/master/spring/spring-cloud-stream-rabbitmq/publisher">Download the complete code</a>.</p>
+
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/spring/spring-security/2019/04/spring-security-authentication-provider/">&laquo; Spring Security with Authentication Provider</a>
+
+					
+
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.png')"></div>
+				<p class="blurb">I like long drives, bike trip & good food. I have passion for coding, esp. Clean-Code.</p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>

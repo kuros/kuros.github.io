@@ -1,4 +1,253 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-05-28T07:28:37+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Java 8 - Creating a Custom Collector for Streams</title><link href="https://kuros.in/java/streams/2019/05/custom-collector/" rel="alternate" type="text/html" title="Java 8 - Creating a Custom Collector for Streams" /><published>2019-05-23T00:00:00+00:00</published><updated>2019-05-23T00:00:00+00:00</updated><id>https://kuros.in/java/streams/2019/05/custom-collector</id><content type="html" xml:base="https://kuros.in/java/streams/2019/05/custom-collector/">&lt;p&gt;Java Streams provide a wide range of collectors which is generally sufficient for most of the day to day use. But sometimes you need to perform some special operations, which is not provided out of the box.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-06-22T22:41:43+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+00:00</published><updated>2019-06-20T00:00:00+00:00</updated><id>https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
+
+&lt;p&gt;But life is not fair, so microservices comes with their own set of challenges. One of the most important of them is how would these microservices should interact with each other.
+Should they be using rest endpoint’s (but services fail if requested point is not available), or using messaging but configuring a broker is a pain. What if I designed my application to use rabbitmq but now I want to migrate to AWS kinesis, there is a lot of pain involved in migrating tech stack.&lt;/p&gt;
+
+&lt;h1 id=&quot;spring-cloud-stream&quot;&gt;Spring Cloud Stream&lt;/h1&gt;
+&lt;p&gt;Spring has come up with an abstraction over messaging infrastructure, to make sure, we focus more on business goals rather than technology management. And the solution is &lt;strong&gt;Spring Cloud Stream&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Spring Cloud Stream(SCS) is build over spring boot and is highly opinionated about the runtime configuration.&lt;/p&gt;
+
+&lt;h1 id=&quot;spring-integration&quot;&gt;Spring Integration&lt;/h1&gt;
+&lt;p&gt;Spring Cloud Stream uses spring-integration to provide connectivity to message brokers. It uses the concept of &lt;a href=&quot;https://docs.spring.io/spring-integration/docs/5.1.2.RELEASE/reference/html/messaging-channels-section.html&quot;&gt;MessageChannel&lt;/a&gt; to decouples message producers from message consumers.&lt;/p&gt;
+
+&lt;p&gt;It also provides the Channel Adapters, which takes in outside message and adapts them to spring message.&lt;/p&gt;
+
+&lt;p&gt;There are Service Activators, which are responsible for pulling messages from message channel and call the attached method of service bean.&lt;/p&gt;
+
+&lt;h1 id=&quot;basic-concepts&quot;&gt;Basic Concepts&lt;/h1&gt;
+
+&lt;p&gt;When we are taking about Cloud Streams, there are some basic concepts that we need to remember:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Apps are going to communicate with each other via channels.&lt;/li&gt;
+  &lt;li&gt;All the middleware will be abstracted by Binders, it the job of the binder to how to connect with the physical endpoints like queues, topics etc. Spring Cloud Stream auto detects the binders based on the classpath, and configures them. You can create multiple brokers of the same type, even you can configure multiple binders e.g. Kafka or Rabbitmq to send the same message on different channels.&lt;/li&gt;
+  &lt;li&gt;Cloud Streams provide @StreamListener to pull objects from message channel. You can create multiple conditional listeners.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;spring-cloud-communication-patterns&quot;&gt;Spring Cloud Communication patterns&lt;/h1&gt;
+&lt;p&gt;Spring Cloud Stream uses 3 different patterns to communicate over channels.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Publisher/Subscriber: Message is broadcast, all the listeners will be notified.
+ &lt;img alt=&quot;pub/sub&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/SCS-pub-sub.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;Consumer Groups: This concept was introduced by Kafka for the first time. Here the message will be broadcast, but now the consumer are divided in groups, each group will receive the message, but only one of the consumer will process it. You don’t need to have Kafka, SCS provides wrapper logic to manage consumer groups internally.
+ &lt;img alt=&quot;Consumer Group&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/SCS-consumer-group.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;Partitioning: This is a very strong feature provided by SCS, you can send the message and consumer will be partitioned based on the condition. so each partition will be handling the respective data independently. 
+ &lt;img alt=&quot;Partition&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/SCS-partition.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;setting-up-rabbitmq&quot;&gt;Setting up RabbitMQ&lt;/h1&gt;
+&lt;p&gt;We are going to use RabbitMQ as our binging channel, we are going to run rabbitMQ inside docker container.&lt;/p&gt;
+
+&lt;p&gt;User the following command to run docker instance.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hostname&lt;/span&gt; my-rabbit &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt; some-rabbit &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 15672:15672 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 5672:5672 rabbitmq:3-management
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Unable to find image &lt;span class=&quot;s1&quot;&gt;'rabbitmq:3-management'&lt;/span&gt; locally
+3-management: Pulling from library/rabbitmq
+5b7339215d1d: Pull &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;14ca88e9f672: Pull &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;a31c3b1caad4: Pull &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;b054a26005b7: Pull &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;eef17c6cb6cf: Pull &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;2f1b018e55d1: Downloading &lt;span class=&quot;o&quot;&gt;[========================&amp;gt;&lt;/span&gt;                          &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;  16.64MB/34.14MB
+6cb106540743: Download &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;88b93ace2192: Download &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;609cd90dbc7b: Download &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;c9ee32f1144b: Download &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;fefc85bff58e: Download &lt;span class=&quot;nb&quot;&gt;complete 
+&lt;/span&gt;33624b12c0ed: Downloading &lt;span class=&quot;o&quot;&gt;[===================&amp;gt;&lt;/span&gt;                               &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;  4.021MB/10.14MB
+Digest: sha256:a8c1e0f2cea371b4860df47a53294876d6874fe68fa12c416e39cef307e75bcd
+Status: Downloaded newer image &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;rabbitmq:3-management
+fa09ea9000b27817fd22bcb623d2e844c892e22d1b9eedd22402abe19344b9b9
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Once the download is complete, it would fire up the container. To verify your container is up:&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker ps
+
+CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                                                                    NAMES
+fa09ea9000b2        rabbitmq:3-management   &lt;span class=&quot;s2&quot;&gt;&quot;docker-entrypoint.s…&quot;&lt;/span&gt;   2 minutes ago       Up 2 minutes        4369/tcp, 5671-5672/tcp, 15671/tcp, 25672/tcp, 0.0.0.0:8080-&amp;gt;15672/tcp   some-rabbit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To access the rabbitMQ console login to &lt;em&gt;http://localhost:15672/&lt;/em&gt;. which is available on the standard management port of 15672, with the default username and password of guest / guest
+&lt;img alt=&quot;rabbit mq login&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/rabbit-mq-login.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After login the console is available:
+&lt;img alt=&quot;rabbit mq console&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/rabbitmq-console.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;problem-statement&quot;&gt;Problem statement&lt;/h1&gt;
+
+&lt;p&gt;Before we proceed let’s create a problem statement we are trying to solve with messaging. Assume we have an Online Order service, when someone places the order, we log the orders for auditing, send the order for packaging. We have an independent logging system and now we need to connect our main application logging system.&lt;/p&gt;
+
+&lt;h1 id=&quot;application&quot;&gt;Application&lt;/h1&gt;
+&lt;p&gt;Now we will create a spring boot application and add the following dependencies:&lt;/p&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.cloud&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-cloud-stream&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.cloud&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-cloud-stream-binder-rabbit&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Since we have given binder for rabbitmq, spring cloud will autoconfigure the binding.&lt;/p&gt;
+
+&lt;p&gt;Let’s initialize rabbitmq connection details, add the following lines in your &lt;code class=&quot;highlighter-rouge&quot;&gt;application.properties&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.rabbitmq.host=127.0.0.1
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Next step is to define channels through which we want to communicate, Spring has provided 3 types of channel out of the box(we will be using mostly custom channels in prod, but for this article we will stick to provided channel).&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Sink: Consumer binding&lt;/p&gt;
+
+    &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Sink&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    
+    &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;INPUT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;input&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    
+   &lt;span class=&quot;nd&quot;&gt;@Input&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sink&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+   &lt;span class=&quot;n&quot;&gt;SubscribableChannel&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+ &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Source: Producer binding
+    &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Source&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+   
+  &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OUTPUT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;output&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+   
+  &lt;span class=&quot;nd&quot;&gt;@Output&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;OUTPUT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;MessageChannel&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Processor: combination of Sink &amp;amp; Source, consumes message &amp;amp; also produces it.
+    &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Processor&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Sink&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In our sample application we produce one event every 5 seconds with a spring Scheduler.&lt;/p&gt;
+
+&lt;h3 id=&quot;enable-scheduling&quot;&gt;Enable Scheduling:&lt;/h3&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@SpringBootApplication&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@EnableScheduling&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SpringCloudStreamRabbitmqPubApplication&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;SpringApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SpringCloudStreamRabbitmqPubApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;we will create a payload class, in this case:&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Order&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderNumber&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// getter  and setters ...&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;publisher&quot;&gt;Publisher&lt;/h1&gt;
+
+&lt;p&gt;Now we create an order service to produce orders every 5 sec.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@EnableBinding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OrderPublisher&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Source&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@Scheduled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fixedDelay&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;publishOrder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Order&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;MessageBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;withPayload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Order&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Order Number: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;currentTimeMillis&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;send&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Order&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDateTime&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;localDateTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;Order&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDateTime&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;localDateTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;localDateTime&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;localDateTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LocalDateTime&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getLocalDateTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;localDateTime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;At line 2, we used &lt;code class=&quot;highlighter-rouge&quot;&gt;@EnableBinding&lt;/code&gt; and provided &lt;code class=&quot;highlighter-rouge&quot;&gt;Source&lt;/code&gt; channel, then we autowired Source to publish message to channel. We have used &lt;code class=&quot;highlighter-rouge&quot;&gt;@Scheduled&lt;/code&gt; to execute method every 5 sec.&lt;/p&gt;
+
+&lt;p&gt;Now when we run the application we can verify if our message is getting published in rabbitmq, let’s check its management console.&lt;/p&gt;
+
+&lt;p&gt;We can notice a new topic has been created in Exchanges with the name output to match the interface.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;rabbit mq console channel&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/rabbitmq-pub-active.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And we can see a message being published to the newly create output topic.
+&lt;img alt=&quot;rabbit mq console channel 2&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/rabbitmq-pub-channel-2.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;consumer&quot;&gt;Consumer&lt;/h1&gt;
+
+&lt;p&gt;Now lets create a logging listener which will receive the message.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.cloud.stream.annotation.EnableBinding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.cloud.stream.annotation.StreamListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.cloud.stream.messaging.Sink&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.messaging.Message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.stereotype.Component&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;@EnableBinding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sink&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;LoggingListener&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@StreamListener&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Sink&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;INPUT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Message&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Order&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;orderMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;orderMessage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getPayload&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now if we run our application again, we can see a new exchange has been added in rabbitmq
+&lt;img alt=&quot;rabbit mq console input&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/rabbitmq-input.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And also a queue is generated something like this
+&lt;img alt=&quot;rabbit mq console input&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/rabbitmq-input-queue.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But we are still not receiving any message?. Ok lets see what we are missing, we have created a channel for output named as &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt;, a channel for receiving the message named as &lt;code class=&quot;highlighter-rouge&quot;&gt;input&lt;/code&gt;, but we have not attached these channels, so lets do this.&lt;/p&gt;
+
+&lt;p&gt;In you &lt;code class=&quot;highlighter-rouge&quot;&gt;application.properties&lt;/code&gt; add the following properties.&lt;/p&gt;
+
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;spring.cloud.stream.bindings.input.destination=order
+spring.cloud.stream.bindings.output.destination=order
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We are saying both input.destination &amp;amp; output.destination maps to a new channel named as &lt;code class=&quot;highlighter-rouge&quot;&gt;order&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;When we run the application, messages start getting printed in console.&lt;/p&gt;
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Order Number: 1561241483425
+Order Number: 1561241493487
+Order Number: 1561241503487
+Order Number: 1561241513490
+Order Number: 1561241523494
+Order Number: 1561241533496
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s take a look at rabbitmq, if we look into &lt;code class=&quot;highlighter-rouge&quot;&gt;order&lt;/code&gt; details, we see now it has a binding to &lt;code class=&quot;highlighter-rouge&quot;&gt;order.xxxx.xxxx&lt;/code&gt; queue rather than &lt;code class=&quot;highlighter-rouge&quot;&gt;input&lt;/code&gt; queue.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;rabbit mq console input&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/rabbitmq-order.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Congratulations, we have created our first spring cloud stream application.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/spring/spring-cloud-stream-rabbitmq/publisher&quot;&gt;Download the complete code&lt;/a&gt;.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.</summary></entry><entry><title type="html">Java 8 - Creating a Custom Collector for Streams</title><link href="https://kuros.in/java/streams/2019/05/custom-collector/" rel="alternate" type="text/html" title="Java 8 - Creating a Custom Collector for Streams" /><published>2019-05-23T00:00:00+00:00</published><updated>2019-05-23T00:00:00+00:00</updated><id>https://kuros.in/java/streams/2019/05/custom-collector</id><content type="html" xml:base="https://kuros.in/java/streams/2019/05/custom-collector/">&lt;p&gt;Java Streams provide a wide range of collectors which is generally sufficient for most of the day to day use. But sometimes you need to perform some special operations, which is not provided out of the box.&lt;/p&gt;
 
 &lt;p&gt;We can create our own custom collectors to suit our requirement.&lt;/p&gt;
 
@@ -2463,202 +2712,7 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-&lt;p&gt;So, till now we have seen basic building blocks for kubernetes, we spent time getting to know main keywords. Next we will be looking at how to install kubernetes.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">So we all have heard of docker, it has taken industry by a storm and completely changed the way application are deployed to servers, I mean having independent environment for every app is great, everyone loves it. But it also created challenges around managing deployments.</summary></entry><entry><title type="html">gRPC Authentication in Java</title><link href="https://kuros.in/grpc/2019/01/grpc-authentication/" rel="alternate" type="text/html" title="gRPC Authentication in Java" /><published>2019-01-26T00:00:00+00:00</published><updated>2019-01-26T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/01/grpc-authentication</id><content type="html" xml:base="https://kuros.in/grpc/2019/01/grpc-authentication/">&lt;p&gt;Setting up gRPC is great and simple but what about its security. how hard it is? Lets see.&lt;/p&gt;
-
-&lt;h1 id=&quot;generating-certificates--keys&quot;&gt;Generating Certificates &amp;amp; Keys&lt;/h1&gt;
-&lt;p&gt;Similar to http server, you can configure gRPC server communication to be encrypted, Since we are developing a local example, we will generate our own certificate(you will need certificate from Certificate Authority if you want to make your api’s public).&lt;/p&gt;
-
-&lt;p&gt;For this tutorial, we will use openssl to generate our certificate &amp;amp; keys.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;openssl req &lt;span class=&quot;nt&quot;&gt;-x509&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-newkey&lt;/span&gt; rsa:4096 &lt;span class=&quot;nt&quot;&gt;-keyout&lt;/span&gt; src/main/resources/my-private-key.pem &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; src/main/resources/my-public-key-cert.pem &lt;span class=&quot;nt&quot;&gt;-days&lt;/span&gt; 365 &lt;span class=&quot;nt&quot;&gt;-nodes&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-subj&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/CN=localhost'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Our keys will be generated in resources folder, this key has expiration of 365 days, algorithm detail (RSA: 4096), format standard (X.509) and our server’s common name (CN) which is just a localhost in our case.&lt;/p&gt;
-
-&lt;h1 id=&quot;adding-certificates-to-grpc-server&quot;&gt;Adding certificates to gRPC server&lt;/h1&gt;
-
-&lt;p&gt;To enable TLS on a server, a certificate chain and private key need to be specified in PEM format, which we have generated in earlier.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Private key should not be using a password&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;(When you are generating chain certificates, remember, the order of certificates in the chain matters: more specifically, the certificate at the top has to be the host CA, while the one at the very bottom has to be the root CA.)&lt;/p&gt;
-
-&lt;p&gt;For this tutorial’s purpose, we will use 8443 below to avoid needing extra permissions from the OS.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.Server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.ServerBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GrpcServer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Server&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ServerBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forPort&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8443&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;addService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorImpl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
-
-                &lt;span class=&quot;c1&quot;&gt;//enable TLS&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;useTransportSecurity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/my-public-key-cert.pem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//public Key&lt;/span&gt;
-                        &lt;span class=&quot;n&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/my-private-key.pem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// private key&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;awaitTermination&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GrpcServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Let’s start the server, oops!!! we got an error:&lt;/p&gt;
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
-INFO: netty-tcnative unavailable (this may be normal)
-java.lang.ClassNotFoundException: io.netty.internal.tcnative.SSL
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:331)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:348)
-	at io.netty.handler.ssl.OpenSsl.&amp;lt;clinit&amp;gt;(OpenSsl.java:81)
-	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:244)
-	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
-	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
-	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
-	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
-	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
-
-Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
-INFO: Conscrypt not found (this may be normal)
-Jan 27, 2019 4:08:22 PM io.grpc.netty.GrpcSslContexts defaultSslProvider
-INFO: Jetty ALPN unavailable (this may be normal)
-java.lang.ClassNotFoundException: org/eclipse/jetty/alpn/ALPN
-	at java.lang.Class.forName0(Native Method)
-	at java.lang.Class.forName(Class.java:348)
-	at io.grpc.netty.JettyTlsUtil.isJettyAlpnConfigured(JettyTlsUtil.java:64)
-	at io.grpc.netty.GrpcSslContexts.findJdkProvider(GrpcSslContexts.java:266)
-	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:248)
-	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
-	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
-	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
-	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
-	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
-
-Exception in thread &quot;main&quot; java.lang.IllegalStateException: Could not find TLS ALPN provider; no working netty-tcnative, Conscrypt, or Jetty NPN/ALPN available
-	at io.grpc.netty.GrpcSslContexts.defaultSslProvider(GrpcSslContexts.java:258)
-	at io.grpc.netty.GrpcSslContexts.configure(GrpcSslContexts.java:171)
-	at io.grpc.netty.GrpcSslContexts.forServer(GrpcSslContexts.java:130)
-	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:460)
-	at io.grpc.netty.NettyServerBuilder.useTransportSecurity(NettyServerBuilder.java:53)
-	at in.kuros.blog.grpc.GrpcServer.main(GrpcServer.java:16)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Time to fix it by providing below maven dependency in your pom file:&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;io.netty&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;netty-tcnative-boringssl-static&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.0.20.Final&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The Server Starts.&lt;/p&gt;
-
-&lt;p&gt;Now let try to use our old client to execute our add method.&lt;/p&gt;
-
-&lt;h3 id=&quot;old-client&quot;&gt;Old Client&lt;/h3&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.ManagedChannel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.ManagedChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GrpcOldClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;ManagedChannel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ManagedChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;localhost&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8443&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;usePlaintext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CalculatorBlockingStub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBlockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddResponse&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OperandRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setX&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;call result: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;shutdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Notice we have configured ManagedChannel as &lt;em&gt;.usePlaintext()&lt;/em&gt;, which specifies we do not want any authentication.&lt;/p&gt;
-
-&lt;p&gt;When we execute the program we get an error response like:&lt;/p&gt;
-
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Exception in thread &quot;main&quot; io.grpc.StatusRuntimeException: UNAVAILABLE: Network closed for unknown reason
-	at io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)
-	at io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)
-	at io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)
-	at in.kuros.blog.grpc.CalculatorGrpc$CalculatorBlockingStub.add(CalculatorGrpc.java:157)
-	at in.kuros.blog.grpc.GrpcOldClient.main(GrpcOldClient.java:15)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;ssl-enabled-clients&quot;&gt;SSL enabled clients&lt;/h1&gt;
-
-&lt;p&gt;When you are using ssl certificate with the issuing authority known to the client, simply create a ManagedChannel by&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// With server authentication SSL/TLS&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;ManagedChannel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ManagedChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;localhost&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;443&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CalculatorBlockingStub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBlockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;But in our case we are using our custom certificates, so we need to provide SSL context to channel builder, for this we will use &lt;strong&gt;NettyChannelBuilder&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;We will be providing our public certificate only to the client.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.ManagedChannel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.netty.GrpcSslContexts&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;io.grpc.netty.NettyChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;javax.net.ssl.SSLException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.io.File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GrpcNewClient&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SSLException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ManagedChannel&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NettyChannelBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forAddress&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;localhost&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8443&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sslContext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GrpcSslContexts&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;forClient&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;trustManager&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/my-public-key-cert.pem&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// public key&lt;/span&gt;
-                        &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;())&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;CalculatorBlockingStub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CalculatorGrpc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBlockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Making call&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;AddResponse&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockingStub&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OperandRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;newBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setX&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;call result: &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blockResponse&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;channel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;shutdown&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GrpcNewClient&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getResource&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fileName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getFile&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Now when we run the new client, we are able to make calls.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;So till now we have seen, how to secure our server-client communication over gRPC. Find the &lt;a href=&quot;https://github.com/kuros/grpc/tree/master/grpc-authentication&quot;&gt;code here&lt;/a&gt;.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">Setting up gRPC is great and simple but what about its security. how hard it is? Lets see.</summary></entry><entry><title type="html">gRPC Authorization using Interceptors in Java</title><link href="https://kuros.in/grpc/2019/01/grpc-interceptors/" rel="alternate" type="text/html" title="gRPC Authorization using Interceptors in Java" /><published>2019-01-26T00:00:00+00:00</published><updated>2019-01-26T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/01/grpc-interceptors</id><content type="html" xml:base="https://kuros.in/grpc/2019/01/grpc-interceptors/">&lt;p&gt;We have secured our application with by using ssl configuration, that’s great. But its hard to authenticate which client is making the request, after all the certificate will be shared amongst all the client.&lt;/p&gt;
+&lt;p&gt;So, till now we have seen basic building blocks for kubernetes, we spent time getting to know main keywords. Next we will be looking at how to install kubernetes.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">So we all have heard of docker, it has taken industry by a storm and completely changed the way application are deployed to servers, I mean having independent environment for every app is great, everyone loves it. But it also created challenges around managing deployments.</summary></entry><entry><title type="html">gRPC Authorization using Interceptors in Java</title><link href="https://kuros.in/grpc/2019/01/grpc-interceptors/" rel="alternate" type="text/html" title="gRPC Authorization using Interceptors in Java" /><published>2019-01-26T00:00:00+00:00</published><updated>2019-01-26T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/01/grpc-interceptors</id><content type="html" xml:base="https://kuros.in/grpc/2019/01/grpc-interceptors/">&lt;p&gt;We have secured our application with by using ssl configuration, that’s great. But its hard to authenticate which client is making the request, after all the certificate will be shared amongst all the client.&lt;/p&gt;
 
 &lt;p&gt;In order to recognize who is using our service, we need to store some type of authentication token. Normally, you will be validating tokens using IAM/Authentication services, but for this tutorial, I will use a simple token mechanism.&lt;/p&gt;
 
