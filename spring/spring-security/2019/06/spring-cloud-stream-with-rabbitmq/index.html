@@ -284,7 +284,6 @@ spring.rabbitmq.password=guest
     <span class="c1">// getter  and setters ...</span>
 <span class="o">}</span>
 </code></pre></div></div>
-<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="6994418144"></ins></p>
 <h1 id="publisher">Publisher</h1>
 
 <p>Now we create an order service to produce orders every 5 sec.</p>
@@ -355,8 +354,7 @@ spring.rabbitmq.password=guest
 
 <p>But we are still not receiving any message?. Ok lets see what we are missing, we have created a channel for output named as <code class="highlighter-rouge">output</code>, a channel for receiving the message named as <code class="highlighter-rouge">input</code>, but we have not attached these channels, so lets do this.</p>
 
-<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="6994418144"></ins>
-In you <code class="highlighter-rouge">application.properties</code> add the following properties.</p>
+<p>In you <code class="highlighter-rouge">application.properties</code> add the following properties.</p>
 
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.bindings.input.destination=order
 spring.cloud.stream.bindings.output.destination=order
@@ -373,8 +371,7 @@ Order Number: 1561241523494
 Order Number: 1561241533496
 </code></pre></div></div>
 
-<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="4715739164" data-ad-format="auto" data-full-width-responsive="true"></ins>
-Let’s take a look at rabbitmq, if we look into <code class="highlighter-rouge">order</code> details, we see now it has a binding to <code class="highlighter-rouge">order.xxxx.xxxx</code> queue rather than <code class="highlighter-rouge">input</code> queue.</p>
+<p>Let’s take a look at rabbitmq, if we look into <code class="highlighter-rouge">order</code> details, we see now it has a binding to <code class="highlighter-rouge">order.xxxx.xxxx</code> queue rather than <code class="highlighter-rouge">input</code> queue.</p>
 
 <p><img alt="rabbit mq console input" src="/images/loader.gif" data-src="/images/2019/spring/rabbitmq-order.png" class="lazy img-center img-half" /></p>
 
