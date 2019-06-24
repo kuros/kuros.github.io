@@ -222,6 +222,20 @@ fa09ea9000b2        rabbitmq:3-management   <span class="s2">"docker-entrypoint.
             <span class="nt">&lt;artifactId&gt;</span>spring-cloud-stream-binder-rabbit<span class="nt">&lt;/artifactId&gt;</span>
         <span class="nt">&lt;/dependency&gt;</span>
 </code></pre></div></div>
+
+<p>we will also need to add bom import</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;dependencyManagement&gt;</span>
+        <span class="nt">&lt;dependencies&gt;</span>
+            <span class="nt">&lt;dependency&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.springframework.cloud<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>spring-cloud-dependencies<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>Greenwich.RELEASE<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;type&gt;</span>pom<span class="nt">&lt;/type&gt;</span>
+                <span class="nt">&lt;scope&gt;</span>import<span class="nt">&lt;/scope&gt;</span>
+            <span class="nt">&lt;/dependency&gt;</span>
+        <span class="nt">&lt;/dependencies&gt;</span>
+    <span class="nt">&lt;/dependencyManagement&gt;</span>
+</code></pre></div></div>
 <p>Since we have given binder for rabbitmq, spring cloud will autoconfigure the binding.</p>
 
 <p>Let’s initialize rabbitmq connection details, add the following lines in your <code class="highlighter-rouge">application.properties</code> file.</p>
