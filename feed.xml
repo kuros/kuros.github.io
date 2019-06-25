@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-06-25T16:02:04+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+00:00</published><updated>2019-06-20T00:00:00+00:00</updated><id>https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-06-25T16:21:10+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+00:00</published><updated>2019-06-20T00:00:00+00:00</updated><id>https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
 
 &lt;p&gt;But life is not fair, so microservices comes with their own set of challenges. One of the most important of them is how would these microservices should interact with each other.
 Should they be using rest endpoint’s (but services fail if requested point is not available), or using messaging but configuring a broker is a pain. What if I designed my application to use rabbitmq but now I want to migrate to AWS kinesis, there is a lot of pain involved in migrating tech stack.&lt;/p&gt;
@@ -447,6 +447,8 @@ so the new code will become:&lt;/p&gt;
   &lt;li&gt;Maven&lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;servlets-and-filters&quot;&gt;Servlets and filters&lt;/h1&gt;
 
 &lt;p&gt;Before we proceed, lets spend some time on revising the web flow.&lt;/p&gt;
@@ -477,6 +479,8 @@ so the new code will become:&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The init/destroy method is called when the filter is loaded/removed from the context. Whereas doFilter method is envoked everytime the request comes. it takes the request, response and filterChain object&lt;/p&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 
 &lt;p&gt;In order to configure, we need to add filter chain in &lt;em&gt;web.xml&lt;/em&gt;&lt;/p&gt;
 &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;nt&quot;&gt;&amp;lt;filter&amp;gt;&lt;/span&gt;
@@ -511,6 +515,8 @@ so the new code will become:&lt;/p&gt;
   &lt;li&gt;ExceptionTranslationFilter: Redirect to the error or login page.&lt;/li&gt;
 &lt;/ol&gt;
 
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;authentication-workflow&quot;&gt;Authentication Workflow&lt;/h1&gt;
 &lt;p&gt;When a request comes, its delegated to Authentication filters, which generates AuthenticationTokens, these tokens are then passed to AuthenticationManager, it would validate the token and generate principle object(principle mainly means minimum basic info after authentication).&lt;/p&gt;
 
@@ -529,6 +535,8 @@ so the new code will become:&lt;/p&gt;
 &lt;h1 id=&quot;create-web-application&quot;&gt;Create web application&lt;/h1&gt;
 
 &lt;p&gt;We will create a simple library application which will become our playground for setting up the spring-security.&lt;/p&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 
 &lt;p&gt;We will start by creating a new spring boot application.&lt;/p&gt;
 &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- pom.xml --&amp;gt;&lt;/span&gt;
@@ -616,6 +624,9 @@ At line 9, we configured our app to read data.sql to populate book table. This w
                               &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Harry Potter and the Philosopher&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;s Stone'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
                               &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Harry Potter and the Chamber of Secrets'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;create-entity--respective-repository&quot;&gt;Create Entity &amp;amp; Respective Repository&lt;/h2&gt;
 
 &lt;p&gt;Next, we will create Entity to map Book object.&lt;/p&gt;
@@ -652,6 +663,8 @@ At line 9, we configured our app to read data.sql to populate book table. This w
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;At line 16 &amp;amp; 17, we are using lombok to generate boilerplate code for getters/setters. If you don’t want to use lombok, simply provide getters/setters, the old fashion way.&lt;/p&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 
 &lt;p&gt;Next we create JPA Repository to access Book data.&lt;/p&gt;
 
@@ -728,6 +741,8 @@ At line 9, we configured our app to read data.sql to populate book table. This w
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;time-to-add-spring-security&quot;&gt;Time to add Spring Security&lt;/h1&gt;
 
 &lt;p&gt;Ok, so now we have all our base application setup. Now we will add maven dependency for spring security:-&lt;/p&gt;
@@ -788,6 +803,8 @@ At line 9, we configured our app to read data.sql to populate book table. This w
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 
 &lt;p&gt;Lets look at them with detail.
 At line 15, we override the configure method, and we say we want to authorize any requests with only basic and logout filter.&lt;/p&gt;
@@ -884,6 +901,8 @@ At line 15, we override the configure method, and we say we want to authorize an
 
 &lt;p&gt;That’s it you have enabled spring security.&lt;/p&gt;
 
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
+
 &lt;p&gt;We want to expose “/books” which is a public api i.e. anyone can access it. We have another set of harry potter books (“/secure/books”) which we want to be secured.&lt;/p&gt;
 
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/main/java/in/kuros/controller/CartController.java&lt;/span&gt;
@@ -935,6 +954,8 @@ Using generated security password: fb610637-e0a6-423b-bb6b-1badf661d885
 
 &lt;h1 id=&quot;spring-security-configuration&quot;&gt;Spring security configuration&lt;/h1&gt;
 &lt;p&gt;So far so good, we have security configured, but we still have a problem. Both our apis are behind authentication. But we wanted only one api to be secured.&lt;/p&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 
 &lt;p&gt;To fix this, we need to crete a config file which extends WebSecurityConfigurerAdapter. We need to override configure method as below.&lt;/p&gt;
 
@@ -999,6 +1020,8 @@ We have also enforced formLogin() here.&lt;/p&gt;
 
 &lt;p&gt;&lt;img alt=&quot;h2-db-login&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/spring/h2-db-login.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
 
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
+
 &lt;p&gt;user the following properties to login&lt;/p&gt;
 &lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;driver&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;org.h2.Driver&lt;/span&gt;
 &lt;span class=&quot;err&quot;&gt;jdbc&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jdbc:h2:mem:testdb&lt;/span&gt;
@@ -1036,6 +1059,8 @@ Forbidden
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;so we are able to login now.&lt;/p&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 
 &lt;p&gt;Lets create the entity &amp;amp; repository:&lt;/p&gt;
 
@@ -1112,6 +1137,8 @@ Forbidden
 
 &lt;p&gt;There are multiple ways we can handle it, but in this post we will focus on using authentication provider.&lt;/p&gt;
 
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
+
 &lt;p&gt;We will create a custom authentication provider. We need to implement authenticate method, you will get authentication object, it will contain username and credentials which we will validate.&lt;/p&gt;
 
 &lt;p&gt;After we validate the user we need to create new Token, but make sure you do not forward password beyond, you don’t want password to leak to other filters.&lt;/p&gt;
@@ -1177,6 +1204,8 @@ Forbidden
     &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 
 &lt;p&gt;Finally we will override the configure method and provide our custom authentication provider.&lt;/p&gt;
 
@@ -2783,6 +2812,8 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;Its a simple validation, which expects auth_token to be present and it should be equal to ‘valid_token’&lt;/p&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;&lt;/p&gt;
 
 &lt;p&gt;Add to our server configuration.&lt;/p&gt;
 

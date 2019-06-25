@@ -167,6 +167,8 @@ data-full-width-responsive="true"></ins>
   <li>Maven</li>
 </ol>
 
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
+
 <h1 id="servlets-and-filters">Servlets and filters</h1>
 
 <p>Before we proceed, lets spend some time on revising the web flow.</p>
@@ -197,6 +199,8 @@ data-full-width-responsive="true"></ins>
 </code></pre></div></div>
 
 <p>The init/destroy method is called when the filter is loaded/removed from the context. Whereas doFilter method is envoked everytime the request comes. it takes the request, response and filterChain object</p>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
 
 <p>In order to configure, we need to add filter chain in <em>web.xml</em></p>
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;filter&gt;</span>
@@ -231,6 +235,8 @@ data-full-width-responsive="true"></ins>
   <li>ExceptionTranslationFilter: Redirect to the error or login page.</li>
 </ol>
 
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
+
 <h1 id="authentication-workflow">Authentication Workflow</h1>
 <p>When a request comes, its delegated to Authentication filters, which generates AuthenticationTokens, these tokens are then passed to AuthenticationManager, it would validate the token and generate principle object(principle mainly means minimum basic info after authentication).</p>
 
@@ -249,6 +255,8 @@ data-full-width-responsive="true"></ins>
 <h1 id="create-web-application">Create web application</h1>
 
 <p>We will create a simple library application which will become our playground for setting up the spring-security.</p>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
 
 <p>We will start by creating a new spring boot application.</p>
 <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- pom.xml --&gt;</span>
@@ -336,6 +344,9 @@ At line 9, we configured our app to read data.sql to populate book table. This w
                               <span class="p">(</span><span class="s1">'Harry Potter and the Philosopher</span><span class="se">''</span><span class="s1">s Stone'</span><span class="p">),</span>
                               <span class="p">(</span><span class="s1">'Harry Potter and the Chamber of Secrets'</span><span class="p">);</span>
 </code></pre></div></div>
+
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
+
 <h2 id="create-entity--respective-repository">Create Entity &amp; Respective Repository</h2>
 
 <p>Next, we will create Entity to map Book object.</p>
@@ -372,6 +383,8 @@ At line 9, we configured our app to read data.sql to populate book table. This w
 </code></pre></div></div>
 
 <p>At line 16 &amp; 17, we are using lombok to generate boilerplate code for getters/setters. If you don’t want to use lombok, simply provide getters/setters, the old fashion way.</p>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
 
 <p>Next we create JPA Repository to access Book data.</p>
 
@@ -448,6 +461,8 @@ At line 9, we configured our app to read data.sql to populate book table. This w
 </span><span class="p">]</span><span class="w">
 </span></code></pre></div></div>
 
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
+
 <h1 id="time-to-add-spring-security">Time to add Spring Security</h1>
 
 <p>Ok, so now we have all our base application setup. Now we will add maven dependency for spring security:-</p>
@@ -508,6 +523,8 @@ At line 9, we configured our app to read data.sql to populate book table. This w
 <span class="o">}</span>
 
 </code></pre></div></div>
+
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
 
 <p>Lets look at them with detail.
 At line 15, we override the configure method, and we say we want to authorize any requests with only basic and logout filter.</p>

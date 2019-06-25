@@ -150,6 +150,8 @@ data-full-width-responsive="true"></ins>
 
 <p>To put it simply, You create a prototype of a service with its request &amp; response, share it across server &amp; client and they generate respective methods and implement them, now client invokes the method with request which is transferred to server, the method executes on server and returns the response back to client, but at client’s end it would seem as working with a local method.</p>
 
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
+
 <p>In the real world, the biggest challenge is handling database in micro services, having a distributed persistence layer could work wonders.</p>
 
 <h1 id="core-feature">Core Feature</h1>
@@ -209,6 +211,8 @@ data-full-width-responsive="true"></ins>
 <p>A unique number needs to be assigned to each attribute, called as the tag. This tag is used by the protocol buffer to represent the attribute instead of using the attribute name.
 So, unlike JSON where we would pass attribute name <strong>X</strong> every single time, protocol buffer would use the number 1 to represent <strong>X</strong>. Response payload definition is similar to the request.</p>
 
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
+
 <p>So at the end after generation, we will have three classes (in terms of java), Operands, AddResponse &amp; Calculator which takes operands and returns addResponse;</p>
 
 <h1 id="generating-class-files-for-java">Generating class files for java.</h1>
@@ -263,6 +267,8 @@ So, unlike JSON where we would pass attribute name <strong>X</strong> every sing
 </code></pre></div></div>
 
 <p>The <em>os-maven-plugin</em> extension/plugin generates various useful platform-dependent project properties like ${os.detected.classifier}</p>
+
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
 
 <h2 id="generated-files">Generated files</h2>
 
@@ -327,6 +333,8 @@ So, unlike JSON where we would pass attribute name <strong>X</strong> every sing
 
 <p>So, here we have created a serve to listen at port 8080 for incoming request, registered our calculator service. In our example, we will call awaitTermination() to keep the server running in foreground blocking the prompt.</p>
 
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
+
 <h1 id="creating-a-client">Creating a client</h1>
 
 <p>First we need to create a gRPC channel for our stub, specifying the server address and port we want to connect to.</p>
@@ -375,6 +383,8 @@ So, unlike JSON where we would pass attribute name <strong>X</strong> every sing
 
     <span class="n">channel</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
 </code></pre></div></div>
+
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
 
 <p>complete client code:</p>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">in.kuros.grpc.AddResponse</span><span class="o">;</span>
