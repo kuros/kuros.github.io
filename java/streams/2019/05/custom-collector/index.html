@@ -176,6 +176,8 @@ data-full-width-responsive="true"></ins>
 <h2 id="supplier">Supplier</h2>
 <p>We need to provide a supplier that creates a result container. This is where the accumulated value will be stored.</p>
 
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
+
 <p>In our case we need a <em>Set</em> to hold unique items.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;();</span>
@@ -193,6 +195,8 @@ data-full-width-responsive="true"></ins>
 <p>The combiner is a function that defines how two result containers could be combined.</p>
 
 <p>Why?</p>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
 
 <p>In parallel processing the stream is broken into multiple processing units, each unit processed and is accumulated independently, so we need to merge all this units to get the final result using the combiner.</p>
 
@@ -220,6 +224,8 @@ data-full-width-responsive="true"></ins>
   <li><strong>IDENTITY_FINISH</strong>: Indicates that the finisher function is the identity function and can be elided</li>
   <li><strong>UNORDERED</strong>: Indicates that the collection operation does not commit to preserving the encounter order of input elements.</li>
 </ul>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
 
 <p>So in our case it will have both CONCURRENT &amp; UNORDERED characteristics.</p>
 
