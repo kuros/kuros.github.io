@@ -111,6 +111,18 @@
 
 <section>
 	<div class="blog-post text-container">
+
+		
+
+
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-4166026699724584"
+data-ad-slot="7276848543"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+
+
 		<p class="post-details">
 	
 		<span class="blog-filter">
@@ -135,6 +147,8 @@
 <p>But life is not fair, so microservices comes with their own set of challenges. One of the most important of them is how would these microservices should interact with each other.
 Should they be using rest endpoint’s (but services fail if requested point is not available), or using messaging but configuring a broker is a pain. What if I designed my application to use rabbitmq but now I want to migrate to AWS kinesis, there is a lot of pain involved in migrating tech stack.</p>
 
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
+
 <h1 id="spring-cloud-stream">Spring Cloud Stream</h1>
 <p>Spring has come up with an abstraction over messaging infrastructure, to make sure, we focus more on business goals rather than technology management. And the solution is <strong>Spring Cloud Stream</strong>.</p>
 
@@ -146,6 +160,8 @@ Should they be using rest endpoint’s (but services fail if requested point is 
 <p>It also provides the Channel Adapters, which takes in outside message and adapts them to spring message.</p>
 
 <p>There are Service Activators, which are responsible for pulling messages from message channel and call the attached method of service bean.</p>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
 
 <h1 id="basic-concepts">Basic Concepts</h1>
 
@@ -193,6 +209,8 @@ Status: Downloaded newer image <span class="k">for </span>rabbitmq:3-management
 fa09ea9000b27817fd22bcb623d2e844c892e22d1b9eedd22402abe19344b9b9
 </code></pre></div></div>
 
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins></p>
+
 <p>Once the download is complete, it would fire up the container. To verify your container is up:</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker ps
 
@@ -209,6 +227,8 @@ fa09ea9000b2        rabbitmq:3-management   <span class="s2">"docker-entrypoint.
 <h1 id="problem-statement">Problem statement</h1>
 
 <p>Before we proceed let’s create a problem statement we are trying to solve with messaging. Assume we have an Online Order service, when someone places the order, we log the orders for auditing, send the order for packaging. We have an independent logging system and now we need to connect our main application logging system.</p>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
 
 <h1 id="application">Application</h1>
 <p>Now we will create a spring boot application and add the following dependencies:</p>
@@ -247,6 +267,8 @@ spring.rabbitmq.password=guest
 </code></pre></div></div>
 
 <p>Next step is to define channels through which we want to communicate, Spring has provided 3 types of channel out of the box(we will be using mostly custom channels in prod, but for this article we will stick to provided channel).</p>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
 
 <ol>
   <li>
@@ -333,6 +355,8 @@ spring.rabbitmq.password=guest
 
 <p>Now when we run the application we can verify if our message is getting published in rabbitmq, let’s check its management console.</p>
 
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
+
 <p>We can notice a new topic has been created in Exchanges with the name output to match the interface.</p>
 
 <p><img alt="rabbit mq console channel" src="/images/loader.gif" data-src="/images/2019/spring/rabbitmq-pub-active.png" class="lazy img-center img-half" /></p>
@@ -369,6 +393,8 @@ spring.rabbitmq.password=guest
 
 <p>But we are still not receiving any message?. Ok lets see what we are missing, we have created a channel for output named as <code class="highlighter-rouge">output</code>, a channel for receiving the message named as <code class="highlighter-rouge">input</code>, but we have not attached these channels, so lets do this.</p>
 
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins></p>
+
 <p>In you <code class="highlighter-rouge">application.properties</code> add the following properties.</p>
 
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spring.cloud.stream.bindings.input.destination=order
@@ -394,6 +420,17 @@ Order Number: 1561241533496
 
 <p><a href="https://github.com/kuros/blog-code/tree/master/spring/spring-cloud-stream-rabbitmq/publisher">Download the complete code</a>.</p>
 
+
+
+			
+
+
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-4166026699724584"
+data-ad-slot="7276848543"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
 
 
 			<div class="blog-navigation">
@@ -442,6 +479,17 @@ Order Number: 1561241533496
 			</script>
 			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 			
+
+			
+
+
+<ins class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-4166026699724584"
+data-ad-slot="7276848543"
+data-ad-format="auto"
+data-full-width-responsive="true"></ins>
+
 		</div>
 	</div>
 </section>
