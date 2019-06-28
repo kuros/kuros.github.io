@@ -148,7 +148,7 @@
 
 <p>The main reason for using packages is to guarantee the uniqueness of class names. Suppose two programmers come up with the bright idea of supplying an Employee class. As long as both of them place their class into different packages, there is no conflict.</p>
 
-<h2 id="advantages-of-packages">Advantages of packages</h2>
+<h1 id="advantages-of-packages">Advantages of packages</h1>
 <p>Packages provide an alternative to creating procedures and functions as stand-alone schema objects, and they offer the following advantages:</p>
 
 <ul>
@@ -160,7 +160,7 @@
   <li>Overloading: Procedures and functions, when used within a package, can be overloaded, i.e., multiple subprograms can be created with the same name in the same package, each taking different number of parameters or different types of parameters.</li>
 </ul>
 
-<h2 id="class-importation">Class Importation</h2>
+<h1 id="class-importation">Class Importation</h1>
 
 <p>A class can use all classes from its own package and all public classes from other packages.</p>
 
@@ -186,6 +186,13 @@
   </li>
 </ul>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <p>Most of the time, you just import the packages that you need, without worrying too much about them. But if we want to import two classes with the same name from two different packages we have a problem.</p>
 
 <p><img alt="import multiple class with same name" src="/images/java/j-20.webp" lazyload="" width="600px" /></p>
@@ -202,7 +209,7 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<h2 id="addition-of-classes-into-a-package">Addition of classes into a package</h2>
+<h1 id="addition-of-classes-into-a-package">Addition of classes into a package</h1>
 
 <p>To place classes inside a package, you must put the name of the package at the top of your source file, before the code that defines the classes in the package.</p>
 
@@ -222,13 +229,13 @@ The folder structure will be as follows:-</p>
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ src/somePackage/LearnPackages.java
 </code></pre></div></div>
 
-<h2 id="access-modifiers">Access Modifiers</h2>
+<h1 id="access-modifiers">Access Modifiers</h1>
 
 <p>In Java code, class and variable and method and constructor declarations can have “access specifiers”, that is one of: private, protected, public. (or none.).</p>
 
 <p>The purpose of access specifiers is to declare which entity cannot be accessed from where. Its effect has different consequences when used on a class, class member (variable or method), and constructor.</p>
 
-<h2 id="access-modifiers-for-classes">Access modifiers for Classes</h2>
+<h1 id="access-modifiers-for-classes">Access modifiers for Classes</h1>
 <p>There are total 2 types of access specifire available.</p>
 <ul>
   <li>Public</li>
@@ -236,10 +243,10 @@ The folder structure will be as follows:-</p>
 Let us go though each of them one by one</li>
 </ul>
 
-<h3 id="public">public</h3>
+<h2 id="public">public</h2>
 <p>A class declaration with the public keyword gives all classes from all packages access to the public class. Means you can access any public class just by importing the class with its package.</p>
 
-<h3 id="default-access">Default Access</h3>
+<h2 id="default-access">Default Access</h2>
 
 <p>A class with default access has no modifier preceding it in the declaration! It’s the access control you get when you don’t type a modifier in the class declaration. Think of default access as package-level access, because a class with default access can be seen only by classes within the same package.</p>
 
@@ -251,7 +258,14 @@ Let us go though each of them one by one</li>
 
 <p>So the class is not visible in the other package if we use the default access specifier, but if we try to access the ClassA in inc.chapter5 package only then all the methods will be visible to the classes declared in the same package</p>
 
-<h2 id="access-modifiers-for-methodsvariables">Access modifiers for Methods/Variables</h2>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="access-modifiers-for-methodsvariables">Access modifiers for Methods/Variables</h1>
 <p>Method and variable members are usually given access control in exactly the same way, whereas a class can use just two of the four access control levels (default or public), members can use all four:</p>
 <ul>
   <li>Public</li>
@@ -260,13 +274,13 @@ Let us go though each of them one by one</li>
   <li>private</li>
 </ul>
 
-<h3 id="public-methodsvariables">public methods/variables</h3>
+<h2 id="public-methodsvariables">public methods/variables</h2>
 <p>When a method or variable member is declared public, it means all other classes, regardless of the package they belong to, can access the member (assuming the class itself is visible).</p>
 
-<h3 id="private-methodvaraible">private method/varaible</h3>
+<h2 id="private-methodvaraible">private method/varaible</h2>
 <p>Members marked private can’t be accessed by code in any class other than the class in which the private member was declared.</p>
 
-<h3 id="protected-and-default-members">Protected and Default Members</h3>
+<h2 id="protected-and-default-members">Protected and Default Members</h2>
 <p>The protected and default access control levels are almost identical, but with one critical difference. A default member may be accessed only if the class accessing the member belongs to the same package, whereas a protected member can be accessed (through inheritance) by a subclass even if the subclass is in a different package.</p>
 
 <table>
@@ -317,6 +331,14 @@ Let us go though each of them one by one</li>
 	<span class="o">}</span>	
 <span class="o">}</span>
 </code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <p><img alt="import multiple class with same name" src="/images/java/j-23.webp" lazyload="" width="600px" style="margin-bottom: 20px" /> 
 <img alt="import multiple class with same name" src="/images/java/j-24.webp" lazyload="" width="600px" style="margin-bottom: 20px" /> 
 <img alt="import multiple class with same name" src="/images/java/j-25.webp" lazyload="" width="600px" /></p>

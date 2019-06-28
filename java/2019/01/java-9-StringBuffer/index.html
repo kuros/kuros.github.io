@@ -162,8 +162,8 @@
 <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"sb = "</span> <span class="o">+</span> <span class="n">sb</span><span class="o">);</span> <span class="c1">// output is "sb = abcdef"</span>
 </code></pre></div></div>
 
-<h2 id="important-methods-in-the-stringbuffer-class">Important Methods in the StringBuffer Class</h2>
-<h3 id="public-stringbuffer-appendstring-s">public StringBuffer append(String s)</h3>
+<h1 id="important-methods-in-the-stringbuffer-class">Important Methods in the StringBuffer Class</h1>
+<h1 id="public-stringbuffer-appendstring-s">public StringBuffer append(String s)</h1>
 
 <p>This method will take many different arguments, including boolean, char, double, float, int, long, and others, but the most likely use on the exam will be a String argument.</p>
 
@@ -175,13 +175,20 @@
 <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb2</span><span class="o">);</span> <span class="c1">// output is "pi = 3.14159"</span>
 </code></pre></div></div>
 
-<h3 id="public-stringbuffer-deleteint-start-int-end">public StringBuffer delete(int start, int end)</h3>
+<h2 id="public-stringbuffer-deleteint-start-int-end">public StringBuffer delete(int start, int end)</h2>
 <p>This method returns a StringBuffer object and updates the value of the StringBuffer object that invoked the method call. In both cases, a substring is removed from the original object. The starting index of the substring to be removed is defined by the first argument (which is zero-based), and the ending index of the substring to be removed is defined by the second argument.</p>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="s">"0123456789"</span><span class="o">);</span>
 <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">6</span><span class="o">));</span> <span class="c1">// output is "01236789"</span>
 </code></pre></div></div>
 
-<h3 id="public-stringbuilder-insertint-offset-string-s">public StringBuilder insert(int offset, String s)</h3>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="public-stringbuilder-insertint-offset-string-s">public StringBuilder insert(int offset, String s)</h2>
 <p>This method returns a StringBuffer object and updates the value of the StringBuffer object that invoked the method call. In both cases, the String passed in to the second argument is inserted into the original StringBuffer starting at the offset location represented by the first argument (the offset is zero-based). Again, other types of data can be passed in through the second argument (boolean, char, double, float, int, long, and so on)</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">(</span><span class="s">"01234567"</span><span class="o">);</span>

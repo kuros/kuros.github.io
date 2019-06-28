@@ -158,7 +158,7 @@
 
 <p>Because multiple threads coexist in the same memory space and share the same variables, you must take care to ensure that your threads don’t interfere with each other.</p>
 
-<h3 id="why-use-threads">Why use threads?</h3>
+<h1 id="why-use-threads">Why use threads?</h1>
 
 <p>Some of the reasons for using threads are that they can help to:</p>
 
@@ -171,7 +171,7 @@
 
 <p>There are several ways to create a thread in a Java program. Every Java program contains at least one thread: the main thread. Additional threads are created instantiating classes that extend the Thread class or by implementing the <strong>Runnable</strong> interface.</p>
 
-<h2 id="thread-class-and-runnable-interface">Thread class and Runnable Interface</h2>
+<h1 id="thread-class-and-runnable-interface">Thread class and Runnable Interface</h1>
 
 <p>A new thread is born when we create an instance of the java.lang.Thread class or java.lang.Runnable interface. The Thread object represents a real thread in the Java interpreter and serves as a handle for controlling and synchronizing its execution. With it, we can start the thread, stop the thread, or suspend it temporarily.</p>
 
@@ -193,10 +193,17 @@
 
 <p>You always write the code that needs to be run in a separate thread in a run() method. The run() method will call other methods, of course, but the thread of execution—the new call stack—always begins by invoking run().</p>
 
-<h2 id="defining-a-thread">Defining a Thread</h2>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="defining-a-thread">Defining a Thread</h1>
 <p>To define a thread, you need a place to put your run() method, and as we just discussed, you can do that by extending the Thread class or by implementing the Runnable interface.</p>
 
-<h3 id="extending-javalangthread">Extending java.lang.Thread</h3>
+<h1 id="extending-javalangthread">Extending java.lang.Thread</h1>
 <p>The simplest way to define code to run in a separate thread is to</p>
 <ul>
   <li>Extend the java.lang.Thread class.</li>
@@ -211,7 +218,7 @@
 </code></pre></div></div>
 <p>The limitation with this approach (besides being a poor design choice in most cases) is that if you extend Thread, you can’t extend anything else. And it’s not as if you really need that inherited Thread class behavior, because in order to use a thread you’ll need to instantiate one anyway.</p>
 
-<h3 id="implementing-javalangrunnable">Implementing java.lang.Runnable</h3>
+<h1 id="implementing-javalangrunnable">Implementing java.lang.Runnable</h1>
 
 <p>Implementing the Runnable interface gives you a way to extend from any class you like, but still define behavior that will be run by a separate thread.</p>
 
@@ -222,7 +229,7 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<h2 id="instantiating-a-thread">Instantiating a Thread</h2>
+<h1 id="instantiating-a-thread">Instantiating a Thread</h1>
 
 <p>Remember, every thread of execution begins as an instance of class Thread. Regardless of whether your run() method is in a Thread subclass or a Runnable implementation class, you still need a Thread object to do the work.</p>
 
@@ -258,7 +265,14 @@
 
 <p>Giving the same Runnable to multiple threads means that several threads of execution will be running the very same job (and that the same job will be done multiple times).</p>
 
-<h2 id="starting-a-thread">Starting a Thread</h2>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="starting-a-thread">Starting a Thread</h1>
 <p>Now we have our thread created (this state is of the thread is called to be in new state). And we have to start the thread, in order to start the thread we simply call the start() method of Thread class.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">t</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
@@ -268,7 +282,7 @@
 
 <p><img alt="this impl" src="/images/java/j-37.webp" lazyload="" width="600px" /></p>
 
-<h2 id="putting-it-all-together">Putting it all together</h2>
+<h1 id="putting-it-all-together">Putting it all together</h1>
 
 <p>Now let us see a simple program which uses the threads to execute. In this case we have create a FooRunnable class which implements Runnable interface.</p>
 
@@ -295,7 +309,14 @@
 
 <p>Then we create an instance of FooRunnable and pass this instance to the Thread instance to create a thread.</p>
 
-<h2 id="starting-and-running-multiple-threads">Starting and Running Multiple Threads</h2>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="starting-and-running-multiple-threads">Starting and Running Multiple Threads</h1>
 <p>Enough playing around here; let’s actually get multiple threads going (more than two, that is). We already had two threads, because the main() method starts in a thread of its own, and then t.start() started a second thread. Now we’ll do more. The following code creates a single Runnable instance and three Thread instances. All three Thread instances get the same Runnable instance, and each thread is given a unique name. Finally, all three threads are started by invoking start() on the Thread instances.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">NameRunnable</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
@@ -345,6 +366,13 @@
   <li>Now start() method to start execution of the thread.</li>
 </ul>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Run by Lucy, x is 1
 Run by Ricky, x is 1
 Run by Fred, x is 1
@@ -357,12 +385,12 @@ Run by Fred, x is 3
 </code></pre></div></div>
 <p><strong>Note: Output will vary for each run</strong></p>
 
-<h2 id="thread-priorities">Thread Priorities</h2>
+<h1 id="thread-priorities">Thread Priorities</h1>
 <p>Threads always run with some priority, usually represented as a number between 1 and 10 (although in some cases the range is less than 10). Priorities are integer values from 1 (lowest priority given by the constant Thread. MIN_PRIORITY) to 10 (highest priority is given by the constant Thread.MAX_PRIORITY). The default priority is 5 (Thread.NORM_PRIORITY).</p>
 
 <p>If a thread enters the runnable state (it means it is waiting for its turn to start executing), and it has a higher priority than any of the threads in the pool and a higher priority than the currently running thread, the lower-priority running thread usually will be bumped back to runnable and the highest-priority thread will be chosen to run. In other words, at any given time the currently running thread usually will not have a priority that is lower than any of the threads in the pool. In most cases, the running thread will be of equal or greater priority than the highest priority threads in the pool. This is as close to a guarantee about scheduling as you’ll get from the JVM specification, so you must never rely on thread priorities to guarantee the correct behavior of your program.</p>
 
-<h3 id="setting-the-thread-priority">Setting the thread priority</h3>
+<h1 id="setting-the-thread-priority">Setting the thread priority</h1>
 
 <p>A thread gets a default priority that is the priority of the thread of execution that creates it. For example, in the code the thread referenced by t will have the same priority as the main thread, since the main thread is executing the code that creates the MyThread instance.</p>
 
@@ -378,7 +406,14 @@ Run by Fred, x is 3
 <span class="o">}</span>
 </code></pre></div></div>
 
-<h2 id="the-sleep-method-">The sleep method ()</h2>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="the-sleep-method-">The sleep method ()</h1>
 
 <p>Suppose we want to create a stop watch which shows the digit after every one second, i.e. we want to stop the execution of the thread for some time. To do that, we will use the sleep method for the thread to stop executing.</p>
 
@@ -418,13 +453,20 @@ Run by Lucy, x is 3
 </code></pre></div></div>
 <p>The output may vary as we do not know how the threads are being scheduled during running.</p>
 
-<h2 id="thread-synchronization---need-and-mechanism">Thread Synchronization - need and mechanism</h2>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="thread-synchronization---need-and-mechanism">Thread Synchronization - need and mechanism</h1>
 
 <p>Threads share the same memory space, that is, they can share resources. However, there are critical situations where it is desirable that only one thread at a time has access to a shared resource. For example, crediting and debiting a shared bank account concurrently amongst several users without proper discipline, will jeopardize the integrity of the account data. Java provides high-level concepts for synchronization in order to control access to shared resources.</p>
 
 <p>To understand the problem let us take  a banking example.</p>
 
-<h3 id="the-banking-example">The Banking Example</h3>
+<h1 id="the-banking-example">The Banking Example</h1>
 <p>As an application designer for a major bank, we are assigned to the development team for the automated teller machine (ATM). As our first assignment, we are given the task of designing and implementing the routine that allows a user to withdraw cash from the ATM. A first and simple attempt at an algorithm may be as follows.</p>
 
 <ol>
@@ -484,6 +526,13 @@ Run by Lucy, x is 3
 
 <p>The Java specification provides certain mechanisms that deal specifically with this problem. The Java language provides the synchronized keyword; in comparison with other threading systems, this keyword allows the programmer access to a resource in a mutually exclusive way.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Account</span> <span class="o">{</span>
 	<span class="kd">private</span> <span class="kt">float</span> <span class="n">total</span><span class="o">;</span>
 	<span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">boolean</span> <span class="nf">deduct</span><span class="o">(</span><span class="kt">float</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
@@ -498,7 +547,7 @@ Run by Lucy, x is 3
 
 <p>By declaring the method as synchronized, if two users decide to withdraw cash from the ATM at the same time, the first user executes the deduct() method while the second user waits until the first user completes the deduct() method. Since only one user may execute the deduct() method at a time, the race condition is eliminated.</p>
 
-<h2 id="synchronizing-a-block-of-code">Synchronizing a Block of Code</h2>
+<h1 id="synchronizing-a-block-of-code">Synchronizing a Block of Code</h1>
 
 <p>Let us assume we are writing a method in which we need to synchronized a couple of lines of codes, so what should we do, shall we go ahead and synronize the whole method but in that case efficiency of aur program will be reduced, since large block of code will be executed before releasing the lock.</p>
 
@@ -515,7 +564,14 @@ Run by Lucy, x is 3
 
 <p>What we are doing here is we are trying to lock the Object Account so that no other thread can access it and then we are executing the thread safe piece of code.</p>
 
-<h2 id="understanding-deadlocks">Understanding Deadlocks</h2>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="understanding-deadlocks">Understanding Deadlocks</h1>
 
 <p><img alt="this impl" src="/images/java/j-39.webp" lazyload="" width="600px" /></p>
 

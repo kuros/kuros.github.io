@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-06-28T13:21:38+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+00:00</published><updated>2019-06-20T00:00:00+00:00</updated><id>https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-06-28T14:29:33+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+00:00</published><updated>2019-06-20T00:00:00+00:00</updated><id>https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-security/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
 
 &lt;p&gt;But life is not fair, so microservices comes with their own set of challenges. One of the most important of them is how would these microservices should interact with each other.
 Should they be using rest endpoint’s (but services fail if requested point is not available), or using messaging but configuring a broker is a pain. What if I designed my application to use rabbitmq but now I want to migrate to AWS kinesis, there is a lot of pain involved in migrating tech stack.&lt;/p&gt;
@@ -2301,7 +2301,7 @@ To create a production build, use npm run build.
 
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-&lt;p&gt;We have created a simple react app with typescript added the routing to it. You can find the &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/react/first-app&quot;&gt;code here&lt;/a&gt;.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">When we talk of UI tech stack, two of the web technologies have emerged as main competitors, Angular(supported by Google) &amp;amp; React(supported by Facebook).</summary></entry><entry><title type="html">Running First Kubernetes Pod on Mac (Windows)</title><link href="https://kuros.in/kubernetes/2019/02/first-pod/" rel="alternate" type="text/html" title="Running First Kubernetes Pod on Mac (Windows)" /><published>2019-02-08T00:00:00+00:00</published><updated>2019-02-08T00:00:00+00:00</updated><id>https://kuros.in/kubernetes/2019/02/first-pod</id><content type="html" xml:base="https://kuros.in/kubernetes/2019/02/first-pod/">&lt;p&gt;All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.&lt;/p&gt;
+&lt;p&gt;We have created a simple react app with typescript added the routing to it. You can find the &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/react/first-app&quot;&gt;code here&lt;/a&gt;.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">When we talk of UI tech stack, two of the web technologies have emerged as main competitors, Angular(supported by Google) &amp;amp; React(supported by Facebook).</summary></entry><entry><title type="html">Running First Kubernetes Pod on Mac (Windows)</title><link href="https://kuros.in/kubernetes/2019/02/running-first-kubernetes-pod-on-mac/" rel="alternate" type="text/html" title="Running First Kubernetes Pod on Mac (Windows)" /><published>2019-02-08T00:00:00+00:00</published><updated>2019-02-08T00:00:00+00:00</updated><id>https://kuros.in/kubernetes/2019/02/running-first-kubernetes-pod-on-mac</id><content type="html" xml:base="https://kuros.in/kubernetes/2019/02/running-first-kubernetes-pod-on-mac/">&lt;p&gt;All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; The minimum docker desktop version required for kubernetes is &lt;strong&gt;18.09.1&lt;/strong&gt;&lt;/p&gt;
 
@@ -2342,6 +2342,13 @@ Client: Docker Engine - Community
   Experimental:     &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;enable-kubernetes&quot;&gt;Enable Kubernetes&lt;/h1&gt;
 &lt;p&gt;Open Docker preferences/settings, go to Kubernetes tab(only available after version 18.09.1) &amp;amp; enable it.&lt;/p&gt;
 
@@ -2375,6 +2382,13 @@ KubeDNS is running at https://localhost:6443/api/v1/namespaces/kube-system/servi
 
 To further debug and diagnose cluster problems, use &lt;span class=&quot;s1&quot;&gt;'kubectl cluster-info dump'&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;But when we try access the url in browser, we get an authentication failure.&lt;/p&gt;
 &lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://localhost:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
@@ -2451,6 +2465,13 @@ To further debug and diagnose cluster problems, use &lt;span class=&quot;s1&quot
 
 &lt;p&gt;So now since we have a running cluster we will create a simple app &amp;amp; deploy it.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;the-java-app&quot;&gt;The Java App&lt;/h1&gt;
 
 &lt;p&gt;We will create a simple java app which will return the IP of the machine. we will create a spring boot application.&lt;/p&gt;
@@ -2501,6 +2522,14 @@ To further debug and diagnose cluster problems, use &lt;span class=&quot;s1&quot
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;We will initialize Spring Boot Application:&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.SpringApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.boot.autoconfigure.SpringBootApplication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
 
@@ -2564,6 +2593,13 @@ To further debug and diagnose cluster problems, use &lt;span class=&quot;s1&quot
 
 &lt;p&gt;So now we have our sample application ready, time to create docker image.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;dockerfile&quot;&gt;Dockerfile&lt;/h1&gt;
 
 &lt;p&gt;We will create a file named as &lt;strong&gt;Dockerfile&lt;/strong&gt; in our home folder.&lt;/p&gt;
@@ -2612,6 +2648,13 @@ REPOSITORY            TAG                 IMAGE ID            CREATED           
 incrediblevicky/machine-ip      0.0.1               62ee4df459e4        2 hours ago         122MB
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;running-docker-image&quot;&gt;Running Docker image&lt;/h2&gt;
 
 &lt;p&gt;To run the docker image we will use&lt;/p&gt;
@@ -2640,6 +2683,13 @@ Login Succeeded
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;docker push incrediblevicky/machine-ip:0.0.1
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;Now we are ready with our setup, time for Kubernetes.&lt;/p&gt;
 
@@ -2693,6 +2743,14 @@ Login Succeeded
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl create &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; Deployment.yaml
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;p&gt;Next, run &lt;code class=&quot;highlighter-rouge&quot;&gt;kubectl get deployments&lt;/code&gt;. The output is similar to the following:&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl get deployments
@@ -2767,6 +2825,13 @@ machine-ip-service   LoadBalancer   10.104.164.245   localhost     8080:30420/TC
 
 &lt;p&gt;Congratulations you have you first app deployed on kubernetes&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;a-simple-client&quot;&gt;A simple client&lt;/h1&gt;
 &lt;p&gt;Before we move to last section, let create a simple client to make multiple rest calls.&lt;/p&gt;
 
@@ -2816,6 +2881,13 @@ machine-ip-5764588bdf-fh4v5   1/1       Running   0          13s
 machine-ip-5764588bdf-nh4mh   1/1       Running   0          13s
 machine-ip-5764588bdf-rtmr4   1/1       Running   0          1h
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;We see 4 new pods have been created instantly. Lets see what happens when make multiple client requests&lt;/p&gt;
 
@@ -2867,7 +2939,7 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 &lt;p&gt;In this article we installed docker with kubernetes, created a docker image of a java app, pushed it to docker-hub. Then we created our Kubernetes deployment &amp;amp; services, and started our first pod. We also looked at how kubernetes handles scaling effortlessly.&lt;/p&gt;
 
-&lt;p&gt;You can find the complete code on &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/k8s/machine-ip&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.</summary></entry><entry><title type="html">Kubernetes(k8s) Basics</title><link href="https://kuros.in/kubernetes/2019/01/architecture/" rel="alternate" type="text/html" title="Kubernetes(k8s) Basics" /><published>2019-01-29T00:00:00+00:00</published><updated>2019-01-29T00:00:00+00:00</updated><id>https://kuros.in/kubernetes/2019/01/architecture</id><content type="html" xml:base="https://kuros.in/kubernetes/2019/01/architecture/">&lt;p&gt;So we all have heard of docker, it has taken industry by a storm and completely changed the way application are deployed to servers, I mean having independent environment for every app is great, everyone loves it. But it also created challenges around managing deployments.&lt;/p&gt;
+&lt;p&gt;You can find the complete code on &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/k8s/machine-ip&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.</summary></entry><entry><title type="html">Kubernetes(k8s) Basics</title><link href="https://kuros.in/kubernetes/2019/01/kubernetes-basics/" rel="alternate" type="text/html" title="Kubernetes(k8s) Basics" /><published>2019-01-29T00:00:00+00:00</published><updated>2019-01-29T00:00:00+00:00</updated><id>https://kuros.in/kubernetes/2019/01/kubernetes-basics</id><content type="html" xml:base="https://kuros.in/kubernetes/2019/01/kubernetes-basics/">&lt;p&gt;So we all have heard of docker, it has taken industry by a storm and completely changed the way application are deployed to servers, I mean having independent environment for every app is great, everyone loves it. But it also created challenges around managing deployments.&lt;/p&gt;
 
 &lt;p&gt;Though there have been many container management tools such as Docker Swarm, CoreOs rkt, Mesos etc. But Kubernetes has emerged as favorite.&lt;/p&gt;
 
@@ -2893,6 +2965,13 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
   &lt;li&gt;&lt;strong&gt;Hides complexity of cluster&lt;/strong&gt;: Setting up application cluster is a big pain for devops, but with k8s, its very easy.&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;operating-principles&quot;&gt;Operating principles&lt;/h1&gt;
 
 &lt;p&gt;So k8s works on a very simple principle, always maintain the desired state.You provide a &lt;em&gt;desired state config&lt;/em&gt;, and k8s will download image, run it, and will maintain the required number of instances.&lt;/p&gt;
@@ -2912,6 +2991,13 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 
 &lt;p&gt;Pods ensures the atomicity, means either the pod is available or not its not, there is no state as starting or dying, its simply up or down. Each pod maintains the health of all the apps, if any app is down, k8s drops the whole pod and starts a completely new one.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;controllers&quot;&gt;Controllers&lt;/h2&gt;
 
 &lt;p&gt;Controllers are responsible for maintaining the state of the pods, number of replica’s, deployment state etc. It will monitor the state of Pod and also the health of all the apps inside a pod. Controllers also manages the change in replica-sets &amp;amp; container versions.&lt;/p&gt;
@@ -2927,6 +3013,13 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 &lt;p&gt;In the earlier version of k8s, volume was directly mapped to the containers. This created a very tight coupling between volume &amp;amp; pods.&lt;/p&gt;
 
 &lt;p&gt;But now k8s engine has come up with the concept of &lt;strong&gt;Persisted Volumes&lt;/strong&gt;. It is defined at the cluster level, so whenever a new pod comes up, it claims the desired store required by it from this Persisted Volume, this is called Persisted Volume Chains.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;kubernetes-cluster&quot;&gt;Kubernetes Cluster&lt;/h1&gt;
 &lt;p&gt;Now that we have seen basic building blocks, lets focus on how the k8s cluster is organized. Each custer comprises of mainly three components.&lt;/p&gt;
@@ -2944,6 +3037,13 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 
 &lt;p&gt;Api Server is the communication hub of the cluster, it completely stateless, and all the configuration are passed into k8s cluster through api server. Its a simple restful endpoint, whenever it receives the request, it validates and passes the information to &lt;em&gt;Cluster Store(etcd)&lt;/em&gt;&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;cluster-store&quot;&gt;Cluster Store&lt;/h3&gt;
 &lt;p&gt;As the name suggests, a Cluster Store, persists the values as key-value pair in etcd. Cluster Store also proves watcher on keys for any change in value.&lt;/p&gt;
 
@@ -2957,6 +3057,13 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 
 &lt;h3 id=&quot;kubectl&quot;&gt;kubectl&lt;/h3&gt;
 &lt;p&gt;Although kubectl is not the part of master, but it is the command line tool which talks with the api server (connects to master).&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;node&quot;&gt;Node&lt;/h2&gt;
 
@@ -2979,6 +3086,13 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 
 &lt;h3 id=&quot;container-runtime&quot;&gt;Container-runtime&lt;/h3&gt;
 &lt;p&gt;This the actual runtime environment, it will download and run the images. By default, k8s support Docker as container, but you can use any container implementation which implements Container Runtime Interface.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;networking&quot;&gt;Networking&lt;/h1&gt;
 

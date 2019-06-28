@@ -167,6 +167,13 @@
 <span class="k">from</span> <span class="n">salaries</span> <span class="n">s</span> <span class="k">where</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="k">select</span> <span class="mi">1</span> <span class="k">from</span> <span class="n">salaries</span> <span class="n">s2</span> <span class="k">where</span> <span class="n">s</span><span class="p">.</span><span class="n">emp_no</span> <span class="o">=</span> <span class="n">s2</span><span class="p">.</span><span class="n">emp_no</span> <span class="k">and</span> <span class="n">s</span><span class="p">.</span><span class="n">from_date</span> <span class="o">&lt;</span> <span class="n">s2</span><span class="p">.</span><span class="n">from_date</span> <span class="k">and</span> <span class="n">s</span><span class="p">.</span><span class="n">to_date</span> <span class="o">&lt;</span> <span class="n">s2</span><span class="p">.</span><span class="n">to_date</span> <span class="p">);</span>
 </code></pre></div></div>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <table>
   <thead>
     <tr>
@@ -321,6 +328,13 @@
 
 <p><strong>But something is wrong</strong>, this endpoint is returning incorrect values, eg. Employee 10001 has salary as <strong>85112</strong> but as per our earlier query it should be <strong>88958</strong>.</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <p>There is a bug in our query, that’s why we need integration tests to validate our queries.</p>
 
 <h2 id="time-to-write-test">Time to write test</h2>
@@ -388,6 +402,13 @@
     └── in.kuros.randomjpa.blogexample.entity.Employees|0 [empNo: 10016]
         └── in.kuros.randomjpa.blogexample.entity.Salaries|0 [id: 15]
 </code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <h2 id="understanding-test-components">Understanding test components</h2>
 

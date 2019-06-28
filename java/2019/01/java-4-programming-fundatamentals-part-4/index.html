@@ -151,7 +151,7 @@ bash: javac: <span class="nb">command </span>not found
 </code></pre></div></div>
 <p>Oops! We got a serious problem here, the command line does not recognize the javac command. To resolve this issue we need to add the environment variables.</p>
 
-<h3 id="setting-up-environment-varaibles">Setting up Environment varaibles</h3>
+<h1 id="setting-up-environment-varaibles">Setting up Environment varaibles</h1>
 <p>Set the path using the command:-</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// on windows:
 <span class="nb">set </span><span class="nv">path</span><span class="o">=</span>c:<span class="se">\p</span>rogram files<span class="se">\J</span>ava<span class="se">\j</span>dk1.6_0_16<span class="se">\b</span><span class="k">in</span>
@@ -160,6 +160,13 @@ bash: javac: <span class="nb">command </span>not found
 <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:&lt;JDK Location&gt;/bin
 </code></pre></div></div>
 <p>(provide the location of <jdk>\bin which is located in your system.</jdk></p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
 <p>now when you type <strong>javac</strong>, you will get output something like this</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>javac
@@ -207,9 +214,16 @@ where possible options include:
 
 <p>Go to Computer -&gt; properties -&gt; Environment Variables add a new variable JAVA_HOME and add the path to <jdk>\bin to the path variable.</jdk></p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <p><img src="/images/java/j-2.webp" alt="System Environment" /></p>
 
-<h3 id="compiling-the-program">Compiling the program</h3>
+<h1 id="compiling-the-program">Compiling the program</h1>
 <p>Now the Environment variables have been added and we have to compile the program.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>javac RunnerClass.java
@@ -220,7 +234,7 @@ where possible options include:
 
 <p>The every java file is converted into a bytecode and is represented as .class files.</p>
 
-<h3 id="execute">Execute</h3>
+<h2 id="execute">Execute</h2>
 <p>Once the program is compiled, we are ready to execute the program. To run the program type java followed by the class name (which has the main method). <strong>Do not append .class</strong> at the end of the command.</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>java RunnerClass

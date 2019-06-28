@@ -146,7 +146,7 @@
 		<div class="post-content">
 			<p>The type casting comprises of two subtypes, a) Primitive type casting and b) Object Reference Type casting.</p>
 
-<h2 id="primitive-type-casting">Primitive Type casting</h2>
+<h1 id="primitive-type-casting">Primitive Type casting</h1>
 <p>Casting lets you convert primitive values from one type to another. Casts can be implicit or explicit. An implicit cast means you don’t have to write code for the cast; the conversion happens automatically. Typically, an implicit cast happens when you’re doing a widening conversion. In other words, to put a smaller thing (say, a byte) into a bigger container (like an int).</p>
 
 <p>The large-value-into-small-container conversion is referred to as narrowing and requires an explicit cast, where you tell the compiler that you’re aware of the danger and accept full responsibility.</p>
@@ -182,12 +182,19 @@ So the code now looks like this:-</p>
 <span class="o">}</span>
 </code></pre></div></div>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>The value of f = 123.45
 The value of i = 123
 The value of d = 123.44999694824219
 </code></pre></div></div>
 
-<h2 id="object-reference-type-casting">Object Reference Type casting</h2>
+<h1 id="object-reference-type-casting">Object Reference Type casting</h1>
 <p>In java object typecasting one object reference can be type cast into another object reference. The cast can be to its own class type or to one of its subclass or superclass types or interfaces.</p>
 
 <p>When we cast a reference along the class hierarchy in a direction from the root class towards the children or subclasses, it is a downcast. When we cast a reference along the class hierarchy in a direction from the sub classes towards the root, it is an upcast. We need not use a cast operator in this case.</p>
@@ -230,6 +237,13 @@ The value of d = 123.44999694824219
 
 <p>Consider an interface Vehicle, a super class Car and its subclass Ford. The following example shows the automatic conversion of object references handled by the compiler</p>
 
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">Vehicle</span> <span class="o">{</span>
 <span class="o">}</span>
 <span class="kd">class</span> <span class="nc">Car</span> <span class="kd">implements</span> <span class="n">Vehicle</span> <span class="o">{</span>
@@ -242,7 +256,7 @@ The value of d = 123.44999694824219
 <p>Let c be a variable of type Car class and f be of class Ford and v be an vehicle interface reference. We can assign the Ford reference to the Car variable:
 i.e. we can do the following</p>
 
-<h4 id="example-1">Example 1</h4>
+<h3 id="example-1">Example 1</h3>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">=</span> <span class="n">f</span><span class="o">;</span> <span class="c1">//Ok Compiles fine</span>
 </code></pre></div></div>
 
@@ -252,7 +266,7 @@ i.e. we can do the following</p>
 
 <p>The compiler automatically handles the conversion (assignment) since the types are compatible (sub class - super class relationship), i.e., the type Car can hold the type Ford since a Ford is a Car.</p>
 
-<h4 id="example-2">Example 2</h4>
+<h3 id="example-2">Example 2</h3>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">v</span> <span class="o">=</span> <span class="n">c</span><span class="o">;</span> <span class="c1">//Ok Compiles fine</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">v</span><span class="o">;</span> <span class="c1">// illegal conversion from interface type to class type results in compilation error</span>
 </code></pre></div></div>
