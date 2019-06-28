@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-Control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Running First Kubernetes Pod on Mac (Windows) | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Running First Kubernetes Pod on Mac (Windows)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="All you need is 60 minutes to run your first application in Kubernetes." />
+<meta property="og:description" content="All you need is 60 minutes to run your first application in Kubernetes." />
+<link rel="canonical" href="https://kuros.in/kubernetes/2019/02/running-first-kubernetes-pod-on-mac/" />
+<meta property="og:url" content="https://kuros.in/kubernetes/2019/02/running-first-kubernetes-pod-on-mac/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-02-08T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"All you need is 60 minutes to run your first application in Kubernetes.","@type":"BlogPosting","url":"https://kuros.in/kubernetes/2019/02/running-first-kubernetes-pod-on-mac/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Running First Kubernetes Pod on Mac (Windows)","dateModified":"2019-02-08T00:00:00+00:00","datePublished":"2019-02-08T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/kubernetes/2019/02/running-first-kubernetes-pod-on-mac/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/images/kuros-3.png">
+		<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+                (adsbygoogle = window.adsbygoogle || []).push({
+                        google_ad_client: "ca-pub-4166026699724584",
+                        enable_page_level_ads: true
+                });
+        </script>
+
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<span class="dark-logo"><img width="104" src="/images/logo/dark-2.svg" alt="dark frisco logo"></span>
+						<span class="light-logo"><img width="200" src="/images/logo/light-2.svg" alt="light frisco logo"></span>
+						<!--<span class="dark-logo">Kuros.in</span>-->
+						<!--<span class="light-logo">Kuros.in</span>-->
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>Running First Kubernetes Pod on Mac (Windows)</h1>
+			<p class="subtext">All you need is 60 minutes to run your first application in Kubernetes.</p>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="blog-post text-container">
+
+		
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/kubernetes/">kubernetes</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		February 08, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.</p>
+
+<p><strong>Note:</strong> The minimum docker desktop version required for kubernetes is <strong>18.09.1</strong></p>
+
+<h1 id="installing-docker-desktop">Installing Docker Desktop</h1>
+<p>First thing first, we need to install Docker Desktop, download the <a href="https://www.docker.com/products/docker-desktop">latest version</a></p>
+
+<p>Installation of docker is easy, I will installing docker on Mac (for Windows, process is similar). Please follow the instruction provided on site and download the installer.</p>
+
+<h2 id="install-it">Install it</h2>
+<p>Double-click Docker.dmg to start the install process.</p>
+
+<p>When the installation completes and Docker starts, the whale in the top status bar shows that Docker is running, and accessible from a terminal.</p>
+
+<p><img alt="docker-fish" src="/images/loader.gif" data-src="/images/2019/k8s/docker-fish.png" class="lazy" width="50%" /></p>
+
+<h2 id="verify">Verify</h2>
+
+<p>Open command line terminal, and try if docker is installed.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker version
+Client: Docker Engine - Community
+ Version:           18.09.1
+ API version:       1.39
+ Go version:        go1.10.6
+ Git commit:        4c52b90
+ Built:             Wed Jan  9 19:33:12 2019
+ OS/Arch:           darwin/amd64
+ Experimental:      <span class="nb">false
+
+</span>Server: Docker Engine - Community
+ Engine:
+  Version:          18.09.1
+  API version:      1.39 <span class="o">(</span>minimum version 1.12<span class="o">)</span>
+  Go version:       go1.10.6
+  Git commit:       4c52b90
+  Built:            Wed Jan  9 19:41:49 2019
+  OS/Arch:          linux/amd64
+  Experimental:     <span class="nb">true</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="enable-kubernetes">Enable Kubernetes</h1>
+<p>Open Docker preferences/settings, go to Kubernetes tab(only available after version 18.09.1) &amp; enable it.</p>
+
+<p><img alt="docker-fish" src="/images/loader.gif" data-src="/images/2019/k8s/docker-pref.png" class="lazy" width="50%" /></p>
+
+<p>Once the Kubernetes is started, you will see green indicator for both k8s &amp; docker.</p>
+
+<p><img alt="docker-fish" src="/images/loader.gif" data-src="/images/2019/k8s/docker-status.png" class="lazy" width="50%" /></p>
+
+<p><strong>Congratulations !!!</strong> you have a single node cluster ready.</p>
+
+<h2 id="exploring-the-cluster">Exploring the cluster</h2>
+<p>Docker Desktop also install kubectl at location <code class="highlighter-rouge">/usr/local/bin/kubectl</code>, we will verify that we have a running node.</p>
+
+<p>Use the below command get the running nodes</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get nodes
+NAME                 STATUS   ROLES    AGE   VERSION
+docker-for-desktop   Ready    master   12m   v1.10.11
+</code></pre></div></div>
+
+<p>We will check for running services</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get services
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>   AGE
+kubernetes   ClusterIP   10.96.0.1    &lt;none&gt;        443/TCP   12m
+</code></pre></div></div>
+
+<p>We can also verify cluster information</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl cluster-info
+Kubernetes master is running at https://localhost:6443
+KubeDNS is running at https://localhost:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use <span class="s1">'kubectl cluster-info dump'</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>But when we try access the url in browser, we get an authentication failure.</p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://localhost:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Status"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Failure"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"services </span><span class="se">\"</span><span class="s2">kube-dns:dns</span><span class="se">\"</span><span class="s2"> is forbidden: User </span><span class="se">\"</span><span class="s2">system:anonymous</span><span class="se">\"</span><span class="s2"> cannot get services/proxy in the namespace </span><span class="se">\"</span><span class="s2">kube-system</span><span class="se">\"</span><span class="s2">"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"reason"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Forbidden"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"details"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-dns:dns"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"services"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="mi">403</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>It looks like we’re being blocked by the cluster’s RBAC policies. The <em>system:anonymous</em> user is being prevented from listing the namespaces in the cluster.</p>
+
+<p>We need to create a clusterrolebinding that adds the system:anonymous user to the cluster-admin role.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create clusterrolebinding cluster-system-anonymous <span class="nt">--clusterrole</span><span class="o">=</span>cluster-admin <span class="nt">--user</span><span class="o">=</span>system:anonymous
+</code></pre></div></div>
+
+<p>Now if you will access</p>
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://localhost:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+</code></pre></div></div>
+<p>You will get response something like this, it gives all the details related to the running service</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Service"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"apiVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v1"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-dns"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"namespace"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-system"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"selfLink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/api/v1/namespaces/kube-system/services/kube-dns"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"uid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c25ab536-2b7a-11e9-a713-025000000001"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"resourceVersion"</span><span class="p">:</span><span class="w"> </span><span class="s2">"175"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"creationTimestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2019-02-08T08:23:05Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"k8s-app"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-dns"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"kubernetes.io/cluster-service"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"kubernetes.io/name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"KubeDNS"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"spec"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"ports"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UDP"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"targetPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dns-tcp"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TCP"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"targetPort"</span><span class="p">:</span><span class="w"> </span><span class="mi">53</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"selector"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"k8s-app"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kube-dns"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"clusterIP"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10.96.0.10"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClusterIP"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sessionAffinity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"None"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"loadBalancer"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>So now since we have a running cluster we will create a simple app &amp; deploy it.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="the-java-app">The Java App</h1>
+
+<p>We will create a simple java app which will return the IP of the machine. we will create a spring boot application.</p>
+
+<p>The Pom file:</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">"http://maven.apache.org/POM/4.0.0"</span> <span class="na">xmlns:xsi=</span><span class="s">"http://www.w3.org/2001/XMLSchema-instance"</span>
+         <span class="na">xsi:schemaLocation=</span><span class="s">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
+    <span class="nt">&lt;parent&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-parent<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>2.1.2.RELEASE<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;relativePath/&gt;</span> <span class="c">&lt;!-- lookup parent from repository --&gt;</span>
+    <span class="nt">&lt;/parent&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>in.kuros.k8s<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>machine-ip<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>0.0.1<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;name&gt;</span>machine-ip<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;description&gt;</span>Demo project for Spring Boot<span class="nt">&lt;/description&gt;</span>
+
+    <span class="nt">&lt;properties&gt;</span>
+        <span class="nt">&lt;java.version&gt;</span>1.8<span class="nt">&lt;/java.version&gt;</span>
+    <span class="nt">&lt;/properties&gt;</span>
+
+    <span class="nt">&lt;dependencies&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-web<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-test<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;/dependencies&gt;</span>
+
+    <span class="nt">&lt;build&gt;</span>
+        <span class="nt">&lt;plugins&gt;</span>
+            <span class="nt">&lt;plugin&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>spring-boot-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;/plugin&gt;</span>
+        <span class="nt">&lt;/plugins&gt;</span>
+    <span class="nt">&lt;/build&gt;</span>
+
+<span class="nt">&lt;/project&gt;</span>
+</code></pre></div></div>
+<p>We will initialize Spring Boot Application:</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.springframework.boot.SpringApplication</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.boot.autoconfigure.SpringBootApplication</span><span class="o">;</span>
+
+<span class="nd">@SpringBootApplication</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MachineIpApplication</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">SpringApplication</span><span class="o">.</span><span class="na">run</span><span class="o">(</span><span class="n">MachineIpApplication</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">args</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>And are simple rest controller which returns ip of the machine.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.GetMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RestController</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.net.InetAddress</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.net.UnknownHostException</span><span class="o">;</span>
+
+<span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">IpController</span> <span class="o">{</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">path</span> <span class="o">=</span> <span class="s">"/ip"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">ResponseModel</span> <span class="nf">getIp</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">UnknownHostException</span> <span class="o">{</span>
+        <span class="n">InetAddress</span> <span class="n">inetAddress</span> <span class="o">=</span> <span class="n">InetAddress</span><span class="o">.</span><span class="na">getLocalHost</span><span class="o">();</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ResponseModel</span><span class="o">(</span><span class="n">inetAddress</span><span class="o">.</span><span class="na">getHostAddress</span><span class="o">(),</span> <span class="n">inetAddress</span><span class="o">.</span><span class="na">getHostName</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">class</span> <span class="nc">ResponseModel</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">ip</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">hostname</span><span class="o">;</span>
+
+        <span class="kd">public</span> <span class="nf">ResponseModel</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">ip</span><span class="o">,</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">hostname</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">ip</span> <span class="o">=</span> <span class="n">ip</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">hostname</span> <span class="o">=</span> <span class="n">hostname</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getIp</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">ip</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">public</span> <span class="n">String</span> <span class="nf">getHostname</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">hostname</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Time to test, run the application after mvn build:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mvn <span class="nb">install</span>
+<span class="nv">$ </span>java <span class="nt">-jar</span> target/machine-ip-0.0.1.jar
+</code></pre></div></div>
+
+<p>Once the application is up, we will hit exposed rest method and it will return the ip &amp; hostname (something like this)</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl localhost:8080/ip
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"192.168.0.104"</span>,<span class="s2">"hostname"</span>:<span class="s2">"kuros-MacBook-Pro.local"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>So now we have our sample application ready, time to create docker image.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="dockerfile">Dockerfile</h1>
+
+<p>We will create a file named as <strong>Dockerfile</strong> in our home folder.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> openjdk:8-jdk-alpine</span>
+<span class="k">COPY</span><span class="s"> target/machine-ip-0.0.1.jar app.jar</span>
+<span class="k">EXPOSE</span><span class="s"> 8080</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["java","-jar","/app.jar"]</span>
+</code></pre></div></div>
+
+<p>Let’s look at this dockerfile line by line.</p>
+
+<ol>
+  <li>Line 1: we are specifying docker to download openjdk image (tag: 8-jdk-alpine).</li>
+  <li>Line 2: copy the generated jar file to docker image with name app.jar</li>
+  <li>Line 3: We are exposing 8080 port from the container</li>
+  <li>Line 4: finally we are giving command to run the app.jar when container starts.</li>
+</ol>
+
+<h2 id="building-the-docker-image">Building the Docker image</h2>
+<p>So we have created our dockerfile, now time to build an image.</p>
+
+<p>We will user <em>docker build</em> command. We are provinding a tag (<YOUR_DOCKER_ID>/machine-ip:0.0.1) using _-t_. Do not forget to add " . " at the end, this specifies the location of the docker file (if you are using a custom location use -f arg for file location).</YOUR_DOCKER_ID></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span> docker build <span class="nt">-t</span> incrediblevicky/machine-ip:0.0.1 <span class="nb">.</span>
+
+Sending build context to Docker daemon  33.46MB
+Step 1/4 : FROM openjdk:8-jdk-alpine
+ <span class="nt">---</span><span class="o">&gt;</span> 792ff45a2a17
+Step 2/4 : COPY target/machine-ip-0.0.1.jar app.jar
+ <span class="nt">---</span><span class="o">&gt;</span> Using cache
+ <span class="nt">---</span><span class="o">&gt;</span> 436597bf8464
+Step 3/4 : EXPOSE 8080
+ <span class="nt">---</span><span class="o">&gt;</span> Using cache
+ <span class="nt">---</span><span class="o">&gt;</span> 0737665c2f88
+Step 4/4 : ENTRYPOINT <span class="o">[</span><span class="s2">"java"</span>,<span class="s2">"-jar"</span>,<span class="s2">"/app.jar"</span><span class="o">]</span>
+ <span class="nt">---</span><span class="o">&gt;</span> Using cache
+ <span class="nt">---</span><span class="o">&gt;</span> 62ee4df459e4
+Successfully built 62ee4df459e4
+Successfully tagged incrediblevicky/machine-ip:0.0.1
+</code></pre></div></div>
+
+<p>We can verify the image created:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker images
+
+REPOSITORY            TAG                 IMAGE ID            CREATED             SIZE
+incrediblevicky/machine-ip      0.0.1               62ee4df459e4        2 hours ago         122MB
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="running-docker-image">Running Docker image</h2>
+
+<p>To run the docker image we will use</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-p</span> 8080:8080 <span class="nt">-t</span> incrediblevicky/machine-ip:0.0.1
+</code></pre></div></div>
+
+<p>Here, we are mapping 8080 port of host machine to port 8080 of docker container, and running the container by tag name.</p>
+
+<p>And as expected, we can now hit “http://localhost:8080/ip”. But this time hostname and ip has changed. Its the containers ip &amp; hostname.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl localhost:8080/ip
+
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"172.17.0.2"</span>,<span class="s2">"hostname"</span>:<span class="s2">"38abfd9a4016"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="push-the-images-to-docker-hub">Push the images to docker-hub</h2>
+<p>First we need to login to docker, just provide your docker id &amp; password when asked, in my case, my username is incrediblevicky</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker login
+
+Login with your Docker ID to push and pull images from Docker Hub. If you don<span class="s1">'t have a Docker ID, head over to https://hub.docker.com to create one.
+Username: incrediblevicky
+Password: 
+Login Succeeded
+</span></code></pre></div></div>
+<p>Once, you have successfully logged in we will push the image to docker hub. *use docker push <DOCKER_ID>/machine-ip:0.0.1</DOCKER_ID></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>docker push incrediblevicky/machine-ip:0.0.1
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>Now we are ready with our setup, time for Kubernetes.</p>
+
+<h1 id="creating-deployment-descriptor-for-kubernetes">Creating Deployment descriptor for Kubernetes</h1>
+<p>Create a new yaml file. For this exercise we will use Deployment.yaml</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">machine-ip</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">machine-ip</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="s">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">machine-ip</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">machine-ip</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">machine-ip</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">incrediblevicky/machine-ip:0.0.1</span>
+          <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+          <span class="na">ports</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="s">8080</span>
+      <span class="na">restartPolicy</span><span class="pi">:</span> <span class="s">Always</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">machine-ip</span>
+</code></pre></div></div>
+
+<p>In this example:</p>
+
+<ul>
+  <li>A Deployment named machine-ip is created, indicated by the .metadata.name field.</li>
+  <li>The Deployment creates 1 replicated Pods, indicated by the replicas field.</li>
+  <li>The selector field defines how the Deployment finds which Pods to manage. In this case, you simply select a label that is defined in the Pod template (<em>app: machine-ip</em>). However, more sophisticated selection rules are possible, as long as the Pod template itself satisfies the rule.</li>
+  <li>The template field contains the following sub-fields:
+    <ul>
+      <li>The Pods are labeled <em>app: machine-ip</em> using the <em>labels</em> field.</li>
+      <li>The Pod template’s specification, or .template.spec field, indicates that the Pods run one container, <em>machine-ip</em>, which runs the <em>incrediblevicky/machine-ip</em> Docker Hub image at version <em>0.0.1</em>.</li>
+      <li>Create one container and name it <em>machine-ip</em> using the <em>name</em> field</li>
+      <li>Run the <em>incrediblevicky/machine-ip</em> image at version 0.0.1</li>
+      <li>Open port <em>8080</em> so that the container can send and accept traffic.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>To create this Deployment, run the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> Deployment.yaml
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>Next, run <code class="highlighter-rouge">kubectl get deployments</code>. The output is similar to the following:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get deployments
+
+NAME         DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+machine-ip   1         1         1            1           31s
+</code></pre></div></div>
+
+<p>When you inspect the Deployments in your cluster, the following fields are displayed:</p>
+
+<ul>
+  <li><strong>NAME</strong> lists the names of the Deployments in the cluster.</li>
+  <li><strong>DESIRED</strong> displays the desired number of replicas of the application, which you define when you create the Deployment. This is the desired state.</li>
+  <li><strong>CURRENT</strong> displays how many replicas are currently running.</li>
+  <li><strong>UP-TO-DATE</strong> displays the number of replicas that have been updated to achieve the desired state.</li>
+  <li><strong>AVAILABLE</strong> displays how many replicas of the application are available to your users.</li>
+  <li><strong>AGE</strong> displays the amount of time that the application has been running.</li>
+</ul>
+
+<p>Running get pods should now show the new Pods:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods
+
+NAME                          READY     STATUS    RESTARTS   AGE
+machine-ip-5764588bdf-rtmr4   1/1       Running   0          12m
+</code></pre></div></div>
+
+<p>We have successfully deployed our first app to docker, but we still can’t access the url, So we need create service.</p>
+
+<h1 id="creating-service-descriptor-for-kubernetes">Creating Service descriptor for Kubernetes</h1>
+<p>A Service in Kubernetes is a REST object, similar to a Pod. Like all of the REST objects, a Service definition can be POSTed to the apiserver to create a new instance. For example, suppose you have a set of Pods that each expose port 8080 and carry a label “app=machine-ip”.</p>
+
+<p>Create another yaml file. For this exercise we will use Service.yaml</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">machine-ip-service</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">machine-ip</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="s">8080</span>
+      <span class="na">targetPort</span><span class="pi">:</span> <span class="s">8080</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">LoadBalancer</span>
+</code></pre></div></div>
+
+<p>This specification will create a new Service object named “machine-ip-service” which targets TCP port 8080 on any Pod with the “app=machine-ip” label. This Service will also be assigned an IP address (sometimes called the “cluster IP”), which is used by the service proxies. The Service’s selector will be evaluated continuously and the results will be POSTed to an Endpoints object also named “machine-ip-service”.</p>
+
+<p>To create this Deployment, run the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl create <span class="nt">-f</span> Service.yaml
+
+service <span class="s2">"machine-ip-service"</span> created
+</code></pre></div></div>
+
+<p>Run the following command to verify  if Service has been created successfully.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get services
+
+NAME                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>          AGE
+kubernetes           ClusterIP      10.96.0.1        &lt;none&gt;        443/TCP          5h
+machine-ip-service   LoadBalancer   10.104.164.245   localhost     8080:30420/TCP   5s
+</code></pre></div></div>
+
+<p>Since a machine-ip-service has been created, lets try to access the endpoint:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl localhost:8080/ip
+
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>Congratulations you have you first app deployed on kubernetes</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="a-simple-client">A simple client</h1>
+<p>Before we move to last section, let create a simple client to make multiple rest calls.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/sh</span>
+
+<span class="k">for </span>i <span class="k">in</span> <span class="o">{</span>1..10<span class="o">}</span>
+<span class="k">do
+   </span><span class="nv">response</span><span class="o">=</span><span class="k">$(</span>curl <span class="nt">-sb</span> <span class="nt">-H</span> <span class="s2">"Accept: application/json"</span> <span class="s2">"http://localhost:8080/ip"</span><span class="k">)</span>
+   <span class="nb">echo</span> <span class="k">${</span><span class="nv">response</span><span class="k">}</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>When we run this client, we get 10 response, which is from the same machine.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./client.sh 
+
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="loadbalancing-with-kubernetes">LoadBalancing with Kubernetes</h1>
+
+<p>Currently, we have only one pod running, suddenly the traffic has increased tremendously and we need to scale our app, what to do …</p>
+
+<p>Simply increase the replica set &amp; let kubernetes handle the complexity.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl scale <span class="nt">--replicas</span><span class="o">=</span>5 deployment/machine-ip
+
+deployment.extensions <span class="s2">"machine-ip"</span> scaled
+</code></pre></div></div>
+
+<p>Now, lets check the available pods:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl get pods
+                                
+NAME                          READY     STATUS    RESTARTS   AGE
+machine-ip-5764588bdf-2sfxs   1/1       Running   0          13s
+machine-ip-5764588bdf-5g9wc   1/1       Running   0          13s
+machine-ip-5764588bdf-fh4v5   1/1       Running   0          13s
+machine-ip-5764588bdf-nh4mh   1/1       Running   0          13s
+machine-ip-5764588bdf-rtmr4   1/1       Running   0          1h
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>We see 4 new pods have been created instantly. Lets see what happens when make multiple client requests</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./client.sh
+
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.8"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-2sfxs"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.5"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-5g9wc"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.6"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-fh4v5"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.6"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-fh4v5"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.5"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-5g9wc"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.7"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-nh4mh"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.5"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-5g9wc"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.6"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-fh4v5"</span><span class="o">}</span>
+</code></pre></div></div>
+<p>If you observe, the requests are catered through different containers.</p>
+
+<p>Similarly we can scale down, test the endpoint again</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>kubectl scale <span class="nt">--replicas</span><span class="o">=</span>2 deployment/machine-ip
+
+deployment.extensions <span class="s2">"machine-ip"</span> scaled
+
+<span class="nv">$ </span>kubectl get pods
+
+NAME                          READY     STATUS        RESTARTS   AGE
+machine-ip-5764588bdf-fh4v5   0/1       Terminating   0          7m
+machine-ip-5764588bdf-nh4mh   1/1       Running       0          7m
+machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
+
+
+<span class="nv">$ </span>./client.sh 
+
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.7"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-nh4mh"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.7"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-nh4mh"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.7"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-nh4mh"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.7"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-nh4mh"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.7"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-nh4mh"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.7"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-nh4mh"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">"ip"</span>:<span class="s2">"10.1.0.4"</span>,<span class="s2">"hostname"</span>:<span class="s2">"machine-ip-5764588bdf-rtmr4"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<p>We successfully scaled down our application.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+<p>In this article we installed docker with kubernetes, created a docker image of a java app, pushed it to docker-hub. Then we created our Kubernetes deployment &amp; services, and started our first pod. We also looked at how kubernetes handles scaling effortlessly.</p>
+
+<p>You can find the complete code on <a href="https://github.com/kuros/blog-code/tree/master/k8s/machine-ip">github</a></p>
+
+
+			
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/kubernetes/2019/01/kubernetes-basics/">&laquo; Kubernetes(k8s) Basics</a>
+
+					
+
+					
+						<a class="next" href="/react/2019/03/react-with-typescript/">Create React App Using Typescript &raquo;</a>
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.png')"></div>
+				<p class="blurb">I like long drives, bike trip & good food. I have passion for coding, esp. Clean-Code.</p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/kubernetes/2019/02/running-first-kubernetes-pod-on-mac/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/kubernetes/2019/02/running-first-kubernetes-pod-on-mac"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+
+			
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>
