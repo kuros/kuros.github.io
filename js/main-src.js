@@ -48,6 +48,12 @@
     var isharebaravailable = true;
     $(window).scroll(function() {
         var height = $(window).scrollTop();
+
+        let timeout = function() {
+            setTimeout(function () {
+                isharebaravailable = true;
+            }, 5000)
+        };
         if (isharebaravailable) {
             isharebaravailable = false;
             let elem = $('#share-bar');
@@ -55,14 +61,14 @@
                 elem.fadeIn(function() {
                     setTimeout(function () {
                         elem.fadeOut();
-                        isharebaravailable = true;
+                        timeout();
                     }, 5000);
 
                 });
 
             } else {
                 elem.fadeOut();
-                isharebaravailable = true;
+                timeout();
             }
         }
 
