@@ -38,11 +38,38 @@
     /*Scroll to top when arrow up clicked BEGIN*/
     $(window).scroll(function() {
         var height = $(window).scrollTop();
-        if (height > 100) {
+        if (height > 200) {
             $('#back2Top').fadeIn();
         } else {
             $('#back2Top').fadeOut();
         }
+    });
+
+    var isharebaravailable = true;
+    $(window).scroll(function() {
+        var height = $(window).scrollTop();
+        if (isharebaravailable) {
+            isharebaravailable = false;
+            let elem = $('#share-bar');
+            if (height > 400) {
+                elem.fadeIn(function() {
+                    setTimeout(function () {
+                        elem.fadeOut();
+                        isharebaravailable = true;
+                    }, 5000);
+
+                });
+
+            } else {
+                elem.fadeOut();
+                isharebaravailable = true;
+            }
+        }
+
+        if (height < 400) {
+            $('#share-bar').fadeOut('fast');
+        }
+
     });
     $(document).ready(function() {
         $("#back2Top").click(function(event) {
@@ -106,4 +133,5 @@
         window.addEventListener("orientationchange", lazyLoad);
     });
 })();
+
 
