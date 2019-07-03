@@ -45,38 +45,15 @@
         }
     });
 
-    var isharebaravailable = true;
     $(window).scroll(function() {
         var height = $(window).scrollTop();
-
-        let timeout = function() {
-            setTimeout(function () {
-                isharebaravailable = true;
-            }, 5000)
-        };
-        if (isharebaravailable) {
-            isharebaravailable = false;
-            let elem = $('#share-bar');
-            if (height > 400) {
-                elem.fadeIn(function() {
-                    setTimeout(function () {
-                        elem.fadeOut();
-                        timeout();
-                    }, 5000);
-
-                });
-
-            } else {
-                elem.fadeOut();
-                timeout();
-            }
-        }
-
-        if (height < 400) {
+        if (height > 400) {
+            $('#share-bar').fadeIn();
+        } else {
             $('#share-bar').fadeOut('fast');
         }
-
     });
+
     $(document).ready(function() {
         $("#back2Top").click(function(event) {
             event.preventDefault();
