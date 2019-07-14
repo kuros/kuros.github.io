@@ -124,6 +124,10 @@
         window.addEventListener("resize", lazyLoad);
         window.addEventListener("orientationchange", lazyLoad);
     });
+
+    $(document).ready(function(){
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    });
 })();
 
 
