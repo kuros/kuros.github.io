@@ -48,6 +48,15 @@
     $(window).scroll(function() {
         var height = $(window).scrollTop();
         if (height > 400) {
+            $('#ad-block-vertical').fadeIn();
+        } else {
+            $('#ad-block-vertical').fadeOut('fast');
+        }
+    });
+
+    $(window).scroll(function() {
+        var height = $(window).scrollTop();
+        if (height > 400) {
             $('#share-bar').fadeIn();
         } else {
             $('#share-bar').fadeOut('fast');
