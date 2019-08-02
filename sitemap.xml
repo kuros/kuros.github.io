@@ -249,6 +249,10 @@
 <lastmod>2019-06-20T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/</loc>
+<lastmod>2019-08-01T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
@@ -301,6 +305,9 @@
 </url>
 <url>
 <loc>https://kuros.in/category/spring-cloud/</loc>
+</url>
+<url>
+<loc>https://kuros.in/category/grpc/</loc>
 </url>
 <url>
 <loc>https://kuros.in/random-jpa/</loc>
