@@ -1,4 +1,235 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-08-02T15:40:26+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Handling gRPC Authorization using Context in Java</title><link href="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/" rel="alternate" type="text/html" title="Handling gRPC Authorization using Context in Java" /><published>2019-08-01T00:00:00+00:00</published><updated>2019-08-01T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context</id><content type="html" xml:base="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/">&lt;p&gt;In the Grpc world, we have secured our application by &lt;a href=&quot;/grpc/2019/01/grpc-authentication/&quot;&gt;encrypting the channel&lt;/a&gt; and authenticating the requests using &lt;a href=&quot;/grpc/2019/01/grpc-interceptors/&quot;&gt;interceptors&lt;/a&gt;. So we have secured our application but we still do have control over which service can be accessed by whom.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2019-08-22T17:23:10+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>A place to learn new techs</subtitle><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><entry><title type="html">Making parallel service calls in microservice architecture.</title><link href="https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="alternate" type="text/html" title="Making parallel service calls in microservice architecture." /><published>2019-08-20T00:00:00+00:00</published><updated>2019-08-20T00:00:00+00:00</updated><id>https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future</id><content type="html" xml:base="https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/">&lt;p&gt;Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to current times, we used to get change requests (CR’s) from our client. Then there use to be huge round discussion, finally we use to create delivery schedule, design documents, test schedules and many more even before starting any work.
+And then we(developers) use to give estimates, which was generally reduced to half(because the client demand the feature early). Our day to day job.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;monolith&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/java/microservice-monlith.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But even for a very small change there used to huge dev, qa, deployment cycle and a simple feature like adding a text box use to take up months. Why!!! because we had go through an end to end validation of complete system, even if the changes were not related to each other distantly.&lt;/p&gt;
+
+&lt;p&gt;So what we did, we decided to break up the system into smaller services, each service had clear demarcation and role.&lt;/p&gt;
+
+&lt;h1 id=&quot;challenges-with-microservices&quot;&gt;Challenges with microservices&lt;/h1&gt;
+&lt;p&gt;There were numerous things we tried, we failed, we re-designed, and after few failed attempts we could see the silver lining. We had created over 20 deployable against a single monolith. We spend some decent time is creating full test suite ie. unit/integration/acceptance and even diagnostic test. All the product was 100% automated. Finally we moved from releasing 2 builds/month to over 600 builds/month. It was great achievement by our team. Still we are stuck.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;monolith&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/java/microservice-phase-1.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There was only one piece of the puzzle which was giving us nightmares - &lt;strong&gt;The DATABASE&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;We still have all the services connecting to same schema. The reason was simple, its a legacy application broken into multiple services, and each system was having queries which was reading data from tables which it did not own’s. So!!! we tried to split the schema.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;monolith&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/java/microservice-phase-2.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Every thing looked nice, it was time to celebrate, we were feeling proud of our achieved, and soon the joy turned into a deep sorrow, we all got a call from &lt;strong&gt;one who must not be named&lt;/strong&gt; …&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The performance has dropped, simple request were taking too long, our system has slowed down. So we went back to the design board, again documented the process flow, and as we drilled down we located the monster lurking behind - too many service to service calls.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;monolith&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/java/microservice-sync-call.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Assuming each service took only 300ms to complete, but the overall response time was exceeding 1200ms.&lt;/p&gt;
+
+&lt;h1 id=&quot;async-calls-to-rescue&quot;&gt;Async calls to rescue.&lt;/h1&gt;
+&lt;p&gt;Obviously we wanted to make async calls, collate the data at the end send the response back. We tried implementing different solutions using executor service, it worked but the usage was complicated, we wanted something simpler.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Soon we found out, CompletableFuture was introduced in Java 8. We tried using it.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parallel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.concurrent.CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.concurrent.ExecutionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CompletableFutureExample&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ExecutionException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;InterruptedException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;supplyAsync&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;supplyAsync&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;supplyAsync&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;allOf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;service1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;service1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;value1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InterruptedException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It served the purpose.&lt;/p&gt;
+
+&lt;h1 id=&quot;wrapper-over-completablefuture&quot;&gt;Wrapper over CompletableFuture&lt;/h1&gt;
+&lt;p&gt;I still wanted it to be simpler to use. So I created a wrapper over it. Here is my solution, I created a class ParallelExecution.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parallel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.concurrent.CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.function.BiFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.function.Supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.stream.Collectors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.stream.Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ParallelExecution&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;futureStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ParallelExecution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;completableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;completableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ParallelExecution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;futureStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;futureStream&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;futureStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ParallelExecution&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ParallelExecution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;supplyAsync&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ParallelExecution&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BiFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Throwable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;errorHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ParallelExecution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;supplyAsync&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errorHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ParallelExecution&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stream&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;supplyAsync&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ParallelExecution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;concat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;futureStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ParallelExecution&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BiFunction&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Throwable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;errorHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stream&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CompletableFuture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;supplyAsync&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;supplier&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;handle&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;errorHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ParallelExecution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;concat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;futureStream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ExecutionResult&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;  &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;ExecutionResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;futureStream&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;CompletableFuture:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Collectors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()));&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;And collected the results in a new class:&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parallel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ExecutionResult&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;ExecutionResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;nd&quot;&gt;@SuppressWarnings&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;unchecked&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;index&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Finally, we can execute service in parallel.&lt;/p&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parallel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ParallelExecutionExample&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ExecutionResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;executionResult&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ParallelExecution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;executionResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;executionResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;executionResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;val&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;val3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InterruptedException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The beauty of the solution is that in case of any service failure we get proper exception in the handling class.&lt;/p&gt;
+
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;kuros&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;blog&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;java&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parallel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ParallelExecutionExceptionExample&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ExecutionResult&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;executionResult&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ParallelExecution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;RuntimeException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Bam!!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;})&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+
+        &lt;span class=&quot;n&quot;&gt;executionResult&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;slowService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;Thread&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InterruptedException&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;printStackTrace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Exception &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;thread &lt;span class=&quot;s2&quot;&gt;&quot;main&quot;&lt;/span&gt; java.util.concurrent.CompletionException: java.lang.RuntimeException: Bam!!
+	at java.util.concurrent.CompletableFuture.encodeThrowable&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CompletableFuture.java:273&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.concurrent.CompletableFuture.completeThrowable&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CompletableFuture.java:280&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.concurrent.CompletableFuture&lt;span class=&quot;nv&quot;&gt;$AsyncSupply&lt;/span&gt;.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CompletableFuture.java:1592&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.concurrent.CompletableFuture&lt;span class=&quot;nv&quot;&gt;$AsyncSupply&lt;/span&gt;.exec&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CompletableFuture.java:1582&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.concurrent.ForkJoinTask.doExec&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ForkJoinTask.java:289&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.concurrent.ForkJoinPool&lt;span class=&quot;nv&quot;&gt;$WorkQueue&lt;/span&gt;.runTask&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ForkJoinPool.java:1056&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.concurrent.ForkJoinPool.runWorker&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ForkJoinPool.java:1692&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.concurrent.ForkJoinWorkerThread.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ForkJoinWorkerThread.java:157&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Caused by: java.lang.RuntimeException: Bam!!
+	at &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;.kuros.blog.code.java.parallel.ParallelExecutionExceptionExample.lambda&lt;span class=&quot;nv&quot;&gt;$main$1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ParallelExecutionExceptionExample.java:8&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	at java.util.concurrent.CompletableFuture&lt;span class=&quot;nv&quot;&gt;$AsyncSupply&lt;/span&gt;.run&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CompletableFuture.java:1590&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	... 5 more
+
+Process finished with &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;code 1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, we have cleaner way to make service to service calls and then use the results at the end.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/java/src/main/java/in/kuros/blog/code/java/parallel&quot;&gt;Find the code here&lt;/a&gt;.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to current times, we used to get change requests (CR’s) from our client. Then there use to be huge round discussion, finally we use to create delivery schedule, design documents, test schedules and many more even before starting any work. And then we(developers) use to give estimates, which was generally reduced to half(because the client demand the feature early). Our day to day job.</summary></entry><entry><title type="html">Handling gRPC Authorization using Context in Java</title><link href="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/" rel="alternate" type="text/html" title="Handling gRPC Authorization using Context in Java" /><published>2019-08-01T00:00:00+00:00</published><updated>2019-08-01T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context</id><content type="html" xml:base="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/">&lt;p&gt;In the Grpc world, we have secured our application by &lt;a href=&quot;/grpc/2019/01/grpc-authentication/&quot;&gt;encrypting the channel&lt;/a&gt; and authenticating the requests using &lt;a href=&quot;/grpc/2019/01/grpc-interceptors/&quot;&gt;interceptors&lt;/a&gt;. So we have secured our application but we still do have control over which service can be accessed by whom.&lt;/p&gt;
 
 &lt;p&gt;To handle authorization, we will leverage &lt;em&gt;Context&lt;/em&gt; provided by grpc to pass UserInfo into services.&lt;/p&gt;
 
@@ -1742,126 +1973,7 @@ Forbidden
 
 &lt;p&gt;Now we have a fully functional app with security enabled.&lt;/p&gt;
 
-&lt;p&gt;Full code can be found here: &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/spring/spring-security-authentication-provider&quot;&gt;Spring Security with Authentication Provider&lt;/a&gt;&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">We have looked into basics of spring security in my previous post. Lets look into how we can authenticate a user from custom list;</summary></entry><entry><title type="html">Redux Basics</title><link href="https://kuros.in/react/2019/03/react-basics/" rel="alternate" type="text/html" title="Redux Basics" /><published>2019-03-18T00:00:00+00:00</published><updated>2019-03-18T00:00:00+00:00</updated><id>https://kuros.in/react/2019/03/react-basics</id><content type="html" xml:base="https://kuros.in/react/2019/03/react-basics/">&lt;p&gt;Lets dive into Redux, I will be covering&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Do we need redux?&lt;/li&gt;
-  &lt;li&gt;Core Principles for redux.&lt;/li&gt;
-  &lt;li&gt;Redux flow&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;do-we-need-redux&quot;&gt;Do we need Redux?&lt;/h1&gt;
-
-&lt;p&gt;Why do we need redux in the first place, react does provides mechanism to share data between components. Hmmm…&lt;/p&gt;
-
-&lt;p&gt;No tool is perfect for all the job, suppose you want a very simple web app, simple JS &amp;amp; HTML should suffice. But as the complexity grows you decide to pull in react as its component based, easy to manage. But now your app is growing fast, and it is becoming difficult to manage user interactions.&lt;/p&gt;
-
-&lt;p&gt;A React app is a component tree, each component is rendered when their state is changed. Below diagram represents how a simple component tree. Let’s assume the blue colored component require to share user information, so if the state of user in changed in one component, it should get reflected on the second component.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;react first app&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/react/component-tree.png&quot; class=&quot;img-center img-half lazy&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;There are three ways to achieve it.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Lift State&lt;/strong&gt;: push the state to the common ancestor node, and passed down to all the intermediate nodes. 
- &lt;img alt=&quot;state lift&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/react/state-lift.png&quot; class=&quot;img-center img-half lazy&quot; /&gt;&lt;/p&gt;
-
-    &lt;p&gt;But finding &amp;amp; managing ancestor is will be pain. Also you need keep passing state as prop types to all nodes. This is called Prop Drilling. So not a good option.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;React Context&lt;/strong&gt;: React provides an elegant way to handle Prop Drilling, in this case you can expose global data &amp;amp; functions on React component using context. To access the data you import the context and consume it, you can also invoke functions like createUser() for the context. 
- &lt;img alt=&quot;react context&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/react/react-context.png&quot; class=&quot;img-center img-half lazy&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Redux&lt;/strong&gt;: In redux you maintain only one storage, its like having a database which store all your data, you can read any data from any component. To update you raise an event, which invokes reducer to creates a new state based on action. Once a new state is generated, respective components are refreshed.&lt;/p&gt;
-
-    &lt;p&gt;&lt;img alt=&quot;react context&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/react/redux-flow.png&quot; class=&quot;img-center img-half lazy&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h1 id=&quot;core-principles-of-redux&quot;&gt;Core Principles of Redux&lt;/h1&gt;
-
-&lt;p&gt;Redux has three core principles:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;States are immutable (Once state is created it cannot be modified)&lt;/li&gt;
-  &lt;li&gt;Action trigger changes (Action is object which must have type variable). A simple example can be
-    &lt;pre&gt;&lt;code class=&quot;language-json5&quot;&gt; { 
-    type: SUBMIT_FORM,
-    message: 'HI'
- }
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Reducers update the state.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;We discussed core concepts of redux, but we don’t know enough to write code, so let’s dive deeper into Redux&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;action&quot;&gt;Action&lt;/h1&gt;
-
-&lt;p&gt;Events happening in redux are called &lt;em&gt;Actions&lt;/em&gt;. Action are plain object with description of an event. a simple object can be &lt;strong&gt;{type: RATE_BLOG, rating: 5}&lt;/strong&gt;, &lt;strong&gt;here &lt;em&gt;type&lt;/em&gt; is a required field&lt;/strong&gt;, rest can be any value, a complex object, value or any serializable data. You should not pass functions or promises as action values as they are not serializable.&lt;/p&gt;
-
-&lt;p&gt;Mostly we use convenient functions to create Action data, often called as ActionCreators.&lt;/p&gt;
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rateBlog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RATE_BLOG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;store&quot;&gt;Store&lt;/h1&gt;
-
-&lt;p&gt;Redux Store honors single responsibility function. You might think it to be constraint when working with large application, but its quite the opposite. Having a single store make it a single source of truth, hence it leads to better manageability.&lt;/p&gt;
-
-&lt;p&gt;To create a store:&lt;/p&gt;
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createStore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reducer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Redux is very simple, store can dispatch an action, subscribe to a listener, return its current state &amp;amp; finally replace a reducer.&lt;/p&gt;
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dispatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dispatch an action&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;subscribe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;listener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//subscribe to listener&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// return the current state&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;replaceReducer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newReducer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//assign a new reducer for hot reloading.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;reducer&quot;&gt;Reducer&lt;/h1&gt;
-&lt;p&gt;To simply put, reducers are simple function which take two argument default_state &amp;amp; action_type. And based on action_type returns a new state.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;For example if the action is increment counter, we will return the new state.&lt;/p&gt;
-&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;myReducer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{...&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-      &lt;span class=&quot;nl&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;At line 4: we are using copy via spread functionality of javascript, …state followed my arguments mean we want to create a copy of existing value with update field value, in this case we want to set counter value with new one.&lt;/p&gt;
-
-&lt;p&gt;Reducers must be pure functions, that means if calling with same set of argument it returns the same set of values.&lt;/p&gt;
-
-&lt;p&gt;Now that we have basic understanding of redux, we will move to next to adding it our react app.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">Lets dive into Redux, I will be covering</summary></entry><entry><title type="html">React Redux with typescript</title><link href="https://kuros.in/react/2019/03/react-redux/" rel="alternate" type="text/html" title="React Redux with typescript" /><published>2019-03-18T00:00:00+00:00</published><updated>2019-03-18T00:00:00+00:00</updated><id>https://kuros.in/react/2019/03/react-redux</id><content type="html" xml:base="https://kuros.in/react/2019/03/react-redux/">&lt;p&gt;In my earlier post, I had explained the &lt;a href=&quot;/react/2019/03/react-basics/&quot;&gt;basic principle of redux&lt;/a&gt;. Also we have created &lt;a href=&quot;/react/2019/03/react-with-typescript/&quot;&gt;our first react app&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Full code can be found here: &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/spring/spring-security-authentication-provider&quot;&gt;Spring Security with Authentication Provider&lt;/a&gt;&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">We have looked into basics of spring security in my previous post. Lets look into how we can authenticate a user from custom list;</summary></entry><entry><title type="html">React Redux with typescript</title><link href="https://kuros.in/react/2019/03/react-redux/" rel="alternate" type="text/html" title="React Redux with typescript" /><published>2019-03-18T00:00:00+00:00</published><updated>2019-03-18T00:00:00+00:00</updated><id>https://kuros.in/react/2019/03/react-redux</id><content type="html" xml:base="https://kuros.in/react/2019/03/react-redux/">&lt;p&gt;In my earlier post, I had explained the &lt;a href=&quot;/react/2019/03/react-basics/&quot;&gt;basic principle of redux&lt;/a&gt;. Also we have created &lt;a href=&quot;/react/2019/03/react-with-typescript/&quot;&gt;our first react app&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;I will be extending the same example to integrate redux in it, you can download the &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/react/first-app&quot;&gt;start code here.&lt;/a&gt;&lt;/p&gt;
 
@@ -2261,7 +2373,126 @@ View compiled
 
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 
-&lt;p&gt;In this article we have integrated redux to react, in typescript. As usual the complete code is on &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/react/react-redux&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">In my earlier post, I had explained the basic principle of redux. Also we have created our first react app.</summary></entry><entry><title type="html">Create React App Using Typescript</title><link href="https://kuros.in/react/2019/03/react-with-typescript/" rel="alternate" type="text/html" title="Create React App Using Typescript" /><published>2019-03-17T00:00:00+00:00</published><updated>2019-03-17T00:00:00+00:00</updated><id>https://kuros.in/react/2019/03/react-with-typescript</id><content type="html" xml:base="https://kuros.in/react/2019/03/react-with-typescript/">&lt;p&gt;When we talk of UI tech stack, two of the web technologies have emerged as main competitors, Angular(supported by Google) &amp;amp; React(supported by Facebook).&lt;/p&gt;
+&lt;p&gt;In this article we have integrated redux to react, in typescript. As usual the complete code is on &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/react/react-redux&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">In my earlier post, I had explained the basic principle of redux. Also we have created our first react app.</summary></entry><entry><title type="html">Redux Basics</title><link href="https://kuros.in/react/2019/03/react-basics/" rel="alternate" type="text/html" title="Redux Basics" /><published>2019-03-18T00:00:00+00:00</published><updated>2019-03-18T00:00:00+00:00</updated><id>https://kuros.in/react/2019/03/react-basics</id><content type="html" xml:base="https://kuros.in/react/2019/03/react-basics/">&lt;p&gt;Lets dive into Redux, I will be covering&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Do we need redux?&lt;/li&gt;
+  &lt;li&gt;Core Principles for redux.&lt;/li&gt;
+  &lt;li&gt;Redux flow&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;do-we-need-redux&quot;&gt;Do we need Redux?&lt;/h1&gt;
+
+&lt;p&gt;Why do we need redux in the first place, react does provides mechanism to share data between components. Hmmm…&lt;/p&gt;
+
+&lt;p&gt;No tool is perfect for all the job, suppose you want a very simple web app, simple JS &amp;amp; HTML should suffice. But as the complexity grows you decide to pull in react as its component based, easy to manage. But now your app is growing fast, and it is becoming difficult to manage user interactions.&lt;/p&gt;
+
+&lt;p&gt;A React app is a component tree, each component is rendered when their state is changed. Below diagram represents how a simple component tree. Let’s assume the blue colored component require to share user information, so if the state of user in changed in one component, it should get reflected on the second component.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;react first app&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/react/component-tree.png&quot; class=&quot;img-center img-half lazy&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are three ways to achieve it.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Lift State&lt;/strong&gt;: push the state to the common ancestor node, and passed down to all the intermediate nodes. 
+ &lt;img alt=&quot;state lift&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/react/state-lift.png&quot; class=&quot;img-center img-half lazy&quot; /&gt;&lt;/p&gt;
+
+    &lt;p&gt;But finding &amp;amp; managing ancestor is will be pain. Also you need keep passing state as prop types to all nodes. This is called Prop Drilling. So not a good option.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;React Context&lt;/strong&gt;: React provides an elegant way to handle Prop Drilling, in this case you can expose global data &amp;amp; functions on React component using context. To access the data you import the context and consume it, you can also invoke functions like createUser() for the context. 
+ &lt;img alt=&quot;react context&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/react/react-context.png&quot; class=&quot;img-center img-half lazy&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Redux&lt;/strong&gt;: In redux you maintain only one storage, its like having a database which store all your data, you can read any data from any component. To update you raise an event, which invokes reducer to creates a new state based on action. Once a new state is generated, respective components are refreshed.&lt;/p&gt;
+
+    &lt;p&gt;&lt;img alt=&quot;react context&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/react/redux-flow.png&quot; class=&quot;img-center img-half lazy&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;core-principles-of-redux&quot;&gt;Core Principles of Redux&lt;/h1&gt;
+
+&lt;p&gt;Redux has three core principles:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;States are immutable (Once state is created it cannot be modified)&lt;/li&gt;
+  &lt;li&gt;Action trigger changes (Action is object which must have type variable). A simple example can be
+    &lt;pre&gt;&lt;code class=&quot;language-json5&quot;&gt; { 
+    type: SUBMIT_FORM,
+    message: 'HI'
+ }
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Reducers update the state.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We discussed core concepts of redux, but we don’t know enough to write code, so let’s dive deeper into Redux&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;action&quot;&gt;Action&lt;/h1&gt;
+
+&lt;p&gt;Events happening in redux are called &lt;em&gt;Actions&lt;/em&gt;. Action are plain object with description of an event. a simple object can be &lt;strong&gt;{type: RATE_BLOG, rating: 5}&lt;/strong&gt;, &lt;strong&gt;here &lt;em&gt;type&lt;/em&gt; is a required field&lt;/strong&gt;, rest can be any value, a complex object, value or any serializable data. You should not pass functions or promises as action values as they are not serializable.&lt;/p&gt;
+
+&lt;p&gt;Mostly we use convenient functions to create Action data, often called as ActionCreators.&lt;/p&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rateBlog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;rating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RATE_BLOG&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;rating&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;store&quot;&gt;Store&lt;/h1&gt;
+
+&lt;p&gt;Redux Store honors single responsibility function. You might think it to be constraint when working with large application, but its quite the opposite. Having a single store make it a single source of truth, hence it leads to better manageability.&lt;/p&gt;
+
+&lt;p&gt;To create a store:&lt;/p&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createStore&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reducer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Redux is very simple, store can dispatch an action, subscribe to a listener, return its current state &amp;amp; finally replace a reducer.&lt;/p&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dispatch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// dispatch an action&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;subscribe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;listener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//subscribe to listener&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// return the current state&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;replaceReducer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newReducer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//assign a new reducer for hot reloading.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;reducer&quot;&gt;Reducer&lt;/h1&gt;
+&lt;p&gt;To simply put, reducers are simple function which take two argument default_state &amp;amp; action_type. And based on action_type returns a new state.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;For example if the action is increment counter, we will return the new state.&lt;/p&gt;
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;myReducer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;switch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;INCREMENT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{...&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+      &lt;span class=&quot;nl&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;At line 4: we are using copy via spread functionality of javascript, …state followed my arguments mean we want to create a copy of existing value with update field value, in this case we want to set counter value with new one.&lt;/p&gt;
+
+&lt;p&gt;Reducers must be pure functions, that means if calling with same set of argument it returns the same set of values.&lt;/p&gt;
+
+&lt;p&gt;Now that we have basic understanding of redux, we will move to next to adding it our react app.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">Lets dive into Redux, I will be covering</summary></entry><entry><title type="html">Create React App Using Typescript</title><link href="https://kuros.in/react/2019/03/react-with-typescript/" rel="alternate" type="text/html" title="Create React App Using Typescript" /><published>2019-03-17T00:00:00+00:00</published><updated>2019-03-17T00:00:00+00:00</updated><id>https://kuros.in/react/2019/03/react-with-typescript</id><content type="html" xml:base="https://kuros.in/react/2019/03/react-with-typescript/">&lt;p&gt;When we talk of UI tech stack, two of the web technologies have emerged as main competitors, Angular(supported by Google) &amp;amp; React(supported by Facebook).&lt;/p&gt;
 
 &lt;p&gt;Although comparing Angular &amp;amp; React is like comparing apples vs oranges, Angular is framework which gives all the functions you need in build, whereas React is a library designed specifically for view rendering, for everything else you need to pull dependencies specifically&lt;/p&gt;
 
@@ -3291,178 +3522,4 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
 &lt;p&gt;In this article we installed docker with kubernetes, created a docker image of a java app, pushed it to docker-hub. Then we created our Kubernetes deployment &amp;amp; services, and started our first pod. We also looked at how kubernetes handles scaling effortlessly.&lt;/p&gt;
 
-&lt;p&gt;You can find the complete code on &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/k8s/machine-ip&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.</summary></entry><entry><title type="html">Kubernetes(k8s) Basics</title><link href="https://kuros.in/kubernetes/2019/01/kubernetes-basics/" rel="alternate" type="text/html" title="Kubernetes(k8s) Basics" /><published>2019-01-29T00:00:00+00:00</published><updated>2019-01-29T00:00:00+00:00</updated><id>https://kuros.in/kubernetes/2019/01/kubernetes-basics</id><content type="html" xml:base="https://kuros.in/kubernetes/2019/01/kubernetes-basics/">&lt;p&gt;So we all have heard of docker, it has taken industry by a storm and completely changed the way application are deployed to servers, I mean having independent environment for every app is great, everyone loves it. But it also created challenges around managing deployments.&lt;/p&gt;
-
-&lt;p&gt;Though there have been many container management tools such as Docker Swarm, CoreOs rkt, Mesos etc. But Kubernetes has emerged as favorite.&lt;/p&gt;
-
-&lt;p&gt;Let take a look, what makes Kubernetes such an important player in recent times.&lt;/p&gt;
-
-&lt;p&gt;If you are familiar with the basic nomenclature, you can skip this tutorial.&lt;/p&gt;
-
-&lt;h1 id=&quot;what-is-kubernetesk8s&quot;&gt;What is Kubernetes(k8s)&lt;/h1&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kubernetes (k8s)&lt;/a&gt; is an open-source system for automating deployment, scaling, and management of containerized applications.&lt;/p&gt;
-
-&lt;p&gt;Basically Kubernetes is a container orchestrator, that helps you with the deployment, lifecycle &amp;amp; management of the container. It provides a set of services and deployment configuration for you to work with and hides all the complexity of infrastructure management such as cpu, memory, storage etc.&lt;/p&gt;
-
-&lt;p&gt;K8s is directed towards reaching desired state, it could be deployment of set of webservices, database engines, caching solutions.&lt;/p&gt;
-
-&lt;h1 id=&quot;benefits-of-using-kubernetes&quot;&gt;Benefits of using Kubernetes&lt;/h1&gt;
-
-&lt;p&gt;Although there are many things to talk about, here are few main points I would like to mention.&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Speed of Deployment:&lt;/strong&gt; Deployment on k8s is fast, I mean super fast. you provide the configuration, and it would bring all the application to the desired state.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Version Management:&lt;/strong&gt; Have you had troubles, deploying new version of your app to server, k8s helps you do that simply without any downtime, and you can revert to your original state if anything goes wrong, almost instantly.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Ability to recover:&lt;/strong&gt; If anything goes wrong k8s engine takes care of bringing back to the desired state, for example, if you wanted 3 instances of your service to be running at all times, and something goes wrong and instance is down, k8s would start a new instance so at the end of the day, you will have your application up &amp;amp; running all the time.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Hides complexity of cluster&lt;/strong&gt;: Setting up application cluster is a big pain for devops, but with k8s, its very easy.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;operating-principles&quot;&gt;Operating principles&lt;/h1&gt;
-
-&lt;p&gt;So k8s works on a very simple principle, always maintain the desired state.You provide a &lt;em&gt;desired state config&lt;/em&gt;, and k8s will download image, run it, and will maintain the required number of instances.&lt;/p&gt;
-
-&lt;p&gt;It provides &lt;em&gt;controllers(Control Loops)&lt;/em&gt;, which has sole purpose to monitor and bring container to its desired state.&lt;/p&gt;
-
-&lt;p&gt;There is an &lt;em&gt;api server&lt;/em&gt;, which is the only way to communicate with k8s cluster, its core hub of all the information. You can interact with api server using rest api call or a command line tool called kubectl.&lt;/p&gt;
-
-&lt;h1 id=&quot;building-blocks-key-players&quot;&gt;Building Blocks (Key Players)&lt;/h1&gt;
-
-&lt;p&gt;Lets take a look at some of the building blocks of k8s:&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;building-blocks&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/k8s/blocks.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;pods&quot;&gt;Pods&lt;/h2&gt;
-&lt;p&gt;Pod forms the basic unit. It can contain one or more containers running inside it. Pods are ephemeral, i.e. once a pod is dead its not resurrected, if k8s find that the pod has died, it will start a complete new pod.&lt;/p&gt;
-
-&lt;p&gt;Pods ensures the atomicity, means either the pod is available or not its not, there is no state as starting or dying, its simply up or down. Each pod maintains the health of all the apps, if any app is down, k8s drops the whole pod and starts a completely new one.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;controllers&quot;&gt;Controllers&lt;/h2&gt;
-
-&lt;p&gt;Controllers are responsible for maintaining the state of the pods, number of replica’s, deployment state etc. It will monitor the state of Pod and also the health of all the apps inside a pod. Controllers also manages the change in replica-sets &amp;amp; container versions.&lt;/p&gt;
-
-&lt;h2 id=&quot;services&quot;&gt;Services&lt;/h2&gt;
-
-&lt;p&gt;Services adds persistency to k8s engine, it forms the networking abstraction to pods. For e.g. if a pod dies and a new pod is generated in its place, it IP/hostname etc might change, so k8s service forms the facade, and takes care of IP &amp;amp; DNS, it dynamically updates its mapping.&lt;/p&gt;
-
-&lt;p&gt;Next important task, these services take care are scalability and load balancing.&lt;/p&gt;
-
-&lt;h2 id=&quot;storage&quot;&gt;Storage&lt;/h2&gt;
-
-&lt;p&gt;In the earlier version of k8s, volume was directly mapped to the containers. This created a very tight coupling between volume &amp;amp; pods.&lt;/p&gt;
-
-&lt;p&gt;But now k8s engine has come up with the concept of &lt;strong&gt;Persisted Volumes&lt;/strong&gt;. It is defined at the cluster level, so whenever a new pod comes up, it claims the desired store required by it from this Persisted Volume, this is called Persisted Volume Chains.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;kubernetes-cluster&quot;&gt;Kubernetes Cluster&lt;/h1&gt;
-&lt;p&gt;Now that we have seen basic building blocks, lets focus on how the k8s cluster is organized. Each custer comprises of mainly three components.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;cluster&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/k8s/k8s-cluster.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;master&quot;&gt;Master&lt;/h2&gt;
-&lt;p&gt;Only a single master can reside in one cluster. Master is one which co-ordinates cluster operation, monitoring and scheduling. It is the primary data access point, and provides administration of the cluster.&lt;/p&gt;
-
-&lt;p&gt;A master is composed of the following components:&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;master&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/k8s/master.png&quot; class=&quot;lazy&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;api-server&quot;&gt;Api Server&lt;/h3&gt;
-
-&lt;p&gt;Api Server is the communication hub of the cluster, it completely stateless, and all the configuration are passed into k8s cluster through api server. Its a simple restful endpoint, whenever it receives the request, it validates and passes the information to &lt;em&gt;Cluster Store(etcd)&lt;/em&gt;&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;cluster-store&quot;&gt;Cluster Store&lt;/h3&gt;
-&lt;p&gt;As the name suggests, a Cluster Store, persists the values as key-value pair in etcd. Cluster Store also proves watcher on keys for any change in value.&lt;/p&gt;
-
-&lt;h3 id=&quot;scheduler&quot;&gt;Scheduler&lt;/h3&gt;
-&lt;p&gt;The Job of scheduler is to select nodes based on prod requirement, suppose a pod requires 4gb ram to run, scheduler will decide on which is the best suited node for it within the multi node cluster.&lt;/p&gt;
-
-&lt;p&gt;It also keeps a watch on &lt;em&gt;Api Server&lt;/em&gt; for any changes and drives the current state to the desire state. It evaluates the resources available on nodes, and schedules the pod accordingly, we can also provide constraints, that I want two pods to be deployed on same node or different nodes.&lt;/p&gt;
-
-&lt;h3 id=&quot;controller-management&quot;&gt;Controller Management&lt;/h3&gt;
-&lt;p&gt;It manages the lifecycle of Controllers, and drives the current state to the desired state. Runs the controller loops (mentioned above), watches and update the api server. It also maintains the replica set.&lt;/p&gt;
-
-&lt;h3 id=&quot;kubectl&quot;&gt;kubectl&lt;/h3&gt;
-&lt;p&gt;Although kubectl is not the part of master, but it is the command line tool which talks with the api server (connects to master).&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;node&quot;&gt;Node&lt;/h2&gt;
-
-&lt;p&gt;Node is the place where the pods run, its the responsibility of node to monitor pods state as well as application health, the main component that runs on all the nodes are kubelet, kubeproxy, container-runtime &amp;amp; networking.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;Nodes&quot; src=&quot;/images/loader.gif&quot; data-src=&quot;/images/2019/k8s/nodes.png&quot; class=&quot;lazy&quot; width=&quot;100%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We will take a closer look at the features of each component in detail.&lt;/p&gt;
-
-&lt;h3 id=&quot;kubelet&quot;&gt;Kubelet&lt;/h3&gt;
-
-&lt;p&gt;Kubelet handles the pod lifecycle, reports the node &amp;amp; pods state, monitors api server for any changes and keeps probing the pod for liveliness.&lt;/p&gt;
-
-&lt;h3 id=&quot;kube-proxy&quot;&gt;Kube-proxy&lt;/h3&gt;
-&lt;p&gt;Kube-proxy takes care of the networking, inside a node, a pod can die and new pod is generated in place, somehow the k8s needs to mechanism to connect to these newly connected pods, and direct the traffic to it. This is done by Kube-proxy.&lt;/p&gt;
-
-&lt;p&gt;Kube-Proxy maintains an ip-table, mapping of all the ip’s of respective pods, when a pod is added or deleted, this ip-table is updated by kube-proxy.&lt;/p&gt;
-
-&lt;p&gt;In addition to this kube-proxy is also manages routing and load balancing between the pods. It also listens to api-server in any change to the configuration.&lt;/p&gt;
-
-&lt;h3 id=&quot;container-runtime&quot;&gt;Container-runtime&lt;/h3&gt;
-&lt;p&gt;This the actual runtime environment, it will download and run the images. By default, k8s support Docker as container, but you can use any container implementation which implements Container Runtime Interface.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;networking&quot;&gt;Networking&lt;/h1&gt;
-
-&lt;p&gt;Before we conclude, let see how k8s manages the networking. There are few rules to which k8s adhere:&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;No node should implement Network Address Translation (NAT).&lt;/li&gt;
-  &lt;li&gt;All Pods should communicate with all the nodes in cluster.&lt;/li&gt;
-  &lt;li&gt;All the nodes should communicate with all the pods in cluster.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;K8s uses localhost as hostname to communicate between apps within the same pod.&lt;/p&gt;
-
-&lt;p&gt;K8s uses bridge network to communicate between different pods but within same node.&lt;/p&gt;
-
-&lt;p&gt;k8s uses IP’s to communicate between different nodes within a cluster.&lt;/p&gt;
-
-&lt;p&gt;Finally, k8s uses kube-proxy to connect cluster with external service.&lt;/p&gt;
-
-&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-
-&lt;p&gt;So, till now we have seen basic building blocks for kubernetes, we spent time getting to know main keywords. Next we will be looking at how to install kubernetes.&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">So we all have heard of docker, it has taken industry by a storm and completely changed the way application are deployed to servers, I mean having independent environment for every app is great, everyone loves it. But it also created challenges around managing deployments.</summary></entry></feed>
+&lt;p&gt;You can find the complete code on &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/k8s/machine-ip&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>{&quot;name&quot;=&gt;nil, &quot;email&quot;=&gt;nil, &quot;twitter&quot;=&gt;nil}</name></author><summary type="html">All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.</summary></entry></feed>

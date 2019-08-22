@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-Control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Making parallel service calls in microservice architecture. | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Making parallel service calls in microservice architecture." />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Let’s explore how to speed up response times in micro service design." />
+<meta property="og:description" content="Let’s explore how to speed up response times in micro service design." />
+<link rel="canonical" href="https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" />
+<meta property="og:url" content="https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-08-20T00:00:00+00:00" />
+<script type="application/ld+json">
+{"description":"Let’s explore how to speed up response times in micro service design.","@type":"BlogPosting","url":"https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Making parallel service calls in microservice architecture.","dateModified":"2019-08-20T00:00:00+00:00","datePublished":"2019-08-20T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/images/kuros-3.png">
+		<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+                (adsbygoogle = window.adsbygoogle || []).push({
+                        google_ad_client: "ca-pub-4166026699724584",
+                        enable_page_level_ads: true
+                });
+        </script>
+
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<span class="dark-logo"><img width="104" src="/images/logo/dark-2.svg" alt="dark frisco logo"></span>
+						<span class="light-logo"><img width="200" src="/images/logo/light-2.svg" alt="light frisco logo"></span>
+						<!--<span class="dark-logo">Kuros.in</span>-->
+						<!--<span class="light-logo">Kuros.in</span>-->
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>Making parallel service calls in microservice architecture.</h1>
+			<p class="subtext">Let's explore how to speed up response times in micro service design.</p>
+		</div>
+	</div>
+</section>
+
+<div id="share-bar" style="display: none">
+    <div class="share-buttons">
+        <a class="facebook"  href="https://www.facebook.com/sharer/sharer.php?u=https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Facebook" >
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=Making parallel service calls in microservice architecture.&url=https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa fa-twitter share-button"></i>
+        </a>
+
+        <a  class="tumblr" href="https://www.tumblr.com/share/link?url=https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Tumblr" >
+            <i class="fa fa-tumblr share-button"></i>
+        </a>
+
+        <a  class="pinterest" href="https://www.pinterest.com/pin/create/button/?url=https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Pinterest" >
+            <i class="fa fa-pinterest-p share-button"></i>
+        </a>
+
+        <a  class="reddit" href="http://www.reddit.com/submit?url=https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Reddit" >
+            <i class="fa fa-reddit-alien share-button"></i>
+        </a>
+
+        <a  class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/&title=Making parallel service calls in microservice architecture.&summary=Let's explore how to speed up response times in micro service design.&source=Kuros.in"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+        <a  class="email" href="mailto:?subject=Making parallel service calls in microservice architecture.&amp;body=Check out this site https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/"
+            title="Share via Email" >
+            <i class="fa fa-envelope share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+<div id="ad-block-vertical" style="display: none">
+    <div class="ad-block-hz">
+        
+
+        
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- ad-vertical -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4166026699724584"
+             data-ad-slot="5635008510"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        
+    </div>
+</div>
+
+<section>
+	<div class="blog-post text-container">
+
+		
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/java/">java</a>
+		</span>
+	
+		<span class="blog-filter">
+			<a href="/category/microservices/">microservices</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		August 20, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to current times, we used to get change requests (CR’s) from our client. Then there use to be huge round discussion, finally we use to create delivery schedule, design documents, test schedules and many more even before starting any work.
+And then we(developers) use to give estimates, which was generally reduced to half(because the client demand the feature early). Our day to day job.</p>
+
+<p><img alt="monolith" src="/images/loader.gif" data-src="/images/2019/java/microservice-monlith.png" class="lazy img-center img-half" /></p>
+
+<p>But even for a very small change there used to huge dev, qa, deployment cycle and a simple feature like adding a text box use to take up months. Why!!! because we had go through an end to end validation of complete system, even if the changes were not related to each other distantly.</p>
+
+<p>So what we did, we decided to break up the system into smaller services, each service had clear demarcation and role.</p>
+
+<h1 id="challenges-with-microservices">Challenges with microservices</h1>
+<p>There were numerous things we tried, we failed, we re-designed, and after few failed attempts we could see the silver lining. We had created over 20 deployable against a single monolith. We spend some decent time is creating full test suite ie. unit/integration/acceptance and even diagnostic test. All the product was 100% automated. Finally we moved from releasing 2 builds/month to over 600 builds/month. It was great achievement by our team. Still we are stuck.</p>
+
+<p><img alt="monolith" src="/images/loader.gif" data-src="/images/2019/java/microservice-phase-1.png" class="lazy img-center img-half" /></p>
+
+<p>There was only one piece of the puzzle which was giving us nightmares - <strong>The DATABASE</strong>.</p>
+
+<p>We still have all the services connecting to same schema. The reason was simple, its a legacy application broken into multiple services, and each system was having queries which was reading data from tables which it did not own’s. So!!! we tried to split the schema.</p>
+
+<p><img alt="monolith" src="/images/loader.gif" data-src="/images/2019/java/microservice-phase-2.png" class="lazy img-center img-half" /></p>
+
+<p>Every thing looked nice, it was time to celebrate, we were feeling proud of our achieved, and soon the joy turned into a deep sorrow, we all got a call from <strong>one who must not be named</strong> …</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>The performance has dropped, simple request were taking too long, our system has slowed down. So we went back to the design board, again documented the process flow, and as we drilled down we located the monster lurking behind - too many service to service calls.</p>
+
+<p><img alt="monolith" src="/images/loader.gif" data-src="/images/2019/java/microservice-sync-call.png" class="lazy img-center img-half" /></p>
+
+<p>Assuming each service took only 300ms to complete, but the overall response time was exceeding 1200ms.</p>
+
+<h1 id="async-calls-to-rescue">Async calls to rescue.</h1>
+<p>Obviously we wanted to make async calls, collate the data at the end send the response back. We tried implementing different solutions using executor service, it worked but the usage was complicated, we wanted something simpler.</p>
+
+<blockquote>
+  <p>Soon we found out, CompletableFuture was introduced in Java 8. We tried using it.</p>
+</blockquote>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">blog</span><span class="o">.</span><span class="na">code</span><span class="o">.</span><span class="na">java</span><span class="o">.</span><span class="na">parallel</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.concurrent.CompletableFuture</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutionException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CompletableFutureExample</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ExecutionException</span><span class="o">,</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+        
+        <span class="kd">final</span> <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">service1</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">slowService</span><span class="o">(</span><span class="mi">1</span><span class="o">));</span>
+        <span class="kd">final</span> <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">service2</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">slowService</span><span class="o">(</span><span class="mi">2</span><span class="o">));</span>
+        <span class="kd">final</span> <span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">service3</span> <span class="o">=</span> <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">slowService</span><span class="o">(</span><span class="mi">3</span><span class="o">));</span>
+
+        <span class="n">CompletableFuture</span><span class="o">.</span><span class="na">allOf</span><span class="o">(</span><span class="n">service1</span><span class="o">,</span> <span class="n">service2</span><span class="o">,</span> <span class="n">service3</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="kt">int</span> <span class="n">value1</span> <span class="o">=</span> <span class="n">service1</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+        <span class="kd">final</span> <span class="kt">int</span> <span class="n">value2</span> <span class="o">=</span> <span class="n">service1</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+        <span class="kd">final</span> <span class="kt">int</span> <span class="n">value3</span> <span class="o">=</span> <span class="n">service1</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value1</span> <span class="o">+</span> <span class="n">value2</span> <span class="o">+</span> <span class="n">value3</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Integer</span> <span class="nf">slowService</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It served the purpose.</p>
+
+<h1 id="wrapper-over-completablefuture">Wrapper over CompletableFuture</h1>
+<p>I still wanted it to be simpler to use. So I created a wrapper over it. Here is my solution, I created a class ParallelExecution.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">blog</span><span class="o">.</span><span class="na">code</span><span class="o">.</span><span class="na">java</span><span class="o">.</span><span class="na">parallel</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.concurrent.CompletableFuture</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.function.BiFunction</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.function.Supplier</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.stream.Collectors</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.stream.Stream</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">ParallelExecution</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">Stream</span><span class="o">&lt;</span><span class="n">CompletableFuture</span><span class="o">&gt;</span> <span class="n">futureStream</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nf">ParallelExecution</span><span class="o">(</span><span class="kd">final</span> <span class="n">CompletableFuture</span><span class="o">&lt;?&gt;</span> <span class="n">completableFuture</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">(</span><span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">completableFuture</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nf">ParallelExecution</span><span class="o">(</span><span class="kd">final</span> <span class="n">Stream</span><span class="o">&lt;</span><span class="n">CompletableFuture</span><span class="o">&gt;</span> <span class="n">futureStream</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">futureStream</span> <span class="o">=</span> <span class="n">futureStream</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">ParallelExecution</span> <span class="nf">of</span><span class="o">(</span><span class="kd">final</span> <span class="n">Supplier</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">supplier</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ParallelExecution</span><span class="o">(</span><span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(</span><span class="n">supplier</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">ParallelExecution</span> <span class="nf">of</span><span class="o">(</span><span class="kd">final</span> <span class="n">Supplier</span><span class="o">&lt;</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">supplier</span><span class="o">,</span> <span class="kd">final</span> <span class="n">BiFunction</span><span class="o">&lt;</span><span class="n">V</span><span class="o">,</span> <span class="n">Throwable</span><span class="o">,</span> <span class="n">V</span><span class="o">&gt;</span> <span class="n">errorHandler</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ParallelExecution</span><span class="o">(</span><span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(</span><span class="n">supplier</span><span class="o">).</span><span class="na">handle</span><span class="o">(</span><span class="n">errorHandler</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">ParallelExecution</span> <span class="nf">and</span><span class="o">(</span><span class="kd">final</span> <span class="n">Supplier</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">supplier</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Stream</span><span class="o">&lt;</span><span class="n">CompletableFuture</span><span class="o">&gt;</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(</span><span class="n">supplier</span><span class="o">));</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ParallelExecution</span><span class="o">(</span><span class="n">Stream</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="n">futureStream</span><span class="o">,</span> <span class="n">stream</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">ParallelExecution</span> <span class="nf">and</span><span class="o">(</span><span class="kd">final</span> <span class="n">Supplier</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">supplier</span><span class="o">,</span> <span class="kd">final</span> <span class="n">BiFunction</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">Throwable</span><span class="o">,</span> <span class="n">T</span><span class="o">&gt;</span> <span class="n">errorHandler</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">Stream</span><span class="o">&lt;</span><span class="n">CompletableFuture</span><span class="o">&gt;</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">Stream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="n">CompletableFuture</span><span class="o">.</span><span class="na">supplyAsync</span><span class="o">(</span><span class="n">supplier</span><span class="o">).</span><span class="na">handle</span><span class="o">(</span><span class="n">errorHandler</span><span class="o">));</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">ParallelExecution</span><span class="o">(</span><span class="n">Stream</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="n">futureStream</span><span class="o">,</span> <span class="n">stream</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="n">ExecutionResult</span> <span class="nf">close</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span>  <span class="k">new</span> <span class="nf">ExecutionResult</span><span class="o">(</span><span class="n">futureStream</span>
+                <span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="nl">CompletableFuture:</span><span class="o">:</span><span class="n">join</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">Collectors</span><span class="o">.</span><span class="na">toList</span><span class="o">()));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>And collected the results in a new class:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">blog</span><span class="o">.</span><span class="na">code</span><span class="o">.</span><span class="na">java</span><span class="o">.</span><span class="na">parallel</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ExecutionResult</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">List</span><span class="o">&lt;?&gt;</span> <span class="n">result</span><span class="o">;</span>
+
+    <span class="n">ExecutionResult</span><span class="o">(</span><span class="kd">final</span> <span class="n">List</span><span class="o">&lt;?&gt;</span> <span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">"unchecked"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="nf">get</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">index</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="n">T</span><span class="o">)</span> <span class="n">result</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">index</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Finally, we can execute service in parallel.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">blog</span><span class="o">.</span><span class="na">code</span><span class="o">.</span><span class="na">java</span><span class="o">.</span><span class="na">parallel</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ParallelExecutionExample</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">ExecutionResult</span> <span class="n">executionResult</span> <span class="o">=</span> <span class="n">ParallelExecution</span><span class="o">.</span><span class="na">of</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">slowService</span><span class="o">(</span><span class="mi">1</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">slowService</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">slowService</span><span class="o">(</span><span class="mi">3</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">close</span><span class="o">();</span>
+
+        <span class="kt">int</span> <span class="n">val</span> <span class="o">=</span> <span class="n">executionResult</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">val2</span> <span class="o">=</span> <span class="n">executionResult</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">val3</span> <span class="o">=</span> <span class="n">executionResult</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">val</span> <span class="o">+</span> <span class="n">val2</span> <span class="o">+</span> <span class="n">val3</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Integer</span> <span class="nf">slowService</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The beauty of the solution is that in case of any service failure we get proper exception in the handling class.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">blog</span><span class="o">.</span><span class="na">code</span><span class="o">.</span><span class="na">java</span><span class="o">.</span><span class="na">parallel</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ParallelExecutionExceptionExample</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="n">ExecutionResult</span> <span class="n">executionResult</span> <span class="o">=</span> <span class="n">ParallelExecution</span><span class="o">.</span><span class="na">of</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">slowService</span><span class="o">(</span><span class="mi">1</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"Bam!!"</span><span class="o">);</span>
+                <span class="o">})</span>
+                <span class="o">.</span><span class="na">and</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="n">slowService</span><span class="o">(</span><span class="mi">3</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">close</span><span class="o">();</span>
+
+        <span class="n">executionResult</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">Integer</span> <span class="nf">slowService</span><span class="o">(</span><span class="kd">final</span> <span class="kt">int</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Exception <span class="k">in </span>thread <span class="s2">"main"</span> java.util.concurrent.CompletionException: java.lang.RuntimeException: Bam!!
+	at java.util.concurrent.CompletableFuture.encodeThrowable<span class="o">(</span>CompletableFuture.java:273<span class="o">)</span>
+	at java.util.concurrent.CompletableFuture.completeThrowable<span class="o">(</span>CompletableFuture.java:280<span class="o">)</span>
+	at java.util.concurrent.CompletableFuture<span class="nv">$AsyncSupply</span>.run<span class="o">(</span>CompletableFuture.java:1592<span class="o">)</span>
+	at java.util.concurrent.CompletableFuture<span class="nv">$AsyncSupply</span>.exec<span class="o">(</span>CompletableFuture.java:1582<span class="o">)</span>
+	at java.util.concurrent.ForkJoinTask.doExec<span class="o">(</span>ForkJoinTask.java:289<span class="o">)</span>
+	at java.util.concurrent.ForkJoinPool<span class="nv">$WorkQueue</span>.runTask<span class="o">(</span>ForkJoinPool.java:1056<span class="o">)</span>
+	at java.util.concurrent.ForkJoinPool.runWorker<span class="o">(</span>ForkJoinPool.java:1692<span class="o">)</span>
+	at java.util.concurrent.ForkJoinWorkerThread.run<span class="o">(</span>ForkJoinWorkerThread.java:157<span class="o">)</span>
+Caused by: java.lang.RuntimeException: Bam!!
+	at <span class="k">in</span>.kuros.blog.code.java.parallel.ParallelExecutionExceptionExample.lambda<span class="nv">$main$1</span><span class="o">(</span>ParallelExecutionExceptionExample.java:8<span class="o">)</span>
+	at java.util.concurrent.CompletableFuture<span class="nv">$AsyncSupply</span>.run<span class="o">(</span>CompletableFuture.java:1590<span class="o">)</span>
+	... 5 more
+
+Process finished with <span class="nb">exit </span>code 1
+</code></pre></div></div>
+
+<p>Now, we have cleaner way to make service to service calls and then use the results at the end.</p>
+
+<p><a href="https://github.com/kuros/blog-code/tree/master/java/src/main/java/in/kuros/blog/code/java/parallel">Find the code here</a>.</p>
+
+
+
+			
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+			<div class="blog-navigation">
+				
+					
+					<a class="prev" href="/java/streams/2019/05/custom-collector/">&laquo; Java 8 - Creating a Custom Collector for Streams</a>
+
+					
+
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.png')"></div>
+				<p class="blurb">I like long drives, bike trip & good food. I have passion for coding, esp. Clean-Code.</p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+
+			
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>
