@@ -20,7 +20,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-03-18T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"In this article we will focus on configuring redux, creating our first action, reducer &amp; store.","@type":"BlogPosting","url":"https://kuros.in/react/2019/03/react-redux/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"React Redux with typescript","dateModified":"2019-03-18T00:00:00+00:00","datePublished":"2019-03-18T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/react/2019/03/react-redux/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/react/2019/03/react-redux/","headline":"React Redux with typescript","datePublished":"2019-03-18T00:00:00+00:00","dateModified":"2019-03-18T00:00:00+00:00","description":"In this article we will focus on configuring redux, creating our first action, reducer &amp; store.","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/react/2019/03/react-redux/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -217,14 +217,14 @@
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/components/book/BookPage.tsx</span>
 
-<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">ChangeEvent</span><span class="p">,</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">FormEvent</span><span class="p">,</span> <span class="nx">ReactNode</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">ChangeEvent</span><span class="p">,</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">FormEvent</span><span class="p">,</span> <span class="nx">ReactNode</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
 
 
 <span class="kd">class</span> <span class="nx">BookPage</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="o">&lt;</span><span class="nx">BookProps</span><span class="p">,</span> <span class="nx">BookState</span><span class="o">&gt;</span> <span class="p">{</span>
 
     <span class="kd">constructor</span><span class="p">(</span><span class="na">props</span> <span class="p">:</span> <span class="nx">BookProps</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="s1">''</span><span class="p">}};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="dl">''</span><span class="p">}};</span>
     <span class="p">}</span>
 
     <span class="nx">render</span><span class="p">():</span> <span class="nx">ReactNode</span> <span class="p">{</span>
@@ -307,7 +307,7 @@ View compiled
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">constructor</span><span class="p">(</span><span class="nx">props</span> <span class="p">:</span> <span class="nx">BookProps</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="s1">''</span><span class="p">}};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="dl">''</span><span class="p">}};</span>
         
         <span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
@@ -320,7 +320,7 @@ View compiled
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">BookPage</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="o">&lt;</span><span class="nx">BookProps</span><span class="p">,</span> <span class="nx">BookState</span><span class="o">&gt;</span> <span class="p">{</span>
     
-    <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="s1">''</span><span class="p">}};</span>
+    <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="dl">''</span><span class="p">}};</span>
 
     <span class="nx">render</span><span class="p">():</span> <span class="nx">ReactNode</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -378,9 +378,9 @@ View compiled
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/book/bookActionType.ts</span>
 
-<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"../../components/book/BookPage"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../../components/book/BookPage</span><span class="dl">"</span><span class="p">;</span>
 
-<span class="k">export</span> <span class="kd">const</span> <span class="nx">CREATE_BOOK</span> <span class="o">=</span> <span class="s1">'CREATE_BOOK'</span><span class="p">;</span>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">CREATE_BOOK</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">CREATE_BOOK</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kr">interface</span> <span class="nx">CreateBookAction</span> <span class="p">{</span>
     <span class="nl">type</span><span class="p">:</span> <span class="k">typeof</span> <span class="nx">CREATE_BOOK</span>
@@ -397,8 +397,8 @@ View compiled
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/book/bookAction.ts</span>
 
-<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"../../components/book/BookPage"</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span><span class="nx">BookActionType</span><span class="p">,</span> <span class="nx">CREATE_BOOK</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"./bookActionType"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../../components/book/BookPage</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">BookActionType</span><span class="p">,</span> <span class="nx">CREATE_BOOK</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./bookActionType</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="k">export</span> <span class="kd">function</span> <span class="nx">createBook</span><span class="p">(</span><span class="nx">book</span><span class="p">:</span> <span class="nx">Book</span><span class="p">):</span> <span class="nx">BookActionType</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nx">CREATE_BOOK</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">book</span><span class="p">}</span>
@@ -420,8 +420,8 @@ View compiled
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/book/bookReducer.ts</span>
 
-<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"../../components/book/BookPage"</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span><span class="nx">BookActionType</span><span class="p">,</span> <span class="nx">CREATE_BOOK</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"./bookActionType"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../../components/book/BookPage</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">BookActionType</span><span class="p">,</span> <span class="nx">CREATE_BOOK</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./bookActionType</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">BookReducer</span><span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">Book</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">BookActionType</span><span class="p">):</span> <span class="nx">Book</span><span class="p">[]</span> <span class="p">{</span>
     <span class="k">switch</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
@@ -437,8 +437,8 @@ View compiled
 
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/rootReducer.ts</span>
 
-<span class="k">import</span> <span class="p">{</span><span class="nx">combineReducers</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"redux"</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">BookReducer</span> <span class="k">from</span> <span class="s2">"./book/bookReducer"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">combineReducers</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">redux</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">BookReducer</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./book/bookReducer</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">rootReducer</span> <span class="o">=</span> <span class="nx">combineReducers</span><span class="p">({</span>
     <span class="na">books</span><span class="p">:</span> <span class="nx">BookReducer</span>
@@ -453,9 +453,9 @@ View compiled
 <div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/store.ts</span>
 <span class="c1">// one time configuration</span>
 
-<span class="k">import</span> <span class="p">{</span><span class="nx">applyMiddleware</span><span class="p">,</span> <span class="nx">compose</span><span class="p">,</span> <span class="nx">createStore</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"redux"</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">rootReducer</span> <span class="k">from</span> <span class="s2">"./rootReducer"</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">immutableStateInvariantMiddleware</span>  <span class="k">from</span> <span class="s2">"redux-immutable-state-invariant"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">applyMiddleware</span><span class="p">,</span> <span class="nx">compose</span><span class="p">,</span> <span class="nx">createStore</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">redux</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">rootReducer</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./rootReducer</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">immutableStateInvariantMiddleware</span>  <span class="k">from</span> <span class="dl">"</span><span class="s2">redux-immutable-state-invariant</span><span class="dl">"</span><span class="p">;</span>
 
 
 <span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">configureStore</span><span class="p">(</span><span class="nx">initialState</span><span class="p">?:</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
@@ -484,14 +484,14 @@ View compiled
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/index.tsx</span>
 <span class="c1">// one time configuration</span>
 
-<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="s1">'react'</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">ReactDOM</span> <span class="k">from</span> <span class="s1">'react-dom'</span><span class="p">;</span>
-<span class="k">import</span> <span class="s1">'./index.css'</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">App</span> <span class="k">from</span> <span class="s1">'./App'</span><span class="p">;</span>
-<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">serviceWorker</span> <span class="k">from</span> <span class="s1">'./serviceWorker'</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span><span class="nx">BrowserRouter</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-router-dom"</span><span class="p">;</span>
-<span class="k">import</span> <span class="nx">configureStore</span> <span class="k">from</span> <span class="s2">"./redux/store"</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span><span class="nx">Provider</span> <span class="k">as</span> <span class="nx">ReduxProvider</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-redux"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ReactDOM</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-dom</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./index.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">App</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./App</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">serviceWorker</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./serviceWorker</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">BrowserRouter</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-router-dom</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">configureStore</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./redux/store</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Provider</span> <span class="k">as</span> <span class="nx">ReduxProvider</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-redux</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">configureStore</span><span class="p">();</span>
 
@@ -501,7 +501,7 @@ View compiled
             <span class="p">&lt;</span><span class="nc">App</span> <span class="p">/&gt;</span>
         <span class="p">&lt;/</span><span class="nc">BrowserRouter</span><span class="p">&gt;</span>
     <span class="p">&lt;/</span><span class="nc">ReduxProvider</span><span class="p">&gt;,</span>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'root'</span><span class="p">));</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">));</span>
 
 <span class="c1">// If you want your app to work offline and load faster, you can change</span>
 <span class="c1">// unregister() to register() below. Note this comes with some pitfalls.</span>
@@ -517,13 +517,13 @@ View compiled
 <p>Its time to put all the pieces together, let’s take a look at the modified BookPage:</p>
 <div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//  src/components/book/BookPage.tsx</span>
 
-<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">ChangeEvent</span><span class="p">,</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">FormEvent</span><span class="p">,</span> <span class="nx">ReactNode</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react"</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span><span class="nx">connect</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"react-redux"</span><span class="p">;</span>
-<span class="k">import</span> <span class="p">{</span><span class="nx">createBook</span><span class="p">}</span> <span class="k">from</span> <span class="s2">"../../redux/book/bookAction"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">ChangeEvent</span><span class="p">,</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">FormEvent</span><span class="p">,</span> <span class="nx">ReactNode</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">connect</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-redux</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">createBook</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../../redux/book/bookAction</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="kd">class</span> <span class="nx">BookPage</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="o">&lt;</span><span class="nx">BookProps</span><span class="p">,</span> <span class="nx">BookState</span><span class="o">&gt;</span> <span class="p">{</span>
 
-    <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="s1">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="s1">''</span><span class="p">}};</span>
+    <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="dl">''</span><span class="p">}};</span>
 
     <span class="nx">render</span><span class="p">():</span> <span class="nx">ReactNode</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">(</span>

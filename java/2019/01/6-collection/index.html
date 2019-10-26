@@ -20,7 +20,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-17T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"While writing the object-oriented programs, comparison of two instances of the same class is often required. Once instances are comparable, we can sort them in any order. Comparable interface is defined in java.lang package and is used to define the natural sort order of a class. The interface java.lang.Comparator defines an auxiliary sort order for a class.","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/6-collection/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Comparable &amp; Comparator","dateModified":"2019-01-17T00:00:00+00:00","datePublished":"2019-01-17T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/6-collection/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/6-collection/","headline":"Comparable &amp; Comparator","datePublished":"2019-01-17T00:00:00+00:00","dateModified":"2019-01-17T00:00:00+00:00","description":"While writing the object-oriented programs, comparison of two instances of the same class is often required. Once instances are comparable, we can sort them in any order. Comparable interface is defined in java.lang package and is used to define the natural sort order of a class. The interface java.lang.Comparator defines an auxiliary sort order for a class.","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/6-collection/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -217,50 +217,50 @@
 <span class="kn">import</span> <span class="nn">java.util.Set</span><span class="o">;</span>
 <span class="kn">import</span> <span class="nn">java.util.TreeSet</span><span class="o">;</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="kd">implements</span> <span class="n">Comparable</span> <span class="o">{</span>
-  <span class="n">String</span> <span class="n">firstName</span><span class="o">,</span> <span class="n">lastName</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="kd">implements</span> <span class="nc">Comparable</span> <span class="o">{</span>
+  <span class="nc">String</span> <span class="n">firstName</span><span class="o">,</span> <span class="n">lastName</span><span class="o">;</span>
 
-  <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="n">String</span> <span class="n">f</span><span class="o">,</span> <span class="n">String</span> <span class="n">l</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">f</span><span class="o">,</span> <span class="nc">String</span> <span class="n">l</span><span class="o">)</span> <span class="o">{</span>
     <span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">f</span><span class="o">;</span>
     <span class="k">this</span><span class="o">.</span><span class="na">lastName</span> <span class="o">=</span> <span class="n">l</span><span class="o">;</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">firstName</span><span class="o">;</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="n">lastName</span><span class="o">;</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="n">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
     <span class="k">return</span> <span class="s">"\n[First Name="</span> <span class="o">+</span> <span class="n">firstName</span> <span class="o">+</span> <span class="s">", Last name="</span> <span class="o">+</span> <span class="n">lastName</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compareTo</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">Person</span> <span class="n">emp</span> <span class="o">=</span> <span class="o">(</span><span class="n">Person</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compareTo</span><span class="o">(</span><span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Person</span> <span class="n">emp</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Person</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
     <span class="kt">int</span> <span class="n">deptComp</span> <span class="o">=</span> <span class="n">firstName</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">emp</span><span class="o">.</span><span class="na">getFirstName</span><span class="o">());</span>
 
     <span class="k">return</span> <span class="o">((</span><span class="n">deptComp</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">?</span> <span class="n">lastName</span><span class="o">.</span><span class="na">compareTo</span><span class="o">(</span><span class="n">emp</span><span class="o">.</span><span class="na">getLastName</span><span class="o">())</span>
         <span class="o">:</span> <span class="n">deptComp</span><span class="o">);</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(!(</span><span class="n">obj</span> <span class="k">instanceof</span> <span class="n">Person</span><span class="o">))</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(!(</span><span class="n">obj</span> <span class="k">instanceof</span> <span class="nc">Person</span><span class="o">))</span> <span class="o">{</span>
       <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
     <span class="o">}</span>
-    <span class="n">Person</span> <span class="n">emp</span> <span class="o">=</span> <span class="o">(</span><span class="n">Person</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
+    <span class="nc">Person</span> <span class="n">emp</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Person</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
     <span class="k">return</span> <span class="n">firstName</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">emp</span><span class="o">.</span><span class="na">getFirstName</span><span class="o">())</span>
         <span class="o">&amp;&amp;</span> <span class="n">lastName</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">emp</span><span class="o">.</span><span class="na">getLastName</span><span class="o">());</span>
   <span class="o">}</span>
 
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
-    <span class="n">Person</span> <span class="n">emps</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span> <span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">"Debbie"</span><span class="o">,</span> <span class="s">"Deg"</span><span class="o">),</span>
-        <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Geri"</span><span class="o">,</span> <span class="s">"Gradus"</span><span class="o">),</span> <span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">"Ester"</span><span class="o">,</span> <span class="s">"Exy"</span><span class="o">),</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
+    <span class="nc">Person</span> <span class="n">emps</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="s">"Debbie"</span><span class="o">,</span> <span class="s">"Deg"</span><span class="o">),</span>
+        <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Geri"</span><span class="o">,</span> <span class="s">"Gradus"</span><span class="o">),</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="s">"Ester"</span><span class="o">,</span> <span class="s">"Exy"</span><span class="o">),</span>
         <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Mary"</span><span class="o">,</span> <span class="s">"Meas"</span><span class="o">),</span>
         <span class="k">new</span> <span class="nf">Person</span><span class="o">(</span><span class="s">"Anastasia"</span><span class="o">,</span> <span class="s">"Fredo"</span><span class="o">)</span> <span class="o">};</span>
-    <span class="n">Set</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">emps</span><span class="o">));</span>
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">);</span>
+    <span class="nc">Set</span> <span class="n">set</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TreeSet</span><span class="o">(</span><span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="n">emps</span><span class="o">));</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">set</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -297,7 +297,7 @@
 
 	<span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
 
-	<span class="kd">private</span> <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
 
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
 
@@ -311,13 +311,13 @@
 
 	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
 
 		<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
 
 	<span class="o">}</span>
 
-	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
 
 		<span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">name</span><span class="o">;</span>
 
@@ -336,16 +336,16 @@
  * The below given comparator compares employees on the basis of their age.
  */</span>
 
-<span class="kd">class</span> <span class="nc">AgeComparator</span> <span class="kd">implements</span> <span class="n">Comparator</span> <span class="o">{</span>
+<span class="kd">class</span> <span class="nc">AgeComparator</span> <span class="kd">implements</span> <span class="nc">Comparator</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Object</span> <span class="n">emp1</span><span class="o">,</span> <span class="n">Object</span> <span class="n">emp2</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="nc">Object</span> <span class="n">emp1</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">emp2</span><span class="o">)</span> <span class="o">{</span>
 
 		<span class="c1">// parameter are of type Object, so we have to downcast it to Employee</span>
 		<span class="c1">// objects</span>
 
-		<span class="kt">int</span> <span class="n">emp1Age</span> <span class="o">=</span> <span class="o">((</span><span class="n">Employee</span><span class="o">)</span> <span class="n">emp1</span><span class="o">).</span><span class="na">getAge</span><span class="o">();</span>
+		<span class="kt">int</span> <span class="n">emp1Age</span> <span class="o">=</span> <span class="o">((</span><span class="nc">Employee</span><span class="o">)</span> <span class="n">emp1</span><span class="o">).</span><span class="na">getAge</span><span class="o">();</span>
 
-		<span class="kt">int</span> <span class="n">emp2Age</span> <span class="o">=</span> <span class="o">((</span><span class="n">Employee</span><span class="o">)</span> <span class="n">emp2</span><span class="o">).</span><span class="na">getAge</span><span class="o">();</span>
+		<span class="kt">int</span> <span class="n">emp2Age</span> <span class="o">=</span> <span class="o">((</span><span class="nc">Employee</span><span class="o">)</span> <span class="n">emp2</span><span class="o">).</span><span class="na">getAge</span><span class="o">();</span>
 
 		<span class="k">if</span> <span class="o">(</span><span class="n">emp1Age</span> <span class="o">&gt;</span> <span class="n">emp2Age</span><span class="o">)</span>
 
@@ -368,16 +368,16 @@
  * The below given comparator compares employees on the basis of their name.
  */</span>
 
-<span class="kd">class</span> <span class="nc">NameComparator</span> <span class="kd">implements</span> <span class="n">Comparator</span> <span class="o">{</span>
+<span class="kd">class</span> <span class="nc">NameComparator</span> <span class="kd">implements</span> <span class="nc">Comparator</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="n">Object</span> <span class="n">emp1</span><span class="o">,</span> <span class="n">Object</span> <span class="n">emp2</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">compare</span><span class="o">(</span><span class="nc">Object</span> <span class="n">emp1</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">emp2</span><span class="o">)</span> <span class="o">{</span>
 
 		<span class="c1">// parameter are of type Object, so we have to downcast it to Employee</span>
 		<span class="c1">// objects</span>
 
-		<span class="n">String</span> <span class="n">emp1Name</span> <span class="o">=</span> <span class="o">((</span><span class="n">Employee</span><span class="o">)</span> <span class="n">emp1</span><span class="o">).</span><span class="na">getName</span><span class="o">();</span>
+		<span class="nc">String</span> <span class="n">emp1Name</span> <span class="o">=</span> <span class="o">((</span><span class="nc">Employee</span><span class="o">)</span> <span class="n">emp1</span><span class="o">).</span><span class="na">getName</span><span class="o">();</span>
 
-		<span class="n">String</span> <span class="n">emp2Name</span> <span class="o">=</span> <span class="o">((</span><span class="n">Employee</span><span class="o">)</span> <span class="n">emp2</span><span class="o">).</span><span class="na">getName</span><span class="o">();</span>
+		<span class="nc">String</span> <span class="n">emp2Name</span> <span class="o">=</span> <span class="o">((</span><span class="nc">Employee</span><span class="o">)</span> <span class="n">emp2</span><span class="o">).</span><span class="na">getName</span><span class="o">();</span>
 
 		<span class="c1">// uses compareTo method of String class to compare names of the</span>
 		<span class="c1">// employee</span>
@@ -397,36 +397,36 @@
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
 
 		<span class="cm">/*
 		 * 
 		 * Employee array which will hold employees
 		 */</span>
 
-		<span class="n">Employee</span> <span class="n">employee</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Employee</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
+		<span class="nc">Employee</span> <span class="n">employee</span><span class="o">[]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Employee</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
 
 		<span class="c1">// set different attributes of the individual employee.</span>
 
-		<span class="n">employee</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Employee</span><span class="o">();</span>
+		<span class="n">employee</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Employee</span><span class="o">();</span>
 
 		<span class="n">employee</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">setAge</span><span class="o">(</span><span class="mi">40</span><span class="o">);</span>
 
 		<span class="n">employee</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="na">setName</span><span class="o">(</span><span class="s">"Joe"</span><span class="o">);</span>
 
-		<span class="n">employee</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Employee</span><span class="o">();</span>
+		<span class="n">employee</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Employee</span><span class="o">();</span>
 
 		<span class="n">employee</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="na">setAge</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
 
 		<span class="n">employee</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="na">setName</span><span class="o">(</span><span class="s">"Mark"</span><span class="o">);</span>
 
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Order of employee before sorting is"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Order of employee before sorting is"</span><span class="o">);</span>
 
 		<span class="c1">// print array as is.</span>
 
 		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">employee</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
 					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">", Age :: "</span>
 					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getAge</span><span class="o">());</span>
 
@@ -437,14 +437,14 @@
 		 * Sorting array on the basis of employee age by passing AgeComparator
 		 */</span>
 
-		<span class="n">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">employee</span><span class="o">,</span> <span class="k">new</span> <span class="n">AgeComparator</span><span class="o">());</span>
+		<span class="nc">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">employee</span><span class="o">,</span> <span class="k">new</span> <span class="nc">AgeComparator</span><span class="o">());</span>
 
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span>
 				<span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"\n\nOrder of employee after sorting by employee age is"</span><span class="o">);</span>
 
 		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">employee</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
 					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">", Age :: "</span>
 					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getAge</span><span class="o">());</span>
 
@@ -455,14 +455,14 @@
 		 * Sorting array on the basis of employee Name by passing NameComparator
 		 */</span>
 
-		<span class="n">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">employee</span><span class="o">,</span> <span class="k">new</span> <span class="n">NameComparator</span><span class="o">());</span>
+		<span class="nc">Arrays</span><span class="o">.</span><span class="na">sort</span><span class="o">(</span><span class="n">employee</span><span class="o">,</span> <span class="k">new</span> <span class="nc">NameComparator</span><span class="o">());</span>
 
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span>
 				<span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"\n\nOrder of employee after sorting by employee name is"</span><span class="o">);</span>
 
 		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">employee</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
 
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Employee "</span> <span class="o">+</span> <span class="o">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="s">" name :: "</span>
 					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">", Age :: "</span>
 					<span class="o">+</span> <span class="n">employee</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">getAge</span><span class="o">());</span>
 

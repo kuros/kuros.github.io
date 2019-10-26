@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-09T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Manage String values in the java.","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-8-String/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Handling String","dateModified":"2019-01-09T00:00:00+00:00","datePublished":"2019-01-09T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-8-String/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/java-8-String/","headline":"Java - Handling String","datePublished":"2019-01-09T00:00:00+00:00","dateModified":"2019-01-09T00:00:00+00:00","description":"Manage String values in the java.","image":"https://source.unsplash.com/random/1200x900","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-8-String/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -211,63 +211,63 @@
 
 		<div class="post-content">
 			<p>In Java, strings are objects. Just like other objects, you can create an instance of a String with the new keyword, as follows:</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="s">"abc"</span><span class="o">);</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="s">"abc"</span><span class="o">);</span>
 </code></pre></div></div>
 <p>This line of code creates a new object of class String, assigns it to the reference variable s and initialized it. So far, String objects seem just like other objects.</p>
 
 <h2 id="constructors">Constructors</h2>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span><span class="o">()</span>		
-<span class="n">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">)</span>		
-<span class="n">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">ascii</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hibyte</span><span class="o">)</span>	
-<span class="n">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">)</span>		
-<span class="n">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">ascii</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hibyte</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">)</span>	
-<span class="n">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="n">String</span> <span class="n">charsetName</span><span class="o">)</span>		
-<span class="n">String</span><span class="o">(</span><span class="kt">char</span><span class="o">[]</span> <span class="n">value</span><span class="o">)</span>	<span class="n">String</span><span class="o">(</span><span class="n">String</span> <span class="n">original</span><span class="o">)</span>
-<span class="n">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">,</span> <span class="n">String</span> <span class="n">charsetName</span><span class="o">)</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span><span class="o">()</span>		
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">)</span>		
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">ascii</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hibyte</span><span class="o">)</span>	
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">)</span>		
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">ascii</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hibyte</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">)</span>	
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="nc">String</span> <span class="n">charsetName</span><span class="o">)</span>		
+<span class="nc">String</span><span class="o">(</span><span class="kt">char</span><span class="o">[]</span> <span class="n">value</span><span class="o">)</span>	<span class="nc">String</span><span class="o">(</span><span class="nc">String</span> <span class="n">original</span><span class="o">)</span>
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">,</span> <span class="nc">String</span> <span class="n">charsetName</span><span class="o">)</span>
 
 </code></pre></div></div>
 
 <p>We can write it in this way also:-</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"abc"</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"abc"</span><span class="o">;</span>
 </code></pre></div></div>
 <p>Now we create a new reference s2 to s</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">s</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">s</span><span class="o">;</span>
 </code></pre></div></div>
 <p>So far this is behaving same as other classes but with next step the expected result is different, Let first see what it he result.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestObjectReference</span> <span class="o">{</span>
-	<span class="kd">private</span> <span class="n">String</span> <span class="n">value</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">value</span><span class="o">;</span>
 
-	<span class="kd">public</span> <span class="nf">TestObjectReference</span><span class="o">(</span><span class="n">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="nf">TestObjectReference</span><span class="o">(</span><span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
 	<span class="o">}</span>
-	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getValue</span><span class="o">()</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getValue</span><span class="o">()</span> <span class="o">{</span>
 		<span class="k">return</span> <span class="n">value</span><span class="o">;</span>
 	<span class="o">}</span>
-	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="o">(</span><span class="n">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="o">(</span><span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StringTest</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
 		<span class="c1">//Working with any Object class</span>
-		<span class="n">TestObjectReference</span> <span class="n">reference</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TestObjectReference</span><span class="o">(</span><span class="s">"abcd"</span><span class="o">);</span>
-		<span class="n">TestObjectReference</span> <span class="n">reference2</span> <span class="o">=</span> <span class="n">reference</span><span class="o">;</span>
+		<span class="nc">TestObjectReference</span> <span class="n">reference</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TestObjectReference</span><span class="o">(</span><span class="s">"abcd"</span><span class="o">);</span>
+		<span class="nc">TestObjectReference</span> <span class="n">reference2</span> <span class="o">=</span> <span class="n">reference</span><span class="o">;</span>
 		
 		<span class="n">reference2</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="s">"Changed the value"</span><span class="o">);</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">reference</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">reference</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
 		
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********Let us try now with String Class **************"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********Let us try now with String Class **************"</span><span class="o">);</span>
 		
-		<span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"ABCD"</span><span class="o">;</span>
-		<span class="n">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">str</span><span class="o">;</span>
+		<span class="nc">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"ABCD"</span><span class="o">;</span>
+		<span class="nc">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">str</span><span class="o">;</span>
 		
 		<span class="n">str2</span> <span class="o">=</span> <span class="s">"Changed the value"</span><span class="o">;</span>
 		
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -284,7 +284,7 @@ ABCD
 
 <p>Let us consider another case:-</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"ABC"</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"ABC"</span><span class="o">;</span>
 <span class="n">str</span> <span class="o">=</span> <span class="s">"XYZ"</span><span class="o">;</span>
 </code></pre></div></div>
 
@@ -308,15 +308,15 @@ ABCD
 
 <h3 id="public-char-charatint-index">public char charAt(int index)</h3>
 <p>This method returns the character located at the String’s specified index. Remember, String indexes are zero-based—for example</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"airplane"</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is 'r'</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"airplane"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is 'r'</span>
 </code></pre></div></div>
 
 <h3 id="public-string-concatstring-s">public String concat(String s)</h3>
 <p>This method returns a String with the value of the String passed in to the method appended to the end of the String used to invoke the method.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"taxi"</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="s">" cab"</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is "taxi cab"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"taxi"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="s">" cab"</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is "taxi cab"</span>
 </code></pre></div></div>
 
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -329,33 +329,33 @@ ABCD
 <h1 id="public-boolean-equalsignorecasestring-s">public boolean equalsIgnoreCase(String s)</h1>
 <p>This method returns a boolean value (true or false) depending on whether the value of the String in the argument is the same as the value of the String used to invoke the method. This method will return true even when characters in the String objects being compared have differing cases.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"Exit"</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">"EXIT"</span><span class="o">));</span> <span class="c1">// output is "true"</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">"tixe"</span><span class="o">));</span> <span class="c1">// output is "false"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"Exit"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">"EXIT"</span><span class="o">));</span> <span class="c1">// output is "true"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">"tixe"</span><span class="o">));</span> <span class="c1">// output is "false"</span>
 </code></pre></div></div>
 
 <h1 id="public-int-length">public int length()</h1>
 <p>This method returns the length of the String used to invoke the method</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"01234567"</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// returns "8"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"01234567"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// returns "8"</span>
 </code></pre></div></div>
 
 <h1 id="public-string-replacechar-old-char-new">public String replace(char old, char new)</h1>
 <p>This method returns a String whose value is that of the String used to invoke the method, updated so that any occurrence of the char in the first argument is replaced by the char in the second argument</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"oxoxoxox"</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="sc">'x'</span><span class="o">,</span> <span class="sc">'X'</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is // "oXoXoXoX"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"oxoxoxox"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="sc">'x'</span><span class="o">,</span> <span class="sc">'X'</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is // "oXoXoXoX"</span>
 </code></pre></div></div>
 
 <h1 id="public-string-substringint-begin--public-string-substringint-begin-int-end">public String substring(int begin) / public String substring(int begin, int end)</h1>
 <p>The substring() method is used to return a part (or substring) of the String used to invoke the method.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"0123456789"</span><span class="o">;</span><span class="c1">// as if by magic, the value </span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"0123456789"</span><span class="o">;</span><span class="c1">// as if by magic, the value </span>
 				<span class="c1">//of each char</span>
 				<span class="c1">//is the same as its index!</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is "56789"</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">8</span><span class="o">));</span> <span class="c1">// output is "567"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is "56789"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">8</span><span class="o">));</span> <span class="c1">// output is "567"</span>
 </code></pre></div></div>
 
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -369,26 +369,26 @@ ABCD
 
 <h1 id="public-string-tolowercase">public String toLowerCase()</h1>
 <p>This method returns a String whose value is the String used to invoke the method, but with any uppercase characters converted to lowercase</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"A New Moon"</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is "a new moon"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"A New Moon"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is "a new moon"</span>
 </code></pre></div></div>
 
 <h3 id="public-string-tostring">public String toString()</h3>
 <p>This method returns the value of the String used to invoke the method. What? Why would you need such a seemingly “do nothing” method? All objects in Java must have a toString() method, which typically returns a String that in some meaningful way describes the object in question.</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"big surprise"</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is obviously the same.</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"big surprise"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is obviously the same.</span>
 </code></pre></div></div>
 
 <h3 id="public-string-touppercase">public String toUpperCase()</h3>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"A New Moon"</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is "A NEW MOON"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"A New Moon"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is "A NEW MOON"</span>
 </code></pre></div></div>
 
 <h3 id="public-string-trim">public String trim()</h3>
 <p>This method returns a String whose value is the String used to invoke the method, but with any leading or trailing blank spaces removed.</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">" hi "</span><span class="o">;</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span> <span class="o">+</span> <span class="s">"x"</span> <span class="o">);</span> <span class="c1">// result is " hi x"</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">trim</span><span class="o">()</span> <span class="o">+</span> <span class="s">"x"</span><span class="o">);</span> <span class="c1">// result is "hix"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">" hi "</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span> <span class="o">+</span> <span class="s">"x"</span> <span class="o">);</span> <span class="c1">// result is " hi x"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">trim</span><span class="o">()</span> <span class="o">+</span> <span class="s">"x"</span><span class="o">);</span> <span class="c1">// result is "hix"</span>
 </code></pre></div></div>
 
 

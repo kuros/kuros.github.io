@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-06T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Why Inheritance?","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-2-inheritence/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Inheritance","dateModified":"2019-01-06T00:00:00+00:00","datePublished":"2019-01-06T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-2-inheritence/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/java-2-inheritence/","headline":"Java - Inheritance","datePublished":"2019-01-06T00:00:00+00:00","dateModified":"2019-01-06T00:00:00+00:00","description":"Why Inheritance?","image":"https://source.unsplash.com/random/1200x900","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-2-inheritence/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -226,16 +226,16 @@
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
     <span class="c1">//Parent class</span>
     <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
-        <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
-        <span class="n">String</span> <span class="n">place</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">place</span><span class="o">;</span>
         
         <span class="c1">// defining a Constructor which initializes the object with</span>
         <span class="c1">// name as "Raj" and place as "Pune"</span>
         <span class="kd">public</span> <span class="nf">Person</span><span class="o">()</span> <span class="o">{</span> 
             <span class="n">name</span> <span class="o">=</span> <span class="s">"Raj"</span><span class="o">;</span>
             <span class="n">place</span> <span class="o">=</span> <span class="s">"Pune"</span><span class="o">;</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">place</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">place</span><span class="o">);</span>
         <span class="o">}</span>
     <span class="o">}</span>
     
@@ -267,20 +267,20 @@
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
     <span class="c1">//This is the Child class</span>
-    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Student</span> <span class="kd">extends</span> <span class="n">Person</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Student</span> <span class="kd">extends</span> <span class="nc">Person</span> <span class="o">{</span>
     
-        <span class="n">String</span> <span class="n">studentId</span> <span class="o">=</span> <span class="s">"1"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">studentId</span> <span class="o">=</span> <span class="s">"1"</span><span class="o">;</span>
         
         <span class="cm">/*
          * Default Constructor
          */</span>
         <span class="kd">public</span> <span class="nf">Student</span><span class="o">()</span> <span class="o">{</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">studentId</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">place</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">studentId</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">place</span><span class="o">);</span>
         <span class="o">}</span>
-        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-            <span class="n">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Student</span><span class="o">();</span> <span class="c1">// Creating an instance of Class Student</span>
+        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">();</span> <span class="c1">// Creating an instance of Class Student</span>
         <span class="o">}</span>
     <span class="o">}</span>
     

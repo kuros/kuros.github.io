@@ -20,7 +20,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-05-23T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"We all have used Collectors provided by java api, its time to write our own.","@type":"BlogPosting","url":"https://kuros.in/java/streams/2019/05/custom-collector/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Java 8 - Creating a Custom Collector for Streams","dateModified":"2019-05-23T00:00:00+00:00","datePublished":"2019-05-23T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/streams/2019/05/custom-collector/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/streams/2019/05/custom-collector/","headline":"Java 8 - Creating a Custom Collector for Streams","datePublished":"2019-05-23T00:00:00+00:00","dateModified":"2019-05-23T00:00:00+00:00","description":"We all have used Collectors provided by java api, its time to write our own.","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/streams/2019/05/custom-collector/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -223,17 +223,17 @@
 
 <p>If we look the at the Collector interface, it provided 5 methods which we need to implement.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Collector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">A</span><span class="o">,</span> <span class="n">R</span><span class="o">&gt;</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Collector</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="no">A</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="o">{</span>
 
-    <span class="n">Supplier</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="nf">supplier</span><span class="o">();</span>
+    <span class="nc">Supplier</span><span class="o">&lt;</span><span class="no">A</span><span class="o">&gt;</span> <span class="nf">supplier</span><span class="o">();</span>
 
-    <span class="n">BiConsumer</span><span class="o">&lt;</span><span class="n">A</span><span class="o">,</span> <span class="n">T</span><span class="o">&gt;</span> <span class="nf">accumulator</span><span class="o">();</span>
+    <span class="nc">BiConsumer</span><span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">T</span><span class="o">&gt;</span> <span class="nf">accumulator</span><span class="o">();</span>
 
-    <span class="n">BinaryOperator</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="nf">combiner</span><span class="o">();</span>
+    <span class="nc">BinaryOperator</span><span class="o">&lt;</span><span class="no">A</span><span class="o">&gt;</span> <span class="nf">combiner</span><span class="o">();</span>
 
-    <span class="n">Function</span><span class="o">&lt;</span><span class="n">A</span><span class="o">,</span> <span class="n">R</span><span class="o">&gt;</span> <span class="nf">finisher</span><span class="o">();</span>
+    <span class="nc">Function</span><span class="o">&lt;</span><span class="no">A</span><span class="o">,</span> <span class="no">R</span><span class="o">&gt;</span> <span class="nf">finisher</span><span class="o">();</span>
 
-    <span class="n">Set</span><span class="o">&lt;</span><span class="n">Characteristics</span><span class="o">&gt;</span> <span class="nf">characteristics</span><span class="o">();</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Characteristics</span><span class="o">&gt;</span> <span class="nf">characteristics</span><span class="o">();</span>
 <span class="o">}</span>
 </code></pre></div></div>
 
@@ -256,7 +256,7 @@
 
 <p>In our case we need a <em>Set</em> to hold unique items.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;&gt;();</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;&gt;();</span>
 </code></pre></div></div>
 
 <h2 id="accumulator">Accumulator</h2>
@@ -293,7 +293,7 @@
 
 <p>Like in our example, we are storing the items in a set but we want output to be a list, so we will leverage the finisher to adapt into a list.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;(</span><span class="n">c</span><span class="o">)</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">c</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;(</span><span class="n">c</span><span class="o">)</span>
 </code></pre></div></div>
 
 <h2 id="characteristics">Characteristics</h2>
@@ -327,17 +327,17 @@
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomCollector</span> <span class="o">{</span>
     
-    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">Collector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="nf">unique</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">Collector</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
-                <span class="o">()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">HashSet</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(),</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nc">Collector</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="nf">unique</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Collector</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
+                <span class="o">()</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;(),</span>
                 <span class="o">(</span><span class="n">result</span><span class="o">,</span> <span class="n">item</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">result</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">item</span><span class="o">),</span>
                 <span class="o">(</span><span class="n">result1</span><span class="o">,</span> <span class="n">result2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
                     <span class="n">result1</span><span class="o">.</span><span class="na">addAll</span><span class="o">(</span><span class="n">result2</span><span class="o">);</span>
                     <span class="k">return</span> <span class="n">result1</span><span class="o">;</span>
                 <span class="o">},</span>
-                <span class="n">c</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(</span><span class="n">c</span><span class="o">),</span>
-                <span class="n">Collector</span><span class="o">.</span><span class="na">Characteristics</span><span class="o">.</span><span class="na">CONCURRENT</span><span class="o">,</span>
-                <span class="n">Collector</span><span class="o">.</span><span class="na">Characteristics</span><span class="o">.</span><span class="na">UNORDERED</span><span class="o">);</span>
+                <span class="n">c</span> <span class="o">-&gt;</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;(</span><span class="n">c</span><span class="o">),</span>
+                <span class="nc">Collector</span><span class="o">.</span><span class="na">Characteristics</span><span class="o">.</span><span class="na">CONCURRENT</span><span class="o">,</span>
+                <span class="nc">Collector</span><span class="o">.</span><span class="na">Characteristics</span><span class="o">.</span><span class="na">UNORDERED</span><span class="o">);</span>
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -354,8 +354,8 @@ so the new code will become:</p>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CustomCollector</span> <span class="o">{</span>
 
-    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">Collector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">,</span> <span class="n">Set</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;,</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="nf">unique</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="n">Collector</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="nc">Collector</span><span class="o">&lt;</span><span class="no">T</span><span class="o">,</span> <span class="nc">Set</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;,</span> <span class="nc">List</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;&gt;</span> <span class="nf">unique</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nc">Collector</span><span class="o">.</span><span class="na">of</span><span class="o">(</span>
                 <span class="nl">HashSet:</span><span class="o">:</span><span class="k">new</span><span class="o">,</span>
                 <span class="nl">Set:</span><span class="o">:</span><span class="n">add</span><span class="o">,</span>
                 <span class="o">(</span><span class="n">result1</span><span class="o">,</span> <span class="n">result2</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
@@ -363,20 +363,20 @@ so the new code will become:</p>
                     <span class="k">return</span> <span class="n">result1</span><span class="o">;</span>
                 <span class="o">},</span>
                 <span class="nl">ArrayList:</span><span class="o">:</span><span class="k">new</span><span class="o">,</span>
-                <span class="n">Collector</span><span class="o">.</span><span class="na">Characteristics</span><span class="o">.</span><span class="na">CONCURRENT</span><span class="o">,</span>
-                <span class="n">Collector</span><span class="o">.</span><span class="na">Characteristics</span><span class="o">.</span><span class="na">UNORDERED</span><span class="o">);</span>
+                <span class="nc">Collector</span><span class="o">.</span><span class="na">Characteristics</span><span class="o">.</span><span class="na">CONCURRENT</span><span class="o">,</span>
+                <span class="nc">Collector</span><span class="o">.</span><span class="na">Characteristics</span><span class="o">.</span><span class="na">UNORDERED</span><span class="o">);</span>
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
 
 <p>Finally lets test it:</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-    <span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">IntStream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">)</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="nc">IntStream</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">)</span>
             <span class="o">.</span><span class="na">boxed</span><span class="o">()</span>
-            <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="n">CustomCollector</span><span class="o">.</span><span class="na">unique</span><span class="o">());</span>
+            <span class="o">.</span><span class="na">collect</span><span class="o">(</span><span class="nc">CustomCollector</span><span class="o">.</span><span class="na">unique</span><span class="o">());</span>
 
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre></div></div>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>1, 2, 3, 4, 5]

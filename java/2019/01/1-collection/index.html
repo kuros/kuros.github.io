@@ -20,7 +20,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-17T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"We are going to look into details List, Set &amp; Map functions.","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/1-collection/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Collection framework","dateModified":"2019-01-17T00:00:00+00:00","datePublished":"2019-01-17T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/1-collection/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/1-collection/","headline":"Collection framework","datePublished":"2019-01-17T00:00:00+00:00","dateModified":"2019-01-17T00:00:00+00:00","description":"We are going to look into details List, Set &amp; Map functions.","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/1-collection/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -429,9 +429,9 @@
 
 <p>Because the Collection interface is generic, you can write utility methods that operate on any kind of collection. For example, here is a generic method that tests whether an arbitrary collection contains a given element:</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="kt">boolean</span> <span class="nf">contains</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">,</span> <span class="n">Object</span> <span class="n">obj</span><span class="o">)</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="kt">boolean</span> <span class="nf">contains</span><span class="o">(</span><span class="nc">Collection</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span>
 <span class="o">{</span>
-	<span class="k">for</span> <span class="o">(</span><span class="n">E</span> <span class="n">element</span> <span class="o">:</span> <span class="n">c</span><span class="o">)</span>
+	<span class="k">for</span> <span class="o">(</span><span class="no">E</span> <span class="n">element</span> <span class="o">:</span> <span class="n">c</span><span class="o">)</span>
 		<span class="k">if</span> <span class="o">(</span><span class="n">element</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">obj</span><span class="o">))</span>
 			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
 	<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>

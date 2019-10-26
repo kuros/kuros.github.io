@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-10T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Explores the basics of threads","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-6-threading/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Multi Threading","dateModified":"2019-01-10T00:00:00+00:00","datePublished":"2019-01-10T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-6-threading/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/java-6-threading/","headline":"Java - Multi Threading","datePublished":"2019-01-10T00:00:00+00:00","dateModified":"2019-01-10T00:00:00+00:00","description":"Explores the basics of threads","image":"https://source.unsplash.com/random/1200x900","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-6-threading/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -276,9 +276,9 @@
   <li>Override the run() method.</li>
 </ul>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyThread</span> <span class="kd">extends</span> <span class="n">Thread</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyThread</span> <span class="kd">extends</span> <span class="nc">Thread</span> <span class="o">{</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Important job running in MyThread"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Important job running in MyThread"</span><span class="o">);</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -288,9 +288,9 @@
 
 <p>Implementing the Runnable interface gives you a way to extend from any class you like, but still define behavior that will be run by a separate thread.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyRunnable</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyRunnable</span> <span class="kd">implements</span> <span class="nc">Runnable</span> <span class="o">{</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Important job running in MyRunnable"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Important job running in MyRunnable"</span><span class="o">);</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -301,17 +301,17 @@
 
 <p>If you extended the Thread class, it is very simple to instantiate:-</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MyThread</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyThread</span><span class="o">();</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MyThread</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyThread</span><span class="o">();</span>
 </code></pre></div></div>
 
 <p>If you are using the Runnable interface then you have to follow some simple steps:-</p>
 <ol>
   <li>You instantiate your Runnable class
-    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MyRunnable</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyRunnable</span><span class="o">();</span>    
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MyRunnable</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyRunnable</span><span class="o">();</span>    
 </code></pre></div>    </div>
   </li>
   <li>now you get a java.lang.Thread class to execute the thread and pass your runnable class to this thread class.
-    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Thread</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span> <span class="c1">// Pass your Runnable to the Thread</span>
+    <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Thread</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span> <span class="c1">// Pass your Runnable to the Thread</span>
 </code></pre></div>    </div>
   </li>
 </ol>
@@ -319,12 +319,12 @@
 <p>Now our thread class is ready to be used. You can pass a single Runnable instance to multiple Thread objects, so that the same Runnable becomes the target of multiple threads, as follows:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestThreads</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="n">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">MyRunnable</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MyRunnable</span><span class="o">();</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="nc">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">MyRunnable</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyRunnable</span><span class="o">();</span>
 		
-		<span class="n">Thread</span> <span class="n">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
-		<span class="n">Thread</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
-		<span class="n">Thread</span> <span class="n">bat</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
+		<span class="nc">Thread</span> <span class="n">foo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
+		<span class="nc">Thread</span> <span class="n">bar</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
+		<span class="nc">Thread</span> <span class="n">bat</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -352,20 +352,20 @@
 
 <p>Now let us see a simple program which uses the threads to execute. In this case we have create a FooRunnable class which implements Runnable interface.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">FooRunnable</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">FooRunnable</span> <span class="kd">implements</span> <span class="nc">Runnable</span> <span class="o">{</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
 		<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span><span class="mi">1</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Runnable running"</span><span class="o">);</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Runnable running"</span><span class="o">);</span>
 		<span class="o">}</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestThreads</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="n">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">FooRunnable</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FooRunnable</span><span class="o">();</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="nc">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">FooRunnable</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FooRunnable</span><span class="o">();</span>
 	
-		<span class="n">Thread</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
+		<span class="nc">Thread</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
 		<span class="n">t</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
 	<span class="o">}</span>
 <span class="o">}</span>
@@ -385,11 +385,11 @@
 <h1 id="starting-and-running-multiple-threads">Starting and Running Multiple Threads</h1>
 <p>Enough playing around here; let’s actually get multiple threads going (more than two, that is). We already had two threads, because the main() method starts in a thread of its own, and then t.start() started a second thread. Now we’ll do more. The following code creates a single Runnable instance and three Thread instances. All three Thread instances get the same Runnable instance, and each thread is given a unique name. Finally, all three threads are started by invoking start() on the Thread instances.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">NameRunnable</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">NameRunnable</span> <span class="kd">implements</span> <span class="nc">Runnable</span> <span class="o">{</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
 		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Run by "</span>
-				<span class="o">+</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">()</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Run by "</span>
+				<span class="o">+</span> <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">()</span>
 				<span class="o">+</span> <span class="s">", x is "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
 		<span class="o">}</span>
 	<span class="o">}</span>
@@ -397,13 +397,13 @@
 
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ManyNames</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
 		<span class="c1">// Make one Runnable</span>
-		<span class="n">NameRunnable</span> <span class="n">nr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NameRunnable</span><span class="o">();</span>
+		<span class="nc">NameRunnable</span> <span class="n">nr</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NameRunnable</span><span class="o">();</span>
 		
-		<span class="n">Thread</span> <span class="n">one</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">nr</span><span class="o">);</span>
-		<span class="n">Thread</span> <span class="n">two</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">nr</span><span class="o">);</span>
-		<span class="n">Thread</span> <span class="n">three</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">nr</span><span class="o">);</span>
+		<span class="nc">Thread</span> <span class="n">one</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">nr</span><span class="o">);</span>
+		<span class="nc">Thread</span> <span class="n">two</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">nr</span><span class="o">);</span>
+		<span class="nc">Thread</span> <span class="n">three</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">nr</span><span class="o">);</span>
 		
 		<span class="n">one</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"Fred"</span><span class="o">);</span>
 		<span class="n">two</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"Lucy"</span><span class="o">);</span>
@@ -463,9 +463,9 @@ Run by Fred, x is 3
 <p>You can also set a thread’s priority directly by calling the setPriority() method on a Thread instance as follows:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestThreads</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="n">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">FooRunnable</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FooRunnable</span><span class="o">();</span>
-		<span class="n">Thread</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="nc">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">FooRunnable</span> <span class="n">r</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FooRunnable</span><span class="o">();</span>
+		<span class="nc">Thread</span> <span class="n">t</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">);</span>
 		<span class="n">t</span><span class="o">.</span><span class="na">setPriority</span><span class="o">(</span><span class="mi">8</span><span class="o">);</span>
 		<span class="n">t</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
 	<span class="o">}</span>
@@ -488,20 +488,20 @@ Run by Fred, x is 3
 <p>You do this by invoking the static Thread.sleep() method, giving it a time in milliseconds as follows:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span> <span class="o">{</span>
-	<span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">1000</span><span class="o">);</span> <span class="c1">// Sleep for 5 minutes</span>
+	<span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">5</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">1000</span><span class="o">);</span> <span class="c1">// Sleep for 5 minutes</span>
 <span class="o">}</span> 
 </code></pre></div></div>
 
 <p>Let’s modify our Fred, Lucy, Ricky code by using sleep() to try to force the threads to alternate rather than letting one thread dominate for any period of time.</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">NameRunnable</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">NameRunnable</span> <span class="kd">implements</span> <span class="nc">Runnable</span> <span class="o">{</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
 		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Run by "</span>
-					<span class="o">+</span> <span class="n">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">()</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Run by "</span>
+					<span class="o">+</span> <span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">()</span>
 					<span class="o">+</span> <span class="s">", x is "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
 			<span class="k">try</span> <span class="o">{</span>
-				<span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
-			<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+				<span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">1000</span><span class="o">);</span>
+			<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
 		<span class="o">}</span>
 	<span class="o">}</span>
 <span class="o">}</span>
@@ -546,9 +546,9 @@ Run by Lucy, x is 3
 
 <p>A simple implementation is mentioned below with some assumption. We will be focusing on mainly the design for now.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ATM</span> <span class="kd">extends</span> <span class="n">Bank</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ATM</span> <span class="kd">extends</span> <span class="nc">Bank</span> <span class="o">{</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">withdraw</span><span class="o">(</span><span class="kt">float</span> <span class="n">amount</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">Account</span> <span class="n">a</span> <span class="o">=</span> <span class="n">getAccount</span><span class="o">();</span>
+		<span class="nc">Account</span> <span class="n">a</span> <span class="o">=</span> <span class="n">getAccount</span><span class="o">();</span>
 		<span class="k">if</span> <span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">deduct</span><span class="o">(</span><span class="n">amount</span><span class="o">))</span>
 			<span class="n">dispense</span><span class="o">(</span><span class="n">amount</span><span class="o">);</span>  <span class="c1">//Assume that this method has already been declared in Bank Class</span>
 		<span class="n">printReceipt</span><span class="o">();</span> <span class="c1">//Assume that this method has already been declared in the Bank Class</span>
@@ -619,7 +619,7 @@ Run by Lucy, x is 3
 
 <p>So rather than synchronizing the whole block we will synchronize only the block of code which we want to make a thread safe.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">synchronized</span> <span class="o">(</span><span class="n">Account</span><span class="o">)</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">synchronized</span> <span class="o">(</span><span class="nc">Account</span><span class="o">)</span> <span class="o">{</span>
 	<span class="k">if</span> <span class="o">(</span><span class="n">t</span> <span class="o">&lt;=</span> <span class="n">total</span><span class="o">)</span> <span class="o">{</span>
 		<span class="n">total</span> <span class="o">-=</span> <span class="n">t</span><span class="o">;</span>
 		<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
@@ -644,41 +644,41 @@ Run by Lucy, x is 3
 <p>We say that a set of processes or threads is deadlocked when each thread is waiting for an event that only another process in the set can cause. Another way to illustrate a deadlock is to build a directed graph whose vertices are threads or processes and whose edges represent the “is-waiting-for” relation. If this graph contains a cycle, the system is deadlocked. Unless the system is designed to recover from deadlocks, a deadlock causes the program or system to hang.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-	    <span class="kd">final</span> <span class="n">Object</span> <span class="n">resource1</span> <span class="o">=</span> <span class="s">"resource1"</span><span class="o">;</span>
-	    <span class="kd">final</span> <span class="n">Object</span> <span class="n">resource2</span> <span class="o">=</span> <span class="s">"resource2"</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	    <span class="kd">final</span> <span class="nc">Object</span> <span class="n">resource1</span> <span class="o">=</span> <span class="s">"resource1"</span><span class="o">;</span>
+	    <span class="kd">final</span> <span class="nc">Object</span> <span class="n">resource2</span> <span class="o">=</span> <span class="s">"resource2"</span><span class="o">;</span>
 	    <span class="c1">// t1 tries to lock resource1 then resource2</span>
-	    <span class="n">Thread</span> <span class="n">t1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="nc">Thread</span> <span class="n">t1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">()</span> <span class="o">{</span>
 	      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
 	        <span class="c1">// Lock resource 1</span>
 	        <span class="kd">synchronized</span> <span class="o">(</span><span class="n">resource1</span><span class="o">)</span> <span class="o">{</span>
-	          <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Thread 1: locked resource 1"</span><span class="o">);</span>
+	          <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Thread 1: locked resource 1"</span><span class="o">);</span>
 
 	          <span class="k">try</span> <span class="o">{</span>
-	            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
-	          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+	            <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
+	          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
 	          <span class="o">}</span>
 
 	          <span class="kd">synchronized</span> <span class="o">(</span><span class="n">resource2</span><span class="o">)</span> <span class="o">{</span>
-	            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Thread 1: locked resource 2"</span><span class="o">);</span>
+	            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Thread 1: locked resource 2"</span><span class="o">);</span>
 	          <span class="o">}</span>
 	        <span class="o">}</span>
 	      <span class="o">}</span>
 	    <span class="o">};</span>
 
 	    <span class="c1">// t2 tries to lock resource2 then resource1</span>
-	    <span class="n">Thread</span> <span class="n">t2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">()</span> <span class="o">{</span>
+	    <span class="nc">Thread</span> <span class="n">t2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">()</span> <span class="o">{</span>
 	      <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
 	        <span class="kd">synchronized</span> <span class="o">(</span><span class="n">resource2</span><span class="o">)</span> <span class="o">{</span>
-	          <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Thread 2: locked resource 2"</span><span class="o">);</span>
+	          <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Thread 2: locked resource 2"</span><span class="o">);</span>
 
 	          <span class="k">try</span> <span class="o">{</span>
-	            <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
-	          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+	            <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">50</span><span class="o">);</span>
+	          <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
 	          <span class="o">}</span>
 
 	          <span class="kd">synchronized</span> <span class="o">(</span><span class="n">resource1</span><span class="o">)</span> <span class="o">{</span>
-	            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Thread 2: locked resource 1"</span><span class="o">);</span>
+	            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Thread 2: locked resource 1"</span><span class="o">);</span>
 	          <span class="o">}</span>
 	        <span class="o">}</span>
 	      <span class="o">}</span>

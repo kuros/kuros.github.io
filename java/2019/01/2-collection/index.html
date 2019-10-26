@@ -20,7 +20,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-17T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Mechanism to traverse","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/2-collection/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"Iterators","dateModified":"2019-01-17T00:00:00+00:00","datePublished":"2019-01-17T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/2-collection/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/2-collection/","headline":"Iterators","datePublished":"2019-01-17T00:00:00+00:00","dateModified":"2019-01-17T00:00:00+00:00","description":"Mechanism to traverse","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/2-collection/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -246,8 +246,8 @@
 <span class="kn">import</span> <span class="nn">java.util.Iterator</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
-  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-    <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">al</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;();</span>  <span class="c1">//Line 1: Creating an ArrayList</span>
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">al</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;();</span>  <span class="c1">//Line 1: Creating an ArrayList</span>
 
     <span class="n">al</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>	<span class="c1">//Line 2: Adding values to arrays</span>
     <span class="n">al</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
@@ -256,21 +256,21 @@
     <span class="n">al</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">5</span><span class="o">);</span> 
 
      
-    <span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span> <span class="n">iterate</span> <span class="o">=</span> <span class="n">al</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">//Line 3: Getting an iterator object. </span>
+    <span class="nc">Iterator</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">iterate</span> <span class="o">=</span> <span class="n">al</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="c1">//Line 3: Getting an iterator object. </span>
     
     <span class="k">while</span><span class="o">(</span><span class="n">iterate</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span> <span class="c1">//Line 4: using the hasNext method to check if there is more element.</span>
-      <span class="n">Integer</span> <span class="n">integer</span> <span class="o">=</span> <span class="n">iterate</span><span class="o">.</span><span class="na">next</span><span class="o">();</span> <span class="c1">//Line 5: using next() method to get the value.</span>
+      <span class="nc">Integer</span> <span class="n">integer</span> <span class="o">=</span> <span class="n">iterate</span><span class="o">.</span><span class="na">next</span><span class="o">();</span> <span class="c1">//Line 5: using next() method to get the value.</span>
      
       <span class="k">if</span><span class="o">(</span><span class="n">integer</span> <span class="o">==</span> <span class="mi">3</span><span class="o">){</span>
     	  <span class="n">iterate</span><span class="o">.</span><span class="na">remove</span><span class="o">();</span> <span class="c1">//Line 6: calling the remove() method to delete the value from the list.</span>
-    	  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">integer</span> <span class="o">+</span> <span class="s">" --&gt; Deleting this element"</span><span class="o">);</span>
+    	  <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">integer</span> <span class="o">+</span> <span class="s">" --&gt; Deleting this element"</span><span class="o">);</span>
       <span class="o">}</span><span class="k">else</span><span class="o">{</span>
-    	  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">integer</span><span class="o">);</span>
+    	  <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">integer</span><span class="o">);</span>
       <span class="o">}</span>
     	  
     <span class="o">}</span>
     
-    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">al</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">al</span><span class="o">);</span>
   <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -308,12 +308,12 @@
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>
 
 		<span class="kt">double</span><span class="o">[]</span> <span class="n">ar</span> <span class="o">=</span> <span class="o">{</span> <span class="mf">1.2</span><span class="o">,</span> <span class="mf">3.0</span><span class="o">,</span> <span class="mf">0.8</span> <span class="o">};</span>
 
 		<span class="k">for</span> <span class="o">(</span><span class="kt">double</span> <span class="n">d</span> <span class="o">:</span> <span class="n">ar</span><span class="o">)</span> <span class="o">{</span> <span class="c1">// d gets successively each value in ar.</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">d</span><span class="o">);</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">d</span><span class="o">);</span>
 		<span class="o">}</span>
 	<span class="o">}</span>
 <span class="o">}</span>

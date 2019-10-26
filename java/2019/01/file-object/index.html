@@ -20,7 +20,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-14T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Objects of type File are used to represent the actual files (but not the data in the files) or directories that exist on a computer’s physical disk. First, let’s create a new file and write a few lines of data to it:","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/file-object/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"headline":"File Object","dateModified":"2019-01-14T00:00:00+00:00","datePublished":"2019-01-14T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/file-object/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/file-object/","headline":"File Object","datePublished":"2019-01-14T00:00:00+00:00","dateModified":"2019-01-14T00:00:00+00:00","description":"Objects of type File are used to represent the actual files (but not the data in the files) or directories that exist on a computer’s physical disk. First, let’s create a new file and write a few lines of data to it:","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/file-object/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -213,8 +213,8 @@
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span> 
 <span class="kd">class</span> <span class="nc">Writer1</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"fileWrite1.txt"</span><span class="o">);</span> <span class="c1">// There's no</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"fileWrite1.txt"</span><span class="o">);</span> <span class="c1">// There's no</span>
 												<span class="c1">//file yet!</span>
 	<span class="o">}</span>
 <span class="o">}</span>
@@ -228,16 +228,16 @@
 <span class="kn">import</span> <span class="nn">java.io.*</span><span class="o">;</span>
 
 <span class="kd">class</span> <span class="nc">Writer1</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span> <span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
 		<span class="k">try</span> <span class="o">{</span> <span class="c1">// warning: exceptions possible</span>
 			<span class="kt">boolean</span> <span class="n">newFile</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
-			<span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span> <span class="c1">// it's only an object</span>
+			<span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span> <span class="c1">// it's only an object</span>
 			<span class="o">(</span><span class="s">"fileWrite1.txt"</span><span class="o">);</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">());</span> <span class="c1">// look for a real file</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">());</span> <span class="c1">// look for a real file</span>
 			<span class="n">newFile</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">createNewFile</span><span class="o">();</span> <span class="c1">// maybe create a file!</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">newFile</span><span class="o">);</span> <span class="c1">// already there?</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">());</span> <span class="c1">// look again</span>
-		<span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">newFile</span><span class="o">);</span> <span class="c1">// already there?</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">());</span> <span class="c1">// look again</span>
+		<span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -315,32 +315,32 @@ true
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">CreateFile</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-		<span class="n">File</span> <span class="n">dir</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"MyDir"</span><span class="o">);</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="nc">File</span> <span class="n">dir</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"MyDir"</span><span class="o">);</span>
 
 		<span class="k">if</span> <span class="o">(!</span><span class="n">dir</span><span class="o">.</span><span class="na">exists</span><span class="o">()){</span>
 			<span class="n">dir</span><span class="o">.</span><span class="na">mkdir</span><span class="o">();</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Directory created"</span><span class="o">);</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Directory created"</span><span class="o">);</span>
 		<span class="o">}</span>
 		<span class="k">else</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"directory already exists"</span><span class="o">);</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"directory already exists"</span><span class="o">);</span>
 
 		<span class="k">if</span> <span class="o">(</span><span class="n">dir</span><span class="o">.</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
 			
-			<span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="n">dir</span><span class="o">,</span> <span class="s">"Myfile"</span><span class="o">);</span>
+			<span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="n">dir</span><span class="o">,</span> <span class="s">"Myfile"</span><span class="o">);</span>
 
 			<span class="k">if</span> <span class="o">(!</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">())</span> <span class="o">{</span>
 				<span class="kt">boolean</span> <span class="n">result</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">createNewFile</span><span class="o">();</span>
 
 				<span class="k">if</span> <span class="o">(</span><span class="n">result</span><span class="o">)</span>
-					<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Created"</span><span class="o">);</span>
+					<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Created"</span><span class="o">);</span>
 				<span class="k">else</span>
-					<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File not created"</span><span class="o">);</span>
+					<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File not created"</span><span class="o">);</span>
 			<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File already exists"</span><span class="o">);</span>
+				<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File already exists"</span><span class="o">);</span>
 			<span class="o">}</span>
 		<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Cannot create directory"</span><span class="o">);</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Cannot create directory"</span><span class="o">);</span>
 		<span class="o">}</span>
 	<span class="o">}</span>
 <span class="o">}</span>
@@ -357,17 +357,17 @@ File Created
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">RenameFile</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-		<span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"MyDir"</span><span class="o">,</span> <span class="s">"Myfile"</span><span class="o">);</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"MyDir"</span><span class="o">,</span> <span class="s">"Myfile"</span><span class="o">);</span>
 		
 		<span class="k">if</span> <span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">()){</span>
-			<span class="kt">boolean</span> <span class="n">status</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">renameTo</span><span class="o">(</span><span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"MyDir"</span><span class="o">,</span> <span class="s">"RenamedFile.txt"</span><span class="o">));</span>
+			<span class="kt">boolean</span> <span class="n">status</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">renameTo</span><span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"MyDir"</span><span class="o">,</span> <span class="s">"RenamedFile.txt"</span><span class="o">));</span>
 			<span class="k">if</span><span class="o">(</span><span class="n">status</span><span class="o">)</span>
-				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Renamed"</span><span class="o">);</span>
+				<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Renamed"</span><span class="o">);</span>
 			<span class="k">else</span>
-				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Not Renamed"</span><span class="o">);</span>
+				<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Not Renamed"</span><span class="o">);</span>
 		<span class="o">}</span><span class="k">else</span><span class="o">{</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"File '%s' not found"</span><span class="o">,</span> <span class="n">file</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"File '%s' not found"</span><span class="o">,</span> <span class="n">file</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
 		<span class="o">}</span>
 	<span class="o">}</span>
 <span class="o">}</span>
@@ -389,17 +389,17 @@ File Created
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Entry</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
-		<span class="n">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="n">File</span><span class="o">(</span><span class="s">"MyDir"</span><span class="o">,</span> <span class="s">"Myfile"</span><span class="o">);</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="nc">File</span> <span class="n">file</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"MyDir"</span><span class="o">,</span> <span class="s">"Myfile"</span><span class="o">);</span>
 		
 		<span class="k">if</span> <span class="o">(</span><span class="n">file</span><span class="o">.</span><span class="na">exists</span><span class="o">()){</span>
 			<span class="kt">boolean</span> <span class="n">status</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="na">delete</span><span class="o">();</span>
 			<span class="k">if</span><span class="o">(</span><span class="n">status</span><span class="o">)</span>
-				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Deleted"</span><span class="o">);</span>
+				<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Deleted"</span><span class="o">);</span>
 			<span class="k">else</span>
-				<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Not Deleted"</span><span class="o">);</span>
+				<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"File Not Deleted"</span><span class="o">);</span>
 		<span class="o">}</span><span class="k">else</span><span class="o">{</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"File '%s' not found"</span><span class="o">,</span> <span class="n">file</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">"File '%s' not found"</span><span class="o">,</span> <span class="n">file</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
 		<span class="o">}</span>
 	<span class="o">}</span>
 <span class="o">}</span>
@@ -471,15 +471,15 @@ File Created
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span> 
 	<span class="cm">/** * Example method for using the RandomAccessFile class */</span> 
-	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testRandomAccessFile</span><span class="o">(</span><span class="n">String</span> <span class="n">filename</span><span class="o">)</span> <span class="o">{</span> 
-		<span class="n">RandomAccessFile</span> <span class="n">randomAccessFile</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testRandomAccessFile</span><span class="o">(</span><span class="nc">String</span> <span class="n">filename</span><span class="o">)</span> <span class="o">{</span> 
+		<span class="nc">RandomAccessFile</span> <span class="n">randomAccessFile</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
 		<span class="k">try</span> <span class="o">{</span>
 			<span class="c1">//Declare variables that we're going to write </span>
-			<span class="n">String</span> <span class="n">line1</span> <span class="o">=</span> <span class="s">"First line\n"</span><span class="o">;</span> 
-			<span class="n">String</span> <span class="n">line2</span> <span class="o">=</span> <span class="s">"Second line\n"</span><span class="o">;</span> 
+			<span class="nc">String</span> <span class="n">line1</span> <span class="o">=</span> <span class="s">"First line\n"</span><span class="o">;</span> 
+			<span class="nc">String</span> <span class="n">line2</span> <span class="o">=</span> <span class="s">"Second line\n"</span><span class="o">;</span> 
 			
 			<span class="c1">//Create RandomAccessFile instance with read / write permissions </span>
-			<span class="n">randomAccessFile</span> <span class="o">=</span> <span class="k">new</span> <span class="n">RandomAccessFile</span><span class="o">(</span><span class="n">filename</span><span class="o">,</span> <span class="s">"rw"</span><span class="o">);</span> 
+			<span class="n">randomAccessFile</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RandomAccessFile</span><span class="o">(</span><span class="n">filename</span><span class="o">,</span> <span class="s">"rw"</span><span class="o">);</span> 
 			
 			<span class="c1">//Write two lines to the file </span>
 			<span class="n">randomAccessFile</span><span class="o">.</span><span class="na">writeBytes</span><span class="o">(</span><span class="n">line1</span><span class="o">);</span> 
@@ -490,7 +490,7 @@ File Created
 			<span class="c1">//Declare a buffer with the same length as the second line </span>
 			
 			<span class="kt">long</span> <span class="n">position</span> <span class="o">=</span> <span class="n">randomAccessFile</span><span class="o">.</span><span class="na">getFilePointer</span><span class="o">();</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Now the pointer is at location "</span> <span class="o">+</span> <span class="n">position</span><span class="o">);</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Now the pointer is at location "</span> <span class="o">+</span> <span class="n">position</span><span class="o">);</span>
 			
 			<span class="kt">byte</span><span class="o">[]</span> <span class="n">buffer</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="n">line2</span><span class="o">.</span><span class="na">length</span><span class="o">()];</span>
 			
@@ -498,24 +498,24 @@ File Created
 			<span class="n">randomAccessFile</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffer</span><span class="o">);</span> 
 			
 			<span class="c1">//Print out the buffer contents </span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">buffer</span><span class="o">));</span> 
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="n">buffer</span><span class="o">));</span> 
 			
 			<span class="n">position</span> <span class="o">=</span> <span class="n">randomAccessFile</span><span class="o">.</span><span class="na">getFilePointer</span><span class="o">();</span>
-			<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Now the pointer is at location "</span> <span class="o">+</span> <span class="n">position</span><span class="o">);</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Now the pointer is at location "</span> <span class="o">+</span> <span class="n">position</span><span class="o">);</span>
 				
-			<span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="n">FileNotFoundException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+			<span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="nc">FileNotFoundException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
 				<span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span> 
-			<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+			<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
 				<span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span> 
 			<span class="o">}</span> <span class="k">finally</span> <span class="o">{</span> 
 				<span class="k">try</span> <span class="o">{</span> 
 					<span class="k">if</span> <span class="o">(</span><span class="n">randomAccessFile</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="n">randomAccessFile</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-				<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span> <span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span> 
+				<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span> <span class="n">ex</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span> 
 				<span class="o">}</span>
 			<span class="o">}</span>
 	<span class="o">}</span>	
 							<span class="cm">/** * @param args the command line arguments */</span> 
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
 		<span class="k">new</span> <span class="nf">Main</span><span class="o">().</span><span class="na">testRandomAccessFile</span><span class="o">(</span><span class="s">"myFile.txt"</span><span class="o">);</span>  
 	<span class="o">}</span>
 <span class="o">}</span>
@@ -523,10 +523,10 @@ File Created
 
 <p>In this program we first use writeBytes() method to write the data in the file then use seek method to traverse the file, used the getFilePointer()  method to get the current location. Finally reading a chunk of data using the read() method</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Now</span> <span class="n">the</span> <span class="n">pointer</span> <span class="n">is</span> <span class="n">at</span> <span class="n">location</span> <span class="mi">11</span>
-<span class="n">Second</span> <span class="n">line</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Now</span> <span class="n">the</span> <span class="n">pointer</span> <span class="n">is</span> <span class="n">at</span> <span class="n">location</span> <span class="mi">11</span>
+<span class="nc">Second</span> <span class="n">line</span>
 
-<span class="n">Now</span> <span class="n">the</span> <span class="n">pointer</span> <span class="n">is</span> <span class="n">at</span> <span class="n">location</span> <span class="mi">23</span>
+<span class="nc">Now</span> <span class="n">the</span> <span class="n">pointer</span> <span class="n">is</span> <span class="n">at</span> <span class="n">location</span> <span class="mi">23</span>
 </code></pre></div></div>
 
 

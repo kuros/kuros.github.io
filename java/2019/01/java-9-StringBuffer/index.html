@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-09T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Manage Strings using StringBuffer.","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-9-StringBuffer/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - StringBuffer","dateModified":"2019-01-09T00:00:00+00:00","datePublished":"2019-01-09T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-9-StringBuffer/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/java-9-StringBuffer/","headline":"Java - StringBuffer","datePublished":"2019-01-09T00:00:00+00:00","dateModified":"2019-01-09T00:00:00+00:00","description":"Manage Strings using StringBuffer.","image":"https://source.unsplash.com/random/1200x900","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-9-StringBuffer/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -213,19 +213,19 @@
 			<p>The java.lang.StringBuffer class should be used when you have to make a lot of modifications to strings of characters. String objects are immutable, so if you choose to do a lot of manipulations with String objects, you will end up with a lot of abandoned String objects in the String pool. On the other hand, objects of type StringBuffer can be modified over and over again without leaving behind a great effluence of discarded String objects, i.e. StringBuffer is mutable as compared to String Class which is immutable. There is one more important difference,  that is the StringBuffer is synchronised.</p>
 
 <h2 id="constructors">Constructors</h2>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StringBuffer</span><span class="o">()</span>
-<span class="n">StringBuffer</span><span class="o">(</span><span class="kt">int</span> <span class="n">length</span><span class="o">)</span>
-<span class="n">StringBuffer</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">StringBuffer</span><span class="o">()</span>
+<span class="nc">StringBuffer</span><span class="o">(</span><span class="kt">int</span> <span class="n">length</span><span class="o">)</span>
+<span class="nc">StringBuffer</span><span class="o">(</span><span class="nc">String</span> <span class="n">str</span><span class="o">)</span>
 </code></pre></div></div>
 <p>Every string buffer has a capacity. As long as the length of the character sequence contained in the string buffer does not exceed the capacity, it is not necessary to allocate a new internal buffer array. If the internal buffer overflows, it is automatically made larger. The default Buffer size is 16 characters.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"abc"</span><span class="o">;</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"abc"</span><span class="o">;</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="s">"def"</span><span class="o">);</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"x = "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span> <span class="c1">// output is "x = abcdef"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"x = "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span> <span class="c1">// output is "x = abcdef"</span>
 
-<span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="s">"abc"</span><span class="o">);</span>
+<span class="nc">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="s">"abc"</span><span class="o">);</span>
 <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"def"</span><span class="o">);</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"sb = "</span> <span class="o">+</span> <span class="n">sb</span><span class="o">);</span> <span class="c1">// output is "sb = abcdef"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"sb = "</span> <span class="o">+</span> <span class="n">sb</span><span class="o">);</span> <span class="c1">// output is "sb = abcdef"</span>
 </code></pre></div></div>
 
 <h1 id="important-methods-in-the-stringbuffer-class">Important Methods in the StringBuffer Class</h1>
@@ -233,18 +233,18 @@
 
 <p>This method will take many different arguments, including boolean, char, double, float, int, long, and others, but the most likely use on the exam will be a String argument.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="s">"set "</span><span class="o">);</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="s">"set "</span><span class="o">);</span>
 <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"point"</span><span class="o">);</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span> <span class="c1">// output is "set point"</span>
-<span class="n">StringBuffer</span> <span class="n">sb2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="s">"pi = "</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span> <span class="c1">// output is "set point"</span>
+<span class="nc">StringBuffer</span> <span class="n">sb2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="s">"pi = "</span><span class="o">);</span>
 <span class="n">sb2</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="mf">3.14159f</span><span class="o">);</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb2</span><span class="o">);</span> <span class="c1">// output is "pi = 3.14159"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb2</span><span class="o">);</span> <span class="c1">// output is "pi = 3.14159"</span>
 </code></pre></div></div>
 
 <h2 id="public-stringbuffer-deleteint-start-int-end">public StringBuffer delete(int start, int end)</h2>
 <p>This method returns a StringBuffer object and updates the value of the StringBuffer object that invoked the method call. In both cases, a substring is removed from the original object. The starting index of the substring to be removed is defined by the first argument (which is zero-based), and the ending index of the substring to be removed is defined by the second argument.</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="s">"0123456789"</span><span class="o">);</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">6</span><span class="o">));</span> <span class="c1">// output is "01236789"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="s">"0123456789"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">6</span><span class="o">));</span> <span class="c1">// output is "01236789"</span>
 </code></pre></div></div>
 
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -257,30 +257,30 @@
 <h2 id="public-stringbuilder-insertint-offset-string-s">public StringBuilder insert(int offset, String s)</h2>
 <p>This method returns a StringBuffer object and updates the value of the StringBuffer object that invoked the method call. In both cases, the String passed in to the second argument is inserted into the original StringBuffer starting at the offset location represented by the first argument (the offset is zero-based). Again, other types of data can be passed in through the second argument (boolean, char, double, float, int, long, and so on)</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">(</span><span class="s">"01234567"</span><span class="o">);</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuilder</span><span class="o">(</span><span class="s">"01234567"</span><span class="o">);</span>
 <span class="n">sb</span><span class="o">.</span><span class="na">insert</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span> <span class="s">"---"</span><span class="o">);</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">sb</span> <span class="o">);</span> <span class="c1">// output is "0123---4567"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">sb</span> <span class="o">);</span> <span class="c1">// output is "0123---4567"</span>
 </code></pre></div></div>
 
 <h3 id="public-synchronized-stringbuffer-reverse">public synchronized StringBuffer reverse()</h3>
 <p>This method returns a StringBuffer object and updates the value of the StringBuffer object that invoked the method call. In both cases, the characters in the StringBuffer are reversed, the first character becoming the last, the second becoming the second to the last, and so on.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StringBuffer</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="s">"A man a plan a canal Panama"</span><span class="o">);</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">StringBuffer</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="s">"A man a plan a canal Panama"</span><span class="o">);</span>
 <span class="n">sb</span><span class="o">.</span><span class="na">reverse</span><span class="o">();</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span> <span class="c1">// output: "amanaP lanac a nalp a nam A"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span> <span class="c1">// output: "amanaP lanac a nalp a nam A"</span>
 </code></pre></div></div>
 
 <h3 id="public-string-tostring">public String toString()</h3>
 <p>This method returns the value of the StringBuffer object that invoked the method call as a String.</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">(</span><span class="s">"test string"</span><span class="o">);</span>
-<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is "test string"</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="s">"test string"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is "test string"</span>
 </code></pre></div></div>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuffer</span><span class="o">();</span>
-		<span class="n">StringBuffer</span> <span class="n">sb2</span> <span class="o">=</span> <span class="n">sb</span><span class="o">;</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">StringBuffer</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">();</span>
+		<span class="nc">StringBuffer</span> <span class="n">sb2</span> <span class="o">=</span> <span class="n">sb</span><span class="o">;</span>
 		<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
 		<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="sc">'A'</span><span class="o">);</span>
 
@@ -295,7 +295,7 @@
 
 		<span class="n">sb2</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"That's all!"</span><span class="o">);</span>
 
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">sb</span><span class="o">);</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div></div>

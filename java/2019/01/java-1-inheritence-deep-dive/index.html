@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-09T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"A deep dive in inheritance and method overriding","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-1-inheritence-deep-dive/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Inheritance deep dive","dateModified":"2019-01-09T00:00:00+00:00","datePublished":"2019-01-09T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-1-inheritence-deep-dive/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/java-1-inheritence-deep-dive/","headline":"Java - Inheritance deep dive","datePublished":"2019-01-09T00:00:00+00:00","dateModified":"2019-01-09T00:00:00+00:00","description":"A deep dive in inheritance and method overriding","image":"https://source.unsplash.com/random/1200x900","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-1-inheritence-deep-dive/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -222,9 +222,9 @@ We see this kind of reaction every time we someone is first told about, Let us u
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Animal</span> <span class="o">{</span>
 	
 	<span class="kd">public</span> <span class="nf">Animal</span><span class="o">(){</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This a generic Animal class"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This a generic Animal class"</span><span class="o">);</span>
 	<span class="o">}</span>
-	<span class="n">String</span> <span class="n">eat</span> <span class="o">=</span> <span class="s">"Animal eats"</span><span class="o">;</span>
+	<span class="nc">String</span> <span class="n">eat</span> <span class="o">=</span> <span class="s">"Animal eats"</span><span class="o">;</span>
 	<span class="c1">// Some featues goes here regarding Animal</span>
 	<span class="c1">// ....</span>
 	<span class="c1">// ....</span>
@@ -234,13 +234,13 @@ We see this kind of reaction every time we someone is first told about, Let us u
 
 <p>Now our Zoo manager have different problem he wishes to store specific information about the a type of animal say but this information will not be applicable for other animals, a Monkey.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Monkey</span> <span class="kd">extends</span> <span class="n">Animal</span><span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Monkey</span> <span class="kd">extends</span> <span class="nc">Animal</span><span class="o">{</span>
 	
 	<span class="kd">public</span> <span class="nf">Monkey</span><span class="o">(){</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This a Monkey class"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This a Monkey class"</span><span class="o">);</span>
 	<span class="o">}</span>
 
-	<span class="n">String</span> <span class="n">eat</span> <span class="o">=</span> <span class="s">"Eats banana"</span><span class="o">;</span>
+	<span class="nc">String</span> <span class="n">eat</span> <span class="o">=</span> <span class="s">"Eats banana"</span><span class="o">;</span>
 	<span class="c1">// this class holds the information about Monkey</span>
 	<span class="c1">//....</span>
 	<span class="c1">//....</span>
@@ -258,9 +258,9 @@ We see this kind of reaction every time we someone is first told about, Let us u
 
 <p>Now there are different types of Monkey in the Zoo such as Ape, Baboon and Gorilla.</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Gorilla</span> <span class="kd">extends</span> <span class="n">Monkey</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Gorilla</span> <span class="kd">extends</span> <span class="nc">Monkey</span> <span class="o">{</span>
 
-	<span class="n">String</span> <span class="n">eat</span> <span class="o">=</span> <span class="s">"Eats banana and leafs"</span><span class="o">;</span>	
+	<span class="nc">String</span> <span class="n">eat</span> <span class="o">=</span> <span class="s">"Eats banana and leafs"</span><span class="o">;</span>	
 	<span class="c1">// Some details regarding the Gorilla</span>
 	<span class="c1">//....</span>
 	<span class="c1">//....</span>
@@ -290,13 +290,13 @@ We see this kind of reaction every time we someone is first told about, Let us u
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Monkey</span> <span class="o">{</span>
 
-	<span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"Gorilla"</span><span class="o">;</span>
+	<span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"Gorilla"</span><span class="o">;</span>
 	
-	<span class="n">String</span> <span class="n">teeth</span> <span class="o">=</span> <span class="s">"Sharp teeth"</span><span class="o">;</span>
+	<span class="nc">String</span> <span class="n">teeth</span> <span class="o">=</span> <span class="s">"Sharp teeth"</span><span class="o">;</span>
 	
-	<span class="n">String</span> <span class="n">hands</span> <span class="o">=</span> <span class="s">"long thin hands"</span><span class="o">;</span>
+	<span class="nc">String</span> <span class="n">hands</span> <span class="o">=</span> <span class="s">"long thin hands"</span><span class="o">;</span>
 	
-	<span class="n">String</span> <span class="n">legs</span> <span class="o">=</span> <span class="s">"Short legs"</span><span class="o">;</span>
+	<span class="nc">String</span> <span class="n">legs</span> <span class="o">=</span> <span class="s">"Short legs"</span><span class="o">;</span>
 <span class="o">}</span>
 </code></pre></div></div>
 
@@ -314,25 +314,25 @@ We see this kind of reaction every time we someone is first told about, Let us u
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Animal</span> <span class="o">{</span>
 	
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">(){</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Animal is eating"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Animal is eating"</span><span class="o">);</span>
 	<span class="o">}</span>
 	
 <span class="o">}</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Monkey</span> <span class="kd">extends</span> <span class="n">Animal</span><span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Monkey</span> <span class="kd">extends</span> <span class="nc">Animal</span><span class="o">{</span>
 	
       <span class="c1">// overridding the Animal class method eat()</span>
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">()</span> <span class="o">{</span> 
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Monkey is eating"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Monkey is eating"</span><span class="o">);</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">RunProgram</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">Animal</span> <span class="n">animal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Animal</span><span class="o">();</span> <span class="c1">// step1</span>
-		<span class="n">Animal</span> <span class="n">animal2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Monkey</span><span class="o">();</span> <span class="c1">//step2</span>
-		<span class="n">Monkey</span> <span class="n">monkey</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Monkey</span><span class="o">();</span> <span class="c1">//step3</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Animal</span> <span class="n">animal</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Animal</span><span class="o">();</span> <span class="c1">// step1</span>
+		<span class="nc">Animal</span> <span class="n">animal2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Monkey</span><span class="o">();</span> <span class="c1">//step2</span>
+		<span class="nc">Monkey</span> <span class="n">monkey</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Monkey</span><span class="o">();</span> <span class="c1">//step3</span>
 		
 		<span class="n">animal</span><span class="o">.</span><span class="na">eat</span><span class="o">();</span>
 		<span class="n">animal2</span><span class="o">.</span><span class="na">eat</span><span class="o">();</span>
@@ -358,28 +358,28 @@ Monkey is eating
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Animal</span> <span class="o">{</span>
 	
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">(){</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Animal is eating"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Animal is eating"</span><span class="o">);</span>
 	<span class="o">}</span>
 	
 <span class="o">}</span>
 
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Monkey</span> <span class="kd">extends</span> <span class="n">Animal</span><span class="o">{</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Monkey</span> <span class="kd">extends</span> <span class="nc">Animal</span><span class="o">{</span>
 	
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">()</span> <span class="o">{</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Monkey is eating"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Monkey is eating"</span><span class="o">);</span>
 	<span class="o">}</span>
 	
 	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">jump</span><span class="o">()</span> <span class="o">{</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Monkey is jumping"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Monkey is jumping"</span><span class="o">);</span>
 	<span class="o">}</span>
 <span class="o">}</span>
 
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">RunProgram</span> <span class="o">{</span>
 
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-		<span class="n">Animal</span> <span class="n">animal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Animal</span><span class="o">();</span>
-		<span class="n">Animal</span> <span class="n">animal2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Monkey</span><span class="o">();</span>
-		<span class="n">Monkey</span> <span class="n">monkey</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Monkey</span><span class="o">();</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Animal</span> <span class="n">animal</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Animal</span><span class="o">();</span>
+		<span class="nc">Animal</span> <span class="n">animal2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Monkey</span><span class="o">();</span>
+		<span class="nc">Monkey</span> <span class="n">monkey</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Monkey</span><span class="o">();</span>
 		
 		<span class="n">animal</span><span class="o">.</span><span class="na">jump</span><span class="o">();</span><span class="c1">//Line1</span>
 		
@@ -425,7 +425,7 @@ cannot find symbol
 <p>It is Java’s use of late-binding which allows you to declare an object as one type at compile-time but executes based on the actual type at runtime.
 If we use :</p>
 
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Animal</span> <span class="n">animal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Monkey</span><span class="o">();</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Animal</span> <span class="n">animal</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Monkey</span><span class="o">();</span>
 </code></pre></div></div>
 
 <p>The object of monkey is bound to the animal reference type. However methods declared in Monkey class will not be visible in animal reference, to access you will have cast animal object to Monkey type.</p>

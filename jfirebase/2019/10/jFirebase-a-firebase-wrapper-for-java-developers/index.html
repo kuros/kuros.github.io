@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Cache-Control" content="public">
+		<meta name="msvalidate.01" content="1AAC6AB2F92622321577453EF16C7E43" />
+
+		<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>jFirebase - Entity Framework for Firebase/Firestore | Kuros.in</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="jFirebase - Entity Framework for Firebase/Firestore" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A framework designed to help java developers to work with firebase" />
+<meta property="og:description" content="A framework designed to help java developers to work with firebase" />
+<link rel="canonical" href="https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/" />
+<meta property="og:url" content="https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/" />
+<meta property="og:site_name" content="Kuros.in" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-10-26T00:00:00+00:00" />
+<script type="application/ld+json">
+{"url":"https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/","headline":"jFirebase - Entity Framework for Firebase/Firestore","datePublished":"2019-10-26T00:00:00+00:00","dateModified":"2019-10-26T00:00:00+00:00","description":"A framework designed to help java developers to work with firebase","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
+
+		<link rel="apple-touch-icon" href="/images/kuros-3.png">
+		<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300|Rubik:300">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/screen.css">
+
+		        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-131802948-1');
+        </script>
+        
+		
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <script>
+                (adsbygoogle = window.adsbygoogle || []).push({
+                        google_ad_client: "ca-pub-4166026699724584",
+                        enable_page_level_ads: true
+                });
+        </script>
+
+
+	</head>
+
+	<body>
+		<header id="mainHeader">
+			<div class="container">
+				<div class="company-name">
+					<a href="/">
+						<span class="dark-logo"><img width="104" src="/images/logo/dark-2.svg" alt="dark frisco logo"></span>
+						<span class="light-logo"><img width="200" src="/images/logo/light-2.svg" alt="light frisco logo"></span>
+						<!--<span class="dark-logo">Kuros.in</span>-->
+						<!--<span class="light-logo">Kuros.in</span>-->
+					</a>
+				</div>
+				<nav>
+	<a class="nav-toggle" id="open-nav" href="#">&#9776;</a>
+	
+		
+		
+
+		
+		<a href="/random-jpa/" class="" >Random-JPA</a>
+	
+		
+		
+
+		
+		<a href="/blog/" class="" >Blog</a>
+	
+		
+		
+
+		
+		<a href="/about/" class="" >About</a>
+	
+		
+		
+
+		
+		<a href="/contact/" class="" >Contact</a>
+	
+</nav>
+
+				<!--<p class="editor-link"><a style="display:inline;" href="/_data/navigation.yml" class="btn"><strong>&#9998;</strong> Edit navigation</a></p>-->
+			</div>
+		</header>
+
+		<section class="hero page-hero random-images" >
+	<div class="inner-hero text-container">
+		<div class="hero-text-container">
+			<h1>jFirebase - Entity Framework for Firebase/Firestore</h1>
+			<p class="subtext">A framework designed to help java developers to work with firebase</p>
+		</div>
+	</div>
+</section>
+
+<div id="share-bar" style="display: none">
+    <div class="share-buttons">
+        <a class="facebook"  href="https://www.facebook.com/sharer/sharer.php?u=https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Facebook" >
+            <i class="fa fa-facebook-official share-button"></i>
+        </a>
+
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=jFirebase - Entity Framework for Firebase/Firestore&url=https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Twitter" >
+            <i class="fa fa-twitter share-button"></i>
+        </a>
+
+        <a  class="tumblr" href="https://www.tumblr.com/share/link?url=https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Tumblr" >
+            <i class="fa fa-tumblr share-button"></i>
+        </a>
+
+        <a  class="pinterest" href="https://www.pinterest.com/pin/create/button/?url=https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Pinterest" >
+            <i class="fa fa-pinterest-p share-button"></i>
+        </a>
+
+        <a  class="reddit" href="http://www.reddit.com/submit?url=https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=900,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on Reddit" >
+            <i class="fa fa-reddit-alien share-button"></i>
+        </a>
+
+        <a  class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/&title=jFirebase - Entity Framework for Firebase/Firestore&summary=A framework designed to help java developers to work with firebase&source=Kuros.in"
+            onclick="window.open(this.href, 'pop-up', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;"
+            title="Share on LinkedIn" >
+            <i class="fa fa-linkedin share-button"></i>
+        </a>
+
+        <a  class="email" href="mailto:?subject=jFirebase - Entity Framework for Firebase/Firestore&amp;body=Check out this site https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/"
+            title="Share via Email" >
+            <i class="fa fa-envelope share-button"></i>
+        </a>
+    </div>
+
+</div>
+
+<div id="ad-block-vertical" style="display: none">
+    <div class="ad-block-hz">
+        
+
+        
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- ad-vertical -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4166026699724584"
+             data-ad-slot="5635008510"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+        
+    </div>
+</div>
+
+<section>
+	<div class="blog-post text-container">
+
+		
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+		<p class="post-details">
+	
+		<span class="blog-filter">
+			<a href="/category/jfirebase/">jfirebase</a>
+		</span>
+	
+
+	
+	<span class="post-date">
+		October 26, 2019
+	</span>
+</p>
+
+
+		<div class="post-content">
+			<p>I decided to tryout firebase for my personal projects &amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when dealing with databases. But when I started firebase, I found it completely different but also having some similarities. After spending some time understanding its feature I started looking a framework similar to JPA for firebase. I found none, so I decided to write one for myself.</p>
+
+<p><a href="https://github.com/kuros/jFirebase">Github Source - jFirebase</a></p>
+
+<h1 id="initialise">Initialise</h1>
+
+<p>Add Maven dependency:</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>in.kuros<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>jFirebase<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>0.1<span class="nt">&lt;/version&gt;</span> <span class="c">&lt;!-- Use the latest version--&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>Use the<code class="highlighter-rouge"> PersistenceServiceFactory</code> to generate instance of <code class="highlighter-rouge">PersistenceService</code>, we need pass firestore instance and provide a list of packages where your entities reside.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// initialise with firestore &amp; base package</span>
+<span class="kd">final</span> <span class="nc">PersistenceService</span> <span class="n">persistenceService</span> <span class="o">=</span> <span class="nc">PersistenceServiceFactory</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">firestore</span><span class="o">,</span> <span class="s">"in.kuros.jfirebase.demo.entity"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Now that we have initialized our persistence service we will start creating our entities to work with.</p>
+
+<h1 id="entity">Entity</h1>
+<p>We will use a simple pojo class and convert it into an jFirebase Entity by providing <code class="highlighter-rouge">@Entity</code>, you will also need to provide <code class="highlighter-rouge">@Id</code> field.</p>
+
+<p>Currently only String &amp; Enum are supported as Id field.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">jfirebase</span><span class="o">.</span><span class="na">demo</span><span class="o">.</span><span class="na">entity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.CreateTime</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.Entity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.Id</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.UpdateTime</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">lombok.Data</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="o">;</span>
+
+<span class="nd">@Data</span>
+<span class="nd">@Entity</span><span class="o">(</span><span class="s">"person"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
+
+    <span class="nd">@Id</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">personId</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+    <span class="nd">@CreateTime</span>
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">created</span><span class="o">;</span>
+    <span class="nd">@UpdateTime</span>
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">lastModified</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We can also mark Date field for <code class="highlighter-rouge">@CreateTime</code> &amp; <code class="highlighter-rouge">@UpdateTime</code> to record creation time &amp; update time implicitly.</p>
+
+<h1 id="metadata">Metadata</h1>
+<p>We will also need to create metadata class to record field description for the corresponding class.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">jfirebase</span><span class="o">.</span><span class="na">demo</span><span class="o">.</span><span class="na">entity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.metadata.Attribute</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.metadata.Metadata</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="o">;</span>
+
+<span class="nd">@Metadata</span><span class="o">(</span><span class="nc">Person</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person_</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">personId</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">,</span> <span class="nc">Date</span><span class="o">&gt;</span> <span class="n">created</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Person</span><span class="o">,</span> <span class="nc">Date</span><span class="o">&gt;</span> <span class="n">lastModified</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Annotate the class with <code class="highlighter-rouge">@Metadata</code> and create <code class="highlighter-rouge">Attribute</code> field for all the corresponding fields on main class.</p>
+
+<p>Our setup is almost done, lets create our first object using persistenceService.</p>
+
+<h1 id="creating-object">Creating object</h1>
+
+<p>To create a new entry in database use <em>create</em> method. It will auto generate Id &amp; createTime will be updated.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createPersonExample</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">();</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"Rohit"</span><span class="o">);</span>
+
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">p</span><span class="o">);</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getPersonId</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p><img alt="jfirebase-create" src="/images/loader.gif" data-src="/images/2019/jfirebase/create.png" class="lazy img-center" /></p>
+
+<h1 id="creating-object-with-id">Creating object with id</h1>
+
+<p>You can create entities with custom ids.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createPersonWithCustomIdExample</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">();</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">setPersonId</span><span class="o">(</span><span class="s">"1"</span><span class="o">);</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"Rohit"</span><span class="o">);</span>
+
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">p</span><span class="o">);</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getPersonId</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p><img alt="jfirebase-create" src="/images/loader.gif" data-src="/images/2019/jfirebase/create-id.png" class="lazy img-center" /></p>
+
+<p><strong>Note: Create method will throw exception if entity with id already exists.</strong></p>
+
+<h1 id="updatesilent-create">Update/Silent create</h1>
+
+<p>Use <em>set</em> method to create/update entity silently, ie. if entity exists, it will be updated else a new entry will be created.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updatePersonExample</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">();</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">setPersonId</span><span class="o">(</span><span class="s">"1"</span><span class="o">);</span> <span class="c1">// optional if you want to create a new entry</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"Rohit"</span><span class="o">);</span>
+
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">p</span><span class="o">);</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">p</span><span class="o">.</span><span class="na">getPersonId</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The set(entity) would update the complete entity.</p>
+
+<h1 id="updating-field">Updating field</h1>
+
+<p>Let’s say I want to update age of person. We need to provide entity with id and age field populated (in this case personId is a requiredField).</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateField</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Person</span> <span class="n">p</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">();</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">setPersonId</span><span class="o">(</span><span class="s">"1"</span><span class="o">);</span> <span class="c1">// optional if you want to create a new entry</span>
+        <span class="n">p</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">p</span><span class="o">,</span> <span class="n">Person_</span><span class="o">.</span><span class="na">age</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>If id field is provided, given field will be updated else a new entry is created.</p>
+
+<p><img alt="jfirebase-set" src="/images/loader.gif" data-src="/images/2019/jfirebase/set.png" class="lazy img-center" /></p>
+
+<h1 id="updating-multiple-fields">Updating multiple fields</h1>
+
+<p>We can update multiple fields, Use <code class="highlighter-rouge">AttributeValue</code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateMultipleFields</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="nc">AttributeValue</span><span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Person_</span><span class="o">.</span><span class="na">personId</span><span class="o">,</span> <span class="s">"1"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Person_</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="s">"I changed my name"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Person_</span><span class="o">.</span><span class="na">age</span><span class="o">,</span> <span class="mi">25</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p><img alt="jfirebase-set" src="/images/loader.gif" data-src="/images/2019/jfirebase/set-multiple.png" class="lazy img-center" /></p>
+
+<h1 id="working-with-sub-collection">Working with Sub Collection</h1>
+
+<p>Let’s say you want to map sub collection, you need to create a pojo with parent id reference.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">jfirebase</span><span class="o">.</span><span class="na">demo</span><span class="o">.</span><span class="na">entity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.Entity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.Id</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.IdReference</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.Parent</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.UpdateTime</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="nd">@Entity</span><span class="o">(</span><span class="s">"employee"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Employee</span> <span class="o">{</span>
+
+    <span class="nd">@Id</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">employeeId</span><span class="o">;</span>
+
+    <span class="nd">@Parent</span>
+    <span class="nd">@IdReference</span><span class="o">(</span><span class="nc">Person</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">personId</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">joiningDate</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">salary</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">phoneNumbers</span><span class="o">;</span>
+
+    <span class="nd">@UpdateTime</span>
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">modifiedDate</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Here we are using <code class="highlighter-rouge">@Parent</code> with <code class="highlighter-rouge">@IdReference</code> to map parent information.</p>
+
+<p>Also note, to save phone numbers we are using a map. Its corresponding Metadata class will be:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="n">in</span><span class="o">.</span><span class="na">kuros</span><span class="o">.</span><span class="na">jfirebase</span><span class="o">.</span><span class="na">demo</span><span class="o">.</span><span class="na">entity</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.entity.Entity</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.metadata.Attribute</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.metadata.MapAttribute</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.jfirebase.metadata.Metadata</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Date</span><span class="o">;</span>
+
+<span class="nd">@Metadata</span><span class="o">(</span><span class="nc">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Employee_</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">employeeId</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">personId</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">,</span> <span class="nc">Date</span><span class="o">&gt;</span> <span class="n">joiningDate</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">salary</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">MapAttribute</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">,</span> <span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">phoneNumbers</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">volatile</span> <span class="nc">Attribute</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">,</span> <span class="nc">Date</span><span class="o">&gt;</span> <span class="n">modifiedDate</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now to create a Employee entry within Person collection, simply create Employee object with person reference.
+Note that for phoneNumbers we are using <code class="highlighter-rouge">MapAttribute</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">createSubCollection</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Employee</span> <span class="n">employee</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Employee</span><span class="o">();</span>
+        <span class="n">employee</span><span class="o">.</span><span class="na">setEmployeeId</span><span class="o">(</span><span class="s">"123"</span><span class="o">);</span> <span class="c1">// Optional if you want custom id</span>
+        <span class="n">employee</span><span class="o">.</span><span class="na">setPersonId</span><span class="o">(</span><span class="s">"1"</span><span class="o">);</span>
+        <span class="n">employee</span><span class="o">.</span><span class="na">setJoiningDate</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+        <span class="n">employee</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mi">5000</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">phoneNumbers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">phoneNumbers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"office"</span><span class="o">,</span> <span class="s">"123-345-567"</span><span class="o">);</span>
+        <span class="n">phoneNumbers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"home"</span><span class="o">,</span> <span class="s">"456-789-456"</span><span class="o">);</span>
+        <span class="n">employee</span><span class="o">.</span><span class="na">setPhoneNumbers</span><span class="o">(</span><span class="n">phoneNumbers</span><span class="o">);</span>
+
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">employee</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p><img alt="jfirebase-sub-collection" src="/images/loader.gif" data-src="/images/2019/jfirebase/sub-collection.png" class="lazy img-center" /></p>
+
+<h1 id="update-map-values">Update Map values</h1>
+
+<p>Let’s say we want to update specific value in a map (home phone number).</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateMapUsingKeyValue</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="nc">AttributeValue</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">employeeId</span><span class="o">,</span> <span class="s">"123"</span><span class="o">)</span> <span class="c1">// Required field</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">personId</span><span class="o">,</span> <span class="s">"1"</span><span class="o">)</span> <span class="c1">// Required field</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">phoneNumbers</span><span class="o">,</span> <span class="s">"home"</span><span class="o">,</span> <span class="s">"111-111-111"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p><img alt="jfirebase-map-key" src="/images/loader.gif" data-src="/images/2019/jfirebase/set-map-key.png" class="lazy img-center" /></p>
+
+<p>or we can completely replace the map - update all the phone numbers</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">updateCompleteMapValues</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">phoneNumbers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">phoneNumbers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"office"</span><span class="o">,</span> <span class="s">"123-345-XXX"</span><span class="o">);</span>
+        <span class="n">phoneNumbers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"home"</span><span class="o">,</span> <span class="s">"456-789-XXX"</span><span class="o">);</span>
+
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="nc">AttributeValue</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">employeeId</span><span class="o">,</span> <span class="s">"123"</span><span class="o">)</span> <span class="c1">// Required field</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">personId</span><span class="o">,</span> <span class="s">"1"</span><span class="o">)</span> <span class="c1">// Required field</span>
+                <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">phoneNumbers</span><span class="o">,</span> <span class="n">phoneNumbers</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p><img alt="jfirebase-map" src="/images/loader.gif" data-src="/images/2019/jfirebase/set-map.png" class="lazy img-center" /></p>
+
+<h1 id="removing-fields">Removing Fields</h1>
+<p>In order to delete just a field from the entry, Use:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeFields</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="nc">RemoveAttribute</span><span class="o">.</span><span class="na">withKeys</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">personId</span><span class="o">,</span> <span class="s">"1"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">withKey</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">employeeId</span><span class="o">,</span> <span class="s">"123"</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">salary</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">removeMapKey</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">phoneNumbers</span><span class="o">,</span> <span class="s">"home"</span><span class="o">));</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+<p>Here we have deleted salary field and an entry of ‘home’ from phone numbers.</p>
+
+<p><img alt="jfirebase-map" src="/images/loader.gif" data-src="/images/2019/jfirebase/remove.png" class="lazy img-center" /></p>
+
+<h1 id="delete-record">Delete Record</h1>
+
+<p>To delete a complete record:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteCompleteRecord</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Employee</span> <span class="n">employee</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Employee</span><span class="o">();</span>
+        <span class="n">employee</span><span class="o">.</span><span class="na">setEmployeeId</span><span class="o">(</span><span class="s">"123"</span><span class="o">);</span>
+        <span class="n">employee</span><span class="o">.</span><span class="na">setPersonId</span><span class="o">(</span><span class="s">"1"</span><span class="o">);</span>
+        <span class="n">persistenceService</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">employee</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+<p>You need to populate required id fields.</p>
+
+<p><img alt="jfirebase-map" src="/images/loader.gif" data-src="/images/2019/jfirebase/delete.png" class="lazy img-center" /></p>
+
+<h1 id="query">Query</h1>
+
+<p>To query you need to provide classes in order.</p>
+
+<p>Let’s say you want to find all the employee with salary greater than 1000.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">query</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">&gt;</span> <span class="n">employees</span> <span class="o">=</span> <span class="n">persistenceService</span>
+                <span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="nc">QueryBuilder</span>
+                        <span class="o">.</span><span class="na">collection</span><span class="o">(</span><span class="nc">Person</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">withId</span><span class="o">(</span><span class="s">"1"</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">subCollection</span><span class="o">(</span><span class="nc">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">whereGreaterThan</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">salary</span><span class="o">,</span> <span class="mi">1000</span><span class="o">));</span>
+        <span class="n">employees</span>
+                <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Employee<span class="o">(</span><span class="nv">employeeId</span><span class="o">=</span>123, <span class="nv">personId</span><span class="o">=</span>1, <span class="nv">joiningDate</span><span class="o">=</span>Sun Oct 27 02:39:43 IST 2019, <span class="nv">salary</span><span class="o">=</span>5000, <span class="nv">phoneNumbers</span><span class="o">={</span><span class="nv">office</span><span class="o">=</span>123-345-567, <span class="nv">home</span><span class="o">=</span>456-789-456<span class="o">}</span>, <span class="nv">modifiedDate</span><span class="o">=</span>Sun Oct 27 02:39:43 IST 2019<span class="o">)</span>
+</code></pre></div></div>
+
+<h1 id="find-by-id">Find by Id</h1>
+
+<p>To find a record by Id:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">queryFindById</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Employee</span> <span class="n">employee</span> <span class="o">=</span> <span class="n">persistenceService</span>
+                <span class="o">.</span><span class="na">findById</span><span class="o">(</span><span class="nc">QueryBuilder</span>
+                        <span class="o">.</span><span class="na">collection</span><span class="o">(</span><span class="nc">Person</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">withId</span><span class="o">(</span><span class="s">"1"</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">subCollection</span><span class="o">(</span><span class="nc">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">withId</span><span class="o">(</span><span class="s">"123"</span><span class="o">));</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Provide the full path to fetch item by id.</p>
+
+<h1 id="select-few-fields">Select few fields</h1>
+
+<p>Let’s say you want to fetch only salaries of all the employees:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">querySelectedFields</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">&gt;</span> <span class="n">employees</span> <span class="o">=</span> <span class="n">persistenceService</span>
+                <span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="nc">QueryBuilder</span>
+                        <span class="o">.</span><span class="na">collection</span><span class="o">(</span><span class="nc">Person</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">withId</span><span class="o">(</span><span class="s">"1"</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">subCollection</span><span class="o">(</span><span class="nc">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">select</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">employeeId</span><span class="o">,</span> <span class="n">Employee_</span><span class="o">.</span><span class="na">salary</span><span class="o">));</span>
+
+        <span class="n">employees</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Employee<span class="o">(</span><span class="nv">employeeId</span><span class="o">=</span>123, <span class="nv">personId</span><span class="o">=</span>null, <span class="nv">joiningDate</span><span class="o">=</span>null, <span class="nv">salary</span><span class="o">=</span>5000, <span class="nv">phoneNumbers</span><span class="o">=</span>null, <span class="nv">modifiedDate</span><span class="o">=</span>null<span class="o">)</span>
+</code></pre></div></div>
+
+<h1 id="running-queries-in-transaction">Running queries in Transaction</h1>
+
+<p>You can run the transaction and execute multiple queries in it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">runTransactionExample</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">&gt;</span> <span class="n">updatedEmployees</span> <span class="o">=</span> <span class="n">persistenceService</span><span class="o">.</span><span class="na">runTransaction</span><span class="o">(</span>
+            <span class="n">transaction</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="kd">final</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Employee</span><span class="o">&gt;</span> <span class="n">employees</span> <span class="o">=</span> <span class="n">transaction</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="nc">QueryBuilder</span>
+                        <span class="o">.</span><span class="na">collection</span><span class="o">(</span><span class="nc">Person</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">withId</span><span class="o">(</span><span class="s">"1"</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">subCollection</span><span class="o">(</span><span class="nc">Employee</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+    
+                <span class="n">employees</span><span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+                        <span class="o">.</span><span class="na">peek</span><span class="o">(</span><span class="n">emp</span> <span class="o">-&gt;</span> <span class="n">emp</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mi">6000</span><span class="o">))</span>
+                        <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nl">transaction:</span><span class="o">:</span><span class="n">set</span><span class="o">);</span>
+                <span class="k">return</span> <span class="n">employees</span><span class="o">;</span>
+        <span class="o">});</span>
+
+        <span class="n">updatedEmployees</span>
+                <span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Employee<span class="o">(</span><span class="nv">employeeId</span><span class="o">=</span>123, <span class="nv">personId</span><span class="o">=</span>1, <span class="nv">joiningDate</span><span class="o">=</span>Sun Oct 27 02:44:21 IST 2019, <span class="nv">salary</span><span class="o">=</span>6000, <span class="nv">phoneNumbers</span><span class="o">={</span><span class="nv">office</span><span class="o">=</span>123-345-567, <span class="nv">home</span><span class="o">=</span>456-789-456<span class="o">}</span>, <span class="nv">modifiedDate</span><span class="o">=</span>Sun Oct 27 02:54:21 IST 2019<span class="o">)</span>
+</code></pre></div></div>
+
+<h1 id="batching">Batching</h1>
+
+<p>You can batch multiple statements and commit them at once.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">runBatchExample</span><span class="o">()</span> <span class="o">{</span>
+            <span class="n">persistenceService</span><span class="o">.</span><span class="na">writeInBatch</span><span class="o">(</span><span class="n">writeBatch</span> <span class="o">-&gt;</span> <span class="o">{</span>
+                <span class="n">writeBatch</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="nc">AttributeValue</span>
+                        <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Person_</span><span class="o">.</span><span class="na">personId</span><span class="o">,</span> <span class="s">"2"</span><span class="o">)</span> <span class="c1">// Required field</span>
+                        <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Person_</span><span class="o">.</span><span class="na">name</span><span class="o">,</span> <span class="s">"Jon"</span><span class="o">)</span> <span class="c1">// Required field</span>
+                        <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Person_</span><span class="o">.</span><span class="na">age</span><span class="o">,</span> <span class="mi">25</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+    
+                <span class="n">writeBatch</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="nc">AttributeValue</span>
+                        <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">employeeId</span><span class="o">,</span> <span class="s">"123"</span><span class="o">)</span> <span class="c1">// Required field</span>
+                        <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">personId</span><span class="o">,</span> <span class="s">"2"</span><span class="o">)</span> <span class="c1">// Required field</span>
+                        <span class="o">.</span><span class="na">with</span><span class="o">(</span><span class="n">Employee_</span><span class="o">.</span><span class="na">phoneNumbers</span><span class="o">,</span> <span class="s">"home"</span><span class="o">,</span> <span class="s">"222-222-222"</span><span class="o">)</span>
+                        <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+            <span class="o">});</span>
+        <span class="o">}</span>
+</code></pre></div></div>
+
+<p>You can find the code example <a href="https://github.com/kuros/jFirebase/tree/master/demo">here</a></p>
+
+
+
+			
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
+			<div class="blog-navigation">
+				
+					
+							<a class="prev" href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/">&laquo; Making parallel service calls in microservice architecture.</a>
+					
+
+					
+				
+			</div>
+
+			<div class="author">
+				
+				
+				<div class="square-image" style="background-image: url('/images/about/myphoto.png')"></div>
+				<p class="blurb">I like long drives, bike trip & good food. I have passion for coding, esp. Clean-Code.</p>
+			</div>
+
+
+
+
+
+
+			
+
+			<div id="disqus_thread"></div>
+			<script>
+
+				/**
+				 *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+				 *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+                var disqus_config = function () {
+                this.page.url = "https://kuros.in/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/";  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = "/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+
+				(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = 'https://kuros-in.disqus.com/embed.js';
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+				})();
+			</script>
+			<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+			
+
+			
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+		</div>
+	</div>
+</section>
+
+
+
+		<footer>
+			<div class="container">
+				<!--<p class="editor-link"><a href="/_data/footer.yml" class="btn"><strong>&#9998;</strong> Edit footer</a></p>-->
+				<ul class="footer-left-links">
+					
+						<li>
+							<a  href="/random-jpa/" >
+								
+								Random-JPA
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/blog/" >
+								
+								Blog
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/about/" >
+								
+								About
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/contact/" >
+								
+								Contact
+							</a>
+						</li>
+					
+				</ul>
+				<ul class="footer-right-links">
+					
+						<li>
+							<a target="_blank" href="https://www.facebook.com/kumarrohit.1010" class="facebook-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://twitter.com/incrv83" class="twitter-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.42 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a target="_blank" href="https://www.linkedin.com/in/kumar-rohit-9a985517/" class="linkedin-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,19H16V13.7A1.5,1.5 0 0,0 14.5,12.2A1.5,1.5 0 0,0 13,13.7V19H10V10H13V11.2C13.5,10.36 14.59,9.8 15.5,9.8A3.5,3.5 0 0,1 19,13.3M6.5,8.31C5.5,8.31 4.69,7.5 4.69,6.5A1.81,1.81 0 0,1 6.5,4.69C7.5,4.69 8.31,5.5 8.31,6.5A1.81,1.81 0 0,1 6.5,8.31M8,19H5V10H8M20,2H4C2.89,2 2,2.89 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+	
+								
+							</a>
+						</li>
+					
+						<li>
+							<a  href="/feed.xml" class="rss-icon">
+								
+		<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><circle cx="6.18" cy="17.82" r="2.18"/><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"/></svg>
+	
+								
+							</a>
+						</li>
+					
+				</ul>
+				<p class="copyright">
+					<a href="https://cloudcannon.com/">
+						Template by CloudCannon
+					</a>
+				</p>
+			</div>
+		</footer>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/js/main.js"></script>
+
+		<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+	</body>
+</html>

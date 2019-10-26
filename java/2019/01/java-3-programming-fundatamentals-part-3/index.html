@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-07T00:00:00+00:00" />
 <script type="application/ld+json">
-{"description":"Methods, Constructors &amp; Instantiation","@type":"BlogPosting","url":"https://kuros.in/java/2019/01/java-3-programming-fundatamentals-part-3/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"image":"https://source.unsplash.com/random/1200x900","headline":"Java - Programming Fundamentals (Part 3)","dateModified":"2019-01-07T00:00:00+00:00","datePublished":"2019-01-07T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-3-programming-fundatamentals-part-3/"},"@context":"http://schema.org"}</script>
+{"url":"https://kuros.in/java/2019/01/java-3-programming-fundatamentals-part-3/","headline":"Java - Programming Fundamentals (Part 3)","datePublished":"2019-01-07T00:00:00+00:00","dateModified":"2019-01-07T00:00:00+00:00","description":"Methods, Constructors &amp; Instantiation","image":"https://source.unsplash.com/random/1200x900","mainEntityOfPage":{"@type":"WebPage","@id":"https://kuros.in/java/2019/01/java-3-programming-fundatamentals-part-3/"},"@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kuros.in/siteicon.png"}},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 		<link type="application/atom+xml" rel="alternate" href="https://kuros.in/feed.xml" title="Kuros.in" />
@@ -222,27 +222,27 @@
 <p>Now returning to our problem, Since we have used private modifier for declaring the variables – so we need some way to access these variables. We will use getter and setters for these variables.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
     		<span class="k">return</span> <span class="n">firstName</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="nc">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
     		<span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">firstName</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span>
     		<span class="k">return</span> <span class="n">lastName</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLastName</span><span class="o">(</span><span class="n">String</span> <span class="n">lastName</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLastName</span><span class="o">(</span><span class="nc">String</span> <span class="n">lastName</span><span class="o">)</span> <span class="o">{</span>
     		<span class="k">this</span><span class="o">.</span><span class="na">lastName</span> <span class="o">=</span> <span class="n">lastName</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getAccountNumber</span><span class="o">()</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getAccountNumber</span><span class="o">()</span> <span class="o">{</span>
     		<span class="k">return</span> <span class="n">accountNumber</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAccountNumber</span><span class="o">(</span><span class="n">String</span> <span class="n">accountNumber</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAccountNumber</span><span class="o">(</span><span class="nc">String</span> <span class="n">accountNumber</span><span class="o">)</span> <span class="o">{</span>
     		<span class="k">this</span><span class="o">.</span><span class="na">accountNumber</span> <span class="o">=</span> <span class="n">accountNumber</span><span class="o">;</span>
     	<span class="o">}</span>
     
@@ -265,14 +265,14 @@
 
 <h2 id="explanation">Explanation</h2>
 <p>The every get method will return the values associated with the variable for which these get methods are written. For every setter method the values will be set for the variables. For e.g.</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
 		<span class="k">return</span> <span class="n">firstName</span><span class="o">;</span>
 	<span class="o">}</span>
 </code></pre></div></div>
 <p>This method will return the value for firstName variable, since firstName is of String type, hence the method is returning String type.</p>
 
 <p>Similarly, for the setter method:-</p>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="nc">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">firstName</span><span class="o">;</span>
 	<span class="o">}</span>
 </code></pre></div></div>
@@ -303,8 +303,8 @@
 <p>The default constructor has no parameters.</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="kd">public</span> <span class="nf">Person</span><span class="o">()</span> <span class="o">{</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the default constructor"</span><span class="o">);</span>
-            <span class="k">this</span><span class="o">.</span><span class="na">accountNumber</span> <span class="o">=</span> <span class="err">“</span><span class="n">NA</span><span class="err">”</span><span class="o">;</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the default constructor"</span><span class="o">);</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">accountNumber</span> <span class="o">=</span> <span class="err">“</span><span class="no">NA</span><span class="err">”</span><span class="o">;</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">balance</span> <span class="o">=</span> <span class="mi">5000</span><span class="o">;</span>
 	<span class="o">}</span>
 </code></pre></div></div>
@@ -321,21 +321,21 @@
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="c1">//this is the default constructor</span>
 	<span class="kd">public</span> <span class="nf">Person</span><span class="o">()</span> <span class="o">{</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the default constructor"</span><span class="o">);</span>
-            <span class="k">this</span><span class="o">.</span><span class="na">accountNumber</span> <span class="o">=</span> <span class="err">“</span><span class="n">NA</span><span class="err">”</span><span class="o">;</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the default constructor"</span><span class="o">);</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">accountNumber</span> <span class="o">=</span> <span class="err">“</span><span class="no">NA</span><span class="err">”</span><span class="o">;</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">balance</span> <span class="o">=</span> <span class="mi">5000</span><span class="o">;</span>
 	<span class="o">}</span>
 	
 	<span class="c1">//In this constructor, we overload it with one parameter</span>
-	<span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="n">String</span> <span class="n">accountNumber</span><span class="o">){</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the overloaded constructor"</span><span class="o">);</span>
+	<span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">accountNumber</span><span class="o">){</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the overloaded constructor"</span><span class="o">);</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">accountNumber</span> <span class="o">=</span> <span class="n">accountNumber</span><span class="o">;</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">balance</span> <span class="o">=</span> <span class="mi">5000</span><span class="o">;</span>
 	<span class="o">}</span>
 	
 	<span class="c1">//In this constructor, we overload it with two parameters</span>
-	<span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="n">String</span> <span class="n">accountNumber</span><span class="o">,</span> <span class="kt">double</span> <span class="n">balance</span><span class="o">){</span>
-		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the overloaded constructor"</span><span class="o">);</span>
+	<span class="kd">public</span> <span class="nf">Person</span><span class="o">(</span><span class="nc">String</span> <span class="n">accountNumber</span><span class="o">,</span> <span class="kt">double</span> <span class="n">balance</span><span class="o">){</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the overloaded constructor"</span><span class="o">);</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">accountNumber</span> <span class="o">=</span> <span class="n">accountNumber</span><span class="o">;</span>
 		<span class="k">this</span><span class="o">.</span><span class="na">balance</span> <span class="o">=</span> <span class="n">balance</span><span class="o">;</span>
 	<span class="o">}</span>
@@ -352,27 +352,27 @@
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">//Adding variables to the class.</span>
     <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
     	
-    	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getFirstName</span><span class="o">()</span> <span class="o">{</span>
     		<span class="k">return</span> <span class="n">firstName</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="n">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setFirstName</span><span class="o">(</span><span class="nc">String</span> <span class="n">firstName</span><span class="o">)</span> <span class="o">{</span>
     		<span class="k">this</span><span class="o">.</span><span class="na">firstName</span> <span class="o">=</span> <span class="n">firstName</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getLastName</span><span class="o">()</span> <span class="o">{</span>
     		<span class="k">return</span> <span class="n">lastName</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLastName</span><span class="o">(</span><span class="n">String</span> <span class="n">lastName</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setLastName</span><span class="o">(</span><span class="nc">String</span> <span class="n">lastName</span><span class="o">)</span> <span class="o">{</span>
     		<span class="k">this</span><span class="o">.</span><span class="na">lastName</span> <span class="o">=</span> <span class="n">lastName</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="n">String</span> <span class="nf">getAccountNumber</span><span class="o">()</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getAccountNumber</span><span class="o">()</span> <span class="o">{</span>
     		<span class="k">return</span> <span class="n">accountNumber</span><span class="o">;</span>
     	<span class="o">}</span>
     
-    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAccountNumber</span><span class="o">(</span><span class="n">String</span> <span class="n">accountNumber</span><span class="o">)</span> <span class="o">{</span>
+    	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAccountNumber</span><span class="o">(</span><span class="nc">String</span> <span class="n">accountNumber</span><span class="o">)</span> <span class="o">{</span>
     		<span class="k">this</span><span class="o">.</span><span class="na">accountNumber</span> <span class="o">=</span> <span class="n">accountNumber</span><span class="o">;</span>
     	<span class="o">}</span>
     
@@ -385,20 +385,20 @@
     	<span class="o">}</span>
     
     	<span class="cm">/* The will hold a string data type */</span>
-    	<span class="kd">private</span> <span class="n">String</span> <span class="n">firstName</span><span class="o">;</span>
+    	<span class="kd">private</span> <span class="nc">String</span> <span class="n">firstName</span><span class="o">;</span>
     	
     	<span class="cm">/* The will hold a string data type */</span>
-    	<span class="kd">private</span> <span class="n">String</span> <span class="n">lastName</span><span class="o">;</span>
+    	<span class="kd">private</span> <span class="nc">String</span> <span class="n">lastName</span><span class="o">;</span>
     	
     	<span class="cm">/* The will hold a string data type */</span>
-    	<span class="kd">private</span> <span class="n">String</span> <span class="n">accountNumber</span><span class="o">;</span>
+    	<span class="kd">private</span> <span class="nc">String</span> <span class="n">accountNumber</span><span class="o">;</span>
     	
     	<span class="cm">/* The will hold a integer data type */</span>
     	<span class="kd">private</span> <span class="kt">double</span> <span class="n">balance</span><span class="o">;</span>
     	
     	<span class="c1">//this is the default constructor</span>
     	<span class="kd">public</span> <span class="nf">Person</span><span class="o">()</span> <span class="o">{</span>
-    		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the default constructor"</span><span class="o">);</span>
+    		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"This is the default constructor"</span><span class="o">);</span>
     		<span class="k">this</span><span class="o">.</span><span class="na">balance</span> <span class="o">=</span> <span class="mi">5000</span><span class="o">;</span>
     	<span class="o">}</span>
     <span class="o">}</span>
@@ -416,25 +416,25 @@
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">RunnerClass</span> <span class="o">{</span>
     
-        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
     
-            <span class="n">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Person</span><span class="o">();</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Default constructor"</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Account Number = "</span> <span class="o">+</span>                                           <span class="n">person</span><span class="o">.</span><span class="na">getAccountNumber</span><span class="o">());</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Balance = "</span> <span class="o">+</span> <span class="n">person</span><span class="o">.</span><span class="na">getBalance</span><span class="o">());</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************************"</span><span class="o">);</span>
+            <span class="nc">Person</span> <span class="n">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">();</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Default constructor"</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Account Number = "</span> <span class="o">+</span>                                           <span class="n">person</span><span class="o">.</span><span class="na">getAccountNumber</span><span class="o">());</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Balance = "</span> <span class="o">+</span> <span class="n">person</span><span class="o">.</span><span class="na">getBalance</span><span class="o">());</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************************"</span><span class="o">);</span>
             
-            <span class="n">Person</span> <span class="n">person2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">"12345"</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Passing the one parameter"</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Account Number = "</span> <span class="o">+</span> <span class="n">person2</span><span class="o">.</span><span class="na">getAccountNumber</span><span class="o">());</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Balance = "</span> <span class="o">+</span> <span class="n">person2</span><span class="o">.</span><span class="na">getBalance</span><span class="o">());</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************************"</span><span class="o">);</span>
+            <span class="nc">Person</span> <span class="n">person2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="s">"12345"</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Passing the one parameter"</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Account Number = "</span> <span class="o">+</span> <span class="n">person2</span><span class="o">.</span><span class="na">getAccountNumber</span><span class="o">());</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Balance = "</span> <span class="o">+</span> <span class="n">person2</span><span class="o">.</span><span class="na">getBalance</span><span class="o">());</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************************"</span><span class="o">);</span>
             
-            <span class="n">Person</span> <span class="n">person3</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Person</span><span class="o">(</span><span class="s">"123"</span><span class="o">,</span> <span class="mi">50</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Passing two parameters"</span><span class="o">);</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Account Number = "</span> <span class="o">+</span> <span class="n">person3</span><span class="o">.</span><span class="na">getAccountNumber</span><span class="o">());</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Balance = "</span> <span class="o">+</span> <span class="n">person3</span><span class="o">.</span><span class="na">getBalance</span><span class="o">());</span>
-            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************************"</span><span class="o">);</span>
+            <span class="nc">Person</span> <span class="n">person3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Person</span><span class="o">(</span><span class="s">"123"</span><span class="o">,</span> <span class="mi">50</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Passing two parameters"</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Account Number = "</span> <span class="o">+</span> <span class="n">person3</span><span class="o">.</span><span class="na">getAccountNumber</span><span class="o">());</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Balance = "</span> <span class="o">+</span> <span class="n">person3</span><span class="o">.</span><span class="na">getBalance</span><span class="o">());</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************************"</span><span class="o">);</span>
         <span class="o">}</span>
     
     <span class="o">}</span>
