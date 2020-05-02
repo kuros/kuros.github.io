@@ -261,8 +261,12 @@
 <lastmod>2019-10-26T00:00:00+00:00</lastmod>
 </url>
 <url>
-<loc>https://kuros.in/messaging/2020/04/getting-started-with-kafka-install-and-messaging/</loc>
-<lastmod>2020-04-01T00:00:00+00:00</lastmod>
+<loc>https://kuros.in/messaging/2020/05/getting-started-with-kafka-install-and-messaging/</loc>
+<lastmod>2020-05-01T00:00:00+00:00</lastmod>
+</url>
+<url>
+<loc>https://kuros.in/messaging/2020/05/publish-and-consume-kafka-message-in-spring-boot-applicaton/</loc>
+<lastmod>2020-05-02T00:00:00+00:00</lastmod>
 </url>
 <url>
 <loc>https://kuros.in/about/</loc>
@@ -341,6 +345,6 @@
 </url>
 <url>
 <loc>https://kuros.in/category/messaging/</loc>
-<lastmod>2020-05-01T21:06:52+00:00</lastmod>
+<lastmod>2020-05-02T21:31:16+00:00</lastmod>
 </url>
 </urlset>
