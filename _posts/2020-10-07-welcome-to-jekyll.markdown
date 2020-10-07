@@ -1,9 +1,13 @@
 ---
-layout: post
-title:  "Welcome to Jekyll!"
-date:   2020-10-07 18:53:28 +0530
-categories: jekyll update
+title: "Testing Readability with a Bunch of Text"
+excerpt: "A ton of text to test readability."
+categories: 
+  - Edge case
+tags: [sample post, readability, test]
 ---
+
+{{ site.icon }}
+
 You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
 
 Jekyll requires blog post files to be named according to the following format:
