@@ -2,12 +2,13 @@
 title: "Testing Readability with a Bunch of Text"
 excerpt: "A ton of text to test readability."
 categories: 
-  - Edge case
+  - test
 tags: [sample post, readability, test]
+toc: true
 ---
 
 {{ site.icon }}
-
+# Head
 You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
 
 Jekyll requires blog post files to be named according to the following format:
@@ -16,6 +17,7 @@ Jekyll requires blog post files to be named according to the following format:
 
 Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `MARKUP` is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.
 
+# Head 2
 Jekyll also offers powerful support for code snippets:
 
 {% highlight ruby %}
