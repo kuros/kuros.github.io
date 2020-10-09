@@ -22,7 +22,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   This is the place where I collect and share all the knowledge I have learned and gained over the period of time.
   This blog is mainily focused on capturing the technical learning. 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: https://kuros.in
+url: "https://kuros.in"
 
 # Site Settings
 locale                   : "en-US"
