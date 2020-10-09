@@ -1,16 +1,3 @@
----
-title: Random-JPA
-description: Light weight utility to generate test data. Random-JPA takes care of the relationship between tables and creates a hierarchy for all the parent entities.
-image: https://source.unsplash.com/weekly?water/1200x900?a=.png
-pagination:
-enabled: true
-pagination:
- enabled: true
- category: random-jpa
- permalink: /:num/
- sort_reverse: false
----
-
 <section class="hero page-hero random-images">
     <div class="inner-hero text-container">
         <div class="hero-text-container">
@@ -23,21 +10,10 @@ pagination:
 <section>
     <div class="text-container">
         <ul class="blog-posts">
-            {% include list-posts.html posts=paginator.posts %}
+            
+
         </ul>
 
-        {% if paginator.total_pages > 1 %}
-        <div class="pagination">
-            {% if paginator.previous_page %}
-            <a href="{{ site.baseurl }}{{ paginator.previous_page_path }}" class="previous btn">&larr; Older posts</a>
-            {% endif %}
-
-            <span class="page_number ">{{ paginator.page }} of {{ paginator.total_pages }}</span>
-
-            {% if paginator.next_page %}
-            <a href="{{ site.baseurl }}{{ paginator.next_page_path }}" class="next btn">Newer posts &rarr;</a>
-            {% endif %}
-        </div>
-        {% endif %}
+        
     </div>
 </section>
