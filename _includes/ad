@@ -1,0 +1,17 @@
+{% if jekyll.environment != "prod" %}
+<div style="width: 100%; height: 100px; background-color: blue"> </div>
+
+{% endif %}
+
+{% if jekyll.environment == "prod" %}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+{% endif %}
