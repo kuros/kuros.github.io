@@ -1,0 +1,1031 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Handling gRPC Authorization using Context in Java - Kuros.in</title>
+<meta name="description" content="Once we have authenticated the users, let’s see how to restrict the access by roles.">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Handling gRPC Authorization using Context in Java">
+<meta property="og:url" content="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/">
+
+
+  <meta property="og:description" content="Once we have authenticated the users, let’s see how to restrict the access by roles.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-08-01T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jFirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Handling gRPC Authorization using Context in Java">
+    <meta itemprop="description" content="In the Grpc world, we have secured our application by encrypting the channel and authenticating the requests using interceptors. So we have secured our application but we still do have control over which service can be accessed by whom.">
+    <meta itemprop="datePublished" content="2019-08-01T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Handling gRPC Authorization using Context in Java
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            
+            
+              <div class="sidebar_ads">
+                
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sky-scrapper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="5730852605"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+              </div>
+              
+            
+          </aside>
+        
+        
+        <p>In the Grpc world, we have secured our application by <a href="/grpc/2019/01/grpc-authentication/">encrypting the channel</a> and authenticating the requests using <a href="/grpc/2019/01/grpc-interceptors/">interceptors</a>. So we have secured our application but we still do have control over which service can be accessed by whom.</p>
+
+<p>To handle authorization, we will leverage <em>Context</em> provided by grpc to pass UserInfo into services.</p>
+
+<p>Time to setup our project.</p>
+<h1 id="pom">Pom</h1>
+<p>We will create a maven project add the following dependencies:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;dependencies&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>io.grpc<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>grpc-all<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>1.18.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+
+        <span class="c">&lt;!-- https://mvnrepository.com/artifact/io.netty/netty-tcnative-boringssl-static --&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>io.netty<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>netty-tcnative-boringssl-static<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>2.0.20.Final<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+
+<p>We also need to add plugin to build protobuf files during compile time.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;build&gt;</span>
+        <span class="nt">&lt;extensions&gt;</span>
+            <span class="nt">&lt;extension&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>kr.motd.maven<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>os-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>1.6.1<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/extension&gt;</span>
+        <span class="nt">&lt;/extensions&gt;</span>
+        <span class="nt">&lt;plugins&gt;</span>
+            <span class="nt">&lt;plugin&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.xolstice.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>protobuf-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>0.6.1<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;configuration&gt;</span>
+                    <span class="nt">&lt;protocArtifact&gt;</span>
+                        com.google.protobuf:protoc:3.5.1:exe:${os.detected.classifier}
+                    <span class="nt">&lt;/protocArtifact&gt;</span>
+                    <span class="nt">&lt;pluginId&gt;</span>grpc-java<span class="nt">&lt;/pluginId&gt;</span>
+                    <span class="nt">&lt;pluginArtifact&gt;</span>
+                        io.grpc:protoc-gen-grpc-java:1.18.0:exe:${os.detected.classifier}
+                    <span class="nt">&lt;/pluginArtifact&gt;</span>
+                <span class="nt">&lt;/configuration&gt;</span>
+                <span class="nt">&lt;executions&gt;</span>
+                    <span class="nt">&lt;execution&gt;</span>
+                        <span class="nt">&lt;goals&gt;</span>
+                            <span class="nt">&lt;goal&gt;</span>compile<span class="nt">&lt;/goal&gt;</span>
+                            <span class="nt">&lt;goal&gt;</span>compile-custom<span class="nt">&lt;/goal&gt;</span>
+                        <span class="nt">&lt;/goals&gt;</span>
+                    <span class="nt">&lt;/execution&gt;</span>
+                <span class="nt">&lt;/executions&gt;</span>
+            <span class="nt">&lt;/plugin&gt;</span>
+        <span class="nt">&lt;/plugins&gt;</span>
+    <span class="nt">&lt;/build&gt;</span>
+</code></pre></div></div>
+
+<h1 id="grpc-client">Grpc client</h1>
+
+<p>We will add an interceptor to add provide auth token in request:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">package</span> <span class="nn">in.kuros.blog.grpc.client</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.grpc.CallOptions</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Channel</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ClientCall</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ClientInterceptor</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ForwardingClientCall</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Metadata</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Metadata.Key</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.MethodDescriptor</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthTokenProvideInterceptor</span> <span class="kd">implements</span> <span class="nc">ClientInterceptor</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="nc">String</span> <span class="n">authToken</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AuthTokenProvideInterceptor</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">authToken</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">authToken</span> <span class="o">=</span> <span class="n">authToken</span><span class="o">;</span>
+    <span class="o">}</span>
+
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="nc">ReqT</span><span class="o">,</span> <span class="nc">RespT</span><span class="o">&gt;</span> <span class="nc">ClientCall</span><span class="o">&lt;</span><span class="nc">ReqT</span><span class="o">,</span> <span class="nc">RespT</span><span class="o">&gt;</span> <span class="nf">interceptCall</span><span class="o">(</span><span class="kd">final</span> <span class="nc">MethodDescriptor</span><span class="o">&lt;</span><span class="nc">ReqT</span><span class="o">,</span> <span class="nc">RespT</span><span class="o">&gt;</span> <span class="n">methodDescriptor</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">CallOptions</span> <span class="n">callOptions</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">Channel</span> <span class="n">channel</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nc">ForwardingClientCall</span><span class="o">.</span><span class="na">SimpleForwardingClientCall</span><span class="o">&lt;</span><span class="nc">ReqT</span><span class="o">,</span> <span class="nc">RespT</span><span class="o">&gt;(</span><span class="n">channel</span><span class="o">.</span><span class="na">newCall</span><span class="o">(</span><span class="n">methodDescriptor</span><span class="o">,</span> <span class="n">callOptions</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Listener</span><span class="o">&lt;</span><span class="nc">RespT</span><span class="o">&gt;</span> <span class="n">responseListener</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">Metadata</span> <span class="n">headers</span><span class="o">)</span> <span class="o">{</span>
+
+                <span class="n">headers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="nc">Key</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"auth_token"</span><span class="o">,</span> <span class="nc">Metadata</span><span class="o">.</span><span class="na">ASCII_STRING_MARSHALLER</span><span class="o">),</span> <span class="n">authToken</span><span class="o">);</span>
+                <span class="kd">super</span><span class="o">.</span><span class="na">start</span><span class="o">(</span><span class="n">responseListener</span><span class="o">,</span> <span class="n">headers</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>Now we will create two different clients, one with admin role and other with user role.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Client with admin role &amp; user role</span>
+
+<span class="kn">package</span> <span class="nn">in.kuros.blog.grpc.client</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.AddResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.CalculatorGrpc</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.CalculatorGrpc.CalculatorBlockingStub</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.OperandRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ManagedChannel</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ManagedChannelBuilder</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcClient</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"****** Admin Role ******"</span><span class="o">);</span>
+        <span class="n">execute</span><span class="o">(</span><span class="s">"admin_token"</span><span class="o">);</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"****** User Role ******"</span><span class="o">);</span>
+        <span class="n">execute</span><span class="o">(</span><span class="s">"user_token"</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">authToken</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="nc">ManagedChannel</span> <span class="n">channel</span> <span class="o">=</span> <span class="nc">ManagedChannelBuilder</span><span class="o">.</span><span class="na">forAddress</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">usePlaintext</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">intercept</span><span class="o">(</span><span class="k">new</span> <span class="nc">AuthTokenProvideInterceptor</span><span class="o">(</span><span class="n">authToken</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="nc">CalculatorBlockingStub</span> <span class="n">blockingStub</span> <span class="o">=</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">newBlockingStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+        <span class="kd">final</span> <span class="nc">AddResponse</span> <span class="n">blockResponse</span> <span class="o">=</span> <span class="n">blockingStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">());</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"blocking call result: "</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+        <span class="n">channel</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>Here we have created two message channels with different authentication roles, one with admin role &amp; other with user, a typical, application requirement.</p>
+
+<h1 id="user-service-server-side">User Service (Server Side)</h1>
+
+<p>Now that we have our client ready, lets focus on creating a server.</p>
+
+<p>We will create a service to validate token and return a UserInfo model will username &amp; roles:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">in.kuros.blog.grpc.server.users</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.server.users.model.UserInfo</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">UserService</span> <span class="o">{</span>
+
+    <span class="nc">UserInfo</span> <span class="nf">validate</span><span class="o">(</span><span class="nc">String</span> <span class="n">authToken</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">in.kuros.blog.grpc.server.users</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.server.users.model.UserInfo</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Status</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.StatusRuntimeException</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserServiceImpl</span> <span class="kd">implements</span> <span class="nc">UserService</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">UserInfo</span> <span class="nf">validate</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">authToken</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">authToken</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">StatusRuntimeException</span><span class="o">(</span><span class="nc">Status</span><span class="o">.</span><span class="na">UNAUTHENTICATED</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="nf">loadUserByAuthToken</span><span class="o">(</span><span class="n">authToken</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="nc">UserInfo</span> <span class="nf">loadUserByAuthToken</span><span class="o">(</span><span class="kd">final</span> <span class="nc">String</span> <span class="n">authToken</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// Fetch from DB, here I am validating in line</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">authToken</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"admin_token"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">roles</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+            <span class="n">roles</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"ADMIN"</span><span class="o">);</span>
+            <span class="n">roles</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"USER"</span><span class="o">);</span>
+
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">UserInfo</span><span class="o">(</span><span class="s">"Rohit"</span><span class="o">,</span> <span class="n">roles</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">roles</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+        <span class="n">roles</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"USER"</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">UserInfo</span><span class="o">(</span><span class="s">"John"</span><span class="o">,</span> <span class="n">roles</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Here we have two users <em>Rohit</em> with <em>ADMIN</em> access &amp; John with only <em>USER</em> access.</p>
+
+<h1 id="authentication-interceptor-server-side">Authentication Interceptor (Server Side)</h1>
+
+<p>As explained in my previous article, we will first add interceptor on server side to validate auth token. But in this case once the user is validated we will setup the user info into <strong>Context</strong></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">in.kuros.blog.grpc.server</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.server.users.UserService</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.server.users.UserServiceImpl</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.server.users.model.UserInfo</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Context</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Contexts</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Metadata</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Metadata.Key</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerCall</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerCall.Listener</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerCallHandler</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerInterceptor</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">AuthorizationInterceptor</span> <span class="kd">implements</span> <span class="nc">ServerInterceptor</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Context</span><span class="o">.</span><span class="na">Key</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="no">USER_DETAILS</span> <span class="o">=</span> <span class="nc">Context</span><span class="o">.</span><span class="na">key</span><span class="o">(</span><span class="s">"user_details"</span><span class="o">);</span>
+
+    <span class="kd">private</span> <span class="nc">UserService</span> <span class="n">userService</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">AuthorizationInterceptor</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">userService</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UserServiceImpl</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="o">&lt;</span><span class="nc">ReqT</span><span class="o">,</span> <span class="nc">RespT</span><span class="o">&gt;</span> <span class="nc">Listener</span><span class="o">&lt;</span><span class="nc">ReqT</span><span class="o">&gt;</span> <span class="nf">interceptCall</span><span class="o">(</span><span class="kd">final</span> <span class="nc">ServerCall</span><span class="o">&lt;</span><span class="nc">ReqT</span><span class="o">,</span> <span class="nc">RespT</span><span class="o">&gt;</span> <span class="n">serverCall</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">Metadata</span> <span class="n">metadata</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">ServerCallHandler</span><span class="o">&lt;</span><span class="nc">ReqT</span><span class="o">,</span> <span class="nc">RespT</span><span class="o">&gt;</span> <span class="n">serverCallHandler</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="kd">final</span> <span class="nc">String</span> <span class="n">auth_token</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="nc">Key</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"auth_token"</span><span class="o">,</span> <span class="nc">Metadata</span><span class="o">.</span><span class="na">ASCII_STRING_MARSHALLER</span><span class="o">));</span>
+
+        <span class="kd">final</span> <span class="nc">UserInfo</span> <span class="n">userInfo</span> <span class="o">=</span> <span class="n">userService</span><span class="o">.</span><span class="na">validate</span><span class="o">(</span><span class="n">auth_token</span><span class="o">);</span>
+
+        <span class="nc">Context</span> <span class="n">context</span> <span class="o">=</span> <span class="nc">Context</span><span class="o">.</span><span class="na">current</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">withValue</span><span class="o">(</span><span class="no">USER_DETAILS</span><span class="o">,</span> <span class="n">userInfo</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="nc">Contexts</span><span class="o">.</span><span class="na">interceptCall</span><span class="o">(</span><span class="n">context</span><span class="o">,</span> <span class="n">serverCall</span><span class="o">,</span> <span class="n">metadata</span><span class="o">,</span> <span class="n">serverCallHandler</span><span class="o">);</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>At line 17, we created a <strong>ContextKey</strong>, at line 31, we are getting context, this context is created per request, and we will set our user info within this context.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="the-service">The Service</h1>
+<p>Next we have our Calculator service, at line 17 we are getting UserInfo using the key.</p>
+
+<p><strong>Note:</strong> The key/value stored in the Context are mapped by reference key, so if you create another key object with same value, it would be treated as two different keys.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">in.kuros.blog.grpc.server</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.AddResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.CalculatorGrpc.CalculatorImplBase</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.OperandRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.blog.grpc.server.users.model.UserInfo</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.Status</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.StatusRuntimeException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.stub.StreamObserver</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CalculatorImpl</span> <span class="kd">extends</span> <span class="nc">CalculatorImplBase</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="kd">final</span> <span class="nc">OperandRequest</span> <span class="n">request</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">StreamObserver</span><span class="o">&lt;</span><span class="nc">AddResponse</span><span class="o">&gt;</span> <span class="n">responseObserver</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getX</span><span class="o">()</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="na">getY</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="nc">UserInfo</span> <span class="n">userInfo</span> <span class="o">=</span> <span class="o">(</span><span class="nc">UserInfo</span><span class="o">)</span> <span class="nc">AuthorizationInterceptor</span><span class="o">.</span><span class="na">USER_DETAILS</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">Thread</span><span class="o">.</span><span class="na">currentThread</span><span class="o">().</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">" --- "</span> <span class="o">+</span> <span class="n">userInfo</span><span class="o">);</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">userInfo</span><span class="o">.</span><span class="na">getRoles</span><span class="o">().</span><span class="na">contains</span><span class="o">(</span><span class="s">"ADMIN"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="kd">final</span> <span class="nc">AddResponse</span> <span class="n">addResponse</span> <span class="o">=</span> <span class="nc">AddResponse</span>
+                    <span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">sum</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+            <span class="n">responseObserver</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="n">addResponse</span><span class="o">);</span>
+            <span class="n">responseObserver</span><span class="o">.</span><span class="na">onCompleted</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">responseObserver</span><span class="o">.</span><span class="na">onError</span><span class="o">(</span><span class="k">new</span> <span class="nc">StatusRuntimeException</span><span class="o">(</span><span class="nc">Status</span><span class="o">.</span><span class="na">PERMISSION_DENIED</span><span class="o">));</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Here we are saying that add operation will only be authorised to ADMIN users, else a permission denied exception is thrown.</p>
+
+<h1 id="grpc-server">gRPC Server</h1>
+<p>Finally, you assemple the server:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">in.kuros.blog.grpc.server</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">io.grpc.Server</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerBuilder</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcServer</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="nc">ServerBuilder</span><span class="o">.</span><span class="na">forPort</span><span class="o">(</span><span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">addService</span><span class="o">(</span><span class="k">new</span> <span class="nc">CalculatorImpl</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">intercept</span><span class="o">(</span><span class="k">new</span> <span class="nc">AuthorizationInterceptor</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">server</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now lets run our server/client applications, and see how it works.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Server logs</span>
+
+grpc-default-executor-0 <span class="nt">---</span> UserInfo<span class="o">{</span><span class="nv">userName</span><span class="o">=</span><span class="s1">'Rohit'</span>, <span class="nv">roles</span><span class="o">=[</span>ADMIN, USER]<span class="o">}</span>
+grpc-default-executor-0 <span class="nt">---</span> UserInfo<span class="o">{</span><span class="nv">userName</span><span class="o">=</span><span class="s1">'John'</span>, <span class="nv">roles</span><span class="o">=[</span>USER]<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Client logs</span>
+
+<span class="k">******</span> Admin Role <span class="k">******</span>
+blocking call result: 30
+<span class="k">******</span> User Role <span class="k">******</span>
+Exception <span class="k">in </span>thread <span class="s2">"main"</span> io.grpc.StatusRuntimeException: PERMISSION_DENIED
+	at io.grpc.stub.ClientCalls.toStatusRuntimeException<span class="o">(</span>ClientCalls.java:233<span class="o">)</span>
+	at io.grpc.stub.ClientCalls.getUnchecked<span class="o">(</span>ClientCalls.java:214<span class="o">)</span>
+	at io.grpc.stub.ClientCalls.blockingUnaryCall<span class="o">(</span>ClientCalls.java:139<span class="o">)</span>
+	at <span class="k">in</span>.kuros.blog.grpc.CalculatorGrpc<span class="nv">$CalculatorBlockingStub</span>.add<span class="o">(</span>CalculatorGrpc.java:157<span class="o">)</span>
+	at <span class="k">in</span>.kuros.blog.grpc.client.GrpcClient.execute<span class="o">(</span>GrpcClient.java:31<span class="o">)</span>
+	at <span class="k">in</span>.kuros.blog.grpc.client.GrpcClient.main<span class="o">(</span>GrpcClient.java:18<span class="o">)</span>
+</code></pre></div></div>
+
+<p>As we can see request made my admin channel can successfully access the api but got PERMISSION_DENIED when we tried to access with normal user.</p>
+
+<p>Hurray!!! we have added one more layer to our security. <a href="https://github.com/kuros/grpc/tree/master/grpc-context">Find the code here.</a></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/grpc" class="page__taxonomy-item" rel="tag">gRPC</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-08-01T00:00:00+05:30">August 1, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Handling+gRPC+Authorization+using+Context+in+Java%20https%3A%2F%2Fkuros.in%2Fgrpc%2F2019%2F08%2Fhandling-grpc-authorization-using-context%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fgrpc%2F2019%2F08%2Fhandling-grpc-authorization-using-context%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fgrpc%2F2019%2F08%2Fhandling-grpc-authorization-using-context%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/spring/spring-cloud/2019/06/spring-cloud-stream-with-rabbitmq/" class="pagination--pager" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq
+">Previous</a>
+    
+    
+      <a href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" class="pagination--pager" title="Making parallel service calls in microservice architecture.
+">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/2020/05/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="permalink">Kafka Messaging with Spring Boot
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/2020/05/getting-started-with-kafka-install-and-messaging/" rel="permalink">Getting started with kafka messaging
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/" rel="permalink">jFirebase - Entity Framework for Firebase/Firestore
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I decided to tryout firebase for my personal projects &amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when d...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="permalink">Making parallel service calls in microservice architecture.
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to curren...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

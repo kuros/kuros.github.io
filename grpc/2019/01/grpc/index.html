@@ -1,0 +1,1011 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>gRPC &amp; Java - Kuros.in</title>
+<meta name="description" content="Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers.  If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice.">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="gRPC &amp; Java">
+<meta property="og:url" content="https://kuros.in/grpc/2019/01/grpc/">
+
+
+  <meta property="og:description" content="Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers.  If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-01-25T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/grpc/2019/01/grpc/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jFirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="gRPC &amp; Java">
+    <meta itemprop="description" content="Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers.If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice.">
+    <meta itemprop="datePublished" content="2019-01-25T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">gRPC &amp; Java
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            
+            
+              <div class="sidebar_ads">
+                
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sky-scrapper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="5730852605"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+              </div>
+              
+            
+          </aside>
+        
+        
+        <p>Google released gRPC as the new open source framework in the year 2015, since then it has changing the way data is exchanged between services across multiple data centers.</p>
+
+<p>If you looking to build a truly language independent micro service which is reliable, high performing, easily scalable in distributed environment. Then definitely gRPC must be your choice.</p>
+
+<h1 id="what-is-grpc">What is gRPC?</h1>
+
+<p>In gRPC, a client application can directly call server methods as if they are local to the client. This makes developer’s task easy to create distributed services.</p>
+
+<p><img alt="String-2" src="/images/2019/grpc/grpc-1.svg" lazyload="" width="600px" /></p>
+
+<p>To put it simply, You create a prototype of a service with its request &amp; response, share it across server &amp; client and they generate respective methods and implement them, now client invokes the method with request which is transferred to server, the method executes on server and returns the response back to client, but at client’s end it would seem as working with a local method.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>In the real world, the biggest challenge is handling database in micro services, having a distributed persistence layer could work wonders.</p>
+
+<h1 id="core-feature">Core Feature</h1>
+
+<p>Some of the important features of gRPC:</p>
+
+<ol>
+  <li>It support 10+ languages, you can write your service in java and even a python client will be able to access it.</li>
+  <li>It uses http 2 protocol, its highly efficient for working with large volume of data.</li>
+  <li>It provides are very simple service declaration, easy to understand.</li>
+  <li>It support bidirectional streams.</li>
+  <li>It provides lot of plugins such as authentication, tracing, load balancing &amp; health check.</li>
+</ol>
+
+<h1 id="maven-dependencies">Maven Dependencies</h1>
+<p>Lets add grpc dependencies:</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;dependencies&gt;</span>
+        <span class="nt">&lt;dependency&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>io.grpc<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>grpc-all<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>1.18.0<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;/dependency&gt;</span>
+    <span class="nt">&lt;/dependencies&gt;</span>
+</code></pre></div></div>
+<h1 id="define-service">Define Service</h1>
+
+<p>Let us create a simple calculator service to add two value:</p>
+
+<p>We will start by defining a method with parameters and return value, but this has to be a prototype.</p>
+
+<p>We do this by creating .proto file using <a href="https://developers.google.com/protocol-buffers/docs/overview">protocol buffers</a>, there are used to describe messages.</p>
+
+<p>So we create <strong>calculator.proto</strong> under <strong>/src/main/proto</strong></p>
+
+<div class="language-proto highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">syntax</span> <span class="o">=</span> <span class="s">"proto3"</span><span class="p">;</span> <span class="c1">//this directs compiler to use version 3</span>
+
+<span class="k">option</span> <span class="na">java_multiple_files</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span> <span class="c1">//we want generate different java files after compilation. By default all the classes are generated in a single file.</span>
+<span class="kn">package</span> <span class="nn">in</span><span class="o">.</span><span class="n">kuros.grpc</span><span class="p">;</span> <span class="c1">// defines the package structure of generated classes.</span>
+
+<span class="c1">//request payload</span>
+<span class="kd">message</span> <span class="nc">OperandRequest</span> <span class="p">{</span>
+    <span class="kt">int32</span> <span class="na">X</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// message with type, along with tag: 1</span>
+    <span class="kt">int32</span> <span class="na">Y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// tag: 2</span>
+<span class="p">}</span>
+
+<span class="c1">//response payload</span>
+<span class="kd">message</span> <span class="nc">AddResponse</span> <span class="p">{</span>
+    <span class="kt">int64</span> <span class="na">result</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// service contract</span>
+<span class="kd">service</span> <span class="n">Calculator</span> <span class="p">{</span>
+    <span class="k">rpc</span> <span class="n">add</span><span class="p">(</span><span class="n">OperandRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">AddResponse</span><span class="p">);</span> <span class="c1">// method name: add, parameter type: OperandRequest, response type: AddResponse </span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>A unique number needs to be assigned to each attribute, called as the tag. This tag is used by the protocol buffer to represent the attribute instead of using the attribute name.
+So, unlike JSON where we would pass attribute name <strong>X</strong> every single time, protocol buffer would use the number 1 to represent <strong>X</strong>. Response payload definition is similar to the request.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>So at the end after generation, we will have three classes (in terms of java), Operands, AddResponse &amp; Calculator which takes operands and returns addResponse;</p>
+
+<h1 id="generating-class-files-for-java">Generating class files for java.</h1>
+
+<p>Now we pass the HelloService.proto file to the protocol buffer compiler protoc to generate the Java files. There are multiple ways to trigger this.</p>
+
+<h3 id="protocol-buffer-compiler">Protocol Buffer compiler</h3>
+
+<p><a href="https://developers.google.com/protocol-buffers/docs/downloads">Download</a> the compiler, and follow readme.txt</p>
+
+<p>Use the command to generate code</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>protoc <span class="nt">-I</span><span class="o">=</span><span class="nv">$SRC_DIR</span> <span class="nt">--java_out</span><span class="o">=</span><span class="nv">$DST_DIR</span> <span class="nv">$SRC_DIR</span>/proto/calculator.proto
+</code></pre></div></div>
+
+<h3 id="maven-compiler-plugin">Maven compiler plugin</h3>
+
+<p>You don’t want to execute command to generate code every time, so we will make use of maven plugin to execute at build time</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;build&gt;</span>
+        <span class="nt">&lt;extensions&gt;</span>
+            <span class="nt">&lt;extension&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>kr.motd.maven<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>os-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>1.6.1<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;/extension&gt;</span>
+        <span class="nt">&lt;/extensions&gt;</span>
+        <span class="nt">&lt;plugins&gt;</span>
+            <span class="nt">&lt;plugin&gt;</span>
+                <span class="nt">&lt;groupId&gt;</span>org.xolstice.maven.plugins<span class="nt">&lt;/groupId&gt;</span>
+                <span class="nt">&lt;artifactId&gt;</span>protobuf-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+                <span class="nt">&lt;version&gt;</span>0.6.1<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;configuration&gt;</span>
+                    <span class="nt">&lt;protocArtifact&gt;</span>
+                        com.google.protobuf:protoc:3.5.1:exe:${os.detected.classifier}
+                    <span class="nt">&lt;/protocArtifact&gt;</span>
+                    <span class="nt">&lt;pluginId&gt;</span>grpc-java<span class="nt">&lt;/pluginId&gt;</span>
+                    <span class="nt">&lt;pluginArtifact&gt;</span>
+                        io.grpc:protoc-gen-grpc-java:1.18.0:exe:${os.detected.classifier}
+                    <span class="nt">&lt;/pluginArtifact&gt;</span>
+                <span class="nt">&lt;/configuration&gt;</span>
+                <span class="nt">&lt;executions&gt;</span>
+                    <span class="nt">&lt;execution&gt;</span>
+                        <span class="nt">&lt;goals&gt;</span>
+                            <span class="nt">&lt;goal&gt;</span>compile<span class="nt">&lt;/goal&gt;</span>
+                            <span class="nt">&lt;goal&gt;</span>compile-custom<span class="nt">&lt;/goal&gt;</span>
+                        <span class="nt">&lt;/goals&gt;</span>
+                    <span class="nt">&lt;/execution&gt;</span>
+                <span class="nt">&lt;/executions&gt;</span>
+            <span class="nt">&lt;/plugin&gt;</span>
+        <span class="nt">&lt;/plugins&gt;</span>
+    <span class="nt">&lt;/build&gt;</span>
+</code></pre></div></div>
+
+<p>The <em>os-maven-plugin</em> extension/plugin generates various useful platform-dependent project properties like ${os.detected.classifier}</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="generated-files">Generated files</h2>
+
+<p>Once you the run the generation, some key files will be generated under <strong>/target/generated-sources/protobuf</strong></p>
+<ul>
+  <li>OperandRequest.java - contains the OperandRequest definition.</li>
+  <li>AddResponse.java - contains the AddResponse definition.</li>
+  <li>CalculatorGrpc.java - this contains abstract inner class CalculatorImplBase which provides an implementation wrapper.</li>
+</ul>
+
+<h1 id="server-side-implementation">Server Side Implementation</h1>
+
+<p>Now its time write the addition logic on the server side. so we will create an implementation class <em>CalculatorImpl</em> which will extend CalculatorImplBase and provide implementation.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">in.kuros.grpc.AddResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.grpc.CalculatorGrpc.CalculatorImplBase</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.grpc.OperandRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.stub.StreamObserver</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CalculatorImpl</span> <span class="kd">extends</span> <span class="nc">CalculatorImplBase</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="kd">final</span> <span class="nc">OperandRequest</span> <span class="n">request</span><span class="o">,</span> <span class="kd">final</span> <span class="nc">StreamObserver</span><span class="o">&lt;</span><span class="nc">AddResponse</span><span class="o">&gt;</span> <span class="n">responseObserver</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="kt">long</span> <span class="n">sum</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getX</span><span class="o">()</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="na">getY</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="nc">AddResponse</span> <span class="n">addResponse</span> <span class="o">=</span> <span class="nc">AddResponse</span>
+                <span class="o">.</span><span class="na">newBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setResult</span><span class="o">(</span><span class="n">sum</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Sleeping to 5 sec"</span><span class="o">);</span>
+            <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">5</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">responseObserver</span><span class="o">.</span><span class="na">onNext</span><span class="o">(</span><span class="n">addResponse</span><span class="o">);</span>
+        <span class="n">responseObserver</span><span class="o">.</span><span class="na">onCompleted</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>We have provide a sleep of 5 sec to simulate long taking operations.</p>
+
+<h1 id="start-the-grpc-server">start the gRPC server</h1>
+<p>Next, we need to start the gRPC server to listen for incoming requests:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">io.grpc.Server</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ServerBuilder</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcServer</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="kd">final</span> <span class="nc">Server</span> <span class="n">server</span> <span class="o">=</span> <span class="nc">ServerBuilder</span><span class="o">.</span><span class="na">forPort</span><span class="o">(</span><span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">addService</span><span class="o">(</span><span class="k">new</span> <span class="nc">CalculatorImpl</span><span class="o">())</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="n">server</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">server</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>So, here we have created a serve to listen at port 8080 for incoming request, registered our calculator service. In our example, we will call awaitTermination() to keep the server running in foreground blocking the prompt.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="creating-a-client">Creating a client</h1>
+
+<p>First we need to create a gRPC channel for our stub, specifying the server address and port we want to connect to.</p>
+
+<p>We use a <strong>ManagedChannelBuilder</strong> to create the channel.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ManagedChannel</span> <span class="n">channel</span> <span class="o">=</span> <span class="nc">ManagedChannelBuilder</span><span class="o">.</span><span class="na">forAddress</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">usePlaintext</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</code></pre></div></div>
+<p>Now we can use the channel to create our stubs using the newStub and newBlockingStub methods provided in the RouteGuideGrpc class we generated from our .proto.</p>
+
+<h2 id="making-sync-calls">making sync calls</h2>
+
+<p>We create a blocking stub</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">final</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorBlockingStub</span> <span class="n">blockingStub</span> <span class="o">=</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">newBlockingStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making blocking call"</span><span class="o">);</span>
+    <span class="kd">final</span> <span class="nc">AddResponse</span> <span class="n">blockResponse</span> <span class="o">=</span> <span class="n">blockingStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">());</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"blocking call result: "</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+</code></pre></div></div>
+
+<h2 id="making-async-calls">making async calls</h2>
+
+<p>We use newStub method to make aysnc calls, but we need to provide a StreamObserver implementation to it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">final</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorStub</span> <span class="n">asyncStub</span> <span class="o">=</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">newStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+        
+    <span class="nc">StreamObserver</span><span class="o">&lt;</span><span class="nc">AddResponse</span><span class="o">&gt;</span> <span class="n">streamObserver</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StreamObserver</span><span class="o">&lt;</span><span class="nc">AddResponse</span><span class="o">&gt;()</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="kd">final</span> <span class="nc">AddResponse</span> <span class="n">addResponse</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"async call result: "</span> <span class="o">+</span> <span class="n">addResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+        <span class="o">}</span>
+    
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span>
+        <span class="o">}</span>
+    
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCompleted</span><span class="o">()</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Async call stopped listening"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">};</span>
+
+
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making blocking call"</span><span class="o">);</span>
+    <span class="n">asyncStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">(),</span> <span class="n">streamObserver</span><span class="o">);</span>
+    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Async invoked"</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+    <span class="n">channel</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>complete client code:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">in.kuros.grpc.AddResponse</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.grpc.CalculatorGrpc</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">in.kuros.grpc.OperandRequest</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ManagedChannel</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.ManagedChannelBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">io.grpc.stub.StreamObserver</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.concurrent.TimeUnit</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GrpcClient</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">InterruptedException</span> <span class="o">{</span>
+        <span class="nc">ManagedChannel</span> <span class="n">channel</span> <span class="o">=</span> <span class="nc">ManagedChannelBuilder</span><span class="o">.</span><span class="na">forAddress</span><span class="o">(</span><span class="s">"localhost"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">usePlaintext</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+
+        <span class="kd">final</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorBlockingStub</span> <span class="n">blockingStub</span> <span class="o">=</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">newBlockingStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making blocking call"</span><span class="o">);</span>
+        <span class="kd">final</span> <span class="nc">AddResponse</span> <span class="n">blockResponse</span> <span class="o">=</span> <span class="n">blockingStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">());</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"blocking call result: "</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+
+        <span class="kd">final</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">CalculatorStub</span> <span class="n">asyncStub</span> <span class="o">=</span> <span class="nc">CalculatorGrpc</span><span class="o">.</span><span class="na">newStub</span><span class="o">(</span><span class="n">channel</span><span class="o">);</span>
+
+        <span class="nc">StreamObserver</span><span class="o">&lt;</span><span class="nc">AddResponse</span><span class="o">&gt;</span> <span class="n">streamObserver</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StreamObserver</span><span class="o">&lt;</span><span class="nc">AddResponse</span><span class="o">&gt;()</span> <span class="o">{</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onNext</span><span class="o">(</span><span class="kd">final</span> <span class="nc">AddResponse</span> <span class="n">addResponse</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"async call result: "</span> <span class="o">+</span> <span class="n">addResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onError</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Throwable</span> <span class="n">throwable</span><span class="o">)</span> <span class="o">{</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">throwable</span><span class="o">);</span>
+            <span class="o">}</span>
+
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCompleted</span><span class="o">()</span> <span class="o">{</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Async call stopped listening"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+
+
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Making blocking call"</span><span class="o">);</span>
+        <span class="n">asyncStub</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="nc">OperandRequest</span><span class="o">.</span><span class="na">newBuilder</span><span class="o">().</span><span class="na">setX</span><span class="o">(</span><span class="mi">10</span><span class="o">).</span><span class="na">setY</span><span class="o">(</span><span class="mi">20</span><span class="o">).</span><span class="na">build</span><span class="o">(),</span> <span class="n">streamObserver</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Async invoked"</span> <span class="o">+</span> <span class="n">blockResponse</span><span class="o">.</span><span class="na">getResult</span><span class="o">());</span>
+
+        <span class="n">channel</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">10</span><span class="o">,</span> <span class="nc">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Next, we need to create a stub which we’ll use to make the actual remote call to hello(). <strong>The stub is the primary way for clients to interacts with the server</strong>. When using auto generate stubs, the stub class will have constructors for wrapping the channel.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>In this post we have learned how to work with a gRPC Server/Client in java. As usual find the <a href="https://github.com/kuros/grpc/tree/master/grpc-java">complete code</a></p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/grpc" class="page__taxonomy-item" rel="tag">gRPC</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-25T00:00:00+05:30">January 25, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=gRPC+%26+Java%20https%3A%2F%2Fkuros.in%2Fgrpc%2F2019%2F01%2Fgrpc%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fgrpc%2F2019%2F01%2Fgrpc%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fgrpc%2F2019%2F01%2Fgrpc%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/random-jpa/2019/01/1-birth/" class="pagination--pager" title="Why Random-JPA?
+">Previous</a>
+    
+    
+      <a href="/grpc/2019/01/grpc-authentication/" class="pagination--pager" title="gRPC Authentication in Java
+">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/2020/05/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="permalink">Kafka Messaging with Spring Boot
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/2020/05/getting-started-with-kafka-install-and-messaging/" rel="permalink">Getting started with kafka messaging
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/" rel="permalink">jFirebase - Entity Framework for Firebase/Firestore
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I decided to tryout firebase for my personal projects &amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when d...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="permalink">Making parallel service calls in microservice architecture.
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to curren...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

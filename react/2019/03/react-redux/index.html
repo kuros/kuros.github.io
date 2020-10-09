@@ -1,0 +1,1080 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>React Redux with typescript - Kuros.in</title>
+<meta name="description" content="In this article we will focus on configuring redux, creating our first action, reducer &amp; store.">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="React Redux with typescript">
+<meta property="og:url" content="https://kuros.in/react/2019/03/react-redux/">
+
+
+  <meta property="og:description" content="In this article we will focus on configuring redux, creating our first action, reducer &amp; store.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-03-18T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/react/2019/03/react-redux/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jFirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="React Redux with typescript">
+    <meta itemprop="description" content="In my earlier post, I had explained the basic principle of redux. Also we have created our first react app.">
+    <meta itemprop="datePublished" content="2019-03-18T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">React Redux with typescript
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            
+            
+              <div class="sidebar_ads">
+                
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sky-scrapper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="5730852605"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+              </div>
+              
+            
+          </aside>
+        
+        
+        <p>In my earlier post, I had explained the <a href="/react/2019/03/react-basics/">basic principle of redux</a>. Also we have created <a href="/react/2019/03/react-with-typescript/">our first react app</a>.</p>
+
+<p>I will be extending the same example to integrate redux in it, you can download the <a href="https://github.com/kuros/blog-code/tree/master/react/first-app">start code here.</a></p>
+
+<p>Earlier we have created Books Page, which will contain the details of all the Book in the library. For now this component has a simple form to add books.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/components/book/BookPage.tsx</span>
+
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">ChangeEvent</span><span class="p">,</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">FormEvent</span><span class="p">,</span> <span class="nx">ReactNode</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+
+<span class="kd">class</span> <span class="nx">BookPage</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="o">&lt;</span><span class="nx">BookProps</span><span class="p">,</span> <span class="nx">BookState</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="kd">constructor</span><span class="p">(</span><span class="na">props</span> <span class="p">:</span> <span class="nx">BookProps</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="dl">''</span><span class="p">}};</span>
+    <span class="p">}</span>
+
+    <span class="nx">render</span><span class="p">():</span> <span class="nx">ReactNode</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">form</span> <span class="na">onSubmit</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span><span class="si">}</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Books<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Add Books<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="p">=</span><span class="s">'text'</span>
+                           <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="si">}</span>
+                           <span class="na">value</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span>
+                    <span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="p">=</span><span class="s">'submit'</span> <span class="na">value</span><span class="p">=</span><span class="s">'Save'</span><span class="p">/&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="nx">handleChange</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">ChangeEvent</span><span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="na">book</span><span class="p">:</span><span class="nx">Book</span> <span class="o">=</span> <span class="p">{</span> <span class="p">...</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">,</span> <span class="na">title</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">book</span> <span class="p">});</span>
+    <span class="p">};</span>
+
+    <span class="k">private</span> <span class="nx">handleSubmit</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">FormEvent</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">.</span><span class="nx">title</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">BookProps</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">BookState</span> <span class="p">{</span>
+    <span class="nl">book</span><span class="p">:</span> <span class="nx">Book</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">Book</span> <span class="p">{</span>
+    <span class="nl">title</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span>
+    <span class="nx">author</span><span class="p">:</span> <span class="kr">string</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">BookPage</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Let’s look into detail.</p>
+
+<ol>
+  <li>Line 6: We add what is the type prop &amp; state it would manage, here BookProps (declared at line: 40) &amp; BookState (declared at line:43) respectively.</li>
+  <li>Line 8: constructor takes BookProps as constructor args.</li>
+  <li>Line 10: initialize state with book value. The type is declared at line: 47</li>
+  <li>Line 16: on submit of form we are calling handleSubmit method, passing the event reference (line: 34)</li>
+  <li>Line 20: added function mapping on change event, references line: 29</li>
+  <li>Line 30-31: We used spread operator to copy state of the book, with new title, then setting the state.</li>
+  <li>Line 35: the default behaviour of form is to reload the page, we don’t want that, so we will disable the default behavior.</li>
+</ol>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>When we run the application, and type in the text box, we get an error.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>TypeError: Cannot <span class="nb">read </span>property <span class="s1">'state'</span> of undefined
+handleChange
+src/components/book/BookPage.tsx:28
+  25 | <span class="o">}</span>
+  26 | 
+  27 | private handleChange <span class="o">(</span>event: ChangeEvent&lt;HTMLInputElement&gt;<span class="o">)</span> <span class="o">{</span>
+<span class="o">&gt;</span> 28 |     const book:Book <span class="o">=</span> <span class="o">{</span> ...this.state.book, title: event.target.value<span class="o">}</span><span class="p">;</span>
+     | ^  29 |     this.setState<span class="o">({</span> book <span class="o">})</span><span class="p">;</span>
+  30 | <span class="o">}</span><span class="p">;</span>
+  31 | 
+View compiled
+▶ 20 stack frames were collapsed.
+</code></pre></div></div>
+
+<p>In order to fix this issue we will have to bind <strong>this</strong> to the functions in constructor.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">constructor</span><span class="p">(</span><span class="nx">props</span> <span class="p">:</span> <span class="nx">BookProps</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">(</span><span class="nx">props</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="dl">''</span><span class="p">}};</span>
+        
+        <span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now we can see our functionality works, after we write in text box press save we see the alert with same text.</p>
+
+<p>There is also a simple way of writing the classes which is less verbose;</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">BookPage</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="o">&lt;</span><span class="nx">BookProps</span><span class="p">,</span> <span class="nx">BookState</span><span class="o">&gt;</span> <span class="p">{</span>
+    
+    <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="dl">''</span><span class="p">}};</span>
+
+    <span class="nx">render</span><span class="p">():</span> <span class="nx">ReactNode</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">form</span> <span class="na">onSubmit</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span><span class="si">}</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Books<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Add Books<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="p">=</span><span class="s">'text'</span>
+                           <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="si">}</span>
+                           <span class="na">value</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span>
+                    <span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="p">=</span><span class="s">'submit'</span> <span class="na">value</span><span class="p">=</span><span class="s">'Save'</span><span class="p">/&gt;</span>
+                <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">ChangeEvent</span><span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="na">book</span><span class="p">:</span><span class="nx">Book</span> <span class="o">=</span> <span class="p">{</span> <span class="p">...</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">,</span> <span class="na">title</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">book</span> <span class="p">});</span>
+    <span class="p">};</span>
+
+    <span class="k">private</span> <span class="nx">handleSubmit</span> <span class="o">=</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">FormEvent</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">.</span><span class="nx">title</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>You don’t need to call super or declare a constructor, no binding required, as we are using arrow function.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>Great !!! Time for Redux.</p>
+
+<h1 id="installing-redux">Installing Redux</h1>
+
+<p>First thing first, lets add redux packages.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm <span class="nb">install</span> <span class="nt">--save</span> @types/react-redux react-redux
+<span class="nv">$ </span>npm <span class="nb">install</span> <span class="nt">--save-dev</span> @types/redux-devtools redux-devtools
+<span class="nv">$ </span>npm <span class="nb">install</span> <span class="nt">--save</span> @types/redux-immutable-state-invariant redux-immutable-state-invariant
+</code></pre></div></div>
+
+<p><em>redux-immutable-state-invariant</em> is a middleware, which ensures that you don’t mutate state.</p>
+
+<h1 id="redux-action">Redux Action</h1>
+
+<p>We have a form that is setup &amp; ready to send data, we will create action creator for Books.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/book/bookActionType.ts</span>
+
+<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../../components/book/BookPage</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">CREATE_BOOK</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">CREATE_BOOK</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kr">interface</span> <span class="nx">CreateBookAction</span> <span class="p">{</span>
+    <span class="nl">type</span><span class="p">:</span> <span class="k">typeof</span> <span class="nx">CREATE_BOOK</span>
+    <span class="nx">payload</span><span class="p">:</span> <span class="nx">Book</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">type</span> <span class="nx">BookActionType</span> <span class="o">=</span> <span class="nx">CreateBookAction</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>At line 7: We created interface which will have two field, type &amp; payload.</li>
+  <li>At line 12: We are exporting CreateBookAction as BookActionType, because later we will be assigning &amp; checking More types.</li>
+</ul>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/book/bookAction.ts</span>
+
+<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../../components/book/BookPage</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">BookActionType</span><span class="p">,</span> <span class="nx">CREATE_BOOK</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./bookActionType</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">function</span> <span class="nx">createBook</span><span class="p">(</span><span class="nx">book</span><span class="p">:</span> <span class="nx">Book</span><span class="p">):</span> <span class="nx">BookActionType</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span><span class="na">type</span><span class="p">:</span> <span class="nx">CREATE_BOOK</span><span class="p">,</span> <span class="na">payload</span><span class="p">:</span> <span class="nx">book</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>Our first action is ready, which returns a BookActionType just another reminder, it must contain type field.</p>
+
+<h1 id="redux-reducer">Redux Reducer</h1>
+
+<p>Reducer takes two arguments, state &amp; action. In our case state will be book array, &amp; action will be of type BookActionType and it will return a new state which will be a new book array.</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/book/bookReducer.ts</span>
+
+<span class="k">import</span> <span class="p">{</span><span class="nx">Book</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../../components/book/BookPage</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">BookActionType</span><span class="p">,</span> <span class="nx">CREATE_BOOK</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./bookActionType</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">BookReducer</span><span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">Book</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">BookActionType</span><span class="p">):</span> <span class="nx">Book</span><span class="p">[]</span> <span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="kd">type</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="nx">CREATE_BOOK</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[...</span><span class="nx">state</span><span class="p">,</span> <span class="p">{...</span><span class="nx">action</span><span class="p">.</span><span class="nx">payload</span><span class="p">}];</span>
+        <span class="nl">default</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Since our application is going to have a lot number of reducers, we need to combine them, using redux <strong>combineReducer</strong> function</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/rootReducer.ts</span>
+
+<span class="k">import</span> <span class="p">{</span><span class="nx">combineReducers</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">redux</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">BookReducer</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./book/bookReducer</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">rootReducer</span> <span class="o">=</span> <span class="nx">combineReducers</span><span class="p">({</span>
+    <span class="na">books</span><span class="p">:</span> <span class="nx">BookReducer</span>
+<span class="p">});</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">rootReducer</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h1 id="redux-store">Redux Store</h1>
+<p>The third main component in Redux is store, so let’s not wait and create a store.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/redux/store.ts</span>
+<span class="c1">// one time configuration</span>
+
+<span class="k">import</span> <span class="p">{</span><span class="nx">applyMiddleware</span><span class="p">,</span> <span class="nx">compose</span><span class="p">,</span> <span class="nx">createStore</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">redux</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">rootReducer</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./rootReducer</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">immutableStateInvariantMiddleware</span>  <span class="k">from</span> <span class="dl">"</span><span class="s2">redux-immutable-state-invariant</span><span class="dl">"</span><span class="p">;</span>
+
+
+<span class="k">export</span> <span class="k">default</span> <span class="kd">function</span> <span class="nx">configureStore</span><span class="p">(</span><span class="nx">initialState</span><span class="p">?:</span> <span class="kr">any</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// @ts-ignore</span>
+    <span class="kd">const</span> <span class="nx">composeEnhancers</span> <span class="o">=</span>
+        <span class="p">(</span><span class="o">&lt;</span><span class="kr">any</span><span class="o">&gt;</span><span class="nb">window</span><span class="p">).</span><span class="nx">__REDUX_DEVTOOLS_EXTENSION_COMPOSE__</span> <span class="o">||</span> <span class="nx">compose</span><span class="p">;</span> <span class="c1">// add support for Redux dev tools</span>
+
+    <span class="k">return</span> <span class="nx">createStore</span><span class="p">(</span><span class="nx">rootReducer</span><span class="p">,</span>
+        <span class="nx">initialState</span><span class="p">,</span>
+        <span class="nx">composeEnhancers</span><span class="p">(</span><span class="nx">applyMiddleware</span><span class="p">(</span><span class="nx">immutableStateInvariantMiddleware</span><span class="p">())))</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>createStore</strong> takes in three argument: reducer, initial state &amp; middleware, we want to make sure our state is immutable, to make this happen we apply a middleware <strong>immutableStateInvariantMiddleware</strong> to take care of this job.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>Now its time to plugin store to our react app. We will modify our index.tsx</p>
+
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// src/index.tsx</span>
+<span class="c1">// one time configuration</span>
+
+<span class="k">import</span> <span class="nx">React</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">ReactDOM</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">react-dom</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./index.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">App</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./App</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">serviceWorker</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./serviceWorker</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">BrowserRouter</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-router-dom</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">configureStore</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./redux/store</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">Provider</span> <span class="k">as</span> <span class="nx">ReduxProvider</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-redux</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">configureStore</span><span class="p">();</span>
+
+<span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span>
+    <span class="p">&lt;</span><span class="nc">ReduxProvider</span> <span class="na">store</span><span class="p">=</span><span class="si">{</span><span class="nx">store</span><span class="si">}</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nc">BrowserRouter</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nc">App</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;/</span><span class="nc">BrowserRouter</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nc">ReduxProvider</span><span class="p">&gt;,</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">root</span><span class="dl">'</span><span class="p">));</span>
+
+<span class="c1">// If you want your app to work offline and load faster, you can change</span>
+<span class="c1">// unregister() to register() below. Note this comes with some pitfalls.</span>
+<span class="c1">// Learn more about service workers: https://bit.ly/CRA-PWA</span>
+<span class="nx">serviceWorker</span><span class="p">.</span><span class="nx">unregister</span><span class="p">();</span>
+</code></pre></div></div>
+<p>We are wrapping all our application within ReduxProvider, so that store is accessible to all our application.</p>
+
+<p>Now that out configuration is in place let’s wire in Redux in our component.</p>
+
+<h1 id="redux-connect">Redux Connect</h1>
+
+<p>Its time to put all the pieces together, let’s take a look at the modified BookPage:</p>
+<div class="language-tsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//  src/components/book/BookPage.tsx</span>
+
+<span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span><span class="nx">ChangeEvent</span><span class="p">,</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">FormEvent</span><span class="p">,</span> <span class="nx">ReactNode</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">connect</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react-redux</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">createBook</span><span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">../../redux/book/bookAction</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nx">BookPage</span> <span class="kd">extends</span> <span class="nx">Component</span><span class="o">&lt;</span><span class="nx">BookProps</span><span class="p">,</span> <span class="nx">BookState</span><span class="o">&gt;</span> <span class="p">{</span>
+
+    <span class="nx">state</span> <span class="o">=</span> <span class="p">{</span><span class="na">book</span><span class="p">:</span> <span class="p">{</span><span class="na">title</span><span class="p">:</span> <span class="dl">''</span><span class="p">,</span> <span class="na">author</span><span class="p">:</span> <span class="dl">''</span><span class="p">}};</span>
+
+    <span class="nx">render</span><span class="p">():</span> <span class="nx">ReactNode</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">form</span> <span class="na">onSubmit</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleSubmit</span><span class="si">}</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Books<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>Add Books<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="p">=</span><span class="s">'text'</span>
+                           <span class="na">onChange</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">handleChange</span><span class="si">}</span>
+                           <span class="na">value</span><span class="p">=</span><span class="si">{</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span>
+                    <span class="p">/&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="p">=</span><span class="s">'submit'</span> <span class="na">value</span><span class="p">=</span><span class="s">'Save'</span><span class="p">/&gt;</span>
+
+
+                    <span class="si">{</span>
+                        <span class="k">this</span><span class="p">.</span><span class="nx">props</span>
+                        <span class="p">.</span><span class="nx">books</span>
+                        <span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">book</span> <span class="o">=&gt;</span> <span class="p">(</span>
+                        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">key</span><span class="p">=</span><span class="si">{</span><span class="nx">book</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span><span class="p">&gt;</span><span class="si">{</span><span class="nx">book</span><span class="p">.</span><span class="nx">title</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+                        <span class="p">))</span>
+                    <span class="si">}</span>
+                <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="nx">handleChange</span> <span class="o">=</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">ChangeEvent</span><span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="na">book</span><span class="p">:</span><span class="nx">Book</span> <span class="o">=</span> <span class="p">{</span> <span class="p">...</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">,</span> <span class="na">title</span><span class="p">:</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setState</span><span class="p">({</span> <span class="nx">book</span> <span class="p">});</span>
+    <span class="p">};</span>
+
+    <span class="k">private</span> <span class="nx">handleSubmit</span> <span class="o">=</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">FormEvent</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">createBook</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">book</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">BookProps</span> <span class="p">{</span>
+    <span class="nx">createBook</span><span class="p">(</span><span class="nx">book</span><span class="p">:</span> <span class="nx">Book</span><span class="p">):</span> <span class="k">void</span><span class="p">;</span>
+    <span class="nl">books</span><span class="p">:</span> <span class="nx">Book</span><span class="p">[];</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">BookState</span> <span class="p">{</span>
+    <span class="nl">book</span><span class="p">:</span> <span class="nx">Book</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">Book</span> <span class="p">{</span>
+    <span class="nl">title</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span>
+    <span class="nx">author</span><span class="p">:</span> <span class="kr">string</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kr">interface</span> <span class="nx">BookStoreState</span> <span class="p">{</span>
+    <span class="nl">books</span><span class="p">:</span> <span class="nx">Book</span><span class="p">[]</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">mapStateToProps</span><span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">BookStoreState</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">books</span><span class="p">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">books</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">mapDispatchToProps</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">createBook</span><span class="p">:</span> <span class="nx">createBook</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">connect</span><span class="p">(</span><span class="nx">mapStateToProps</span><span class="p">,</span> <span class="nx">mapDispatchToProps</span><span class="p">)(</span><span class="nx">BookPage</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>This time lets review from down to up:</p>
+
+<ol>
+  <li>Line 75: We are not exporting BookPage now, instead we are calling connect function (of redux) with mapStateToProps &amp; mapDispatchToProps, the output is a function to which we are passing our BookPage.</li>
+  <li>Line 71: We have created mapping object, which will get bind to react props. We can also use a function instead, but in that case, we will have to dispatch our action explicitly.</li>
+  <li>Line 65: Maps redux store state to props, in the root reducer, we have assigned output array to books variable, so to get new state, we fetch state.books</li>
+  <li>Line 47: BookProps has changed, now it contains book field &amp; createBook function (mapped in function at line: 71 &amp; line:75).</li>
+  <li>Line 43: In the handleSubmit function, we are dispatching event by calling props.createBook method.</li>
+  <li>Line 25: Finally, we have iterated over mapped store books and printed the titles.</li>
+</ol>
+
+<p>If you have followed correctly, you can see your page in action.</p>
+
+<p><img alt="react redux complete" src="/images/loader.svg" data-src="/images/2019/react/react-redux.gif" class="lazy img-center img-half" /></p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>In this article we have integrated redux to react, in typescript. As usual the complete code is on <a href="https://github.com/kuros/blog-code/tree/master/react/react-redux">github</a>.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/react" class="page__taxonomy-item" rel="tag">react</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-03-18T00:00:00+05:30">March 18, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=React+Redux+with+typescript%20https%3A%2F%2Fkuros.in%2Freact%2F2019%2F03%2Freact-redux%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Freact%2F2019%2F03%2Freact-redux%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Freact%2F2019%2F03%2Freact-redux%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/react/2019/03/react-basics/" class="pagination--pager" title="Redux Basics
+">Previous</a>
+    
+    
+      <a href="/spring/spring-security/2019/04/spring-security/" class="pagination--pager" title="Spring Security with Basic Authentication
+">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/2020/05/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="permalink">Kafka Messaging with Spring Boot
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/2020/05/getting-started-with-kafka-install-and-messaging/" rel="permalink">Getting started with kafka messaging
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jfirebase/2019/10/jFirebase-a-firebase-wrapper-for-java-developers/" rel="permalink">jFirebase - Entity Framework for Firebase/Firestore
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I decided to tryout firebase for my personal projects &amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when d...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="permalink">Making parallel service calls in microservice architecture.
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to curren...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>
