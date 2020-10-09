@@ -1,9 +1,9 @@
-{% if jekyll.environment != "prod" %}
+{% if site.environment != "prod" %}
 <div style="width: 100%; height: 100px; background-color: red"> </div>
 
 {% endif %}
 
-{% if jekyll.environment == "prod" %}
+{% if site.environment == "prod" %}
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- horizontal - responsive -->
 <ins class="adsbygoogle"
