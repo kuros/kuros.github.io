@@ -98,7 +98,7 @@ var store = [{
         "title": "Java - Inheritance deep dive",
         "excerpt":"Ohh! Its inheritance again….. its freaking me out. I don’t understand what it is? We see this kind of reaction every time we someone is first told about, Let us understand it using a simple example. Suppose you are a Zoo manager and you want to store the data about...","categories": ["java"],
         "tags": [],
-        "url": "https://kuros.in/java/inheritence-is_a-has_a-method-overloading-overriding/",
+        "url": "https://kuros.in/java/inheritence-is-a-has-a-method-overloading-overriding/",
         "teaser": null
       },{
         "title": "Java - Package - the class Management",
