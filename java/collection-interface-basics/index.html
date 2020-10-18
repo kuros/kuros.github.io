@@ -1,0 +1,960 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Collection framework - Kuros.in</title>
+<meta name="description" content="We are going to look into details List, Set &amp; Map functions.">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Collection framework">
+<meta property="og:url" content="https://kuros.in/java/collection-interface-basics/">
+
+
+  <meta property="og:description" content="We are going to look into details List, Set &amp; Map functions.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-01-17T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/java/collection-interface-basics/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Collection framework">
+    <meta itemprop="description" content="A collection allows a group of objects to be treated as a single unit. Arbitrary objects can be stored, retrieved, and manipulated as elements of collections.">
+    <meta itemprop="datePublished" content="2019-01-17T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Collection framework
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            
+              <nav class="toc">
+                <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+                <ul class="toc__menu">
+  <li><a href="#so-what-do-you-do-with-a-collection">So What Do You Do with a Collection?</a></li>
+  <li><a href="#key-interfaces-and-classes-of-the-collections-framework">Key Interfaces and Classes of the Collections Framework</a></li>
+  <li><a href="#collection-interface">Collection interface</a></li>
+</ul>
+
+              </nav>
+            
+            
+              <div class="sidebar_ads">
+                
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sky-scrapper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="5730852605"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+              </div>
+              
+            
+          </aside>
+        
+        
+        <p>A collection allows a group of objects to be treated as a single unit. Arbitrary objects can be stored, retrieved, and manipulated as elements of collections.</p>
+
+<p>The Collection Framework provides a well-designed set if interface and classes for sorting and manipulating groups of data as a single unit, a collection.</p>
+
+<h1 id="so-what-do-you-do-with-a-collection">So What Do You Do with a Collection?</h1>
+<p>There are a few basic operations you’ll normally use with collections:</p>
+<ul>
+  <li>Add objects to the collection.</li>
+  <li>Remove objects from the collection.</li>
+  <li>Find out if an object (or group of objects) is in the collection.</li>
+  <li>Retrieve an object from the collection (without removing it).</li>
+  <li>Iterate through the collection, looking at each element (object) one after another.</li>
+</ul>
+
+<h1 id="key-interfaces-and-classes-of-the-collections-framework">Key Interfaces and Classes of the Collections Framework</h1>
+<p>The core interfaces allow collections to be manipulated independently of their implementation. These interfaces define the common functionality exhibited by collections and facilitate data exchange between collections. These interfaces are</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Collection</td>
+      <td>Set</td>
+      <td>Sorted Set</td>
+    </tr>
+    <tr>
+      <td>List</td>
+      <td>Map</td>
+      <td>Sorted Map</td>
+    </tr>
+    <tr>
+      <td>Queue</td>
+      <td>NavigableMap</td>
+      <td>NavigableSet</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><img alt="collection" src="/images/loader.svg" data-src="/images/2019/java/collection.png" class="lazy" /></p>
+
+<p>So we have Set and List interface which extend from Collection interfaces, and we have SortedMap which is extending from Map interface.</p>
+
+<p>The different interfaces describe the different types of groups. For the most part, once you understand the interfaces, you understand the framework. While you always need to create specific, implementations of the interfaces, access to the actual collection should be restricted to the use of the interface methods, thus allowing you to change the underlying data structure, without altering the rest of your code.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>When designing software with the Collection Framework, it is useful to remember the following hierarchical relationship of the four basic interfaces of the framework.</p>
+
+<ul>
+  <li>The Collection interface is a group of objects, with duplicates allowed.</li>
+  <li>Set extends Collection but forbids duplicates.</li>
+  <li>List extends Collection also, allows duplicates and introduces positional indexing.</li>
+  <li>Map extends neither Set nor Collection</li>
+</ul>
+
+<p>The concrete classes which implement these interfaces are:-</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Maps</th>
+      <th style="text-align: center">Sets</th>
+      <th style="text-align: center">Lists</th>
+      <th style="text-align: center">Queues</th>
+      <th style="text-align: center">Utilities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">HashMap</td>
+      <td style="text-align: center">HashSet</td>
+      <td style="text-align: center">ArrayList</td>
+      <td style="text-align: center">PriorityQueue</td>
+      <td style="text-align: center">Collections</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">HashTable</td>
+      <td style="text-align: center">LinkedHashSet</td>
+      <td style="text-align: center">Vector</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">TreeMap</td>
+      <td style="text-align: center">TreeSet</td>
+      <td style="text-align: center">LinkedList</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">LinkedHashMap</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>After java 1.6 two more interfaces were introduced which are NavigableMap and NavigableSet these two interfaces extend from the SortedMap and SortedSet respectively. These interfaces provide special methods to sort the elements in ascending order, descending order, also to retrieve the element which is immediately greater than or equal to a given value etc. These methods are used to return the closest matches of elements for the given elements in the collection.</p>
+
+<p>Other than these classes, we have a special class which is used to manipulate the Collection Objects, this class is Collections, this class has some of the very important methods such as sort, shuffle, reverse, binaySearch, etc.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="collection-interface">Collection interface</h1>
+
+<p>The Collection interface is used to represent any group of objects, or elements. You use the interface when you wish to work with a group of elements in as general a manner as possible.</p>
+
+<p>Listed below are the methods which have to be implemented while implementing Collection interface.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Method</th>
+      <th style="text-align: center">Return type</th>
+      <th style="text-align: center">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">add(Object o)</td>
+      <td style="text-align: center">boolean</td>
+      <td style="text-align: center">Ensures that this collection contains the specified element (optional operation).</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">addAll(Collection c)</td>
+      <td style="text-align: center">Boolean</td>
+      <td style="text-align: center">Adds all of the elements in the specified collection to this collection (optional operation)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">clear()</td>
+      <td style="text-align: center">Void</td>
+      <td style="text-align: center">Removes all of the elements from this collection (optional operation).</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">contains(Object o)</td>
+      <td style="text-align: center">Boolean</td>
+      <td style="text-align: center">Returns true if this collection contains the specified element.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">containsAll(Collection c)</td>
+      <td style="text-align: center">Boolean</td>
+      <td style="text-align: center">Returns true if this collection contains all of the elements in the specified collection.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">isEmpty()</td>
+      <td style="text-align: center">Boolean</td>
+      <td style="text-align: center">Returns true if this collection contains no elements.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">iterator()</td>
+      <td style="text-align: center">Iterator</td>
+      <td style="text-align: center">Returns an iterator over the elements in this collection.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">remove(Object o)</td>
+      <td style="text-align: center">Boolean</td>
+      <td style="text-align: center">Removes a single instance of the specified element from this collection, if it is present (optional operation).</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">removeAll(Collection c)</td>
+      <td style="text-align: center">boolean</td>
+      <td style="text-align: center">Removes all this collection’s elements that are also contained in the specified collection (optional operation).</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">retainAll(Collection c)</td>
+      <td style="text-align: center">Boolean</td>
+      <td style="text-align: center">Retains only the elements in this collection that are contained in the specified collection (optional operation).</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">size()</td>
+      <td style="text-align: center">Int</td>
+      <td style="text-align: center">Returns the number of elements in this collection.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">toArray()</td>
+      <td style="text-align: center">Object[]</td>
+      <td style="text-align: center">Returns an array containing all of the elements in this collection.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">toArray(Object[] a)</td>
+      <td style="text-align: center">Object[]</td>
+      <td style="text-align: center">Returns an array containing all of the elements in this collection; the runtime type of the returned array is that of the specified array.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The interface supports basic operations like adding and removing. When you try to remove an element, only a single instance of the element in the collection is removed, if present.</p>
+<ul>
+  <li>boolean add (Object o)</li>
+  <li>boolean remove(Object o)</li>
+</ul>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>The Collection interface also supports query operations</p>
+<ul>
+  <li>int size()</li>
+  <li>boolean isEmpty()</li>
+  <li>boolean contains(Object o)</li>
+  <li>Iterator iterator()</li>
+</ul>
+
+<p>Because the Collection interface is generic, you can write utility methods that operate on any kind of collection. For example, here is a generic method that tests whether an arbitrary collection contains a given element:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="kt">boolean</span> <span class="nf">contains</span><span class="o">(</span><span class="nc">Collection</span><span class="o">&lt;</span><span class="no">E</span><span class="o">&gt;</span> <span class="n">c</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span>
+<span class="o">{</span>
+	<span class="k">for</span> <span class="o">(</span><span class="no">E</span> <span class="n">element</span> <span class="o">:</span> <span class="n">c</span><span class="o">)</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">element</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">obj</span><span class="o">))</span>
+			<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+	<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-17T00:00:00+05:30">January 17, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Collection+framework%20https%3A%2F%2Fkuros.in%2Fjava%2Fcollection-interface-basics%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fjava%2Fcollection-interface-basics%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fjava%2Fcollection-interface-basics%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/java/collection-comparator-and-comparable/" class="pagination--pager" title="Comparable &amp; Comparator
+">Previous</a>
+    
+    
+      <a href="/java/collection-iterators-foreach/" class="pagination--pager" title="Iterators
+">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="permalink">Kafka Messaging with Spring Boot
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/getting-started-with-kafka-install-and-messaging/" rel="permalink">Getting started with kafka messaging
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/" rel="permalink">jFirebase - Entity Framework for Firebase/Firestore
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I decided to tryout firebase for my personal projects &amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when d...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="permalink">Making parallel service calls in microservice architecture.
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to curren...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/java/collection-interface-basics/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/java/collection-interface-basics"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

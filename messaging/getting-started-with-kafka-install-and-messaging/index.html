@@ -1,0 +1,838 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Getting started with kafka messaging - Kuros.in</title>
+<meta name="description" content="Learn the basic of Kafka &amp; run locally">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Getting started with kafka messaging">
+<meta property="og:url" content="https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging/">
+
+
+  <meta property="og:description" content="Learn the basic of Kafka &amp; run locally">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2020-05-01T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Getting started with kafka messaging">
+    <meta itemprop="description" content="In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different applications and data store.">
+    <meta itemprop="datePublished" content="2020-05-01T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Getting started with kafka messaging
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            
+            
+              <div class="sidebar_ads">
+                
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sky-scrapper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="5730852605"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+              </div>
+              
+            
+          </aside>
+        
+        
+        <p>In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different applications and data store.</p>
+
+<p>Although earlier systems did provide methods of replication(mostly at database level), high throughput and reliability. One of the major challenge was to connect these technologies into a seamless integration to build an enterprise level application. Also how to handle failures, what if there was a bug in the consumer, you processed the message, now the data is corrupt. Can we correct the data, once you have fixed the consumer.</p>
+
+<p>Kafka has been designed as a high throughput messaging system, with capabilities of high scalability. It is highly reliable and durable. The api’s have been developed keeping loose coupling between the producer and consumer in mind. It provides a flexible semantics to consume and publish messages.</p>
+
+<h1 id="kafka-architecture">Kafka Architecture</h1>
+
+<p>Kafka bases itself on the publisher/subscriber model. In kafka world, publisher is called as <em>Producer</em> and subscriber is referred as <em>Consumer</em>.
+To simply put producer publishes message to central location called as <em>Topic</em>, the consumer receives the message and process them.</p>
+
+<p><img alt="Kafka Pub Sub" src="/images/loader.svg" data-src="/images/2020/messaging/kafka-pub-sub.jpg" class="lazy img-center img-half" /></p>
+
+<p>The <em>Broker</em> manages all the topics, and the broker can reside on a single/multiple host. Multiple brokers’ comes together to form a cluster, which is managed by Apache Zookeeper.</p>
+
+<p><img alt="Kafka Cluster" src="/images/loader.svg" data-src="/images/2020/messaging/kafka-cluster.jpg" class="lazy img-center img-half" /></p>
+
+<p>There are lots of concepts, but for now let proceed with getting the hands dirty.</p>
+
+<h1 id="installing-kafka">Installing Kafka</h1>
+
+<p>The first step is to download the Kafka on your machine, I am using a mac(steps will be similar for other OS as well).</p>
+
+<p>Extract the zip to your local machine</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">tar</span> <span class="nt">-xvf</span> kafka_2.12-2.5.0.tgz
+<span class="nv">$ </span><span class="nb">cd </span>kafka_2.12-2.5.0
+</code></pre></div></div>
+
+<h2 id="configure-zookeeper">Configure Zookeeper</h2>
+<p>Before we start, we need to configure the zookeeper. We need to modify <code class="language-plaintext highlighter-rouge">zookeeper.properties</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vi config/zookeeper.properties
+</code></pre></div></div>
+<p>By default, the zookeeper stores the data at <code class="language-plaintext highlighter-rouge">/tmp/zookeeper</code>, I will modify it to use a custom directory <code class="language-plaintext highlighter-rouge">zookeeper-data</code>. To do that, we need to change the dataDir in the zookeeper.properties file.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mkdir </span>zookeeper-data
+</code></pre></div></div>
+<p>My modified zookeeper.properties file look like this:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# the directory where the snapshot is stored.
+dataDir=/zookeeper-data
+# the port at which the clients will connect
+clientPort=2181
+# disable the per-ip limit on the number of connections since this is a non-production config
+maxClientCnxns=0
+# Disable the adminserver by default to avoid port conflicts.
+# Set the port to something non-conflicting if choosing to enable this
+admin.enableServer=false
+# admin.serverPort=8080
+</code></pre></div></div>
+
+<h1 id="starting-zookeeper">Starting zookeeper</h1>
+<p>To run the zookeeper we need to goto bin folder and run the following command.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>bin
+<span class="nv">$ </span>./zookeeper-server-start.sh ../config/zookeeper.properties 
+</code></pre></div></div>
+
+<p>This should start the zookeeper, now let’s move to kafka.</p>
+
+<h2 id="configure-kafka">Configure Kafka</h2>
+<p>Similarly, we are going to modify kafka configuration. To do that we need to modify <code class="language-plaintext highlighter-rouge">log.dirs</code> in <code class="language-plaintext highlighter-rouge">config/server.properties</code> to point to custom directory. By default, it points to <code class="language-plaintext highlighter-rouge">/tmp/kafka-logs</code>.</p>
+
+<p>Now lets start the server:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>bin
+<span class="nv">$ </span>./kafka-server-start.sh ../config/server.properties
+</code></pre></div></div>
+
+<p>Kafka should be up and running.</p>
+
+<h1 id="create-kafka-topic">Create Kafka Topic</h1>
+
+<p>As per the documentation: A topic is a category or feed name to which records are published. Topics in Kafka are always multi-subscriber; that is, a topic can have zero, one, or many consumers that subscribe to the data written to it
+For now we are using commandline utility provided by kafka to create a topic. We will create a topic with single replication factor since we are running a single broker instance.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./kafka-topics.sh <span class="nt">--create</span> <span class="nt">--zookeeper</span> localhost:2181 <span class="nt">--replication-factor</span> 1 <span class="nt">--partitions</span> 1 <span class="nt">--topic</span> <span class="nb">test
+</span>Created topic test.
+<span class="nv">$ </span>
+</code></pre></div></div>
+<p>The above command creates a topic named test. we will use this topic to publish our messages.</p>
+
+<h1 id="publish-messages">Publish Messages</h1>
+<p>We will again use the commandline utility to publish the message to Kafka topic../</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./kafka-console-producer.sh <span class="nt">--broker-list</span> localhost:9092 <span class="nt">--topic</span> <span class="nb">test</span>
+<span class="o">&gt;</span>message 1 
+<span class="o">&gt;</span>message 2
+<span class="o">&gt;</span>message 3
+</code></pre></div></div>
+
+<h1 id="receiving-messages">Receiving Messages</h1>
+<p>We will use the kafka console consumer to connect to Kafka at port 9092 and receive message from test topic.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./kafka-console-consumer.sh <span class="nt">--bootstrap-server</span> localhost:9092 <span class="nt">--topic</span> <span class="nb">test</span> <span class="nt">--from-beginning</span>
+message 1
+message 2
+message 3
+
+</code></pre></div></div>
+
+<p>We have successfully started single broker of Kafka with the zookeeper, published and consumed the messages.</p>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/messaging" class="page__taxonomy-item" rel="tag">messaging</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-05-01T00:00:00+05:30">May 1, 2020</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Getting+started+with+kafka+messaging%20https%3A%2F%2Fkuros.in%2Fmessaging%2Fgetting-started-with-kafka-install-and-messaging%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fmessaging%2Fgetting-started-with-kafka-install-and-messaging%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fmessaging%2Fgetting-started-with-kafka-install-and-messaging%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/" class="pagination--pager" title="jFirebase - Entity Framework for Firebase/Firestore
+">Previous</a>
+    
+    
+      <a href="/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/" class="pagination--pager" title="Kafka Messaging with Spring Boot
+">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="permalink">Kafka Messaging with Spring Boot
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/" rel="permalink">jFirebase - Entity Framework for Firebase/Firestore
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I decided to tryout firebase for my personal projects &amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when d...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="permalink">Making parallel service calls in microservice architecture.
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to curren...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/grpc/2019/08/handling-grpc-authorization-using-context/" rel="permalink">Handling gRPC Authorization using Context in Java
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In the Grpc world, we have secured our application by encrypting the channel and authenticating the requests using interceptors. So we have secured our appli...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/messaging/getting-started-with-kafka-install-and-messaging"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

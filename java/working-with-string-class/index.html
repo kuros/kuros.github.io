@@ -1,0 +1,919 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Java - Handling String - Kuros.in</title>
+<meta name="description" content="Manage String values in the java.">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Java - Handling String">
+<meta property="og:url" content="https://kuros.in/java/working-with-string-class/">
+
+
+  <meta property="og:description" content="Manage String values in the java.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-01-09T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/java/working-with-string-class/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Java - Handling String">
+    <meta itemprop="description" content="In Java, strings are objects. Just like other objects, you can create an instance of a String with the new keyword, as follows:String s = new String(&quot;abc&quot;);This line of code creates a new object of class String, assigns it to the reference variable s and initialized it. So far, String objects seem just like other objects.">
+    <meta itemprop="datePublished" content="2019-01-09T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Java - Handling String
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            
+              <nav class="toc">
+                <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+                <ul class="toc__menu">
+  <li><a href="#constructors">Constructors</a></li>
+  <li><a href="#important-methods-in-the-string-class">Important Methods in the String Class</a>
+    <ul>
+      <li><a href="#public-char-charatint-index">public char charAt(int index)</a></li>
+      <li><a href="#public-string-concatstring-s">public String concat(String s)</a></li>
+      <li><a href="#public-string-tostring">public String toString()</a></li>
+      <li><a href="#public-string-touppercase">public String toUpperCase()</a></li>
+      <li><a href="#public-string-trim">public String trim()</a></li>
+    </ul>
+  </li>
+</ul>
+
+              </nav>
+            
+            
+              <div class="sidebar_ads">
+                
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sky-scrapper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="5730852605"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+              </div>
+              
+            
+          </aside>
+        
+        
+        <p>In Java, strings are objects. Just like other objects, you can create an instance of a String with the new keyword, as follows:</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">String</span><span class="o">(</span><span class="s">"abc"</span><span class="o">);</span>
+</code></pre></div></div>
+<p>This line of code creates a new object of class String, assigns it to the reference variable s and initialized it. So far, String objects seem just like other objects.</p>
+
+<h2 id="constructors">Constructors</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span><span class="o">()</span>		
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">)</span>		
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">ascii</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hibyte</span><span class="o">)</span>	
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">)</span>		
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">ascii</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hibyte</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">count</span><span class="o">)</span>	
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="nc">String</span> <span class="n">charsetName</span><span class="o">)</span>		
+<span class="nc">String</span><span class="o">(</span><span class="kt">char</span><span class="o">[]</span> <span class="n">value</span><span class="o">)</span>	<span class="nc">String</span><span class="o">(</span><span class="nc">String</span> <span class="n">original</span><span class="o">)</span>
+<span class="nc">String</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span><span class="o">,</span> <span class="kt">int</span> <span class="n">offset</span><span class="o">,</span> <span class="kt">int</span> <span class="n">length</span><span class="o">,</span> <span class="nc">String</span> <span class="n">charsetName</span><span class="o">)</span>
+
+</code></pre></div></div>
+
+<p>We can write it in this way also:-</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"abc"</span><span class="o">;</span>
+</code></pre></div></div>
+<p>Now we create a new reference s2 to s</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">s2</span> <span class="o">=</span> <span class="n">s</span><span class="o">;</span>
+</code></pre></div></div>
+<p>So far this is behaving same as other classes but with next step the expected result is different, Let first see what it he result.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestObjectReference</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">value</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="nf">TestObjectReference</span><span class="o">(</span><span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getValue</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">value</span><span class="o">;</span>
+	<span class="o">}</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValue</span><span class="o">(</span><span class="nc">String</span> <span class="n">value</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StringTest</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+		<span class="c1">//Working with any Object class</span>
+		<span class="nc">TestObjectReference</span> <span class="n">reference</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TestObjectReference</span><span class="o">(</span><span class="s">"abcd"</span><span class="o">);</span>
+		<span class="nc">TestObjectReference</span> <span class="n">reference2</span> <span class="o">=</span> <span class="n">reference</span><span class="o">;</span>
+		
+		<span class="n">reference2</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="s">"Changed the value"</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">reference</span><span class="o">.</span><span class="na">getValue</span><span class="o">());</span>
+		
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********Let us try now with String Class **************"</span><span class="o">);</span>
+		
+		<span class="nc">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"ABCD"</span><span class="o">;</span>
+		<span class="nc">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">str</span><span class="o">;</span>
+		
+		<span class="n">str2</span> <span class="o">=</span> <span class="s">"Changed the value"</span><span class="o">;</span>
+		
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Changed the value
+<span class="k">***********</span>Let us try now with String Class <span class="k">**************</span>
+ABCD
+</code></pre></div></div>
+
+<p>We do not get the expected output, so where is the problem, where are we making the mistakes.</p>
+
+<p>The problem is String are immutable objects, means whenever we make any change to the value a new String object is created.</p>
+
+<p><img alt="String" src="/images/java/j-26.webp" lazyload="" width="600px" /></p>
+
+<p>Let us consider another case:-</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"ABC"</span><span class="o">;</span>
+<span class="n">str</span> <span class="o">=</span> <span class="s">"XYZ"</span><span class="o">;</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>In this case too we have</p>
+
+<p><img alt="String-2" src="/images/java/j-27.webp" lazyload="" width="600px" /></p>
+
+<p>So now we consider a situation in which we have too many String operations then in that case we may run out of memory as every time you modify a String a new memory location is allocated.</p>
+
+<p>To solve this problem we have another Class provided for String manipulation, i.e. the StringBuffer class.</p>
+
+<h2 id="important-methods-in-the-string-class">Important Methods in the String Class</h2>
+<p>The following methods are some of the more commonly used methods in the String class.</p>
+
+<h3 id="public-char-charatint-index">public char charAt(int index)</h3>
+<p>This method returns the character located at the String’s specified index. Remember, String indexes are zero-based—for example</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"airplane"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">charAt</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is 'r'</span>
+</code></pre></div></div>
+
+<h3 id="public-string-concatstring-s">public String concat(String s)</h3>
+<p>This method returns a String with the value of the String passed in to the method appended to the end of the String used to invoke the method.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"taxi"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="s">" cab"</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is "taxi cab"</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="public-boolean-equalsignorecasestring-s">public boolean equalsIgnoreCase(String s)</h1>
+<p>This method returns a boolean value (true or false) depending on whether the value of the String in the argument is the same as the value of the String used to invoke the method. This method will return true even when characters in the String objects being compared have differing cases.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"Exit"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">"EXIT"</span><span class="o">));</span> <span class="c1">// output is "true"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="s">"tixe"</span><span class="o">));</span> <span class="c1">// output is "false"</span>
+</code></pre></div></div>
+
+<h1 id="public-int-length">public int length()</h1>
+<p>This method returns the length of the String used to invoke the method</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"01234567"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">length</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// returns "8"</span>
+</code></pre></div></div>
+
+<h1 id="public-string-replacechar-old-char-new">public String replace(char old, char new)</h1>
+<p>This method returns a String whose value is that of the String used to invoke the method, updated so that any occurrence of the char in the first argument is replaced by the char in the second argument</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"oxoxoxox"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">replace</span><span class="o">(</span><span class="sc">'x'</span><span class="o">,</span> <span class="sc">'X'</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is // "oXoXoXoX"</span>
+</code></pre></div></div>
+
+<h1 id="public-string-substringint-begin--public-string-substringint-begin-int-end">public String substring(int begin) / public String substring(int begin, int end)</h1>
+<p>The substring() method is used to return a part (or substring) of the String used to invoke the method.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"0123456789"</span><span class="o">;</span><span class="c1">// as if by magic, the value </span>
+				<span class="c1">//of each char</span>
+				<span class="c1">//is the same as its index!</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">5</span><span class="o">)</span> <span class="o">);</span> <span class="c1">// output is "56789"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">substring</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="mi">8</span><span class="o">));</span> <span class="c1">// output is "567"</span>
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>When we are specifying the second argument ‘end index’, it will always take the value till the (end -1) just as in above example, substring (5, 8) will retrieve only “567” as output.</p>
+
+<h1 id="public-string-tolowercase">public String toLowerCase()</h1>
+<p>This method returns a String whose value is the String used to invoke the method, but with any uppercase characters converted to lowercase</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"A New Moon"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is "a new moon"</span>
+</code></pre></div></div>
+
+<h3 id="public-string-tostring">public String toString()</h3>
+<p>This method returns the value of the String used to invoke the method. What? Why would you need such a seemingly “do nothing” method? All objects in Java must have a toString() method, which typically returns a String that in some meaningful way describes the object in question.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"big surprise"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is obviously the same.</span>
+</code></pre></div></div>
+
+<h3 id="public-string-touppercase">public String toUpperCase()</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">"A New Moon"</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">()</span> <span class="o">);</span> <span class="c1">// output is "A NEW MOON"</span>
+</code></pre></div></div>
+
+<h3 id="public-string-trim">public String trim()</h3>
+<p>This method returns a String whose value is the String used to invoke the method, but with any leading or trailing blank spaces removed.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">x</span> <span class="o">=</span> <span class="s">" hi "</span><span class="o">;</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span> <span class="o">+</span> <span class="s">"x"</span> <span class="o">);</span> <span class="c1">// result is " hi x"</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">trim</span><span class="o">()</span> <span class="o">+</span> <span class="s">"x"</span><span class="o">);</span> <span class="c1">// result is "hix"</span>
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-09T00:00:00+05:30">January 9, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Java+-+Handling+String%20https%3A%2F%2Fkuros.in%2Fjava%2Fworking-with-string-class%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fjava%2Fworking-with-string-class%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fjava%2Fworking-with-string-class%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/java/working-with-inner-class/" class="pagination--pager" title="Java - Inner class
+">Previous</a>
+    
+    
+      <a href="/java/custom-checked-unchecked-exception-types/" class="pagination--pager" title="Java - Exception Types
+">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="permalink">Kafka Messaging with Spring Boot
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/getting-started-with-kafka-install-and-messaging/" rel="permalink">Getting started with kafka messaging
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/" rel="permalink">jFirebase - Entity Framework for Firebase/Firestore
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I decided to tryout firebase for my personal projects &amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when d...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="permalink">Making parallel service calls in microservice architecture.
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to curren...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/java/working-with-string-class/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/java/working-with-string-class"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

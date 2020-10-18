@@ -1,0 +1,1167 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Java - Operators (Part - 1) - Kuros.in</title>
+<meta name="description" content="Operators to manipulate variables">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Java - Operators (Part - 1)">
+<meta property="og:url" content="https://kuros.in/java/java-4-operators/">
+
+
+  <meta property="og:description" content="Operators to manipulate variables">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-01-08T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/java/java-4-operators/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/kuros-3.png" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/kuros-3.png">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Java - Operators (Part - 1)">
+    <meta itemprop="description" content="Java provides a rich set of operators to manipulate variables. We can divide all the Java operators into the following groups:">
+    <meta itemprop="datePublished" content="2019-01-08T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Java - Operators (Part - 1)
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            
+              <nav class="toc">
+                <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+                <ul class="toc__menu">
+  <li><a href="#the-arithmetic-operators">The Arithmetic Operators</a></li>
+  <li><a href="#pre-and-post-incrementdecrement">Pre and Post Increment/Decrement</a></li>
+  <li><a href="#the-relational-operators">The Relational Operators</a></li>
+  <li><a href="#the-bitwise-operators">The Bitwise Operators</a></li>
+  <li><a href="#bitwise-and-">Bitwise AND (&amp;)</a></li>
+  <li><a href="#bitwise-or-">Bitwise OR (|)</a></li>
+  <li><a href="#bitwise-xor-">Bitwise XOR (^)</a></li>
+  <li><a href="#bitwise-not-">Bitwise NOT (~)</a></li>
+  <li><a href="#left-shift-">Left Shift («)</a></li>
+  <li><a href="#right-shift-">Right Shift (»)</a></li>
+</ul>
+
+              </nav>
+            
+            
+              <div class="sidebar_ads">
+                
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- sky-scrapper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="5730852605"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+              </div>
+              
+            
+          </aside>
+        
+        
+        <p>Java provides a rich set of operators to manipulate variables. We can divide all the Java operators into the following groups:</p>
+
+<ul>
+  <li>Arithmetic Operators</li>
+  <li>Relational Operators</li>
+  <li>Bitwise Operators</li>
+  <li>Logical Operators</li>
+  <li>Assignment Operators</li>
+  <li>Misc Operators</li>
+</ul>
+
+<h1 id="the-arithmetic-operators">The Arithmetic Operators</h1>
+
+<p>Arithmetic operators are used in mathematical expressions in the same way that they are used in algebra. The following table lists the arithmetic operators:</p>
+
+<p>Assume integer variable A holds 10 and variable B holds 20 then:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Operator</th>
+      <th style="text-align: left">Description</th>
+      <th style="text-align: left">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">+</td>
+      <td style="text-align: left">Addition - Adds values on either side of the operator</td>
+      <td style="text-align: left">A + B = 30</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">-</td>
+      <td style="text-align: left">Subtracts - Subtract right hand operand from left hand operand</td>
+      <td style="text-align: left">A - B = 10</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">*</td>
+      <td style="text-align: left">Multiplication - Multiplies values on either side of the operator</td>
+      <td style="text-align: left">A * B = 200</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">/</td>
+      <td style="text-align: left">Division - Divides left hand operand by right hand operand</td>
+      <td style="text-align: left">B / A = 2</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">%</td>
+      <td style="text-align: left">Modulus - Divides left hand operand by right hand operand and return remainder</td>
+      <td style="text-align: left">B % A = 0</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">++</td>
+      <td style="text-align: left">Increment - Increase value of operand by 1</td>
+      <td style="text-align: left">B++ = 21</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">–</td>
+      <td style="text-align: left">Decrement - Decrease value of operand by 1</td>
+      <td style="text-align: left">B– = 19</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="pre-and-post-incrementdecrement">Pre and Post Increment/Decrement</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Operators</th>
+      <th style="text-align: center">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">x++</td>
+      <td style="text-align: center">Post increment: add 1 to the value, The value is returned <em>before</em> the increment is made e.g x= 1, y = x++,  then value of y = 1 &amp; value of x = 2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">x–</td>
+      <td style="text-align: center">Post decrement: subtract 1 from the value, The value is returned <em>before</em> the decrement is made e.g x= 1, y = x–,  then value of y = 1 &amp; value of x = 0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">++x</td>
+      <td style="text-align: center">Pre increment: add 1 to the value, The value is returned <em>after</em> the increment is made e.g x= 1, y = ++x,  then value of y = 2 &amp; value of x = 2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">–x</td>
+      <td style="text-align: center">Pre decrement: subtract 1 from the value, The value is returned <em>after</em> the decrement is made e.g x= 1, y = –x,  then value of y = 0 &amp; value of x = 0</td>
+    </tr>
+  </tbody>
+</table>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="the-relational-operators">The Relational Operators</h1>
+
+<p>There are following relational operators supported by Java language. Whenever the relational operators are used, the output results to a Boolean value.</p>
+
+<p>Assume variable A holds 10 and variable B holds 20 then:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Operator</th>
+      <th style="text-align: left">Description</th>
+      <th style="text-align: left">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">==</td>
+      <td style="text-align: left">Checks if the value of two operands are equal, if yes the condition becomes true</td>
+      <td style="text-align: left">(A == B) is false</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">==</td>
+      <td style="text-align: left">Checks if the value of two operands are not equal, if yes the condition becomes true</td>
+      <td style="text-align: left">(A == B) is true</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&gt;</td>
+      <td style="text-align: left">Checks if the value of left operand is greater than right operand, if yes the condition becomes true</td>
+      <td style="text-align: left">(A &gt; B) is false</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&lt;</td>
+      <td style="text-align: left">Checks if the value of left operand is lesser than right operand, if yes the condition becomes true</td>
+      <td style="text-align: left">(A &lt; B) is true</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&gt;=</td>
+      <td style="text-align: left">Checks if the value of left operand is greater or equal to right operand, if yes the condition becomes true</td>
+      <td style="text-align: left">(A &gt; B) is false</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">&lt;=</td>
+      <td style="text-align: left">Checks if the value of left operand is less or equal to right operand, if yes the condition becomes true</td>
+      <td style="text-align: left">(A &lt; B) is true</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="the-bitwise-operators">The Bitwise Operators</h1>
+
+<p>Java defines several bitwise operators which can be applied to the integer types, long, int, short, char, and byte.</p>
+
+<p>Bitwise operator works on bits and perform bit by bit operation. Assume if a = 60; and b = 13; Now in binary format they will be as follows:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a = 0011 1100
+b = 0000 1101
+-----------------
+a&amp;b = 0000 1000
+a|b = 0011 1101
+a^b = 0011 0001
+~a = 1100 0011
+</code></pre></div></div>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="bitwise-and-">Bitwise AND (&amp;)</h1>
+<p>A bitwise AND takes two binary representations of equal length and performs the logical AND operation on each pair of corresponding bits. In each pair, the result is 1 if the first bit is 1 AND the second bit is 1. Otherwise, the result is 0.</p>
+
+<p>Truth table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A</th>
+      <th style="text-align: center">B</th>
+      <th style="text-align: center">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="bitwise-or-">Bitwise OR (|)</h1>
+<p>A bitwise OR takes two bit patterns of equal length, and produces another one of the same length by matching up corresponding bits (the first of each; the second of each; and so on) and performing the logical inclusive OR operation on each pair of corresponding bits. In each pair, the result is 1 if the first bit is 1 OR the second bit is 1 OR both bits are 1, and otherwise the result is 0.</p>
+
+<p>Truth Table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A</th>
+      <th style="text-align: center">B</th>
+      <th style="text-align: center">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="bitwise-xor-">Bitwise XOR (^)</h1>
+<p>A bitwise exclusive or takes two bit patterns of equal length and performs the logical XOR operation on each pair of corresponding bits. The result in each position is 1 if the two bits are different, and 0 if they are the same.</p>
+
+<p>Truth Table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">A</th>
+      <th style="text-align: center">B</th>
+      <th style="text-align: center">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="bitwise-not-">Bitwise NOT (~)</h1>
+<p>The bitwise NOT, or complement, is a unary operation that performs logical negation on each bit, forming the ones’ complement of the given binary value. Digits which were 0 become 1, and vice versa.</p>
+
+<p>Truth Table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Input</th>
+      <th style="text-align: center">Output</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">0</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="left-shift-">Left Shift («)</h1>
+<p>In a left arithmetic shift, zeros are shifted in on the right. The leftmost digit was shifted past the end of the register, and a new 0 was shifted into the rightmost position.</p>
+
+<p><img alt="left shift" src="/images/java/j-9.webp" width="250px" /></p>
+
+<p>A left arithmetic shift by n is equivalent to multiplying by 2^n.</p>
+
+<h1 id="right-shift-">Right Shift (»)</h1>
+<p>In a right arithmetic shift, the sign bit is shifted in on the left, thus preserving the sign of the operand. The rightmost 1 was shifted out (perhaps into the carry flag), and a new 0 was copied into the leftmost position, preserving the sign of the number.</p>
+
+<p><img alt="right shift" src="/images/java/j-10.webp" width="250px" /></p>
+
+<p>A right arithmetic shift by n of a two’s complement value is equivalent to dividing by 2n and rounding toward negative infinity.</p>
+
+<p>The following table lists the bitwise operators, Assume integer variable A holds 60 and variable B holds 13 then:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Operator</th>
+      <th style="text-align: center">Description</th>
+      <th style="text-align: center">Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">&amp;</td>
+      <td style="text-align: center">Binary AND Operator copies a bit to the result if it exists in both operand</td>
+      <td style="text-align: center">(A &amp; B) will give 12 which is 0000 1100</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">|</td>
+      <td style="text-align: center">Binary OR Operator copies a bit if it exists in either operand</td>
+      <td style="text-align: center">(A | B) will give 61 which is 0011 1101</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">^</td>
+      <td style="text-align: center">Binary XOR Operator copies a bit if it is set in one operand but not both</td>
+      <td style="text-align: center">(A ^ B) will give 49 which is 0011 0001</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">~</td>
+      <td style="text-align: center">Binary ones complements Operator is Unary and has effect of ‘flipping’ bits</td>
+      <td style="text-align: center">(~A ) will give -60 which is 1100 0011</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">«</td>
+      <td style="text-align: center">Binary Left shift operator. The left operand value is moved left by number of bits specified by right operand</td>
+      <td style="text-align: center">A « 2 will give 240 which is 1111 0000</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">»</td>
+      <td style="text-align: center">Binary Right shift operator. The left operand value is moved right by number of bits specified by right operand</td>
+      <td style="text-align: center">A » 2 will give 15 which is 1111</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">»&gt;</td>
+      <td style="text-align: center">Shift right zero fill operator. the left operands value is moved right by the number of bits specified by the right operand and shifted values are filled up with zeros</td>
+      <td style="text-align: center">A »&gt; 2 will give 15 which is 0000 1111</td>
+    </tr>
+  </tbody>
+</table>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Entry</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		  <span class="c1">// create truth table for &amp; (boolean logical AND) operator</span>
+	      <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span> <span class="s">"%s\n%s: %b\n%s: %b\n%s: %b\n%s: %b\n\n"</span><span class="o">,</span>
+	         <span class="s">"Boolean logical AND (&amp;)"</span><span class="o">,</span> <span class="s">"false &amp; false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">&amp;</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"false &amp; true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">&amp;</span> <span class="kc">true</span> <span class="o">),</span>
+	         <span class="s">"true &amp; false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">&amp;</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"true &amp; true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">&amp;</span> <span class="kc">true</span> <span class="o">)</span> <span class="o">);</span>
+
+	      <span class="c1">// create truth table for | (boolean logical inclusive OR) operator</span>
+	      <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span> <span class="s">"%s\n%s: %b\n%s: %b\n%s: %b\n%s: %b\n\n"</span><span class="o">,</span>
+	         <span class="s">"Boolean logical inclusive OR (|)"</span><span class="o">,</span>
+	         <span class="s">"false | false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">|</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"false | true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">|</span> <span class="kc">true</span> <span class="o">),</span>
+	         <span class="s">"true | false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">|</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"true | true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">|</span> <span class="kc">true</span> <span class="o">)</span> <span class="o">);</span>
+
+	      <span class="c1">// create truth table for ^ (boolean logical exclusive OR) operator</span>
+	      <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span> <span class="s">"%s\n%s: %b\n%s: %b\n%s: %b\n%s: %b\n\n"</span><span class="o">,</span>
+	         <span class="s">"Boolean logical exclusive OR (^)"</span><span class="o">,</span> 
+	         <span class="s">"false ^ false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">^</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"false ^ true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">false</span> <span class="o">^</span> <span class="kc">true</span> <span class="o">),</span>
+	         <span class="s">"true ^ false"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">^</span> <span class="kc">false</span> <span class="o">),</span>
+	         <span class="s">"true ^ true"</span><span class="o">,</span> <span class="o">(</span> <span class="kc">true</span> <span class="o">^</span> <span class="kc">true</span> <span class="o">)</span> <span class="o">);</span>    
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Boolean logical AND <span class="o">(</span>&amp;<span class="o">)</span>
+<span class="nb">false</span> &amp; <span class="nb">false</span>: <span class="nb">false
+false</span> &amp; <span class="nb">true</span>: <span class="nb">false
+true</span> &amp; <span class="nb">false</span>: <span class="nb">false
+true</span> &amp; <span class="nb">true</span>: <span class="nb">true
+
+</span>Boolean logical inclusive OR <span class="o">(</span>|<span class="o">)</span>
+<span class="nb">false</span> | <span class="nb">false</span>: <span class="nb">false
+false</span> | <span class="nb">true</span>: <span class="nb">true
+true</span> | <span class="nb">false</span>: <span class="nb">true
+true</span> | <span class="nb">true</span>: <span class="nb">true
+
+</span>Boolean logical exclusive OR <span class="o">(</span>^<span class="o">)</span>
+<span class="nb">false</span> ^ <span class="nb">false</span>: <span class="nb">false
+false</span> ^ <span class="nb">true</span>: <span class="nb">true
+true</span> ^ <span class="nb">false</span>: <span class="nb">true
+true</span> ^ <span class="nb">true</span>: <span class="nb">false</span>
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-08T00:00:00+05:30">January 8, 2019</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Java+-+Operators+%28Part+-+1%29%20https%3A%2F%2Fkuros.in%2Fjava%2Fjava-4-operators%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fjava%2Fjava-4-operators%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fjava%2Fjava-4-operators%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/java/java-3-loops-for-while-do-while/" class="pagination--pager" title="Java - Loop
+">Previous</a>
+    
+    
+      <a href="/java/java-5-operators-2/" class="pagination--pager" title="Java - Operators (Part - 2)
+">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="permalink">Kafka Messaging with Spring Boot
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/messaging/getting-started-with-kafka-install-and-messaging/" rel="permalink">Getting started with kafka messaging
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/" rel="permalink">jFirebase - Entity Framework for Firebase/Firestore
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I decided to tryout firebase for my personal projects &amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when d...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="permalink">Making parallel service calls in microservice architecture.
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to curren...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/java/java-4-operators/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/java/java-4-operators"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>
