@@ -269,6 +269,10 @@
 <lastmod>2020-05-02T00:00:00+05:30</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/testing/testing-email-using-mock-email-server/</loc>
+<lastmod>2020-10-18T00:00:00+05:30</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
@@ -327,6 +331,9 @@
 </url>
 <url>
 <loc>https://kuros.in/categories/messaging/</loc>
+</url>
+<url>
+<loc>https://kuros.in/categories/testing/</loc>
 </url>
 <url>
 <loc>https://kuros.in/page2/</loc>
