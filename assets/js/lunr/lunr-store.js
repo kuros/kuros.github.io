@@ -402,7 +402,7 @@ var store = [{
         "teaser": null
       },{
         "title": "How I reduced the build execution time for email connectors using mock email servers.",
-        "excerpt":"I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!...","categories": ["testing"],
+        "excerpt":"I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!...","categories": ["testing"],
         "tags": [],
         "url": "https://kuros.in/testing/testing-email-using-mock-email-server/",
         "teaser": null

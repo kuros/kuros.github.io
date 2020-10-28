@@ -162,115 +162,35 @@
 
 
 <div id="main" role="main">
-  
-  <div class="sidebar sticky">
-  
-
-
-<div itemscope itemtype="https://schema.org/Person">
-
-  
-    <div class="author__avatar">
-      
-        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
-      
-    </div>
-  
-
-  <div class="author__content">
+    <div class="sidebar sidebar__sticky">
     
-      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
-    
-    
-      <div class="author__bio" itemprop="description">
-        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
-
-      </div>
-    
-  </div>
-
-  <div class="author__urls-wrapper">
-    <button class="btn btn--inverse">Follow</button>
-    <ul class="author__urls social-icons">
-      
-        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
-        </li>
-      
-
-      
-        
-          
-            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
-          
-        
-          
-            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
-          
-        
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <!--
-  <li>
-    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
-      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
-    </a>
-  </li>
--->
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#class-comments">Class Comments</a>
+    <ul>
+      <li><a href="#author-name">@author name</a></li>
+      <li><a href="#version-text">@version text</a></li>
     </ul>
-  </div>
-</div>
+  </li>
+  <li><a href="#method-comments">Method Comments</a>
+    <ul>
+      <li><a href="#param-variable-description">@param variable description</a></li>
+      <li><a href="#return-description">@return description</a></li>
+      <li><a href="#throws-class-description">@throws class description</a></li>
+    </ul>
+  </li>
+  <li><a href="#field-comments">Field Comments</a></li>
+  <li><a href="#comment-extraction">Comment Extraction</a></li>
+</ul>
 
-  
+        </nav>
+    
+    
+      
+    
   </div>
+  
 
 
 
@@ -311,55 +231,35 @@
 
       <section class="page__content" itemprop="text">
         
-          <aside class="sidebar__right " style="height: 100%;">
-            
-              <nav class="toc">
-                <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-                <ul class="toc__menu">
-  <li><a href="#class-comments">Class Comments</a>
-    <ul>
-      <li><a href="#author-name">@author name</a></li>
-      <li><a href="#version-text">@version text</a></li>
-    </ul>
-  </li>
-  <li><a href="#method-comments">Method Comments</a>
-    <ul>
-      <li><a href="#param-variable-description">@param variable description</a></li>
-      <li><a href="#return-description">@return description</a></li>
-      <li><a href="#throws-class-description">@throws class description</a></li>
-    </ul>
-  </li>
-  <li><a href="#field-comments">Field Comments</a></li>
-  <li><a href="#comment-extraction">Comment Extraction</a></li>
-</ul>
-
-              </nav>
+          <aside class="sidebar__right  " style="height: 100%;">
             
             
                 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<div class="sidebar_ads sticky">
+<div class="sidebar_ads">
 
+    <div class="ad">
+        
 
-          
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
 
-          
-          <!-- sky-scrapper -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4166026699724584"
-               data-ad-slot="5730852605"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
 
 </div>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script> 
+ 
             
           </aside>
-        
         
         <p>The JDK contains a very useful tool, called javadoc, that generates HTML documentation from your source files. If you add comments that start with the special delimiter /** to your source code, you too can easily produce professional-looking documentation.</p>
 
@@ -459,6 +359,7 @@
 
 
         
+
       </section>
 
       <footer class="page__meta">
@@ -489,7 +390,115 @@
   <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-10T00:00:00+05:30">January 10, 2019</time></p>
 
 
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
       </footer>
+
+      
 
       <section class="page__share">
   
@@ -588,7 +597,7 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take ano...</p>
+    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take an...</p>
   </article>
 </div>
 

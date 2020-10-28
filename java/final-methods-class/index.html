@@ -162,12 +162,161 @@
 
 
 <div id="main" role="main">
-  
-  <div class="sidebar sticky">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#final-methods">Final Methods</a>
+    <ul>
+      <li><a href="#final-classes">Final classes</a></li>
+    </ul>
+  </li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
   
 
 
-<div itemscope itemtype="https://schema.org/Person">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Java - final variable, method and final class">
+    <meta itemprop="description" content="We can have final methods, final classes, final data members, final local variables and final parameters. A final class implicitly has all the methods as final, but not necessarily the data members. A final class may not be extended; neither may a final method be overridden.">
+    <meta itemprop="datePublished" content="2019-01-09T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Java - final variable, method and final class
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>We can have final methods, final classes, final data members, final local variables and final parameters. A final class implicitly has all the methods as final, but not necessarily the data members. A final class may not be extended; neither may a final method be overridden.</p>
+
+<p><strong>Final primitive data members cannot be changed once they are assigned, neither may final object handle data members</strong> (Vector, String, JFrame, etc.) be reassigned to new instances, but if they are mutable (meaning they’ve got methods that allow us to change their state), their contents may be changed.</p>
+
+<h1 id="final-methods">Final Methods</h1>
+
+<p>You can declare some or all of a class’s methods final. You use the final keyword in a method declaration to indicate that the method cannot be overridden by subclasses. The Object class does this—a number of its methods are <em>final</em>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FinalBase</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">method</span> <span class="o">(){</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">" This the final method"</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<p><img alt="this impl" src="/images/java/j-18.webp" lazyload="" width="400px" /></p>
+
+<p>In this code area we wrote a FinalBase class and a FinalInherit Class but when we try to access the list of methods which we could override we did not get to see the method which we have declared as final in FinalBase class.</p>
+
+<h2 id="final-classes">Final classes</h2>
+
+<p>When you did not wanted the class to be inherited by any other class you use the final keyword.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">FinalClass</span><span class="o">{</span>
+	<span class="o">...</span>
+	<span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-09T00:00:00+05:30">January 9, 2019</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
 
   
     <div class="author__avatar">
@@ -178,6 +327,7 @@
   
 
   <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
     
       <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
     
@@ -268,151 +418,10 @@
     </ul>
   </div>
 </div>
-
-  
-  </div>
-
-
-
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Java - final variable, method and final class">
-    <meta itemprop="description" content="We can have final methods, final classes, final data members, final local variables and final parameters. A final class implicitly has all the methods as final, but not necessarily the data members. A final class may not be extended; neither may a final method be overridden.">
-    <meta itemprop="datePublished" content="2019-01-09T00:00:00+05:30">
-    
-
-    <div class="page__inner-wrap">
-      
-        <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Java - final variable, method and final class
-</h1>
-          
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          1 minute read
-        
-      </span>
-    
-  </p>
-
-
-        </header>
-      
-
-      <section class="page__content" itemprop="text">
-        
-          <aside class="sidebar__right " style="height: 100%;">
-            
-              <nav class="toc">
-                <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-                <ul class="toc__menu">
-  <li><a href="#final-methods">Final Methods</a>
-    <ul>
-      <li><a href="#final-classes">Final classes</a></li>
-    </ul>
-  </li>
-</ul>
-
-              </nav>
-            
-            
-                
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<div class="sidebar_ads sticky">
-
-
-          
-
-          
-          <!-- sky-scrapper -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4166026699724584"
-               data-ad-slot="5730852605"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          
-
-</div>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script> 
-            
-          </aside>
-        
-        
-        <p>We can have final methods, final classes, final data members, final local variables and final parameters. A final class implicitly has all the methods as final, but not necessarily the data members. A final class may not be extended; neither may a final method be overridden.</p>
-
-<p><strong>Final primitive data members cannot be changed once they are assigned, neither may final object handle data members</strong> (Vector, String, JFrame, etc.) be reassigned to new instances, but if they are mutable (meaning they’ve got methods that allow us to change their state), their contents may be changed.</p>
-
-<h1 id="final-methods">Final Methods</h1>
-
-<p>You can declare some or all of a class’s methods final. You use the final keyword in a method declaration to indicate that the method cannot be overridden by subclasses. The Object class does this—a number of its methods are <em>final</em>.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">FinalBase</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">final</span> <span class="kt">void</span> <span class="nf">method</span> <span class="o">(){</span>
-		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">" This the final method"</span><span class="o">);</span>
-	<span class="o">}</span>
-<span class="o">}</span>
-
-</code></pre></div></div>
-<p><img alt="this impl" src="/images/java/j-18.webp" lazyload="" width="400px" /></p>
-
-<p>In this code area we wrote a FinalBase class and a FinalInherit Class but when we try to access the list of methods which we could override we did not get to see the method which we have declared as final in FinalBase class.</p>
-
-<h2 id="final-classes">Final classes</h2>
-
-<p>When you did not wanted the class to be inherited by any other class you use the final keyword.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">FinalClass</span><span class="o">{</span>
-	<span class="o">...</span>
-	<span class="o">...</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-
-        
-      </section>
-
-      <footer class="page__meta">
-        
-        
-
-
-  
-
-
-  
-  
-  
-
-  <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
-    <span itemprop="keywords">
-    
-      
-      
-      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
-    
-    </span>
-  </p>
-
-
-        
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-09T00:00:00+05:30">January 9, 2019</time></p>
-
-
+ 
       </footer>
+
+      
 
       <section class="page__share">
   
@@ -511,7 +520,7 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take ano...</p>
+    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take an...</p>
   </article>
 </div>
 

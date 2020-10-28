@@ -162,12 +162,212 @@
 
 
 <div id="main" role="main">
-  
-  <div class="sidebar sticky">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#the-console">The Console</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
   
 
 
-<div itemscope itemtype="https://schema.org/Person">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Console IO">
+    <meta itemprop="description" content="Java was designed for graphical user interfaces (GUI) and industrial strength file and Internet I/O. No attempt was made to have simple input and output facilities like C++’s cin and cout. This isn’t a problem for big programs, but it makes small student examples large and awkward, requiring knowledge of conversion and exceptions from the beginning. In practice console input is rarely used, but programmers often use System.out.println for output during the debugging phase.">
+    <meta itemprop="datePublished" content="2019-01-12T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Console IO
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>Java was designed for graphical user interfaces (GUI) and industrial strength file and Internet I/O. No attempt was made to have simple input and output facilities like C++’s cin and cout. This isn’t a problem for big programs, but it makes small student examples large and awkward, requiring knowledge of conversion and exceptions from the beginning. In practice console input is rarely used, but programmers often use System.out.println for output during the debugging phase.</p>
+
+<p>There are three predefined I/O streams that use the console. These are equivalent to Unix standard input, error, and output streams.</p>
+<ul>
+  <li>System.out - standard output stream</li>
+  <li>System.in - standard input stream</li>
+  <li>System.err - standard error</li>
+</ul>
+
+<p>Now let us concentrate on the major parts i.e. input and output of data from the console.</p>
+
+<h2 id="the-console">The Console</h2>
+<p>A more advanced alternative to the Standard Streams is the Console. This is a single, predefined object of type Console that has most of the features provided by the Standard Streams, and others besides. The Console is particularly useful for secure password entry. The Console object also provides input and output streams that are true character streams, through its reader and writer methods.</p>
+
+<p>Before a program can use the Console, it must attempt to retrieve the Console object by invoking System.console(). If the Console object is available, this method returns it. If System.console returns NULL, then Console operations are not permitted, either because the OS doesn’t support them or because the program was launched in a non-interactive environment.</p>
+
+<p>The Console object supports secure password entry through its readPassword method. This method helps secure password entry in two ways. First, it suppresses echoing, so the password is not visible on the user’s screen. Second, readPassword returns a character array, not a String, so the password can be overwritten, removing it from memory as soon as it is no longer needed.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.Console</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Password</span> <span class="o">{</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="nc">String</span> <span class="n">args</span><span class="o">[])</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+
+        <span class="nc">Console</span> <span class="n">c</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">console</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">c</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"No console."</span><span class="o">);</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nc">String</span> <span class="n">login</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="na">readLine</span><span class="o">(</span><span class="s">"Enter your login: "</span><span class="o">);</span>
+        <span class="kt">char</span> <span class="o">[]</span> <span class="n">oldPassword</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="na">readPassword</span><span class="o">(</span><span class="s">"Enter your old password: "</span><span class="o">);</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">verify</span><span class="o">(</span><span class="n">login</span><span class="o">,</span> <span class="n">oldPassword</span><span class="o">))</span> <span class="o">{</span>
+            <span class="kt">boolean</span> <span class="n">noMatch</span><span class="o">;</span>
+            <span class="k">do</span> <span class="o">{</span>
+                <span class="kt">char</span> <span class="o">[]</span> <span class="n">newPassword1</span> <span class="o">=</span>
+                    <span class="n">c</span><span class="o">.</span><span class="na">readPassword</span><span class="o">(</span><span class="s">"Enter your new password: "</span><span class="o">);</span>
+                <span class="kt">char</span> <span class="o">[]</span> <span class="n">newPassword2</span> <span class="o">=</span>
+                    <span class="n">c</span><span class="o">.</span><span class="na">readPassword</span><span class="o">(</span><span class="s">"Enter new password again: "</span><span class="o">);</span>
+                <span class="n">noMatch</span> <span class="o">=</span> <span class="o">!</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">newPassword1</span><span class="o">,</span> <span class="n">newPassword2</span><span class="o">);</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">noMatch</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="n">c</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Passwords don't match. Try again.%n"</span><span class="o">);</span>
+                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                    <span class="n">change</span><span class="o">(</span><span class="n">login</span><span class="o">,</span> <span class="n">newPassword1</span><span class="o">);</span>
+                    <span class="n">c</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Password for %s changed.%n"</span><span class="o">,</span> <span class="n">login</span><span class="o">);</span>
+                <span class="o">}</span>
+                <span class="nc">Arrays</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="n">newPassword1</span><span class="o">,</span> <span class="sc">' '</span><span class="o">);</span>
+                <span class="nc">Arrays</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="n">newPassword2</span><span class="o">,</span> <span class="sc">' '</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">while</span> <span class="o">(</span><span class="n">noMatch</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nc">Arrays</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="n">oldPassword</span><span class="o">,</span> <span class="sc">' '</span><span class="o">);</span>
+
+    <span class="o">}</span>
+
+    <span class="c1">//Dummy verify method. </span>
+    <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">verify</span><span class="o">(</span><span class="nc">String</span> <span class="n">login</span><span class="o">,</span> <span class="kt">char</span><span class="o">[]</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">//Dummy change method.</span>
+    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">change</span><span class="o">(</span><span class="nc">String</span> <span class="n">login</span><span class="o">,</span> <span class="kt">char</span><span class="o">[]</span> <span class="n">password</span><span class="o">)</span> <span class="o">{}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Let us understand the what does the above program tries to do :-</p>
+<ul>
+  <li>Attempt to retrieve the Console object. If the object is not available, abort.</li>
+  <li>Invoke Console.readLine to prompt for and read the user’s login name.</li>
+  <li>Invoke Console.readPassword to prompt for and read the user’s existing password.</li>
+  <li>Invoke verify to confirm that the user is authorized to change the password. (In this example, verify is a dummy method that always returns true.)</li>
+  <li>Repeat the following steps until the user enters the same password twice:
+    <ul>
+      <li>Invoke Console.readPassword twice to prompt for and read a new password.</li>
+      <li>If the user entered the same password both times, invoke change to change it. (Again, change is a dummy method.)</li>
+      <li>Overwrite both passwords with blanks.</li>
+    </ul>
+  </li>
+  <li>Overwrite the old password with blanks.</li>
+</ul>
+
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-12T00:00:00+05:30">January 12, 2019</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
 
   
     <div class="author__avatar">
@@ -178,6 +378,7 @@
   
 
   <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
     
       <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
     
@@ -268,202 +469,10 @@
     </ul>
   </div>
 </div>
-
-  
-  </div>
-
-
-
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Console IO">
-    <meta itemprop="description" content="Java was designed for graphical user interfaces (GUI) and industrial strength file and Internet I/O. No attempt was made to have simple input and output facilities like C++’s cin and cout. This isn’t a problem for big programs, but it makes small student examples large and awkward, requiring knowledge of conversion and exceptions from the beginning. In practice console input is rarely used, but programmers often use System.out.println for output during the debugging phase.">
-    <meta itemprop="datePublished" content="2019-01-12T00:00:00+05:30">
-    
-
-    <div class="page__inner-wrap">
-      
-        <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Console IO
-</h1>
-          
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-        </header>
-      
-
-      <section class="page__content" itemprop="text">
-        
-          <aside class="sidebar__right " style="height: 100%;">
-            
-              <nav class="toc">
-                <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-                <ul class="toc__menu">
-  <li><a href="#the-console">The Console</a></li>
-</ul>
-
-              </nav>
-            
-            
-                
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<div class="sidebar_ads sticky">
-
-
-          
-
-          
-          <!-- sky-scrapper -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4166026699724584"
-               data-ad-slot="5730852605"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          
-
-</div>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script> 
-            
-          </aside>
-        
-        
-        <p>Java was designed for graphical user interfaces (GUI) and industrial strength file and Internet I/O. No attempt was made to have simple input and output facilities like C++’s cin and cout. This isn’t a problem for big programs, but it makes small student examples large and awkward, requiring knowledge of conversion and exceptions from the beginning. In practice console input is rarely used, but programmers often use System.out.println for output during the debugging phase.</p>
-
-<p>There are three predefined I/O streams that use the console. These are equivalent to Unix standard input, error, and output streams.</p>
-<ul>
-  <li>System.out - standard output stream</li>
-  <li>System.in - standard input stream</li>
-  <li>System.err - standard error</li>
-</ul>
-
-<p>Now let us concentrate on the major parts i.e. input and output of data from the console.</p>
-
-<h2 id="the-console">The Console</h2>
-<p>A more advanced alternative to the Standard Streams is the Console. This is a single, predefined object of type Console that has most of the features provided by the Standard Streams, and others besides. The Console is particularly useful for secure password entry. The Console object also provides input and output streams that are true character streams, through its reader and writer methods.</p>
-
-<p>Before a program can use the Console, it must attempt to retrieve the Console object by invoking System.console(). If the Console object is available, this method returns it. If System.console returns NULL, then Console operations are not permitted, either because the OS doesn’t support them or because the program was launched in a non-interactive environment.</p>
-
-<p>The Console object supports secure password entry through its readPassword method. This method helps secure password entry in two ways. First, it suppresses echoing, so the password is not visible on the user’s screen. Second, readPassword returns a character array, not a String, so the password can be overwritten, removing it from memory as soon as it is no longer needed.</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.Console</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
-<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
-
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Password</span> <span class="o">{</span>
-    
-    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span> <span class="o">(</span><span class="nc">String</span> <span class="n">args</span><span class="o">[])</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
-
-        <span class="nc">Console</span> <span class="n">c</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">console</span><span class="o">();</span>
-        <span class="k">if</span> <span class="o">(</span><span class="n">c</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-            <span class="nc">System</span><span class="o">.</span><span class="na">err</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"No console."</span><span class="o">);</span>
-            <span class="nc">System</span><span class="o">.</span><span class="na">exit</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
-        <span class="o">}</span>
-
-        <span class="nc">String</span> <span class="n">login</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="na">readLine</span><span class="o">(</span><span class="s">"Enter your login: "</span><span class="o">);</span>
-        <span class="kt">char</span> <span class="o">[]</span> <span class="n">oldPassword</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="na">readPassword</span><span class="o">(</span><span class="s">"Enter your old password: "</span><span class="o">);</span>
-
-        <span class="k">if</span> <span class="o">(</span><span class="n">verify</span><span class="o">(</span><span class="n">login</span><span class="o">,</span> <span class="n">oldPassword</span><span class="o">))</span> <span class="o">{</span>
-            <span class="kt">boolean</span> <span class="n">noMatch</span><span class="o">;</span>
-            <span class="k">do</span> <span class="o">{</span>
-                <span class="kt">char</span> <span class="o">[]</span> <span class="n">newPassword1</span> <span class="o">=</span>
-                    <span class="n">c</span><span class="o">.</span><span class="na">readPassword</span><span class="o">(</span><span class="s">"Enter your new password: "</span><span class="o">);</span>
-                <span class="kt">char</span> <span class="o">[]</span> <span class="n">newPassword2</span> <span class="o">=</span>
-                    <span class="n">c</span><span class="o">.</span><span class="na">readPassword</span><span class="o">(</span><span class="s">"Enter new password again: "</span><span class="o">);</span>
-                <span class="n">noMatch</span> <span class="o">=</span> <span class="o">!</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">newPassword1</span><span class="o">,</span> <span class="n">newPassword2</span><span class="o">);</span>
-                <span class="k">if</span> <span class="o">(</span><span class="n">noMatch</span><span class="o">)</span> <span class="o">{</span>
-                    <span class="n">c</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Passwords don't match. Try again.%n"</span><span class="o">);</span>
-                <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-                    <span class="n">change</span><span class="o">(</span><span class="n">login</span><span class="o">,</span> <span class="n">newPassword1</span><span class="o">);</span>
-                    <span class="n">c</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"Password for %s changed.%n"</span><span class="o">,</span> <span class="n">login</span><span class="o">);</span>
-                <span class="o">}</span>
-                <span class="nc">Arrays</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="n">newPassword1</span><span class="o">,</span> <span class="sc">' '</span><span class="o">);</span>
-                <span class="nc">Arrays</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="n">newPassword2</span><span class="o">,</span> <span class="sc">' '</span><span class="o">);</span>
-            <span class="o">}</span> <span class="k">while</span> <span class="o">(</span><span class="n">noMatch</span><span class="o">);</span>
-        <span class="o">}</span>
-
-        <span class="nc">Arrays</span><span class="o">.</span><span class="na">fill</span><span class="o">(</span><span class="n">oldPassword</span><span class="o">,</span> <span class="sc">' '</span><span class="o">);</span>
-
-    <span class="o">}</span>
-
-    <span class="c1">//Dummy verify method. </span>
-    <span class="kd">static</span> <span class="kt">boolean</span> <span class="nf">verify</span><span class="o">(</span><span class="nc">String</span> <span class="n">login</span><span class="o">,</span> <span class="kt">char</span><span class="o">[]</span> <span class="n">password</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
-    <span class="o">}</span>
-
-    <span class="c1">//Dummy change method.</span>
-    <span class="kd">static</span> <span class="kt">void</span> <span class="nf">change</span><span class="o">(</span><span class="nc">String</span> <span class="n">login</span><span class="o">,</span> <span class="kt">char</span><span class="o">[]</span> <span class="n">password</span><span class="o">)</span> <span class="o">{}</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>Let us understand the what does the above program tries to do :-</p>
-<ul>
-  <li>Attempt to retrieve the Console object. If the object is not available, abort.</li>
-  <li>Invoke Console.readLine to prompt for and read the user’s login name.</li>
-  <li>Invoke Console.readPassword to prompt for and read the user’s existing password.</li>
-  <li>Invoke verify to confirm that the user is authorized to change the password. (In this example, verify is a dummy method that always returns true.)</li>
-  <li>Repeat the following steps until the user enters the same password twice:
-    <ul>
-      <li>Invoke Console.readPassword twice to prompt for and read a new password.</li>
-      <li>If the user entered the same password both times, invoke change to change it. (Again, change is a dummy method.)</li>
-      <li>Overwrite both passwords with blanks.</li>
-    </ul>
-  </li>
-  <li>Overwrite the old password with blanks.</li>
-</ul>
-
-
-        
-      </section>
-
-      <footer class="page__meta">
-        
-        
-
-
-  
-
-
-  
-  
-  
-
-  <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
-    <span itemprop="keywords">
-    
-      
-      
-      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
-    
-    </span>
-  </p>
-
-
-        
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-12T00:00:00+05:30">January 12, 2019</time></p>
-
-
+ 
       </footer>
+
+      
 
       <section class="page__share">
   
@@ -562,7 +571,7 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take ano...</p>
+    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take an...</p>
   </article>
 </div>
 

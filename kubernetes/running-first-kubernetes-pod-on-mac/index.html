@@ -162,115 +162,44 @@
 
 
 <div id="main" role="main">
-  
-  <div class="sidebar sticky">
-  
-
-
-<div itemscope itemtype="https://schema.org/Person">
-
-  
-    <div class="author__avatar">
-      
-        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
-      
-    </div>
-  
-
-  <div class="author__content">
+    <div class="sidebar sidebar__sticky">
     
-      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
-    
-    
-      <div class="author__bio" itemprop="description">
-        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
-
-      </div>
-    
-  </div>
-
-  <div class="author__urls-wrapper">
-    <button class="btn btn--inverse">Follow</button>
-    <ul class="author__urls social-icons">
-      
-        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
-        </li>
-      
-
-      
-        
-          
-            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
-          
-        
-          
-            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
-          
-        
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      <!--
-  <li>
-    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
-      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
-    </a>
-  </li>
--->
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#installing-docker-desktop">Installing Docker Desktop</a>
+    <ul>
+      <li><a href="#install-it">Install it</a></li>
+      <li><a href="#verify">Verify</a></li>
     </ul>
-  </div>
-</div>
+  </li>
+  <li><a href="#enable-kubernetes">Enable Kubernetes</a>
+    <ul>
+      <li><a href="#exploring-the-cluster">Exploring the cluster</a></li>
+    </ul>
+  </li>
+  <li><a href="#the-java-app">The Java App</a></li>
+  <li><a href="#dockerfile">Dockerfile</a>
+    <ul>
+      <li><a href="#building-the-docker-image">Building the Docker image</a></li>
+      <li><a href="#running-docker-image">Running Docker image</a></li>
+      <li><a href="#push-the-images-to-docker-hub">Push the images to docker-hub</a></li>
+    </ul>
+  </li>
+  <li><a href="#creating-deployment-descriptor-for-kubernetes">Creating Deployment descriptor for Kubernetes</a></li>
+  <li><a href="#creating-service-descriptor-for-kubernetes">Creating Service descriptor for Kubernetes</a></li>
+  <li><a href="#a-simple-client">A simple client</a></li>
+  <li><a href="#loadbalancing-with-kubernetes">LoadBalancing with Kubernetes</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
 
-  
+        </nav>
+    
+    
+      
+    
   </div>
+  
 
 
 
@@ -311,33 +240,35 @@
 
       <section class="page__content" itemprop="text">
         
-          <aside class="sidebar__right " style="height: 100%;">
+          <aside class="sidebar__right  " style="height: 100%;">
             
             
                 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<div class="sidebar_ads sticky">
+<div class="sidebar_ads">
 
+    <div class="ad">
+        
 
-          
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
 
-          
-          <!-- sky-scrapper -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4166026699724584"
-               data-ad-slot="5730852605"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
 
 </div>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script> 
+ 
             
           </aside>
-        
         
         <p>All you need is 60 minutes to run your first application in Kubernetes, in this post we will install docker with kubernetes on our local machine, create a simple app and its docker image and finally deploy it on our kubernetes cluster.</p>
 
@@ -980,6 +911,7 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
 <p>You can find the complete code on <a href="https://github.com/kuros/blog-code/tree/master/k8s/machine-ip">github</a></p>
 
         
+
       </section>
 
       <footer class="page__meta">
@@ -1010,7 +942,115 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
   <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-02-08T00:00:00+05:30">February 8, 2019</time></p>
 
 
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
       </footer>
+
+      
 
       <section class="page__share">
   
@@ -1109,7 +1149,7 @@ machine-ip-5764588bdf-rtmr4   1/1       Running       0          1h
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take ano...</p>
+    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take an...</p>
   </article>
 </div>
 

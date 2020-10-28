@@ -162,12 +162,309 @@
 
 
 <div id="main" role="main">
-  
-  <div class="sidebar sticky">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#mapping-the-wastage">Mapping the wastage</a></li>
+  <li><a href="#challenges">Challenges</a></li>
+  <li><a href="#greenmail-to-rescue">GreenMail to rescue</a></li>
+  <li><a href="#java-mail-service">Java Mail Service</a></li>
+  <li><a href="#set-up-greenmail">Set up GreenMail</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
   
 
 
-<div itemscope itemtype="https://schema.org/Person">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="How I reduced the build execution time for email connectors using mock email servers.">
+    <meta itemprop="description" content="I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!">
+    <meta itemprop="datePublished" content="2020-10-18T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">How I reduced the build execution time for email connectors using mock email servers.
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!</p>
+
+<h2 id="mapping-the-wastage">Mapping the wastage</h2>
+<p>This micro service was responsible for sending/receiving mails from different configured mail servers. We were doing unit and integration level testing, where in integration testing we were connecting to a local exchange server with pre-configured test users for sending/receiving mail.</p>
+
+<p>The best way to start optimization - find gaps &amp; wastage. We broke down the total build execution into build, deployment on staging environment &amp; acceptance.</p>
+
+<p>We noticed the build &amp; deployment time was fair, however the acceptance tests were taking around 40-45 min to complete. Now that we have narrowed our focus. It was time to do a breakdown analysis of test.</p>
+
+<h2 id="challenges">Challenges</h2>
+
+<p>We often have been observing slowness of builds, sometimes intermittent failures as well. The reason were obvious, tests were using same set of users, so during parallel execution data gets corrupted. We needed a clean way test our api’s. Also after regular intervals, we had to clean the mail accounts.</p>
+
+<p>To put simply we needed</p>
+
+<ol>
+  <li>Unique set of user for each test.</li>
+  <li>Local server to reduce network delays.</li>
+  <li>Ability to automatically flush the existing data.</li>
+  <li>Behave like a real world mail server</li>
+  <li>Supports the standards protocols - SMTP, IMAP &amp; POP3</li>
+</ol>
+
+<h2 id="greenmail-to-rescue">GreenMail to rescue</h2>
+<p>Time for us to switch to mock email server, there are good number of servers available. Some are free to use and some are paid.</p>
+
+<ol>
+  <li><a href="https://mailtrap.io/">MailTrap</a></li>
+  <li><a href="https://www.mailspons.com/">Mailspons</a></li>
+  <li><a href="https://greenmail-mail-test.github.io/greenmail/">GreenMail</a></li>
+</ol>
+
+<p>GreenMail is open source while other solutions are paid. As stated on the main page, the benefits include:</p>
+
+<ul>
+  <li>Supports SMTP, POP3 and IMAP including SSL</li>
+  <li>Prevents accidental email leaking to real mail servers</li>
+  <li>Provides different deployment models, such as a simple standalone JVM process, as a WAR module or as a docker image</li>
+  <li>Easily embeddable in JUnit tests for integration testing</li>
+  <li>Lightweight</li>
+</ul>
+
+<p>This library supports both receiving and retrieving mails from java.</p>
+
+<h2 id="java-mail-service">Java Mail Service</h2>
+
+<p>We will create a simple method to mimic a real world functionality - to send a mail.</p>
+
+<script src="https://gist.github.com/kuros/a1ba804dec4ee1bb0511a21e8c38b726.js"></script>
+
+<p>So now we need to test this functionality, as its clear we will need a email server to validate if our code is working fine.</p>
+
+<h2 id="set-up-greenmail">Set up GreenMail</h2>
+
+<p>We will embed a mock server in our test, first we will add a test dependency for <strong>greenmail</strong></p>
+
+<script src="https://gist.github.com/kuros/226126b48c25e868610f7d11f90b0805.js"></script>
+
+<p>Next, we are going to write a simple test to send message and validate. In this example, we will start our mock server at 9000 port and connect to it via our api, and send the message.</p>
+
+<script src="https://gist.github.com/kuros/8b2b40a0bce62854c22adb787e53c507.js"></script>
+
+<p>With every test I can create unique set of users, and run my test against it and finally purge the server.</p>
+
+<p>GreenMail also gives utility to access the received messages. You can also use the standard way by connecting via IMAP/POP3 implementations.</p>
+
+<p>Its a great way to avoid message spill over, cleanup managed exchange server and improves reliability.</p>
+
+<p><a href="https://github.com/kuros/blog-code/tree/master/testing/greenmail">Complete code</a></p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/testing" class="page__taxonomy-item" rel="tag">testing</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-10-18T00:00:00+05:30">October 18, 2020</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
 
   
     <div class="author__avatar">
@@ -178,6 +475,7 @@
   
 
   <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
     
       <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
     
@@ -268,191 +566,10 @@
     </ul>
   </div>
 </div>
-
-  
-  </div>
-
-
-
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="How I reduced the build execution time for email connectors using mock email servers.">
-    <meta itemprop="description" content="I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!">
-    <meta itemprop="datePublished" content="2020-10-18T00:00:00+05:30">
-    
-
-    <div class="page__inner-wrap">
-      
-        <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">How I reduced the build execution time for email connectors using mock email servers.
-</h1>
-          
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-        </header>
-      
-
-      <section class="page__content" itemprop="text">
-        
-          <aside class="sidebar__right " style="height: 100%;">
-            
-              <nav class="toc">
-                <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-                <ul class="toc__menu">
-  <li><a href="#mapping-the-wastage">Mapping the wastage</a></li>
-  <li><a href="#challenges">Challenges</a></li>
-  <li><a href="#greenmail-to-rescue">GreenMail to rescue</a></li>
-  <li><a href="#java-mail-service">Java Mail Service</a></li>
-  <li><a href="#set-up-greenmail">Set up GreenMail</a></li>
-</ul>
-
-              </nav>
-            
-            
-                
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<div class="sidebar_ads sticky">
-
-
-          
-
-          
-          <!-- sky-scrapper -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4166026699724584"
-               data-ad-slot="5730852605"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          
-
-</div>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script> 
-            
-          </aside>
-        
-        
-        <p>I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!</p>
-
-<h2 id="mapping-the-wastage">Mapping the wastage</h2>
-<p>This micro service was responsible for sending/receiving mails from different configured mail servers. We were doing unit and integration level testing, where in integration testing we were connecting to a local exchange server with pre-configured test users for sending/receiving mail.</p>
-
-<p>The best way to start optimization - find gaps &amp; wastage. We broke down the total build execution into build, deployment on staging environment &amp; acceptance.</p>
-
-<p>We noticed the build &amp; deployment time was fair, however the acceptance tests were taking around 40-45 min to complete. Now that we have narrowed our focus. It was time to do a breakdown analysis of test.</p>
-
-<h2 id="challenges">Challenges</h2>
-
-<p>We often have been observing slowness of builds, sometimes intermittent failures as well. The reason were obvious, tests were using same set of users, so during parallel execution data gets corrupted. We needed a clean way test our api’s. Also after regular intervals, we had to clean the mail accounts.</p>
-
-<p>To put simply we needed</p>
-
-<ol>
-  <li>Unique set of user for each test.</li>
-  <li>Local server to reduce network delays.</li>
-  <li>Ability to automatically flush the existing data.</li>
-  <li>Behave like a real world mail server</li>
-  <li>Supports the standards protocols - SMTP, IMAP &amp; POP3</li>
-</ol>
-
-<h2 id="greenmail-to-rescue">GreenMail to rescue</h2>
-<p>Time for us to switch to mock email server, there are good number of servers available. Some are free to use and some are paid.</p>
-
-<ol>
-  <li><a href="https://mailtrap.io/">MailTrap</a></li>
-  <li><a href="https://www.mailspons.com/">Mailspons</a></li>
-  <li><a href="https://greenmail-mail-test.github.io/greenmail/">GreenMail</a></li>
-</ol>
-
-<p>GreenMail is open source while other solutions are paid. As stated on the main page, the benefits include:</p>
-
-<ul>
-  <li>Supports SMTP, POP3 and IMAP including SSL</li>
-  <li>Prevents accidental email leaking to real mail servers</li>
-  <li>Provides different deployment models, such as a simple standalone JVM process, as a WAR module or as a docker image</li>
-  <li>Easily embeddable in JUnit tests for integration testing</li>
-  <li>Lightweight</li>
-</ul>
-
-<p>This library supports both receiving and retrieving mails from java.</p>
-
-<h2 id="java-mail-service">Java Mail Service</h2>
-
-<p>We will create a simple method to mimic a real world functionality - to send a mail.</p>
-
-<script src="https://gist.github.com/kuros/a1ba804dec4ee1bb0511a21e8c38b726.js"></script>
-
-<p>So now we need to test this functionality, as its clear we will need a email server to validate if our code is working fine.</p>
-
-<h2 id="set-up-greenmail">Set up GreenMail</h2>
-
-<p>We will embed a mock server in our test, first we will add a test dependency for <strong>greenmail</strong></p>
-
-<script src="https://gist.github.com/kuros/226126b48c25e868610f7d11f90b0805.js"></script>
-
-<p>Next, we are going to write a simple test to send message and validate. In this example, we will start our mock server at 9000 port and connect to it via our api, and send the message.</p>
-
-<script src="https://gist.github.com/kuros/8b2b40a0bce62854c22adb787e53c507.js"></script>
-
-<p>With every test I can create unique set of users, and run my test against it and finally purge the server.</p>
-
-<p>GreenMail also gives utility to access the received messages. You can also use the standard way by connecting via IMAP/POP3 implementations.</p>
-
-<p>Its a great way to avoid message spill over, cleanup managed exchange server and improves reliability.</p>
-
-<p><a href="https://github.com/kuros/blog-code/tree/master/testing/greenmail">Complete code</a></p>
-
-        
-      </section>
-
-      <footer class="page__meta">
-        
-        
-
-
-  
-
-
-  
-  
-  
-
-  <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
-    <span itemprop="keywords">
-    
-      
-      
-      <a href="/categories/testing" class="page__taxonomy-item" rel="tag">testing</a>
-    
-    </span>
-  </p>
-
-
-        
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-10-18T00:00:00+05:30">October 18, 2020</time></p>
-
-
+ 
       </footer>
+
+      
 
       <section class="page__share">
   

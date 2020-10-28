@@ -162,12 +162,137 @@
 
 
 <div id="main" role="main">
-  
-  <div class="sidebar sticky">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            
+
+        </nav>
+    
+    
+      
+    
+  </div>
   
 
 
-<div itemscope itemtype="https://schema.org/Person">
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Configuring Preconditions">
+    <meta itemprop="description" content="You have two independent tables having no relationship between them, but you still want to create them in specific orders. To enforce order during the creation you can add preconditions to jpa context factory.">
+    <meta itemprop="datePublished" content="2019-01-16T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Configuring Preconditions
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>You have two independent tables having no relationship between them, but you still want to create them in specific orders. To enforce order during the creation you can add preconditions to jpa context factory.</p>
+
+<p>Let us say you want Account entity to be created before Person entity, although Person doesn’t have a direct relationship with Account</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">final</span> <span class="nc">JPAContextFactory</span> <span class="n">jpaContextFactory</span> 
+    <span class="o">=</span> <span class="nc">JPAContextFactory</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="nc">Database</span><span class="o">.</span><span class="na">MY_SQL</span><span class="o">,</span> <span class="n">persistenceService</span><span class="o">.</span><span class="na">getEntityManager</span><span class="o">());</span>
+
+<span class="n">jpaContextFactory</span><span class="o">.</span><span class="na">withPreconditions</span><span class="o">(</span><span class="nc">Before</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="nc">Person</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">create</span><span class="o">(</span><span class="nc">Account</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p><strong>Note: This is a system level configuration, Random-JPA would try to adjust order but skips if it’s in direct conflict with foreign key relationship</strong></p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/random-jpa" class="page__taxonomy-item" rel="tag">random-jpa</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-16T00:00:00+05:30">January 16, 2019</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
 
   
     <div class="author__avatar">
@@ -178,6 +303,7 @@
   
 
   <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
     
       <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
     
@@ -268,121 +394,10 @@
     </ul>
   </div>
 </div>
-
-  
-  </div>
-
-
-
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Configuring Preconditions">
-    <meta itemprop="description" content="You have two independent tables having no relationship between them, but you still want to create them in specific orders. To enforce order during the creation you can add preconditions to jpa context factory.">
-    <meta itemprop="datePublished" content="2019-01-16T00:00:00+05:30">
-    
-
-    <div class="page__inner-wrap">
-      
-        <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Configuring Preconditions
-</h1>
-          
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-        </header>
-      
-
-      <section class="page__content" itemprop="text">
-        
-          <aside class="sidebar__right " style="height: 100%;">
-            
-            
-                
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<div class="sidebar_ads sticky">
-
-
-          
-
-          
-          <!-- sky-scrapper -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4166026699724584"
-               data-ad-slot="5730852605"
-               data-ad-format="auto"
-               data-full-width-responsive="true"></ins>
-          
-
-</div>
-<script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-</script> 
-            
-          </aside>
-        
-        
-        <p>You have two independent tables having no relationship between them, but you still want to create them in specific orders. To enforce order during the creation you can add preconditions to jpa context factory.</p>
-
-<p>Let us say you want Account entity to be created before Person entity, although Person doesn’t have a direct relationship with Account</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">final</span> <span class="nc">JPAContextFactory</span> <span class="n">jpaContextFactory</span> 
-    <span class="o">=</span> <span class="nc">JPAContextFactory</span><span class="o">.</span><span class="na">newInstance</span><span class="o">(</span><span class="nc">Database</span><span class="o">.</span><span class="na">MY_SQL</span><span class="o">,</span> <span class="n">persistenceService</span><span class="o">.</span><span class="na">getEntityManager</span><span class="o">());</span>
-
-<span class="n">jpaContextFactory</span><span class="o">.</span><span class="na">withPreconditions</span><span class="o">(</span><span class="nc">Before</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="nc">Person</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">create</span><span class="o">(</span><span class="nc">Account</span><span class="o">.</span><span class="na">class</span><span class="o">));</span>
-</code></pre></div></div>
-
-<p><strong>Note: This is a system level configuration, Random-JPA would try to adjust order but skips if it’s in direct conflict with foreign key relationship</strong></p>
-
-        
-      </section>
-
-      <footer class="page__meta">
-        
-        
-
-
-  
-
-
-  
-  
-  
-
-  <p class="page__taxonomy">
-    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
-    <span itemprop="keywords">
-    
-      
-      
-      <a href="/categories/random-jpa" class="page__taxonomy-item" rel="tag">random-jpa</a>
-    
-    </span>
-  </p>
-
-
-        
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-16T00:00:00+05:30">January 16, 2019</time></p>
-
-
+ 
       </footer>
+
+      
 
       <section class="page__share">
   
@@ -481,7 +496,7 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take ano...</p>
+    <p class="archive__item-excerpt" itemprop="description">I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take an...</p>
   </article>
 </div>
 
