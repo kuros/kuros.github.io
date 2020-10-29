@@ -273,6 +273,10 @@
 <lastmod>2020-10-18T00:00:00+05:30</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap/</loc>
+<lastmod>2020-10-29T00:00:00+05:30</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
@@ -334,6 +338,9 @@
 </url>
 <url>
 <loc>https://kuros.in/categories/testing/</loc>
+</url>
+<url>
+<loc>https://kuros.in/categories/streams/</loc>
 </url>
 <url>
 <loc>https://kuros.in/page2/</loc>

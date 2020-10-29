@@ -402,8 +402,14 @@ var store = [{
         "teaser": null
       },{
         "title": "How I reduced the build execution time for email connectors using mock email servers.",
-        "excerpt":"I checked in my changes, time to wait for the build to be comFpleted in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!...","categories": ["testing"],
+        "excerpt":"I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!...","categories": ["testing"],
         "tags": [],
         "url": "https://kuros.in/testing/testing-email-using-mock-email-server/",
+        "teaser": null
+      },{
+        "title": "How to handle NullPointerException in Collectors.toMap when a mapped value is null",
+        "excerpt":"In Java 8, Collectors.toMap throws NullPointerException when one of the mapped value is null. This is a known bug in OpenJDK. There are many workaround to handle this. The Problem The problem statement is simple, I have a list of Employee, given that employee’s salary can be null, I want...","categories": ["java","streams"],
+        "tags": [],
+        "url": "https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap/",
         "teaser": null
       }]
