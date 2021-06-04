@@ -412,4 +412,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap/",
         "teaser": null
+      },{
+        "title": "Sequential build numbers of artifacts in gcp cloud build",
+        "excerpt":"Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. As it is quite known, these days CI/CD has become the backbone on DevOps. Having a streamlined process ensures fast flow to production. When building pipeline you want to build, test, deploy your artifact to staging/production...","categories": ["GCP","CI/CD"],
+        "tags": [],
+        "url": "https://kuros.in/gcp/ci/cd/manage-build-number-in-cloud-build/",
+        "teaser": null
       }]

@@ -1,4 +1,78 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2020-12-03T12:17:34+05:30</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning. </subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">How to handle NullPointerException in Collectors.toMap when a mapped value is null</title><link href="https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap/" rel="alternate" type="text/html" title="How to handle NullPointerException in Collectors.toMap when a mapped value is null" /><published>2020-10-29T00:00:00+05:30</published><updated>2020-10-29T00:00:00+05:30</updated><id>https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap</id><content type="html" xml:base="https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap/">&lt;p&gt;In Java 8, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collectors.toMap&lt;/code&gt; throws &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NullPointerException&lt;/code&gt; when one of the mapped value is null. This is a known &lt;a href=&quot;https://bugs.openjdk.java.net/browse/JDK-8148463&quot;&gt;bug&lt;/a&gt; in OpenJDK. There are many workaround to handle this.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2021-06-04T17:44:41+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning. </subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">Sequential build numbers of artifacts in gcp cloud build</title><link href="https://kuros.in/gcp/ci/cd/manage-build-number-in-cloud-build/" rel="alternate" type="text/html" title="Sequential build numbers of artifacts in gcp cloud build" /><published>2021-05-31T00:00:00+00:00</published><updated>2021-05-31T00:00:00+00:00</updated><id>https://kuros.in/gcp/ci/cd/manage-build-number-in-cloud-build</id><content type="html" xml:base="https://kuros.in/gcp/ci/cd/manage-build-number-in-cloud-build/">&lt;p&gt;Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. 
+As it is quite known, these days CI/CD has become the backbone on DevOps. 
+Having a streamlined process ensures fast flow to production. 
+When building pipeline you want to &lt;strong&gt;build&lt;/strong&gt;, &lt;strong&gt;test&lt;/strong&gt;, &lt;strong&gt;deploy&lt;/strong&gt; your artifact to staging/production environments automatically whenever changes are pushed to your code base.&lt;/p&gt;
+
+&lt;h1 id=&quot;cloud-build&quot;&gt;Cloud Build&lt;/h1&gt;
+&lt;p&gt;Cloud build is CI/CD platform offered by GCP. 
+The best thing it provides a generous 120 min/day of free build time(At the time of writing this article). 
+It’s more than enough for small team to get started. It also provides seamless integration with other GCP products.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-missing-feature---sequential-build-numbers&quot;&gt;The missing feature - Sequential build numbers&lt;/h1&gt;
+&lt;p&gt;However, it does have few restrictions, and one such missing feature is having sequential build numbers, cloud build manages the build numbers using SHA string. As Developers we are accustomed to working with incremental build numbers, they are lot easy to manage as compared hash string. But we can achieve it by storing the build numbers in external location, i.e. Cloud Storage.
+So lets us build a mechanism to&lt;/p&gt;
+
+&lt;h1 id=&quot;generating-cloud-builder-to-incrementing-build-numbers&quot;&gt;Generating cloud builder to incrementing build numbers&lt;/h1&gt;
+&lt;p&gt;In order to achieve the goal, first we need to create a cloud builder.
+For this I am creating a cloud builder, let me call it as cloud-build-number. 
+Then we will push this to our image repository, next step will be to use this builder to generate builds with sequential numbers.&lt;/p&gt;
+
+&lt;h1 id=&quot;build-number-cloud-builder&quot;&gt;Build number cloud builder&lt;/h1&gt;
+&lt;p&gt;In order to create this builder we need entrypoint script, and a Docker file to build our docker container.&lt;/p&gt;
+
+&lt;h2 id=&quot;entry-point-script&quot;&gt;Entry point script&lt;/h2&gt;
+&lt;p&gt;So my first file is the script which will be responsible for updating the build numbers. 
+I found one &lt;a href=&quot;https://github.com/pixiteapps/android-cloud-build/blob/master/buildnum/increment_buildnumber&quot;&gt;script&lt;/a&gt;, so I took an inspiration and modified it as per my need.&lt;/p&gt;
+
+&lt;p&gt;The idea is, we are going to have a cloud storage folder where we will be keeping all the records for our build, 
+each record will store the build number.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/c52ba9a1d91fa68c62dedb64f99d2d51.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;This script takes name of the file (required argument). 
+I wanted the generated versions to in the format of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MAJOR:MINOR:PATCH&lt;/code&gt;, so I added additional optional parameters.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-ma&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--major&lt;/code&gt;: To use the major version.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mi&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--minor&lt;/code&gt;: To use specific version.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-e&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--env-file&lt;/code&gt;: Name of the output file (default filename: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.buildenv&lt;/code&gt;).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PATCH&lt;/code&gt; number is stored and incremented in cloud storage.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-docker-file&quot;&gt;The docker file&lt;/h2&gt;
+&lt;p&gt;The docker file is simple, we take the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gcr.io/cloud-builders/gsutil&lt;/code&gt; and add an entrypoint to our script.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/66507857371c5f1e670ea4ed8ff31781.js&quot;&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;build--push-docker-image&quot;&gt;Build &amp;amp; push docker image&lt;/h2&gt;
+
+&lt;p&gt;We need to build the docker image locally, tag it with the path to the gcr.io registry in the project &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;my-project&lt;/code&gt;, and then push the image. 
+I am assuming you have setup gcp login and have write access to cloud registry. For more details refer &lt;a href=&quot;https://cloud.google.com/container-registry/docs/pushing-and-pulling&quot;&gt;gcp docs&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; gcr.io/my-project/increment_build_number &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+docker push gcr.io/my-project/increment_build_number
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Now that we have our builder pushed to registry, time to move on to generating build numbers.&lt;/p&gt;
+
+&lt;h1 id=&quot;create-storage-bucket&quot;&gt;Create storage bucket&lt;/h1&gt;
+&lt;p&gt;Before we proceed, we need to create a storage bucket on Cloud Storage.&lt;/p&gt;
+
+&lt;p&gt;To create a new storage bucket (e.g. build_numbers), use the gsutil command&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gsutil mb &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; PROECT_ID &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; on gs://BUCKET_NAME
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;For more details, refer &lt;a href=&quot;https://cloud.google.com/storage/docs/creating-buckets&quot;&gt;cloud storage docs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;generating-build-numbers&quot;&gt;Generating build numbers&lt;/h1&gt;
+&lt;p&gt;Finally, it’s time to use builder in our service cloud build, build file: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cloudbuild.yaml&lt;/code&gt; looks like.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/e11145e82060a2bec764b86fcab60314.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;The first step generates a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.buildenv&lt;/code&gt; file. 
+In the build step we use source command to export the build number to environment variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$build_num&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;So this would create a docker image with tag &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;latest&lt;/code&gt; &amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0.0.1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Please do leave comment on what you think.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="GCP" /><category term="CI/CD" /><summary type="html">Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. As it is quite known, these days CI/CD has become the backbone on DevOps. Having a streamlined process ensures fast flow to production. When building pipeline you want to build, test, deploy your artifact to staging/production environments automatically whenever changes are pushed to your code base.</summary></entry><entry><title type="html">How to handle NullPointerException in Collectors.toMap when a mapped value is null</title><link href="https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap/" rel="alternate" type="text/html" title="How to handle NullPointerException in Collectors.toMap when a mapped value is null" /><published>2020-10-29T00:00:00+00:00</published><updated>2020-10-29T00:00:00+00:00</updated><id>https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap</id><content type="html" xml:base="https://kuros.in/java/streams/handle-nullpointerexception-in-collectors-tomap/">&lt;p&gt;In Java 8, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collectors.toMap&lt;/code&gt; throws &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NullPointerException&lt;/code&gt; when one of the mapped value is null. This is a known &lt;a href=&quot;https://bugs.openjdk.java.net/browse/JDK-8148463&quot;&gt;bug&lt;/a&gt; in OpenJDK. There are many workaround to handle this.&lt;/p&gt;
 
 &lt;h2 id=&quot;the-problem&quot;&gt;The Problem&lt;/h2&gt;
 &lt;p&gt;The problem statement is simple, I have a list of Employee, given that employee’s salary can be null, I want to map of salary by employeeId.&lt;/p&gt;
@@ -19,7 +93,7 @@
 
 &lt;script src=&quot;https://gist.github.com/kuros/d5156e245af77ce9807ff50e46c50d8e.js&quot;&gt;&lt;/script&gt;
 
-&lt;p&gt;We have fixed the issue with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collectors.toMap&lt;/code&gt; with our custom implementation.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="java" /><category term="streams" /><summary type="html">In Java 8, Collectors.toMap throws NullPointerException when one of the mapped value is null. This is a known bug in OpenJDK. There are many workaround to handle this.</summary></entry><entry><title type="html">How I reduced the build execution time for email connectors using mock email servers.</title><link href="https://kuros.in/testing/testing-email-using-mock-email-server/" rel="alternate" type="text/html" title="How I reduced the build execution time for email connectors using mock email servers." /><published>2020-10-18T00:00:00+05:30</published><updated>2020-10-18T00:00:00+05:30</updated><id>https://kuros.in/testing/testing-email-using-mock-email-server</id><content type="html" xml:base="https://kuros.in/testing/testing-email-using-mock-email-server/">&lt;p&gt;I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!&lt;/p&gt;
+&lt;p&gt;We have fixed the issue with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collectors.toMap&lt;/code&gt; with our custom implementation.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="java" /><category term="streams" /><summary type="html">In Java 8, Collectors.toMap throws NullPointerException when one of the mapped value is null. This is a known bug in OpenJDK. There are many workaround to handle this.</summary></entry><entry><title type="html">How I reduced the build execution time for email connectors using mock email servers.</title><link href="https://kuros.in/testing/testing-email-using-mock-email-server/" rel="alternate" type="text/html" title="How I reduced the build execution time for email connectors using mock email servers." /><published>2020-10-18T00:00:00+00:00</published><updated>2020-10-18T00:00:00+00:00</updated><id>https://kuros.in/testing/testing-email-using-mock-email-server</id><content type="html" xml:base="https://kuros.in/testing/testing-email-using-mock-email-server/">&lt;p&gt;I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!&lt;/p&gt;
 
 &lt;h2 id=&quot;mapping-the-wastage&quot;&gt;Mapping the wastage&lt;/h2&gt;
 &lt;p&gt;This micro service was responsible for sending/receiving mails from different configured mail servers. We were doing unit and integration level testing, where in integration testing we were connecting to a local exchange server with pre-configured test users for sending/receiving mail.&lt;/p&gt;
@@ -87,7 +161,7 @@
 
 &lt;p&gt;Its a great way to avoid message spill over, cleanup managed exchange server and improves reliability.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/testing/greenmail&quot;&gt;Complete code&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="testing" /><summary type="html">I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!</summary></entry><entry><title type="html">Kafka Messaging with Spring Boot</title><link href="https://kuros.in/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="alternate" type="text/html" title="Kafka Messaging with Spring Boot" /><published>2020-05-02T00:00:00+05:30</published><updated>2020-05-02T00:00:00+05:30</updated><id>https://kuros.in/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton</id><content type="html" xml:base="https://kuros.in/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/">&lt;p&gt;In my previous article we looked at &lt;a href=&quot;/messaging/getting-started-with-kafka-install-and-messaging/&quot;&gt;setting up Kafka&lt;/a&gt; on our local machine. Now we will write a spring boot application and integrate Kafka messaging.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/testing/greenmail&quot;&gt;Complete code&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="testing" /><summary type="html">I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!</summary></entry><entry><title type="html">Kafka Messaging with Spring Boot</title><link href="https://kuros.in/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/" rel="alternate" type="text/html" title="Kafka Messaging with Spring Boot" /><published>2020-05-02T00:00:00+00:00</published><updated>2020-05-02T00:00:00+00:00</updated><id>https://kuros.in/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton</id><content type="html" xml:base="https://kuros.in/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/">&lt;p&gt;In my previous article we looked at &lt;a href=&quot;/messaging/getting-started-with-kafka-install-and-messaging/&quot;&gt;setting up Kafka&lt;/a&gt; on our local machine. Now we will write a spring boot application and integrate Kafka messaging.&lt;/p&gt;
 
 &lt;p&gt;Let’s start with a simple spring boot application. Below is the pom file for this application.&lt;/p&gt;
 
@@ -285,7 +359,7 @@ Received: test
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;You can find the complete code at &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/messaging/messaging-kafka&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="messaging" /><summary type="html">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.</summary></entry><entry><title type="html">Getting started with kafka messaging</title><link href="https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging/" rel="alternate" type="text/html" title="Getting started with kafka messaging" /><published>2020-05-01T00:00:00+05:30</published><updated>2020-05-01T00:00:00+05:30</updated><id>https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging</id><content type="html" xml:base="https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging/">&lt;p&gt;In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different applications and data store.&lt;/p&gt;
+&lt;p&gt;You can find the complete code at &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/messaging/messaging-kafka&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="messaging" /><summary type="html">In my previous article we looked at setting up Kafka on our local machine. Now we will write a spring boot application and integrate Kafka messaging.</summary></entry><entry><title type="html">Getting started with kafka messaging</title><link href="https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging/" rel="alternate" type="text/html" title="Getting started with kafka messaging" /><published>2020-05-01T00:00:00+00:00</published><updated>2020-05-01T00:00:00+00:00</updated><id>https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging</id><content type="html" xml:base="https://kuros.in/messaging/getting-started-with-kafka-install-and-messaging/">&lt;p&gt;In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different applications and data store.&lt;/p&gt;
 
 &lt;p&gt;Although earlier systems did provide methods of replication(mostly at database level), high throughput and reliability. One of the major challenge was to connect these technologies into a seamless integration to build an enterprise level application. Also how to handle failures, what if there was a bug in the consumer, you processed the message, now the data is corrupt. Can we correct the data, once you have fixed the consumer.&lt;/p&gt;
 
@@ -400,7 +474,7 @@ message 3
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;We have successfully started single broker of Kafka with the zookeeper, published and consumed the messages.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="messaging" /><summary type="html">In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different applications and data store.</summary></entry><entry><title type="html">jFirebase - Entity Framework for Firebase/Firestore</title><link href="https://kuros.in/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/" rel="alternate" type="text/html" title="jFirebase - Entity Framework for Firebase/Firestore" /><published>2019-10-26T00:00:00+05:30</published><updated>2019-10-26T00:00:00+05:30</updated><id>https://kuros.in/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers</id><content type="html" xml:base="https://kuros.in/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/">&lt;p&gt;I decided to tryout firebase for my personal projects &amp;amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when dealing with databases. But when I started firebase, I found it completely different but also having some similarities. After spending some time understanding its feature I started looking a framework similar to JPA for firebase. I found none, so I decided to write one for myself.&lt;/p&gt;
+&lt;p&gt;We have successfully started single broker of Kafka with the zookeeper, published and consumed the messages.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="messaging" /><summary type="html">In recent times the Kafka has become a buzzword in the industry, it all started with Linkedin trying to manage the large amount of the data across different applications and data store.</summary></entry><entry><title type="html">jFirebase - Entity Framework for Firebase/Firestore</title><link href="https://kuros.in/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/" rel="alternate" type="text/html" title="jFirebase - Entity Framework for Firebase/Firestore" /><published>2019-10-26T00:00:00+00:00</published><updated>2019-10-26T00:00:00+00:00</updated><id>https://kuros.in/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers</id><content type="html" xml:base="https://kuros.in/jfirebase/jFirebase-a-firebase-wrapper-for-java-developers/">&lt;p&gt;I decided to tryout firebase for my personal projects &amp;amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when dealing with databases. But when I started firebase, I found it completely different but also having some similarities. After spending some time understanding its feature I started looking a framework similar to JPA for firebase. I found none, so I decided to write one for myself.&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/kuros/jFirebase&quot;&gt;Github Source - jFirebase&lt;/a&gt;&lt;/p&gt;
 
@@ -832,7 +906,7 @@ Note that for phoneNumbers we are using &lt;code class=&quot;language-plaintext 
         &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;You can find the code example &lt;a href=&quot;https://github.com/kuros/jFirebase/tree/master/demo&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="jFirebase" /><summary type="html">I decided to tryout firebase for my personal projects &amp;amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when dealing with databases. But when I started firebase, I found it completely different but also having some similarities. After spending some time understanding its feature I started looking a framework similar to JPA for firebase. I found none, so I decided to write one for myself.</summary></entry><entry><title type="html">Making parallel service calls in microservice architecture.</title><link href="https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="alternate" type="text/html" title="Making parallel service calls in microservice architecture." /><published>2019-08-20T00:00:00+05:30</published><updated>2019-08-20T00:00:00+05:30</updated><id>https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future</id><content type="html" xml:base="https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/">&lt;p&gt;Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to current times, we used to get change requests (CR’s) from our client. Then there use to be huge round discussion, finally we use to create delivery schedule, design documents, test schedules and many more even before starting any work.
+&lt;p&gt;You can find the code example &lt;a href=&quot;https://github.com/kuros/jFirebase/tree/master/demo&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="jFirebase" /><summary type="html">I decided to tryout firebase for my personal projects &amp;amp; learning, having come from traditional SQL background, I am well versed with JPA/Hibernate when dealing with databases. But when I started firebase, I found it completely different but also having some similarities. After spending some time understanding its feature I started looking a framework similar to JPA for firebase. I found none, so I decided to write one for myself.</summary></entry><entry><title type="html">Making parallel service calls in microservice architecture.</title><link href="https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/" rel="alternate" type="text/html" title="Making parallel service calls in microservice architecture." /><published>2019-08-20T00:00:00+00:00</published><updated>2019-08-20T00:00:00+00:00</updated><id>https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future</id><content type="html" xml:base="https://kuros.in/java/microservices/2019/08/parallel-service-execution-in-microservices-architecture-using-completable-future/">&lt;p&gt;Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to current times, we used to get change requests (CR’s) from our client. Then there use to be huge round discussion, finally we use to create delivery schedule, design documents, test schedules and many more even before starting any work.
 And then we(developers) use to give estimates, which was generally reduced to half(because the client demand the feature early). Our day to day job.&lt;/p&gt;
 
 &lt;p&gt;&lt;img alt=&quot;monolith&quot; src=&quot;/images/loader.svg&quot; data-src=&quot;/images/2019/java/microservice-monlith.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
@@ -1063,7 +1137,7 @@ Process finished with &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;code 1
 
 &lt;p&gt;Now, we have cleaner way to make service to service calls and then use the results at the end.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/java/src/main/java/in/kuros/blog/code/java/parallel&quot;&gt;Find the code here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="java" /><category term="microservices" /><summary type="html">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to current times, we used to get change requests (CR’s) from our client. Then there use to be huge round discussion, finally we use to create delivery schedule, design documents, test schedules and many more even before starting any work. And then we(developers) use to give estimates, which was generally reduced to half(because the client demand the feature early). Our day to day job.</summary></entry><entry><title type="html">Handling gRPC Authorization using Context in Java</title><link href="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/" rel="alternate" type="text/html" title="Handling gRPC Authorization using Context in Java" /><published>2019-08-01T00:00:00+05:30</published><updated>2019-08-01T00:00:00+05:30</updated><id>https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context</id><content type="html" xml:base="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/">&lt;p&gt;In the Grpc world, we have secured our application by &lt;a href=&quot;/grpc/2019/01/grpc-authentication/&quot;&gt;encrypting the channel&lt;/a&gt; and authenticating the requests using &lt;a href=&quot;/grpc/2019/01/grpc-interceptors/&quot;&gt;interceptors&lt;/a&gt;. So we have secured our application but we still do have control over which service can be accessed by whom.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/java/src/main/java/in/kuros/blog/code/java/parallel&quot;&gt;Find the code here&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="java" /><category term="microservices" /><summary type="html">Not so long ago, when I started my development journey, we use to work with single monolith project. The work culture was pretty different compared to current times, we used to get change requests (CR’s) from our client. Then there use to be huge round discussion, finally we use to create delivery schedule, design documents, test schedules and many more even before starting any work. And then we(developers) use to give estimates, which was generally reduced to half(because the client demand the feature early). Our day to day job.</summary></entry><entry><title type="html">Handling gRPC Authorization using Context in Java</title><link href="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/" rel="alternate" type="text/html" title="Handling gRPC Authorization using Context in Java" /><published>2019-08-01T00:00:00+00:00</published><updated>2019-08-01T00:00:00+00:00</updated><id>https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context</id><content type="html" xml:base="https://kuros.in/grpc/2019/08/handling-grpc-authorization-using-context/">&lt;p&gt;In the Grpc world, we have secured our application by &lt;a href=&quot;/grpc/2019/01/grpc-authentication/&quot;&gt;encrypting the channel&lt;/a&gt; and authenticating the requests using &lt;a href=&quot;/grpc/2019/01/grpc-interceptors/&quot;&gt;interceptors&lt;/a&gt;. So we have secured our application but we still do have control over which service can be accessed by whom.&lt;/p&gt;
 
 &lt;p&gt;To handle authorization, we will leverage &lt;em&gt;Context&lt;/em&gt; provided by grpc to pass UserInfo into services.&lt;/p&gt;
 
@@ -1415,7 +1489,7 @@ Exception &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;thread &lt;span class=
 
 &lt;p&gt;As we can see request made my admin channel can successfully access the api but got PERMISSION_DENIED when we tried to access with normal user.&lt;/p&gt;
 
-&lt;p&gt;Hurray!!! we have added one more layer to our security. &lt;a href=&quot;https://github.com/kuros/grpc/tree/master/grpc-context&quot;&gt;Find the code here.&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gRPC" /><summary type="html">In the Grpc world, we have secured our application by encrypting the channel and authenticating the requests using interceptors. So we have secured our application but we still do have control over which service can be accessed by whom.</summary></entry><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-cloud/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+05:30</published><updated>2019-06-20T00:00:00+05:30</updated><id>https://kuros.in/spring/spring-cloud/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-cloud/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
+&lt;p&gt;Hurray!!! we have added one more layer to our security. &lt;a href=&quot;https://github.com/kuros/grpc/tree/master/grpc-context&quot;&gt;Find the code here.&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gRPC" /><summary type="html">In the Grpc world, we have secured our application by encrypting the channel and authenticating the requests using interceptors. So we have secured our application but we still do have control over which service can be accessed by whom.</summary></entry><entry><title type="html">Event Driven Microservices with Spring Cloud Stream Using Rabbitmq</title><link href="https://kuros.in/spring/spring-cloud/2019/06/spring-cloud-stream-with-rabbitmq/" rel="alternate" type="text/html" title="Event Driven Microservices with Spring Cloud Stream Using Rabbitmq" /><published>2019-06-20T00:00:00+00:00</published><updated>2019-06-20T00:00:00+00:00</updated><id>https://kuros.in/spring/spring-cloud/2019/06/spring-cloud-stream-with-rabbitmq</id><content type="html" xml:base="https://kuros.in/spring/spring-cloud/2019/06/spring-cloud-stream-with-rabbitmq/">&lt;p&gt;In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.&lt;/p&gt;
 
 &lt;p&gt;But life is not fair, so microservices comes with their own set of challenges. One of the most important of them is how would these microservices should interact with each other.
 Should they be using rest endpoint’s (but services fail if requested point is not available), or using messaging but configuring a broker is a pain. What if I designed my application to use rabbitmq but now I want to migrate to AWS kinesis, there is a lot of pain involved in migrating tech stack.&lt;/p&gt;
@@ -1727,7 +1801,7 @@ Order Number: 1561241533496
 
 &lt;p&gt;Congratulations, we have created our first spring cloud stream application.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/spring/spring-cloud-stream-rabbitmq/publisher&quot;&gt;Download the complete code&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="spring" /><category term="spring-cloud" /><summary type="html">In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.</summary></entry><entry><title type="html">Java 8 - Creating a Custom Collector for Streams</title><link href="https://kuros.in/java/streams/2019/05/custom-collector/" rel="alternate" type="text/html" title="Java 8 - Creating a Custom Collector for Streams" /><published>2019-05-23T00:00:00+05:30</published><updated>2019-05-23T00:00:00+05:30</updated><id>https://kuros.in/java/streams/2019/05/custom-collector</id><content type="html" xml:base="https://kuros.in/java/streams/2019/05/custom-collector/">&lt;p&gt;Java Streams provide a wide range of collectors which is generally sufficient for most of the day to day use. But sometimes you need to perform some special operations, which is not provided out of the box.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/spring/spring-cloud-stream-rabbitmq/publisher&quot;&gt;Download the complete code&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="spring" /><category term="spring-cloud" /><summary type="html">In today’s world microservices has taken the software industry by storm, the reason is obvious, it provides loose coupling, microservices are more reliable and scalable compared to monolith applications. You can introduce new components in the workflow without breaking another, and you can still interact with your legacy applications.</summary></entry><entry><title type="html">Java 8 - Creating a Custom Collector for Streams</title><link href="https://kuros.in/java/streams/2019/05/custom-collector/" rel="alternate" type="text/html" title="Java 8 - Creating a Custom Collector for Streams" /><published>2019-05-23T00:00:00+00:00</published><updated>2019-05-23T00:00:00+00:00</updated><id>https://kuros.in/java/streams/2019/05/custom-collector</id><content type="html" xml:base="https://kuros.in/java/streams/2019/05/custom-collector/">&lt;p&gt;Java Streams provide a wide range of collectors which is generally sufficient for most of the day to day use. But sometimes you need to perform some special operations, which is not provided out of the box.&lt;/p&gt;
 
 &lt;p&gt;We can create our own custom collectors to suit our requirement.&lt;/p&gt;
 
@@ -1896,410 +1970,4 @@ so the new code will become:&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1, 2, 3, 4, 5]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;You can find &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/java/src/main/java/in/kuros/blog/code/java/streams&quot;&gt;the complete code here&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="java" /><category term="Streams" /><summary type="html">Java Streams provide a wide range of collectors which is generally sufficient for most of the day to day use. But sometimes you need to perform some special operations, which is not provided out of the box.</summary></entry><entry><title type="html">Spring Security with Authentication Provider</title><link href="https://kuros.in/spring/spring-security/2019/04/spring-security-authentication-provider/" rel="alternate" type="text/html" title="Spring Security with Authentication Provider" /><published>2019-04-21T00:00:00+05:30</published><updated>2019-04-21T00:00:00+05:30</updated><id>https://kuros.in/spring/spring-security/2019/04/spring-security-authentication-provider</id><content type="html" xml:base="https://kuros.in/spring/spring-security/2019/04/spring-security-authentication-provider/">&lt;p&gt;We have looked into &lt;a href=&quot;/spring/spring-security/2019/04/spring-security/&quot;&gt;basics of spring security&lt;/a&gt; in my previous post. Lets look into how we can authenticate a user from custom list;&lt;/p&gt;
-
-&lt;p&gt;So let’s start, first we create a spring boot application, for database we will use H2.&lt;/p&gt;
-
-&lt;h1 id=&quot;enable-spring-security&quot;&gt;Enable Spring Security&lt;/h1&gt;
-
-&lt;p&gt;In order to enable spring security in any spring application, just add the following dependency in your pom file.&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!--pom.xml--&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-starter-security&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;That’s it you have enabled spring security.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;We want to expose “/books” which is a public api i.e. anyone can access it. We have another set of harry potter books (“/secure/books”) which we want to be secured.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/main/java/in/kuros/controller/CartController.java&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.controller&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.web.bind.annotation.GetMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.web.bind.annotation.RestController&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@RestController&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;BookController&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@GetMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/books&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getBooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;A Little Forever&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;To Kill a Mockingbird&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;A Thousand Splendid Suns&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    
-    &lt;span class=&quot;nd&quot;&gt;@GetMapping&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/secured/books&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;securedBooks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ArrayList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Harry Potter and the Philosopher's Stone&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Harry Potter and the Chamber of Secrets&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;books&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-        
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Now run the application, you see by default, spring has auto configured the security&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;sign-in&quot; src=&quot;/images/loader.svg&quot; data-src=&quot;/images/2019/spring/sign-in.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Username is “user” &amp;amp; password to login, will be found in the logs something like this.&lt;/p&gt;
-
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-Using generated security password: fb610637-e0a6-423b-bb6b-1badf661d885
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Try logging in.&lt;/p&gt;
-
-&lt;h1 id=&quot;spring-security-configuration&quot;&gt;Spring security configuration&lt;/h1&gt;
-&lt;p&gt;So far so good, we have security configured, but we still have a problem. Both our apis are behind authentication. But we wanted only one api to be secured.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;To fix this, we need to crete a config file which extends WebSecurityConfigurerAdapter. We need to override configure method as below.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/main/java/in/kuros/config/SecurityConfig.java&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.context.annotation.Configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.config.annotation.web.builders.HttpSecurity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@Configuration&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@EnableGlobalMethodSecurity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prePostEnabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SecurityConfig&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;WebSecurityConfigurerAdapter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HttpSecurity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;authorizeRequests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;antMatchers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/books&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;permitAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;antMatchers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/secured/*&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;authenticated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;formLogin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Great now we have fulfilled our requirement, &lt;em&gt;/books&lt;/em&gt; is public and &lt;em&gt;/secured/books&lt;/em&gt; are restricted.&lt;/p&gt;
-
-&lt;p&gt;Lets look at what happened, we configured httpSecurity to authorize requests and permitted everyone to access &lt;em&gt;/books&lt;/em&gt;, where for any url starting with &lt;em&gt;/secured/&lt;/em&gt; needs to be authenticated.
-We have also enforced formLogin() here.&lt;/p&gt;
-
-&lt;h1 id=&quot;h2-database-setup-in-spring-boot&quot;&gt;H2 database setup in spring boot&lt;/h1&gt;
-&lt;p&gt;Before we proceed further, lets enable H2 database to where we will store our user information.&lt;/p&gt;
-
-&lt;p&gt;To integrate H2 database, we need to the following dependency in our pom file..&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- pom.xml --&amp;gt;&lt;/span&gt;
-
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-starter-data-jpa&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.h2database&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;h2&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;scope&amp;gt;&lt;/span&gt;runtime&lt;span class=&quot;nt&quot;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;We have added dependency to enable JPA with H2 database. Next we will enable h2-console, we will add the property to our application.properties.&lt;/p&gt;
-
-&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# src/main/resources/application.properties
-&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;spring.h2.console.enabled&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;spring.jpa.hibernate.ddl-auto&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;create&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;spring.datasource.data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;classpath:db/data.sql&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;spring.jpa.properties.hibernate.enable_lazy_load_no_trans&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Let’s start the server, connect to &lt;em&gt;http://localhost:8080/h2-console&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;h2-db-login&quot; src=&quot;/images/loader.svg&quot; data-src=&quot;/images/2019/spring/h2-db-login.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;user the following properties to login&lt;/p&gt;
-&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;err&quot;&gt;driver&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;org.h2.Driver&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;jdbc&lt;/span&gt; &lt;span class=&quot;py&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jdbc:h2:mem:testdb&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;sa&lt;/span&gt;
-&lt;span class=&quot;py&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;But the moment you login, you will get an error:&lt;/p&gt;
-
-&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Whitelabel Error Page
-This application has no explicit mapping for /error, so you are seeing this as a fallback.
-
-Sun May 12 13:31:45 IST 2019
-There was an unexpected error (type=Forbidden, status=403).
-Forbidden
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;To fix this, we will add the following configuration in our &lt;strong&gt;SecurityConfig&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;csrf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;disable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;After this we are able to login but the page not rendered properly.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;h2-db-login&quot; src=&quot;/images/loader.svg&quot; data-src=&quot;/images/2019/spring/h2-db-failed.png&quot; class=&quot;lazy img-center img-half&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;so we need to add below configuration to allow any frame to run from the same origin.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;frameOptions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sameOrigin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;so we are able to login now.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;Lets create the entity &amp;amp; repository:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/main/java/in/kuros/entity/User.java&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@Entity&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@Table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;users&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserEntity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Id&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@GeneratedValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strategy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GenerationType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;IDENTITY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Basic&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;user_name&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Basic&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;password&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@OneToMany&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mappedBy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;user&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;UserRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// getters &amp;amp; setters        &lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-
-&lt;span class=&quot;c1&quot;&gt;// src/main/java/in/kuros/entity/UserRoles.java&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@Entity&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@Table&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;user_roles&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserRoles&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Id&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@GeneratedValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strategy&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GenerationType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;IDENTITY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;user_id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Integer&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userId&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Column&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;role&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@ManyToOne&lt;/span&gt;
-    &lt;span class=&quot;nd&quot;&gt;@JoinColumn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;user_id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;referencedColumnName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;id&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;insertable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;updatable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserEntity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-    
-    &lt;span class=&quot;c1&quot;&gt;// getters and setters&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;We will also insert values in the tables users &amp;amp; user_roles, we will create db/data.sql&lt;/p&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;sql&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;INTO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;users&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'kuros'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'passwd'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;INSERT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;INTO&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;user_roles&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;user_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;VALUES&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ADMIN'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-                                              &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'USER'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;We have all our data setup, we will verify ( &lt;em&gt;http://localhost:8080/h2-console&lt;/em&gt; ).&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt=&quot;h2-db-login&quot; src=&quot;/images/loader.svg&quot; data-src=&quot;/images/2019/spring/h2-db-users.png&quot; class=&quot;lazy img-center&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;user-authentication&quot;&gt;User Authentication&lt;/h1&gt;
-
-&lt;p&gt;Well, we have our api’s secured, but we still have a problem, we still rely on password generated by spring. We want to access our api’s using our users.&lt;/p&gt;
-
-&lt;p&gt;There are multiple ways we can handle it, but in this post we will focus on using authentication provider.&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;We will create a custom authentication provider. We need to implement authenticate method, you will get authentication object, it will contain username and credentials which we will validate.&lt;/p&gt;
-
-&lt;p&gt;After we validate the user we need to create new Token, but make sure you do not forward password beyond, you don’t want password to leak to other filters.&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.custom&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.entity.UserEntity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.entity.UserRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.repository.UserRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.beans.factory.annotation.Autowired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.authentication.AuthenticationProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.authentication.UsernamePasswordAuthenticationToken&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.core.Authentication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.core.AuthenticationException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.core.GrantedAuthority&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.core.userdetails.UsernameNotFoundException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.stereotype.Component&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.Collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;java.util.stream.Collectors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@Component&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomAuthenticationProvider&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AuthenticationProvider&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserRepository&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Authentication&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;authenticate&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Authentication&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authentication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AuthenticationException&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authentication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;authentication&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getCredentials&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;UserRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userRoles&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getUserIfAuthenticated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UsernamePasswordAuthenticationToken&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getGrantedAuthorities&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;userRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Collection&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;GrantedAuthority&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getGrantedAuthorities&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;UserRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userRoles&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;stream&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;role&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;GrantedAuthority&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;role:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getRole&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;collect&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Collectors&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;toList&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;());&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;List&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;UserRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;getUserIfAuthenticated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;UserEntity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;userRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;findByUserName&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;entity&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UsernameNotFoundException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Authentication failed&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getPassword&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;UsernameNotFoundException&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Authentication failed&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;entity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getUserRoles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;supports&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;equals&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;UsernamePasswordAuthenticationToken&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally we will override the configure method and provide our custom authentication provider.&lt;/p&gt;
-
-&lt;p&gt;So our SecurityConfig is finally complete:&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// src/main/java/in/kuros/config/SecurityConfig.java&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;package&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;in.kuros.custom.CustomAuthenticationProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.beans.factory.annotation.Autowired&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.context.annotation.Configuration&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.config.annotation.web.builders.HttpSecurity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nd&quot;&gt;@Configuration&lt;/span&gt;
-&lt;span class=&quot;nd&quot;&gt;@EnableGlobalMethodSecurity&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;prePostEnabled&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;SecurityConfig&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;WebSecurityConfigurerAdapter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Autowired&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;CustomAuthenticationProvider&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;customAuthenticationProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HttpSecurity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;frameOptions&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sameOrigin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;csrf&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;disable&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-
-        &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;authorizeRequests&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;antMatchers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/books&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;permitAll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;antMatchers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/secured/**&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;authenticated&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;
-                &lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;formLogin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AuthenticationManagerBuilder&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Exception&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;authenticationProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;customAuthenticationProvider&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Now we have a fully functional app with security enabled.&lt;/p&gt;
-
-&lt;p&gt;Full code can be found here: &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/spring/spring-security-authentication-provider&quot;&gt;Spring Security with Authentication Provider&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="spring" /><category term="spring-security" /><summary type="html">We have looked into basics of spring security in my previous post. Lets look into how we can authenticate a user from custom list;</summary></entry></feed>
+&lt;p&gt;You can find &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/java/src/main/java/in/kuros/blog/code/java/streams&quot;&gt;the complete code here&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="java" /><category term="Streams" /><summary type="html">Java Streams provide a wide range of collectors which is generally sufficient for most of the day to day use. But sometimes you need to perform some special operations, which is not provided out of the box.</summary></entry></feed>
