@@ -418,4 +418,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build/",
         "teaser": null
+      },{
+        "title": "Use private repo to publish websites with github pages.",
+        "excerpt":"Github pages are great, it provides a free static page hosting, but the only caveat is the repository has to be public repository. And, if you want to keep your source private, you will have to opt for premium plans to host pages from private repository. Here is what I...","categories": [],
+        "tags": [],
+        "url": "https://kuros.in/use-private-repo-to-publish-website-with-github-pages/",
+        "teaser": null
       }]
