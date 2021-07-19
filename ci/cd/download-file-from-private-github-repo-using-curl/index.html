@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Sequential build numbers of artifacts in gcp cloud build - Kuros.in</title>
-<meta name="description" content="Cloud build creates artifacts with SHA string, but we will create an incrementing build numbers for artifacts.">
+<!-- begin _includes/seo.html --><title>Download file from private github repository using curl. - Kuros.in</title>
+<meta name="description" content="Many times, in our builds we need to curl files from repo, this is how to do with file from private repo.">
 
 
   <meta name="author" content="Kumar Rohit">
@@ -22,28 +22,28 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Kuros.in">
-<meta property="og:title" content="Sequential build numbers of artifacts in gcp cloud build">
-<meta property="og:url" content="https://kuros.in/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build/">
+<meta property="og:title" content="Download file from private github repository using curl.">
+<meta property="og:url" content="https://kuros.in/ci/cd/download-file-from-private-github-repo-using-curl/">
 
 
-  <meta property="og:description" content="Cloud build creates artifacts with SHA string, but we will create an incrementing build numbers for artifacts.">
-
-
-
-  <meta property="og:image" content="https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=480&amp;ixid=MnwxfDB8MXxhbGx8fHx8fHx8fHwxNjIyODM4NDky&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=640">
+  <meta property="og:description" content="Many times, in our builds we need to curl files from repo, this is how to do with file from private repo.">
 
 
 
-
-
-  <meta property="article:published_time" content="2021-05-31T00:00:00+00:00">
+  <meta property="og:image" content="https://kuros.in/images/2021/github-cat.webp">
 
 
 
 
 
+  <meta property="article:published_time" content="2021-07-18T00:00:00+00:00">
 
-<link rel="canonical" href="https://kuros.in/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build/">
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/ci/cd/download-file-from-private-github-repo-using-curl/">
 
 
 
@@ -169,18 +169,18 @@
 
 
 <div class="page__hero--overlay"
-  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=480&ixid=MnwxfDB8MXxhbGx8fHx8fHx8fHwxNjIyODM4NDky&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=640');"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/github-cat.webp');"
 >
   
     <div class="wrapper">
       <h1 id="page-title" class="page__title" itemprop="headline">
         
-          Sequential build numbers of artifacts in gcp cloud build
+          Download file from private github repository using curl.
 
         
       </h1>
       
-        <p class="page__lead">Cloud build creates artifacts with SHA string, but we will create an incrementing build numbers for artifacts.
+        <p class="page__lead">Many times, in our builds we need to curl files from repo, this is how to do with file from private repo.
 </p>
       
       
@@ -197,7 +197,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          less than 1 minute read
         
       </span>
     
@@ -209,7 +209,7 @@
     </div>
   
   
-    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com"><strong>Unsplash</strong></a>
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/wX2L8L-fGeA"><strong>Unsplash</strong></a>
 </span>
   
 </div>
@@ -224,18 +224,8 @@
         <nav class="toc">
           <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
             <ul class="toc__menu">
-  <li><a href="#cloud-build">Cloud Build</a></li>
-  <li><a href="#the-missing-feature---sequential-build-numbers">The missing feature - Sequential build numbers</a></li>
-  <li><a href="#generating-cloud-builder-to-incrementing-build-numbers">Generating cloud builder to incrementing build numbers</a></li>
-  <li><a href="#build-number-cloud-builder">Build number cloud builder</a>
-    <ul>
-      <li><a href="#entry-point-script">Entry point script</a></li>
-      <li><a href="#the-docker-file">The docker file</a></li>
-      <li><a href="#build--push-docker-image">Build &amp; push docker image</a></li>
-    </ul>
-  </li>
-  <li><a href="#create-storage-bucket">Create storage bucket</a></li>
-  <li><a href="#generating-build-numbers">Generating build numbers</a></li>
+  <li><a href="#setting-up-the-token">Setting up the token</a></li>
+  <li><a href="#curl-the-file">Curl the file</a></li>
 </ul>
 
         </nav>
@@ -249,9 +239,9 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Sequential build numbers of artifacts in gcp cloud build">
-    <meta itemprop="description" content="Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. As it is quite known, these days CI/CD has become the backbone on DevOps. Having a streamlined process ensures fast flow to production. When building pipeline you want to build, test, deploy your artifact to staging/production environments automatically whenever changes are pushed to your code base.">
-    <meta itemprop="datePublished" content="2021-05-31T00:00:00+00:00">
+    <meta itemprop="headline" content="Download file from private github repository using curl.">
+    <meta itemprop="description" content="Most of the time, when we are working with automating builds, we often lands up in downloading some files and using it in our workflows.So here are the steps how to curl a file from private github repo repo.">
+    <meta itemprop="datePublished" content="2021-07-18T00:00:00+00:00">
     
 
     <div class="page__inner-wrap">
@@ -289,97 +279,18 @@
             
           </aside>
         
-        <p>Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. 
-As it is quite known, these days CI/CD has become the backbone on DevOps. 
-Having a streamlined process ensures fast flow to production. 
-When building pipeline you want to <strong>build</strong>, <strong>test</strong>, <strong>deploy</strong> your artifact to staging/production environments automatically whenever changes are pushed to your code base.</p>
+        <p>Most of the time, when we are working with automating builds, we often lands up in downloading some files and using it in our workflows.
+So here are the steps how to curl a file from private github repo repo.</p>
 
-<h1 id="cloud-build">Cloud Build</h1>
-<p>Cloud build is CI/CD platform offered by GCP. 
-The best thing it provides a generous 120 min/day of free build time(At the time of writing this article). 
-It’s more than enough for small team to get started. It also provides seamless integration with other GCP products.</p>
+<h1 id="setting-up-the-token">Setting up the token</h1>
+<p>The first step is to set up a <a href="/ci/cd/use-private-repo-to-publish-website-with-github-pages/#setting-up-personal-token" target="_blank">personal access token</a>,</p>
 
-<h1 id="the-missing-feature---sequential-build-numbers">The missing feature - Sequential build numbers</h1>
-<p>However, it does have few restrictions, and one such missing feature is having sequential build numbers, cloud build manages the build numbers using SHA string. As Developers we are accustomed to working with incremental build numbers, they are lot easy to manage as compared hash string. But we can achieve it by storing the build numbers in external location, i.e. Cloud Storage.
-So lets us build a mechanism to</p>
+<h1 id="curl-the-file">Curl the file</h1>
+<p>Now we make a simple curl with header to download file.</p>
 
-<h1 id="generating-cloud-builder-to-incrementing-build-numbers">Generating cloud builder to incrementing build numbers</h1>
-<p>In order to achieve the goal, first we need to create a cloud builder.
-For this I am creating a cloud builder, let me call it as cloud-build-number. 
-Then we will push this to our image repository, next step will be to use this builder to generate builds with sequential numbers.</p>
+<script src="https://gist.github.com/kuros/cde70d06305d627c300cd95fb39b521e.js"></script>
 
-<h1 id="build-number-cloud-builder">Build number cloud builder</h1>
-<p>In order to create this builder we need entrypoint script, and a Docker file to build our docker container.</p>
-
-<h2 id="entry-point-script">Entry point script</h2>
-<p>So my first file is the script which will be responsible for updating the build numbers. 
-I found one <a href="https://github.com/pixiteapps/android-cloud-build/blob/master/buildnum/increment_buildnumber">script</a>, so I took an inspiration and modified it as per my need.</p>
-
-<p>The idea is, we are going to have a cloud storage folder where we will be keeping all the records for our build, 
-each record will store the build number.</p>
-
-<script src="https://gist.github.com/kuros/c52ba9a1d91fa68c62dedb64f99d2d51.js"></script>
-
-<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-<!-- horizontal - responsive -->
-<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
-
-<p>This script takes name of the file (required argument). 
-I wanted the generated versions to in the format of <code class="language-plaintext highlighter-rouge">MAJOR:MINOR:PATCH</code>, so I added additional optional parameters.</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">-ma</code> or <code class="language-plaintext highlighter-rouge">--major</code>: To use the major version.</li>
-  <li><code class="language-plaintext highlighter-rouge">mi</code> or <code class="language-plaintext highlighter-rouge">--minor</code>: To use specific version.</li>
-  <li><code class="language-plaintext highlighter-rouge">-e</code> or <code class="language-plaintext highlighter-rouge">--env-file</code>: Name of the output file (default filename: <code class="language-plaintext highlighter-rouge">.buildenv</code>).</li>
-</ul>
-
-<p>The <code class="language-plaintext highlighter-rouge">PATCH</code> number is stored and incremented in cloud storage.</p>
-
-<h2 id="the-docker-file">The docker file</h2>
-<p>The docker file is simple, we take the <code class="language-plaintext highlighter-rouge">gcr.io/cloud-builders/gsutil</code> and add an entrypoint to our script.</p>
-
-<script src="https://gist.github.com/kuros/66507857371c5f1e670ea4ed8ff31781.js"></script>
-
-<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-<!-- horizontal - responsive -->
-<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
-
-<h2 id="build--push-docker-image">Build &amp; push docker image</h2>
-
-<p>We need to build the docker image locally, tag it with the path to the gcr.io registry in the project <code class="language-plaintext highlighter-rouge">my-project</code>, and then push the image. 
-I am assuming you have setup gcp login and have write access to cloud registry. For more details refer <a href="https://cloud.google.com/container-registry/docs/pushing-and-pulling">gcp docs</a>.</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> gcr.io/my-project/increment_build_number <span class="nb">.</span>
-docker push gcr.io/my-project/increment_build_number
-</code></pre></div></div>
-<p>Now that we have our builder pushed to registry, time to move on to generating build numbers.</p>
-
-<h1 id="create-storage-bucket">Create storage bucket</h1>
-<p>Before we proceed, we need to create a storage bucket on Cloud Storage.</p>
-
-<p>To create a new storage bucket (e.g. build_numbers), use the gsutil command</p>
-<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gsutil mb <span class="nt">-p</span> PROECT_ID <span class="nt">-b</span> on gs://BUCKET_NAME
-</code></pre></div></div>
-<p>For more details, refer <a href="https://cloud.google.com/storage/docs/creating-buckets">cloud storage docs</a>.</p>
-
-<h1 id="generating-build-numbers">Generating build numbers</h1>
-<p>Finally, it’s time to use builder in our service cloud build, build file: <code class="language-plaintext highlighter-rouge">cloudbuild.yaml</code> looks like.</p>
-
-<script src="https://gist.github.com/kuros/e11145e82060a2bec764b86fcab60314.js"></script>
-
-<p>The first step generates a <code class="language-plaintext highlighter-rouge">.buildenv</code> file. 
-In the build step we use source command to export the build number to environment variable <code class="language-plaintext highlighter-rouge">$build_num</code>.</p>
-
-<p>So this would create a docker image with tag <code class="language-plaintext highlighter-rouge">latest</code> &amp; <code class="language-plaintext highlighter-rouge">0.0.1</code>.</p>
-
-<p>Please do leave comment on what you think.</p>
+<p>That’s it. It’s a short article but quite useful.</p>
 
 
         
@@ -404,18 +315,14 @@ In the build step we use source command to export the build number to environmen
     
       
       
-      <a href="/categories/ci-cd" class="page__taxonomy-item" rel="tag">CI/CD</a><span class="sep">, </span>
-    
-      
-      
-      <a href="/categories/gcp" class="page__taxonomy-item" rel="tag">GCP</a>
+      <a href="/categories/ci-cd" class="page__taxonomy-item" rel="tag">CI/CD</a>
     
     </span>
   </p>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-05-31T00:00:00+00:00">May 31, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-18T00:00:00+00:00">July 18, 2021</time></p>
 
 
         
@@ -533,23 +440,22 @@ In the build step we use source command to export the build number to environmen
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Sequential+build+numbers+of+artifacts+in+gcp+cloud+build%20https%3A%2F%2Fkuros.in%2Fgcp%2Fci%2Fcd%2Fsequential-build-number-of-artifacts-in-gcp-cloud-build%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Download+file+from+private+github+repository+using+curl.%20https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fdownload-file-from-private-github-repo-using-curl%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fgcp%2Fci%2Fcd%2Fsequential-build-number-of-artifacts-in-gcp-cloud-build%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fdownload-file-from-private-github-repo-using-curl%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fgcp%2Fci%2Fcd%2Fsequential-build-number-of-artifacts-in-gcp-cloud-build%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fdownload-file-from-private-github-repo-using-curl%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/java/streams/handle-nullpointerexception-in-collectors-tomap/" class="pagination--pager" title="How to handle NullPointerException in Collectors.toMap when a mapped value is null
+      <a href="/ci/cd/use-private-repo-to-publish-website-with-github-pages/" class="pagination--pager" title="Use private repo to publish websites with github pages.
 ">Previous</a>
     
     
-      <a href="/ci/cd/use-private-repo-to-publish-website-with-github-pages/" class="pagination--pager" title="Use private repo to publish websites with github pages.
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -600,46 +506,6 @@ In the build step we use source command to export the build number to environmen
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/ci/cd/download-file-from-private-github-repo-using-curl/" rel="permalink">Download file from private github repository using curl.
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">Most of the time, when we are working with automating builds, we often lands up in downloading some files and using it in our workflows.
-So here are the step...</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
         <a href="/ci/cd/use-private-repo-to-publish-website-with-github-pages/" rel="permalink">Use private repo to publish websites with github pages.
 </a>
       
@@ -668,6 +534,46 @@ So here are the step...</p>
     <p class="archive__item-excerpt" itemprop="description">Github pages are great, it provides a free static page hosting, 
 but the only caveat is the repository has to be public repository.
 And, if you want to keep ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build/" rel="permalink">Sequential build numbers of artifacts in gcp cloud build
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. 
+As it is quite known, these days CI/CD has become the backbon...</p>
   </article>
 </div>
 
@@ -853,8 +759,8 @@ And, if you want to keep ...</p>
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://kuros.in/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://kuros.in/ci/cd/download-file-from-private-github-repo-using-curl/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/ci/cd/download-file-from-private-github-repo-using-curl"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');

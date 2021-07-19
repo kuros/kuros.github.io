@@ -424,4 +424,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/ci/cd/use-private-repo-to-publish-website-with-github-pages/",
         "teaser": null
+      },{
+        "title": "Download file from private github repository using curl.",
+        "excerpt":"Most of the time, when we are working with automating builds, we often lands up in downloading some files and using it in our workflows. So here are the steps how to curl a file from private github repo repo. Setting up the token The first step is to set...","categories": ["CI/CD"],
+        "tags": [],
+        "url": "https://kuros.in/ci/cd/download-file-from-private-github-repo-using-curl/",
+        "teaser": null
       }]
