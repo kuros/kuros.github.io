@@ -430,4 +430,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/ci/cd/download-file-from-private-github-repo-using-curl/",
         "teaser": null
+      },{
+        "title": "Fixing Sass invalid ascii character errors",
+        "excerpt":"I was working with my jekyll site, and I started getting the below error. Jekyll Feed: Generating feed for posts GitHub Metadata: No GitHub API authentication could be found. Some fields may be missing or have incorrect data. Conversion error: Jekyll::Converters::Scss encountered an error while converting 'assets/css/main.scss': Invalid US-ASCII character...","categories": ["CI/CD"],
+        "tags": [],
+        "url": "https://kuros.in/ci/cd/sass-invalid-ascii-character/",
+        "teaser": null
       }]

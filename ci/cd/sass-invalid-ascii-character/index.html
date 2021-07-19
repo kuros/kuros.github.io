@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Java - Inheritance - Kuros.in</title>
-<meta name="description" content="Why Inheritance?">
+<!-- begin _includes/seo.html --><title>Fixing Sass invalid ascii character errors - Kuros.in</title>
+<meta name="description" content="Steps to fix">
 
 
   <meta name="author" content="Kumar Rohit">
@@ -22,26 +22,28 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Kuros.in">
-<meta property="og:title" content="Java - Inheritance">
-<meta property="og:url" content="https://kuros.in/java/inheritence-in-java/">
+<meta property="og:title" content="Fixing Sass invalid ascii character errors">
+<meta property="og:url" content="https://kuros.in/ci/cd/sass-invalid-ascii-character/">
 
 
-  <meta property="og:description" content="Why Inheritance?">
-
-
-
+  <meta property="og:description" content="Steps to fix">
 
 
 
-
-  <meta property="article:published_time" content="2019-01-06T00:00:00+00:00">
+  <meta property="og:image" content="https://kuros.in/images/2021/screwdriver.webp">
 
 
 
 
 
+  <meta property="article:published_time" content="2021-07-19T00:00:00+00:00">
 
-<link rel="canonical" href="https://kuros.in/java/inheritence-in-java/">
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/ci/cd/sass-invalid-ascii-character/">
 
 
 
@@ -158,47 +160,30 @@
 
     <div class="initial-content">
       
-
-
-
-<div id="main" role="main">
-    <div class="sidebar sidebar__sticky">
-    
-        <nav class="toc">
-          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-            <ul class="toc__menu">
-  <li><a href="#why-inheritance">Why Inheritance?</a></li>
-  <li><a href="#how-to-derive-a-sub-class">How to derive a sub-class</a>
-     -  <a href="#code">Code</a>
-     -  <a href="#output">Output</a>
-     -  <a href="#problem-statement">Problem Statement</a>
-     -  <a href="#output-1">Output</a></li>
-  <li><a href="#what-you-can-do-in-a-sub-class-regarding-variables">What You Can Do in a Sub-class Regarding Variables</a></li>
-  <li><a href="#what-you-can-do-in-a-sub-class-regarding-methods">What You Can Do in a Sub-class Regarding Methods</a></li>
-</ul>
-
-        </nav>
-    
-    
-      
-    
-  </div>
   
 
 
 
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Java - Inheritance">
-    <meta itemprop="description" content="Inheritance is the concept of a child class (sub class) automatically inheriting the variables and methods defined in its parent class (super class).">
-    <meta itemprop="datePublished" content="2019-01-06T00:00:00+00:00">
-    
 
-    <div class="page__inner-wrap">
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/screwdriver.webp');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Fixing Sass invalid ascii character errors
+
+        
+      </h1>
       
-        <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Java - Inheritance
-</h1>
-          
+        <p class="page__lead">Steps to fix
+</p>
+      
+      
 
   <p class="page__meta">
     
@@ -212,14 +197,53 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          3 minute read
+          less than 1 minute read
         
       </span>
     
   </p>
 
 
-        </header>
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/lH-UZuoG-aY"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#the-fix">The Fix</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Fixing Sass invalid ascii character errors">
+    <meta itemprop="description" content="I was working with my jekyll site, and I started getting the below error.">
+    <meta itemprop="datePublished" content="2021-07-19T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
       
 
       <section class="page__content" itemprop="text">
@@ -254,114 +278,26 @@
             
           </aside>
         
-        <p>Inheritance is the concept of a child class (sub class) automatically inheriting the variables and methods defined in its parent class (super class).</p>
+        <p>I was working with my jekyll site, and I started getting the below error.</p>
 
-<h1 id="why-inheritance">Why Inheritance?</h1>
-<ul>
-  <li>Once a behavior (method) is defined in a super class, that behavior is automatically inherited by all subclasses. Thus, you write a method only once and it can be used by all subclasses.</li>
-  <li>Once a set of properties (fields) are defined in a super class, the same set of properties are inherited by all subclasses. So a class and its children share common set of properties</li>
-  <li>A subclass only needs to implement the differences between itself and the parent.</li>
-</ul>
-
-<h1 id="how-to-derive-a-sub-class">How to derive a sub-class</h1>
-<p>Suppose we have a parent class called Person. The person has two attributes name and place. In this program we use the Default constructor to print the value assigned to the attributes. In this case we have set name as Raj and Place as Pune.</p>
-
-<h3 id="code">Code</h3>
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    <span class="c1">//Parent class</span>
-    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Person</span> <span class="o">{</span>
-        <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
-        <span class="nc">String</span> <span class="n">place</span><span class="o">;</span>
-        
-        <span class="c1">// defining a Constructor which initializes the object with</span>
-        <span class="c1">// name as "Raj" and place as "Pune"</span>
-        <span class="kd">public</span> <span class="nf">Person</span><span class="o">()</span> <span class="o">{</span> 
-            <span class="n">name</span> <span class="o">=</span> <span class="s">"Raj"</span><span class="o">;</span>
-            <span class="n">place</span> <span class="o">=</span> <span class="s">"Pune"</span><span class="o">;</span>
-            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
-            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">place</span><span class="o">);</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Jekyll Feed: Generating feed <span class="k">for </span>posts
+GitHub Metadata: No GitHub API authentication could be found. Some fields may be missing or have incorrect data.
+Conversion error: Jekyll::Converters::Scss encountered an error <span class="k">while </span>converting <span class="s1">'assets/css/main.scss'</span>:
+					Invalid US-ASCII character <span class="s2">"</span><span class="se">\x</span><span class="s2">E2"</span> on line 54
+jekyll 3.9.0 | Error:  Invalid US-ASCII character <span class="s2">"</span><span class="se">\x</span><span class="s2">E2"</span> on line 54
 </code></pre></div></div>
 
-<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<p>Spend a lot of time flustered and googling round, I did try to run in debug more, identifying each error and trying to fix it.
+But it was mundane. So after, lots of googling, here is what I found out which worked for me.</p>
 
-<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
+<h2 id="the-fix">The Fix</h2>
+<p>In order to fix this, you add below variable in your .bashrc/.zshrc file (in your home folder).</p>
 
-<h3 id="output">Output</h3>
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Raj
-    Pune
-</code></pre></div></div>
-<p>In the above code we have used a constructor to initialize the data for the Person object. For now a constructor will have the same name as class name and it will have no return type, and whenever the object is created from the class, the constructor of that class is executed.</p>
-
-<h3 id="problem-statement">Problem Statement</h3>
-<p>Now we want to add new attributes to person so that is should reflect me the data for a student, so what should I do?</p>
-
-<ul>
-  <li>Change the class Person and redefine the attributes and methods of the class</li>
-  <li>Create a new class for student and define all the methods again</li>
-  <li>Or Ask the Person class to share its properties and use it.</li>
-</ul>
-
-<p>To solve this problem we use the method of inheritance, we go and define a new class (Student) and inherit the properties of the parent class (Person).</p>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-    <span class="c1">//This is the Child class</span>
-    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Student</span> <span class="kd">extends</span> <span class="nc">Person</span> <span class="o">{</span>
-    
-        <span class="nc">String</span> <span class="n">studentId</span> <span class="o">=</span> <span class="s">"1"</span><span class="o">;</span>
-        
-        <span class="cm">/*
-         * Default Constructor
-         */</span>
-        <span class="kd">public</span> <span class="nf">Student</span><span class="o">()</span> <span class="o">{</span>
-            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">studentId</span><span class="o">);</span>
-            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">name</span><span class="o">);</span>
-            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">place</span><span class="o">);</span>
-        <span class="o">}</span>
-        <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-            <span class="nc">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">();</span> <span class="c1">// Creating an instance of Class Student</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-    
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">LC_ALL</span><span class="o">=</span>en_US.UTF-8
+<span class="nb">export </span><span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
 </code></pre></div></div>
 
-<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
-
-<h3 id="output-1">Output</h3>
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1
-Raj
-Pune
-</code></pre></div></div>
-<p>To derive a child class, we use the extends keyword.  In the student code we did not specified the name and place of the student but since we are inheriting student class from person class, the attributes are passed to the child class.</p>
-
-<p>A subclass inherits all of the “public” and “protected” members (fields or methods) of its parent, no matter what package the subclass is in. If the subclass is in the same package as its parent, it also inherits the package-default members (fields or methods) of the parent.</p>
-
-<h1 id="what-you-can-do-in-a-sub-class-regarding-variables">What You Can Do in a Sub-class Regarding Variables</h1>
-
-<ul>
-  <li>The inherited variables can be used directly, just like any other variables.</li>
-  <li>You can declare new variables in the subclass that are not in the super class</li>
-  <li>You can declare a variables in the subclass with the same name as the one in the super class, thus hiding it (not recommended).</li>
-  <li>A subclass does not inherit the private members of its parent class. However, if the super class has public or protected methods for accessing its private variables, these can also be used by the subclass.</li>
-</ul>
-
-<h1 id="what-you-can-do-in-a-sub-class-regarding-methods">What You Can Do in a Sub-class Regarding Methods</h1>
-
-<ul>
-  <li>The inherited methods can be used directly as they are.</li>
-  <li>You can write a new instance method in the subclass that has the same signature as the one in the super class, thus overriding it.</li>
-  <li>You can declare new methods in the subclass that are not in the super class.</li>
-</ul>
+<p>Once you have exported the language, the issue got resolved.</p>
 
 
         
@@ -386,14 +322,14 @@ Pune
     
       
       
-      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
+      <a href="/categories/ci-cd" class="page__taxonomy-item" rel="tag">CI/CD</a>
     
     </span>
   </p>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-06T00:00:00+00:00">January 6, 2019</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-19T00:00:00+00:00">July 19, 2021</time></p>
 
 
         
@@ -511,22 +447,22 @@ Pune
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Java+-+Inheritance%20https%3A%2F%2Fkuros.in%2Fjava%2Finheritence-in-java%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Fixing+Sass+invalid+ascii+character+errors%20https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fjava%2Finheritence-in-java%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fjava%2Finheritence-in-java%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="#" class="pagination--pager disabled">Previous</a>
+      <a href="/ci/cd/download-file-from-private-github-repo-using-curl/" class="pagination--pager" title="Download file from private github repository using curl.
+">Previous</a>
     
     
-      <a href="/java/introduction-to-oops-classes-object-instance-abstraction/" class="pagination--pager" title="Java - Introduction to OOPs
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -567,47 +503,6 @@ Pune
     <div class="page__related">
       <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/ci/cd/sass-invalid-ascii-character/" rel="permalink">Fixing Sass invalid ascii character errors
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">I was working with my jekyll site, and I started getting the below error.
-
-</p>
-  </article>
-</div>
-
         
           
 
@@ -717,7 +612,7 @@ And, if you want to keep ...</p>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          3 minute read
+          2 minute read
         
       </span>
     
@@ -726,6 +621,45 @@ And, if you want to keep ...</p>
 
     <p class="archive__item-excerpt" itemprop="description">Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. 
 As it is quite known, these days CI/CD has become the backbon...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/java/streams/handle-nullpointerexception-in-collectors-tomap/" rel="permalink">How to handle NullPointerException in Collectors.toMap when a mapped value is null
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In Java 8, Collectors.toMap throws NullPointerException when one of the mapped value is null. This is a known bug in OpenJDK. There are many workaround to ha...</p>
   </article>
 </div>
 
@@ -833,8 +767,8 @@ As it is quite known, these days CI/CD has become the backbon...</p>
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://kuros.in/java/inheritence-in-java/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/java/inheritence-in-java"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://kuros.in/ci/cd/sass-invalid-ascii-character/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/ci/cd/sass-invalid-ascii-character"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');
