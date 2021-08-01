@@ -436,4 +436,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/ci/cd/sass-invalid-ascii-character/",
         "teaser": null
+      },{
+        "title": "Publish artifacts to gcp using github actions.",
+        "excerpt":"Github gives a generous limits for your private projects, its to good for your private repos or even small startups. However, Github package has a constraint of 500mb size, which is quite low. Lets compare the pricing for both github &amp; gcp (as of July 2021)   Storage (per GB)...","categories": ["gcp"],
+        "tags": ["ci/cd","github-actions"],
+        "url": "https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/",
+        "teaser": null
       }]

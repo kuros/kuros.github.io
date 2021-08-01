@@ -293,6 +293,10 @@
 <lastmod>2021-07-19T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/</loc>
+<lastmod>2021-07-20T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
@@ -315,6 +319,12 @@
 </url>
 <url>
 <loc>https://kuros.in/tags/spring-data-rest/</loc>
+</url>
+<url>
+<loc>https://kuros.in/tags/ci-cd/</loc>
+</url>
+<url>
+<loc>https://kuros.in/tags/github-actions/</loc>
 </url>
 <url>
 <loc>https://kuros.in/categories/java/</loc>
@@ -365,6 +375,9 @@
 <loc>https://kuros.in/categories/ci-cd/</loc>
 </url>
 <url>
+<loc>https://kuros.in/categories/gcp/</loc>
+</url>
+<url>
 <loc>https://kuros.in/page2/</loc>
 </url>
 <url>
@@ -408,6 +421,6 @@
 </url>
 <url>
 <loc>https://kuros.in/googlef84fd82e0e7dbd58.html</loc>
-<lastmod>2021-07-19T12:24:07+00:00</lastmod>
+<lastmod>2021-08-01T17:49:21+00:00</lastmod>
 </url>
 </urlset>
