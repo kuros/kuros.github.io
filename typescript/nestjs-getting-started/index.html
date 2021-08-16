@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Fixing Sass invalid ascii character errors - Kuros.in</title>
-<meta name="description" content="Steps to fix">
+<!-- begin _includes/seo.html --><title>NestJs - Kuros.in</title>
+<meta name="description" content="Getting started with NestJS">
 
 
   <meta name="author" content="Kumar Rohit">
@@ -22,28 +22,28 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Kuros.in">
-<meta property="og:title" content="Fixing Sass invalid ascii character errors">
-<meta property="og:url" content="https://kuros.in/ci/cd/sass-invalid-ascii-character/">
+<meta property="og:title" content="NestJs">
+<meta property="og:url" content="https://kuros.in/typescript/nestjs-getting-started/">
 
 
-  <meta property="og:description" content="Steps to fix">
-
-
-
-  <meta property="og:image" content="https://kuros.in/images/2021/screwdriver.webp">
+  <meta property="og:description" content="Getting started with NestJS">
 
 
 
-
-
-  <meta property="article:published_time" content="2021-07-19T00:00:00+00:00">
+  <meta property="og:image" content="https://kuros.in/images/2021/nest.webp">
 
 
 
 
 
+  <meta property="article:published_time" content="2021-08-16T00:00:00+00:00">
 
-<link rel="canonical" href="https://kuros.in/ci/cd/sass-invalid-ascii-character/">
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/typescript/nestjs-getting-started/">
 
 
 
@@ -169,18 +169,18 @@
 
 
 <div class="page__hero--overlay"
-  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/screwdriver.webp');"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/nest.webp');"
 >
   
     <div class="wrapper">
       <h1 id="page-title" class="page__title" itemprop="headline">
         
-          Fixing Sass invalid ascii character errors
+          NestJs
 
         
       </h1>
       
-        <p class="page__lead">Steps to fix
+        <p class="page__lead">Getting started with NestJS
 </p>
       
       
@@ -197,7 +197,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          less than 1 minute read
+          3 minute read
         
       </span>
     
@@ -209,7 +209,7 @@
     </div>
   
   
-    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/lH-UZuoG-aY"><strong>Unsplash</strong></a>
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/ZWZdoy2hoNE"><strong>Unsplash</strong></a>
 </span>
   
 </div>
@@ -224,7 +224,9 @@
         <nav class="toc">
           <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
             <ul class="toc__menu">
-  <li><a href="#the-fix">The Fix</a></li>
+  <li><a href="#what-is-nestjs">What is NestJs?</a></li>
+  <li><a href="#installation">Installation</a></li>
+  <li><a href="#nestjs-module-controller-and-service">NestJS Module, controller and service</a></li>
 </ul>
 
         </nav>
@@ -238,9 +240,9 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Fixing Sass invalid ascii character errors">
-    <meta itemprop="description" content="I was working with my jekyll site, and I started getting the below error.">
-    <meta itemprop="datePublished" content="2021-07-19T00:00:00+00:00">
+    <meta itemprop="headline" content="NestJs">
+    <meta itemprop="description" content="Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code.At the same time, I had to write a lot of boilerplate code to follow SOLID principles.">
+    <meta itemprop="datePublished" content="2021-08-16T00:00:00+00:00">
     
 
     <div class="page__inner-wrap">
@@ -278,26 +280,126 @@
             
           </aside>
         
-        <p>I was working with my jekyll site, and I started getting the below error.</p>
+        <p>Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code.
+At the same time, I had to write a lot of boilerplate code to follow SOLID principles.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Jekyll Feed: Generating feed <span class="k">for </span>posts
-GitHub Metadata: No GitHub API authentication could be found. Some fields may be missing or have incorrect data.
-Conversion error: Jekyll::Converters::Scss encountered an error <span class="k">while </span>converting <span class="s1">'assets/css/main.scss'</span>:
-					Invalid US-ASCII character <span class="s2">"</span><span class="se">\x</span><span class="s2">E2"</span> on line 54
-jekyll 3.9.0 | Error:  Invalid US-ASCII character <span class="s2">"</span><span class="se">\x</span><span class="s2">E2"</span> on line 54
+<p>I started to look for js framework which would simplify these things.
+After going through a lot of alternatives, I landed to NestJS.</p>
+
+<h1 id="what-is-nestjs">What is NestJs?</h1>
+<p><code class="language-plaintext highlighter-rouge">NestJs</code> is a nodeJs frameworks to build scalable and efficient microservices.</p>
+
+<p>NestJs draws a lot of inspiration from Angular framework, it focuses on writing modular codes. 
+I would say, similar to Angular, it is highly opinionated on how to organize and structure your code.</p>
+
+<p>It leverages typescript to have statically typed code compilation (though you can write your code javascript as well).
+NextJS is basically a framework over express, so what the need of having a framework over framework, well, express is good, but it is quite verbose and does not solve the problem of - <strong>Architecture</strong></p>
+
+<p>NestJs focus on clean code practices, it enables you to create fast, writing highly testable, scalable &amp; loosely coupled system, which in longer run are easy to maintain.</p>
+
+<h1 id="installation">Installation</h1>
+<p>NestJs provides <a href="https://docs.nestjs.com/cli/overview">CLI</a> which can be used to generate scaffolding the project or generate modules. services, resources etc.</p>
+
+<p>You simply need node to get started. Just type the below command to install the CLI, then use the <code class="language-plaintext highlighter-rouge">nest</code> command to create new project</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i <span class="nt">-g</span> @nestjs/cli
+<span class="nv">$ </span>nest new project-name
 </code></pre></div></div>
 
-<p>Spend a lot of time flustered and googling round, I did try to run in debug more, identifying each error and trying to fix it.
-But it was mundane. So after, lots of googling, here is what I found out which worked for me.</p>
+<p>Now go your project and start the project and get started.</p>
 
-<h2 id="the-fix">The Fix</h2>
-<p>In order to fix this, you add below variable in your .bashrc/.zshrc file (in your home folder).</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">LC_ALL</span><span class="o">=</span>en_US.UTF-8
-<span class="nb">export </span><span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cd </span>project-name
+<span class="nv">$ </span>npm run start
 </code></pre></div></div>
 
-<p>Once you have exported the language, the issue got resolved.</p>
+<p>Now you can access the services at <code class="language-plaintext highlighter-rouge">http://localhost:3000/</code></p>
+
+<h1 id="nestjs-module-controller-and-service">NestJS Module, controller and service</h1>
+
+<p>Before we proceed, look at the files generated.</p>
+
+<p><img src="/images/2021/nest-structure.webp" alt="" width="60%" /></p>
+
+<p>It creates all the support files &amp; src folder which contains your app.</p>
+
+<p>NestJs doesn’t read all the files, it just looks at files supplied in module/services.
+The starting for point for any NestJs application in <code class="language-plaintext highlighter-rouge">main.ts</code> in the <code class="language-plaintext highlighter-rouge">src</code> folder.</p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">NestFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@nestjs/core</span><span class="dl">'</span><span class="p">;</span>  
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app.module</span><span class="dl">'</span><span class="p">;</span>  
+  
+<span class="k">async</span> <span class="kd">function</span> <span class="nx">bootstrap</span><span class="p">()</span> <span class="p">{</span>  
+  <span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">NestFactory</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">AppModule</span><span class="p">);</span>  
+ <span class="k">await</span> <span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>  
+<span class="p">}</span>  
+<span class="nx">bootstrap</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>We use <code class="language-plaintext highlighter-rouge">NestFactory</code> to create <code class="language-plaintext highlighter-rouge">AppModule</code> which initializes the application.</p>
+
+<p>Let’s take a look at <code class="language-plaintext highlighter-rouge">AppModule</code>. It’s a simple typescript class  with <code class="language-plaintext highlighter-rouge">@Module</code> class decorator, it defines which modules are imported, defines the controllers (responsible for rest calls) &amp; providers (define services).</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>  
+ <span class="na">imports</span><span class="p">:</span> <span class="p">[],</span>  
+ <span class="na">controllers</span><span class="p">:</span> <span class="p">[</span><span class="nx">AppController</span><span class="p">],</span>  
+ <span class="na">providers</span><span class="p">:</span> <span class="p">[</span><span class="nx">AppService</span><span class="p">],</span>  
+<span class="p">})</span>  
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppModule</span> <span class="p">{}</span>
+
+</code></pre></div></div>
+
+<p>Nest cli also generates a sample a controller &amp; service. Nest has abstracted routing/http calls via decorators, so creating new endpoints is super easy. All you need to do is to use <code class="language-plaintext highlighter-rouge">@Controller(&lt;PATH&gt;)</code> on the class and then use Nest decorator for HTTP requests eg. <code class="language-plaintext highlighter-rouge">@Get(), @Post(), @Put() @Delete()</code> etc on your method.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Controller</span><span class="p">,</span> <span class="nx">Get</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@nestjs/common</span><span class="dl">'</span><span class="p">;</span>  
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppService</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./app.service</span><span class="dl">'</span><span class="p">;</span>  
+  
+<span class="p">@</span><span class="nd">Controller</span><span class="p">()</span>  
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppController</span> <span class="p">{</span>  
+  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">appService</span><span class="p">:</span> <span class="nx">AppService</span><span class="p">)</span> <span class="p">{}</span>  
+  
+  <span class="p">@</span><span class="nd">Get</span><span class="p">()</span>  
+  <span class="nx">getHello</span><span class="p">():</span> <span class="kr">string</span> <span class="p">{</span>  
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">appService</span><span class="p">.</span><span class="nx">getHello</span><span class="p">();</span>  
+  <span class="p">}</span>  
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>If you see here, we are passing <code class="language-plaintext highlighter-rouge">AppService</code> in constructor. When the application initializes Nest injects the <code class="language-plaintext highlighter-rouge">AppService</code> into this controller. The only thing we need to make sure that the <code class="language-plaintext highlighter-rouge">AppService</code> class is marked with <code class="language-plaintext highlighter-rouge">@Injectable()</code>.</p>
+
+<div class="language-ts highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@nestjs/common</span><span class="dl">'</span><span class="p">;</span>  
+  
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>  
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppService</span> <span class="p">{</span>  
+  <span class="nx">getHello</span><span class="p">():</span> <span class="kr">string</span> <span class="p">{</span>  
+    <span class="k">return</span> <span class="dl">'</span><span class="s1">Hello World!</span><span class="dl">'</span><span class="p">;</span>  
+ <span class="p">}</span>  
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>To sum up, here are some of the pros &amp; cons of using NestJS.</p>
+
+<p><strong>Pros</strong>:</p>
+<ol>
+  <li>Highly structured</li>
+  <li>Testable</li>
+  <li>Dependency Injection</li>
+  <li>Modular</li>
+  <li>You can switch between express &amp; fastify without affecting your controllers</li>
+  <li>Very less boilerplate code</li>
+  <li>High maintainability</li>
+</ol>
+
+<p><strong>Cons</strong>:</p>
+<ol>
+  <li>Highly opinionated on how the code should be structured.</li>
+  <li>Learning curve</li>
+</ol>
+
+<p>I found it really easy to get started, hope you also find it interesting.</p>
 
 
         
@@ -322,14 +424,14 @@ But it was mundane. So after, lots of googling, here is what I found out which w
     
       
       
-      <a href="/categories/ci-cd" class="page__taxonomy-item" rel="tag">CI/CD</a>
+      <a href="/categories/typescript" class="page__taxonomy-item" rel="tag">typescript</a>
     
     </span>
   </p>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-19T00:00:00+00:00">July 19, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-16T00:00:00+00:00">August 16, 2021</time></p>
 
 
         
@@ -447,23 +549,22 @@ But it was mundane. So after, lots of googling, here is what I found out which w
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Fixing+Sass+invalid+ascii+character+errors%20https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=NestJs%20https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-getting-started%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-getting-started%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-getting-started%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/ci/cd/download-file-from-private-github-repo-using-curl/" class="pagination--pager" title="Download file from private github repository using curl.
+      <a href="/gcp/publish-artifacts-to-gcp-using-github-actions/" class="pagination--pager" title="Publish artifacts to gcp using github actions.
 ">Previous</a>
     
     
-      <a href="/gcp/publish-artifacts-to-gcp-using-github-actions/" class="pagination--pager" title="Publish artifacts to gcp using github actions.
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -514,45 +615,6 @@ But it was mundane. So after, lots of googling, here is what I found out which w
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/typescript/nestjs-getting-started/" rel="permalink">NestJs
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          3 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured...</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
         <a href="/gcp/publish-artifacts-to-gcp-using-github-actions/" rel="permalink">Publish artifacts to gcp using github actions.
 </a>
       
@@ -571,7 +633,7 @@ But it was mundane. So after, lots of googling, here is what I found out which w
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
@@ -580,6 +642,47 @@ But it was mundane. So after, lots of googling, here is what I found out which w
 
     <p class="archive__item-excerpt" itemprop="description">Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
 However, Github package has a constraint...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/ci/cd/sass-invalid-ascii-character/" rel="permalink">Fixing Sass invalid ascii character errors
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I was working with my jekyll site, and I started getting the below error.
+
+</p>
   </article>
 </div>
 
@@ -768,8 +871,8 @@ And, if you want to keep ...</p>
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://kuros.in/ci/cd/sass-invalid-ascii-character/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/ci/cd/sass-invalid-ascii-character"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://kuros.in/typescript/nestjs-getting-started/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/typescript/nestjs-getting-started"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');

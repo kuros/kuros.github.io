@@ -442,4 +442,10 @@ var store = [{
         "tags": ["ci/cd","github-actions"],
         "url": "https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/",
         "teaser": null
+      },{
+        "title": "NestJs",
+        "excerpt":"Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code. At the same time, I had to write a lot of boilerplate code to follow SOLID principles. I started to look for js...","categories": ["typescript"],
+        "tags": [],
+        "url": "https://kuros.in/typescript/nestjs-getting-started/",
+        "teaser": null
       }]
