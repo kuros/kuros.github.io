@@ -448,4 +448,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/typescript/nestjs-getting-started/",
         "teaser": null
+      },{
+        "title": "Authentication in NestJS using firebase token",
+        "excerpt":"You have build your nest microservice, but you want to secure your application using firebase tokens. In earlier post, we had set up a nestJs application with simple controller. Now we will set up authentication using firebase auth tokens. Initialize firebase The first step is to initialize firebase app. Service...","categories": ["typescript"],
+        "tags": [],
+        "url": "https://kuros.in/typescript/nestjs-firebase-token-authentication/",
+        "teaser": null
       }]

@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>How I reduced the build execution time for email connectors using mock email servers. - Kuros.in</title>
-<meta name="description" content="should I use test email against an email server">
+<!-- begin _includes/seo.html --><title>Authentication in NestJS using firebase token - Kuros.in</title>
+<meta name="description" content="Setting up firebase authentication in NestJS application">
 
 
   <meta name="author" content="Kumar Rohit">
@@ -22,26 +22,28 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Kuros.in">
-<meta property="og:title" content="How I reduced the build execution time for email connectors using mock email servers.">
-<meta property="og:url" content="https://kuros.in/testing/testing-email-using-mock-email-server/">
+<meta property="og:title" content="Authentication in NestJS using firebase token">
+<meta property="og:url" content="https://kuros.in/typescript/nestjs-firebase-token-authentication/">
 
 
-  <meta property="og:description" content="should I use test email against an email server">
-
-
-
+  <meta property="og:description" content="Setting up firebase authentication in NestJS application">
 
 
 
-
-  <meta property="article:published_time" content="2020-10-18T00:00:00+00:00">
+  <meta property="og:image" content="https://kuros.in/images/2021/lock.webp">
 
 
 
 
 
+  <meta property="article:published_time" content="2021-08-29T00:00:00+00:00">
 
-<link rel="canonical" href="https://kuros.in/testing/testing-email-using-mock-email-server/">
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/typescript/nestjs-firebase-token-authentication/">
 
 
 
@@ -158,44 +160,30 @@
 
     <div class="initial-content">
       
-
-
-
-<div id="main" role="main">
-    <div class="sidebar sidebar__sticky">
-    
-        <nav class="toc">
-          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-            <ul class="toc__menu">
-  <li><a href="#mapping-the-wastage">Mapping the wastage</a></li>
-  <li><a href="#challenges">Challenges</a></li>
-  <li><a href="#greenmail-to-rescue">GreenMail to rescue</a></li>
-  <li><a href="#java-mail-service">Java Mail Service</a></li>
-  <li><a href="#set-up-greenmail">Set up GreenMail</a></li>
-</ul>
-
-        </nav>
-    
-    
-      
-    
-  </div>
   
 
 
 
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="How I reduced the build execution time for email connectors using mock email servers.">
-    <meta itemprop="description" content="I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!">
-    <meta itemprop="datePublished" content="2020-10-18T00:00:00+00:00">
-    
 
-    <div class="page__inner-wrap">
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/lock.webp');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Authentication in NestJS using firebase token
+
+        
+      </h1>
       
-        <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">How I reduced the build execution time for email connectors using mock email servers.
-</h1>
-          
+        <p class="page__lead">Setting up firebase authentication in NestJS application
+</p>
+      
+      
 
   <p class="page__meta">
     
@@ -216,7 +204,59 @@
   </p>
 
 
-        </header>
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/mT7lXZPjk7U"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#initialize-firebase">Initialize firebase</a>
+    <ul>
+      <li><a href="#service-account">Service account</a></li>
+      <li><a href="#config">config</a></li>
+      <li><a href="#creating-firebaseapp-service">Creating FirebaseApp service</a></li>
+    </ul>
+  </li>
+  <li><a href="#nestjs-middleware">NestJs Middleware</a>
+    <ul>
+      <li><a href="#pre-auth-middleware">Pre-auth middleware</a></li>
+      <li><a href="#add-middleware-to-the-nestjs-app">Add middleware to the nestJS app</a></li>
+    </ul>
+  </li>
+  <li><a href="#test-controller">Test Controller</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Authentication in NestJS using firebase token">
+    <meta itemprop="description" content="You have build your nest microservice, but you want to secure your application using firebase tokens.">
+    <meta itemprop="datePublished" content="2021-08-29T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
       
 
       <section class="page__content" itemprop="text">
@@ -246,80 +286,121 @@
         
     </div>
 
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
 </div>
  
             
           </aside>
         
-        <p>I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!</p>
+        <p>You have build your nest microservice, but you want to secure your application using firebase tokens.</p>
 
-<h2 id="mapping-the-wastage">Mapping the wastage</h2>
-<p>This micro service was responsible for sending/receiving mails from different configured mail servers. We were doing unit and integration level testing, where in integration testing we were connecting to a local exchange server with pre-configured test users for sending/receiving mail.</p>
+<p>In earlier post, we had <a href="/typescript/nestjs-getting-started/">set up a nestJs application</a> with simple controller. 
+Now we will set up authentication using firebase auth tokens.</p>
 
-<p>The best way to start optimization - find gaps &amp; wastage. We broke down the total build execution into build, deployment on staging environment &amp; acceptance.</p>
+<h1 id="initialize-firebase">Initialize firebase</h1>
+<p>The first step is to initialize firebase app.</p>
 
-<p>We noticed the build &amp; deployment time was fair, however the acceptance tests were taking around 40-45 min to complete. Now that we have narrowed our focus. It was time to do a breakdown analysis of test.</p>
+<h2 id="service-account">Service account</h2>
+<p>Login to your firebase account, create/open the project and goto project settings.</p>
 
-<h2 id="challenges">Challenges</h2>
+<p><img src="/images/2021/firebase-auth-link.webp" alt="" title="Firebase auth link" width="60%" /></p>
 
-<p>We often have been observing slowness of builds, sometimes intermittent failures as well. The reason were obvious, tests were using same set of users, so during parallel execution data gets corrupted. We needed a clean way test our api’s. Also after regular intervals, we had to clean the mail accounts.</p>
+<p>Go to service account</p>
 
-<p>To put simply we needed</p>
+<p><img src="/images/2021/firebase-service-account.webp" alt="" title="Firebase service account" width="60%" /></p>
 
-<ol>
-  <li>Unique set of user for each test.</li>
-  <li>Local server to reduce network delays.</li>
-  <li>Ability to automatically flush the existing data.</li>
-  <li>Behave like a real world mail server</li>
-  <li>Supports the standards protocols - SMTP, IMAP &amp; POP3</li>
-</ol>
+<p>And generate key, download this file.</p>
 
-<h2 id="greenmail-to-rescue">GreenMail to rescue</h2>
-<p>Time for us to switch to mock email server, there are good number of servers available. Some are free to use and some are paid.</p>
+<p><img src="/images/2021/firebase-generate-key.webp" alt="" title="Firebase generate key" width="60%" /></p>
 
-<ol>
-  <li><a href="https://mailtrap.io/">MailTrap</a></li>
-  <li><a href="https://www.mailspons.com/">Mailspons</a></li>
-  <li><a href="https://greenmail-mail-test.github.io/greenmail/">GreenMail</a></li>
-</ol>
+<p>Keep this file secure. We will now set up our config.</p>
 
-<p>GreenMail is open source while other solutions are paid. As stated on the main page, the benefits include:</p>
+<h2 id="config">config</h2>
 
+<p>we will create a file <strong>firebase-config.ts</strong>, and populate the values from generated keys
+(for better security, you should pass the values using environment values).</p>
+
+<script src="https://gist.github.com/kuros/7e645a79b42a261efd17417f0e55bc34.js"></script>
+
+<h2 id="creating-firebaseapp-service">Creating FirebaseApp service</h2>
+<p>For that lets create a service which will provide us with the instance of firebase auth object.</p>
+
+<script src="https://gist.github.com/kuros/1c0b425f0016cde0e60fe7adda69d309.js"></script>
+
+<p><strong>Note:</strong> we will add <code class="language-plaintext highlighter-rouge">FirebaseApp</code> as a provider into our app.module.ts</p>
+
+<h1 id="nestjs-middleware">NestJs Middleware</h1>
+<p>So middleware are functions which are called before route handlers. Middleware functions has access to http request, response and next function which points to next middleware.</p>
+
+<p><img src="/images/2021/nest-middleware.webp" alt="" title="Firebase generate key" width="100%" /></p>
+
+<p>Middleware functions can perform the following tasks:</p>
 <ul>
-  <li>Supports SMTP, POP3 and IMAP including SSL</li>
-  <li>Prevents accidental email leaking to real mail servers</li>
-  <li>Provides different deployment models, such as a simple standalone JVM process, as a WAR module or as a docker image</li>
-  <li>Easily embeddable in JUnit tests for integration testing</li>
-  <li>Lightweight</li>
+  <li>execute any code.</li>
+  <li>make changes to the request and the response objects.</li>
+  <li>end the request-response cycle.</li>
+  <li>call the next middleware function in the stack.</li>
+  <li>if the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging</li>
 </ul>
 
-<p>This library supports both receiving and retrieving mails from java.</p>
+<p>For more details refer <a href="https://docs.nestjs.com/middleware">docs</a></p>
 
-<h2 id="java-mail-service">Java Mail Service</h2>
+<h2 id="pre-auth-middleware">Pre-auth middleware</h2>
+<p>Let’s create our middleware which will validate if the request has <code class="language-plaintext highlighter-rouge">Bearer</code> token and verify it.</p>
 
-<p>We will create a simple method to mimic a real world functionality - to send a mail.</p>
+<script src="https://gist.github.com/kuros/9ded11c1e6d7ef93dd11f1e114f2ed30.js"></script>
 
-<script src="https://gist.github.com/kuros/a1ba804dec4ee1bb0511a21e8c38b726.js"></script>
+<p>In order to create a middleware we need to implement <code class="language-plaintext highlighter-rouge">NestMiddleware</code> and implement the <code class="language-plaintext highlighter-rouge">use</code> method. As said earlier, we get handle of request, response and next methods.</p>
 
-<p>So now we need to test this functionality, as its clear we will need a email server to validate if our code is working fine.</p>
+<p>In here, we are initializing the <code class="language-plaintext highlighter-rouge">auth</code> in constructor, and in the <code class="language-plaintext highlighter-rouge">use</code> method we evaluate the token and pass it to <code class="language-plaintext highlighter-rouge">firebaseAuth.verfiyIdToken()</code>
+to verify against firebase.</p>
 
-<h2 id="set-up-greenmail">Set up GreenMail</h2>
+<p>Once validated make sure to call <code class="language-plaintext highlighter-rouge">next()</code> on success, else your request won’t proceed to next middleware, and it will hang.
+Here, I am adding user information to request object which I extracted from the token.</p>
 
-<p>We will embed a mock server in our test, first we will add a test dependency for <strong>greenmail</strong></p>
+<p>In case we don’t find the token or token verification fails we are writing an error response to response object.</p>
 
-<script src="https://gist.github.com/kuros/226126b48c25e868610f7d11f90b0805.js"></script>
+<p><strong>Note:</strong> Here I am using firebase token, but you can setup any authentication mechanism.</p>
+<h2 id="add-middleware-to-the-nestjs-app">Add middleware to the nestJS app</h2>
 
-<p>Next, we are going to write a simple test to send message and validate. In this example, we will start our mock server at 9000 port and connect to it via our api, and send the message.</p>
+<p>Next we will plugin our middle to app. Open your <code class="language-plaintext highlighter-rouge">AppModule</code>, make sure it implements <code class="language-plaintext highlighter-rouge">NestModule</code>.</p>
 
-<script src="https://gist.github.com/kuros/8b2b40a0bce62854c22adb787e53c507.js"></script>
+<p>In the configure method we will apply our middleware and also specify which path/methods you want to apply this middleware.
+Here, I am saying I want to have authentication on all the urls which starts with <code class="language-plaintext highlighter-rouge">/secure</code> 
+<script src="https://gist.github.com/kuros/dc87948f2449e69c0c4d8af58bdc4ef9.js"></script></p>
 
-<p>With every test I can create unique set of users, and run my test against it and finally purge the server.</p>
+<p>And, you authentication configuration is complete.</p>
 
-<p>GreenMail also gives utility to access the received messages. You can also use the standard way by connecting via IMAP/POP3 implementations.</p>
+<h1 id="test-controller">Test Controller</h1>
+<p>In our app controller, let’s add get methods and test if our middleware is working fine.</p>
 
-<p>Its a great way to avoid message spill over, cleanup managed exchange server and improves reliability.</p>
+<script src="https://gist.github.com/kuros/c900b1df724a2758e2a4668d3549684b.js"></script>
 
-<p><a href="https://github.com/kuros/blog-code/tree/master/testing/greenmail">Complete code</a></p>
+<p>Now try to access <code class="language-plaintext highlighter-rouge">http://localhost:3000/ping</code>, you should be able to pong response.
+But when you will try to access <code class="language-plaintext highlighter-rouge">http://localhost:3000/secure/ping</code> you will get an error response</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"statusCode"</span><span class="p">:</span><span class="mi">403</span><span class="p">,</span><span class="nl">"timestamp"</span><span class="p">:</span><span class="s2">"2021-08-29T14:28:31.324Z"</span><span class="p">,</span><span class="nl">"path"</span><span class="p">:</span><span class="s2">"/secure/ping"</span><span class="p">,</span><span class="nl">"message"</span><span class="p">:</span><span class="s2">"access denied"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Now you need firebase token to access the apis.</p>
+
 
         
 
@@ -343,14 +424,14 @@
     
       
       
-      <a href="/categories/testing" class="page__taxonomy-item" rel="tag">testing</a>
+      <a href="/categories/typescript" class="page__taxonomy-item" rel="tag">typescript</a>
     
     </span>
   </p>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2020-10-18T00:00:00+00:00">October 18, 2020</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-29T00:00:00+00:00">August 29, 2021</time></p>
 
 
         
@@ -468,23 +549,22 @@
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=How+I+reduced+the+build+execution+time+for+email+connectors+using+mock+email+servers.%20https%3A%2F%2Fkuros.in%2Ftesting%2Ftesting-email-using-mock-email-server%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Authentication+in+NestJS+using+firebase+token%20https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-firebase-token-authentication%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Ftesting%2Ftesting-email-using-mock-email-server%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-firebase-token-authentication%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Ftesting%2Ftesting-email-using-mock-email-server%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-firebase-token-authentication%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/messaging/publish-and-consume-kafka-message-in-spring-boot-applicaton/" class="pagination--pager" title="Kafka Messaging with Spring Boot
+      <a href="/typescript/nestjs-getting-started/" class="pagination--pager" title="NestJs
 ">Previous</a>
     
     
-      <a href="/java/streams/handle-nullpointerexception-in-collectors-tomap/" class="pagination--pager" title="How to handle NullPointerException in Collectors.toMap when a mapped value is null
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -525,47 +605,6 @@
     <div class="page__related">
       <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/typescript/nestjs-firebase-token-authentication/" rel="permalink">Authentication in NestJS using firebase token
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">You have build your nest microservice, but you want to secure your application using firebase tokens.
-
-</p>
-  </article>
-</div>
-
         
           
 
@@ -633,7 +672,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
@@ -683,6 +722,46 @@ However, Github package has a constraint...</p>
     <p class="archive__item-excerpt" itemprop="description">I was working with my jekyll site, and I started getting the below error.
 
 </p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/ci/cd/download-file-from-private-github-repo-using-curl/" rel="permalink">Download file from private github repository using curl.
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Most of the time, when we are working with automating builds, we often lands up in downloading some files and using it in our workflows.
+So here are the step...</p>
   </article>
 </div>
 
@@ -790,8 +869,8 @@ However, Github package has a constraint...</p>
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://kuros.in/testing/testing-email-using-mock-email-server/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/testing/testing-email-using-mock-email-server"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://kuros.in/typescript/nestjs-firebase-token-authentication/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/typescript/nestjs-firebase-token-authentication"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');
