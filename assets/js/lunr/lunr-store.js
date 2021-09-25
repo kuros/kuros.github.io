@@ -454,4 +454,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/typescript/nestjs-firebase-token-authentication/",
         "teaser": null
+      },{
+        "title": "Fixing firestore doesn't support js object",
+        "excerpt":"In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error. Firestore doesn't support JavaScript objects with custom prototypes (i.e. objects that were created via the \"new\" operator) There are two ways to solve this. Solution 1 The simplest...","categories": ["fixes"],
+        "tags": [],
+        "url": "https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/",
+        "teaser": null
       }]

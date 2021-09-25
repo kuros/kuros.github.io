@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Java - Exception Hierarchy - Kuros.in</title>
-<meta name="description" content="Error vs Exception">
+<!-- begin _includes/seo.html --><title>Fixing firestore doesn’t support js object - Kuros.in</title>
+<meta name="description" content="Steps to fix">
 
 
   <meta name="author" content="Kumar Rohit">
@@ -22,26 +22,28 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Kuros.in">
-<meta property="og:title" content="Java - Exception Hierarchy">
-<meta property="og:url" content="https://kuros.in/java/java-3-exception-hierarchy/">
+<meta property="og:title" content="Fixing firestore doesn’t support js object">
+<meta property="og:url" content="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/">
 
 
-  <meta property="og:description" content="Error vs Exception">
-
-
-
+  <meta property="og:description" content="Steps to fix">
 
 
 
-
-  <meta property="article:published_time" content="2019-01-10T00:00:00+00:00">
+  <meta property="og:image" content="https://kuros.in/images/2021/fix.webp">
 
 
 
 
 
+  <meta property="article:published_time" content="2021-09-25T00:00:00+00:00">
 
-<link rel="canonical" href="https://kuros.in/java/java-3-exception-hierarchy/">
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/">
 
 
 
@@ -158,40 +160,30 @@
 
     <div class="initial-content">
       
-
-
-
-<div id="main" role="main">
-    <div class="sidebar sidebar__sticky">
-    
-        <nav class="toc">
-          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
-            <ul class="toc__menu">
-  <li><a href="#exceptions-methods">Exceptions Methods</a></li>
-</ul>
-
-        </nav>
-    
-    
-      
-    
-  </div>
   
 
 
 
-  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Java - Exception Hierarchy">
-    <meta itemprop="description" content="All exception classes are subtypes of the java.lang.Exception class. The exception class is a subclass of the Throwable class. Other than the exception class there is another subclass called Error which is derived from the Throwable class.">
-    <meta itemprop="datePublished" content="2019-01-10T00:00:00+00:00">
-    
 
-    <div class="page__inner-wrap">
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/fix.webp');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Fixing firestore doesn’t support js object
+
+        
+      </h1>
       
-        <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Java - Exception Hierarchy
-</h1>
-          
+        <p class="page__lead">Steps to fix
+</p>
+      
+      
 
   <p class="page__meta">
     
@@ -205,14 +197,54 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          less than 1 minute read
         
       </span>
     
   </p>
 
 
-        </header>
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/CrhsIRY3JWY"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#solution-1">Solution 1</a></li>
+  <li><a href="#solution-2">Solution 2</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Fixing firestore doesn’t support js object">
+    <meta itemprop="description" content="In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.">
+    <meta itemprop="datePublished" content="2021-09-25T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
       
 
       <section class="page__content" itemprop="text">
@@ -250,87 +282,30 @@
             
           </aside>
         
-        <p>All exception classes are subtypes of the java.lang.Exception class. The exception class is a subclass of the Throwable class. Other than the exception class there is another subclass called Error which is derived from the Throwable class.</p>
+        <p>In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.</p>
 
-<p>Errors are not normally trapped form the Java programs. These conditions normally happen in case of severe failures, which are not handled by the java programs. Errors are generated to indicate errors generated by the runtime environment. Example:  JVM is out of Memory. Normally programs cannot recover from errors. The only difference between Exception and Error is that you can handle the exception but cannot handle an error.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Firestore doesn<span class="s1">'t support JavaScript objects with custom prototypes (i.e. objects that were created via the "new" operator)
+</span></code></pre></div></div>
 
-<p><img alt="String-2" src="/images/java/j-34.webp" lazyload="" width="600px" /></p>
+<p>There are two ways to solve this.</p>
 
-<h2 id="exceptions-methods">Exceptions Methods</h2>
+<h1 id="solution-1">Solution 1</h1>
 
-<p>Following is the list of important methods available in the Throwable class.</p>
+<p>The simplest way to do it to stringify and parse JSON, but it won’t be effective when you are working with Date/Timestamp object.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">no</th>
-      <th style="text-align: left">Methods with Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left">1</td>
-      <td style="text-align: left"><strong>public String getMessage()</strong> Returns a detailed message about the exception that has occurred. This message is initialized in the Throwable constructor.</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">2</td>
-      <td style="text-align: left"><strong>public Throwable getCause()</strong> Returns the cause of the exception as represented by a Throwable object.</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">3</td>
-      <td style="text-align: left"><strong>public String toString()</strong> Returns the name of the class concatenated with the result of getMessage()</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">4</td>
-      <td style="text-align: left"><strong>public void printStackTrace()</strong> Prints the result of toString() along with the stack trace to System.err, the error output stream.</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">5</td>
-      <td style="text-align: left"><strong>public StackTraceElement [] getStackTrace()</strong> Returns an array containing each element on the stack trace. The element at index 0 represents the top of the call stack, and the last element in the array represents the method at the bottom of the call stack.</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">6</td>
-      <td style="text-align: left"><strong>public Throwable fillInStackTrace()</strong> Fills the stack trace of this Throwable object with the current stack trace, adding to any previous information in the stack trace.</td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
-
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
-		<span class="k">try</span><span class="o">{</span>
-			<span class="kt">int</span><span class="o">[]</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="mi">1</span><span class="o">];</span>
-			<span class="n">a</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="mi">5</span><span class="o">;</span>
-		<span class="o">}</span><span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************"</span><span class="o">);</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getCause</span><span class="o">());</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************"</span><span class="o">);</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************"</span><span class="o">);</span>
-			<span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************"</span><span class="o">);</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">getStackTrace</span><span class="o">());</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"***********************"</span><span class="o">);</span>
-			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">fillInStackTrace</span><span class="o">());</span>
-		<span class="o">}</span>
-	<span class="o">}</span>
-<span class="o">}</span>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">firestore</span><span class="p">.</span><span class="nx">collection</span><span class="p">(</span><span class="dl">'</span><span class="s1">my-collection</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">doc</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)))</span>
 </code></pre></div></div>
 
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2
-***********************
-null
-***********************
-java.lang.ArrayIndexOutOfBoundsException: 2
-***********************
-java.lang.ArrayIndexOutOfBoundsException: 2
-	at Scratch.main(scratch_1.java:6)
-***********************
-[Ljava.lang.StackTraceElement;@5e2de80c
-***********************
-java.lang.ArrayIndexOutOfBoundsException: 2
-</code></pre></div></div>
+<h1 id="solution-2">Solution 2</h1>
+<p>To solve this I created a parse method.</p>
+
+<script src="https://gist.github.com/kuros/217c1fda535517926018dc1bdfecc068.js"></script>
+
+<p>This method is capable of converting to array as well as object to plain.</p>
+
+<p>Hope this helps.</p>
 
 
         
@@ -355,14 +330,14 @@ java.lang.ArrayIndexOutOfBoundsException: 2
     
       
       
-      <a href="/categories/java" class="page__taxonomy-item" rel="tag">java</a>
+      <a href="/categories/fixes" class="page__taxonomy-item" rel="tag">fixes</a>
     
     </span>
   </p>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-01-10T00:00:00+00:00">January 10, 2019</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-09-25T00:00:00+00:00">September 25, 2021</time></p>
 
 
         
@@ -480,23 +455,22 @@ java.lang.ArrayIndexOutOfBoundsException: 2
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Java+-+Exception+Hierarchy%20https%3A%2F%2Fkuros.in%2Fjava%2Fjava-3-exception-hierarchy%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Fixing+firestore+doesn%27t+support+js+object%20https%3A%2F%2Fkuros.in%2Ffixes%2Ffirestore-doesnot-support-javascript-object-with-custom-prototypes%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fjava%2Fjava-3-exception-hierarchy%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Ffixes%2Ffirestore-doesnot-support-javascript-object-with-custom-prototypes%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fjava%2Fjava-3-exception-hierarchy%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Ffixes%2Ffirestore-doesnot-support-javascript-object-with-custom-prototypes%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/java/generate-java-documentation-using-javadoc/" class="pagination--pager" title="Java - Documentation
+      <a href="/typescript/nestjs-firebase-token-authentication/" class="pagination--pager" title="Authentication in NestJS using firebase token
 ">Previous</a>
     
     
-      <a href="/java/java-5-assertions/" class="pagination--pager" title="Java - Assertions
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -537,47 +511,6 @@ java.lang.ArrayIndexOutOfBoundsException: 2
     <div class="page__related">
       <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" rel="permalink">Fixing firestore doesn’t support js object
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.
-
-</p>
-  </article>
-</div>
-
         
           
 
@@ -686,7 +619,7 @@ java.lang.ArrayIndexOutOfBoundsException: 2
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
@@ -695,6 +628,47 @@ java.lang.ArrayIndexOutOfBoundsException: 2
 
     <p class="archive__item-excerpt" itemprop="description">Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
 However, Github package has a constraint...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/ci/cd/sass-invalid-ascii-character/" rel="permalink">Fixing Sass invalid ascii character errors
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I was working with my jekyll site, and I started getting the below error.
+
+</p>
   </article>
 </div>
 
@@ -802,8 +776,8 @@ However, Github package has a constraint...</p>
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://kuros.in/java/java-3-exception-hierarchy/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/java/java-3-exception-hierarchy"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');

@@ -305,6 +305,10 @@
 <lastmod>2021-08-29T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/</loc>
+<lastmod>2021-09-25T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
@@ -389,6 +393,9 @@
 <loc>https://kuros.in/categories/typescript/</loc>
 </url>
 <url>
+<loc>https://kuros.in/categories/fixes/</loc>
+</url>
+<url>
 <loc>https://kuros.in/page2/</loc>
 </url>
 <url>
@@ -435,6 +442,6 @@
 </url>
 <url>
 <loc>https://kuros.in/googlef84fd82e0e7dbd58.html</loc>
-<lastmod>2021-08-29T18:22:38+00:00</lastmod>
+<lastmod>2021-09-25T08:34:30+00:00</lastmod>
 </url>
 </urlset>
