@@ -1,4 +1,123 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2021-09-25T08:36:04+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning. </subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">Fixing firestore doesn’t support js object</title><link href="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" rel="alternate" type="text/html" title="Fixing firestore doesn’t support js object" /><published>2021-09-25T00:00:00+00:00</published><updated>2021-09-25T00:00:00+00:00</updated><id>https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes</id><content type="html" xml:base="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/">&lt;p&gt;In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2021-10-20T18:15:40+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning. </subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">Publish npm packages to gcp artifact registry using github actions</title><link href="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/" rel="alternate" type="text/html" title="Publish npm packages to gcp artifact registry using github actions" /><published>2021-10-20T00:00:00+00:00</published><updated>2021-10-20T00:00:00+00:00</updated><id>https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions</id><content type="html" xml:base="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/">&lt;p&gt;Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
+However, Github package has a constraint of 500mb size, which is quite low.&lt;/p&gt;
+
+&lt;p&gt;Lets compare the pricing for both github &amp;amp; gcp (as of July 2021)&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt; &lt;/th&gt;
+      &lt;th&gt;Storage (per GB)&lt;/th&gt;
+      &lt;th&gt;Data Transfer (per GB)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Github&lt;/td&gt;
+      &lt;td&gt;$0.25&lt;/td&gt;
+      &lt;td&gt;$0.50&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GCP artifactory&lt;/td&gt;
+      &lt;td&gt;$0.10&lt;/td&gt;
+      &lt;td&gt;$0.01 - $0.15&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Looking at pricing, storing artifacts in GCP is a good idea.&lt;/p&gt;
+
+&lt;h1 id=&quot;setting-up-service-account&quot;&gt;Setting up service account&lt;/h1&gt;
+
+&lt;p&gt;The first thing, we need to set up our service account, so that github has required permission to publish the packages.&lt;/p&gt;
+
+&lt;p&gt;Login to &lt;a href=&quot;https://console.cloud.google.com&quot;&gt;google console&lt;/a&gt; and navigate to `IAM&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-iam.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You need to add following permission for publishing artifacts (optionally you can provide &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cloud Run Service Agent&lt;/code&gt; for
+cloud run deployments)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-artifactory-sa.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then generate &amp;amp; download key in json format&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-generate-key.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;setup-tokens&quot;&gt;Setup Tokens&lt;/h1&gt;
+
+&lt;p&gt;The first step is to set up a personal access token.&lt;/p&gt;
+
+&lt;p&gt;Go to your profile and click to settings.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2021/github_profile.png&quot; alt=&quot;&quot; width=&quot;20%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Go to developer section&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2021/github-developer.webp&quot; alt=&quot;&quot; width=&quot;60%&quot; float=&quot;right&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Add a new token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_ARTIFACTORY_SERVICE_ACCOUNT&lt;/code&gt; with the contents for download service account key. Also add another
+token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_PROJECT_ID&lt;/code&gt; with your GCP project id.&lt;/p&gt;
+
+&lt;h1 id=&quot;publish-packages-to-gcp-artifact-registry&quot;&gt;Publish packages to GCP artifact registry&lt;/h1&gt;
+
+&lt;p&gt;Time to setup a github action to push npm package to repository. You will need to add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows/ci.yaml&lt;/code&gt;
+&lt;script src=&quot;https://gist.github.com/kuros/a89149662c81c73478619e854f8ffc8b.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;There are 5 steps performed here:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Checkout the project&lt;/li&gt;
+  &lt;li&gt;Set version using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sed&lt;/code&gt; command (In my package.json, I have kept the version 1.0.0-SNAPSHOT, and using the sed command update it to build version).&lt;/li&gt;
+  &lt;li&gt;Next we are setting up GCP credentials&lt;/li&gt;
+  &lt;li&gt;The we are builing package.&lt;/li&gt;
+  &lt;li&gt;Finally, deploying our package to the artifactory.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We are using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--registry&lt;/code&gt; argument to point to our package repository.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; You will have to use &lt;a href=&quot;https://docs.npmjs.com/about-scopes&quot;&gt;npm scope&lt;/a&gt; to associate this repository. i.e. your package name should be like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@&amp;lt;YOUR-SCOPE&amp;gt;/&amp;lt;YOUR-PACKAGE-NAME&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;using-packages-from-gcp-repository&quot;&gt;Using packages from GCP repository&lt;/h1&gt;
+
+&lt;p&gt;Go to artifact registry on &lt;a href=&quot;https://console.cloud.google.com/&quot;&gt;gcp console&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-artifact-registry.webp&quot; alt=&quot;&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Select your repository, and click on the Setup instructions, and copy the snippet into a file &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npmrc&lt;/code&gt;
+&lt;img src=&quot;/images/2021/gcp-artifact-instructions.webp&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SCOPE&lt;/code&gt; is the &lt;a href=&quot;https://docs.npmjs.com/about-scopes&quot;&gt;npm scope&lt;/a&gt; to associate with this repository&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/3cf241bdefcabe59448651806b3764d6.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Here we are generating a npmrc file, with registry details, followed by authenticating gcp registry by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm run artifactregistry-login .npmrc&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now you are equipped with knowlege to publish and consume packages from your gcp artifactory registry.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gcp" /><category term="ci/cd" /><category term="github-actions" /><summary type="html">Github gives a generous limits for your private projects, its to good for your private repos or even small startups. However, Github package has a constraint of 500mb size, which is quite low.</summary></entry><entry><title type="html">Fixing firestore doesn’t support js object</title><link href="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" rel="alternate" type="text/html" title="Fixing firestore doesn’t support js object" /><published>2021-09-25T00:00:00+00:00</published><updated>2021-09-25T00:00:00+00:00</updated><id>https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes</id><content type="html" xml:base="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/">&lt;p&gt;In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Firestore doesn&lt;span class=&quot;s1&quot;&gt;'t support JavaScript objects with custom prototypes (i.e. objects that were created via the &quot;new&quot; operator)
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -593,72 +712,4 @@ In the build step we use source command to export the build number to environmen
 
 &lt;script src=&quot;https://gist.github.com/kuros/d5156e245af77ce9807ff50e46c50d8e.js&quot;&gt;&lt;/script&gt;
 
-&lt;p&gt;We have fixed the issue with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collectors.toMap&lt;/code&gt; with our custom implementation.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="java" /><category term="streams" /><summary type="html">In Java 8, Collectors.toMap throws NullPointerException when one of the mapped value is null. This is a known bug in OpenJDK. There are many workaround to handle this.</summary></entry><entry><title type="html">How I reduced the build execution time for email connectors using mock email servers.</title><link href="https://kuros.in/testing/testing-email-using-mock-email-server/" rel="alternate" type="text/html" title="How I reduced the build execution time for email connectors using mock email servers." /><published>2020-10-18T00:00:00+00:00</published><updated>2020-10-18T00:00:00+00:00</updated><id>https://kuros.in/testing/testing-email-using-mock-email-server</id><content type="html" xml:base="https://kuros.in/testing/testing-email-using-mock-email-server/">&lt;p&gt;I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!&lt;/p&gt;
-
-&lt;h2 id=&quot;mapping-the-wastage&quot;&gt;Mapping the wastage&lt;/h2&gt;
-&lt;p&gt;This micro service was responsible for sending/receiving mails from different configured mail servers. We were doing unit and integration level testing, where in integration testing we were connecting to a local exchange server with pre-configured test users for sending/receiving mail.&lt;/p&gt;
-
-&lt;p&gt;The best way to start optimization - find gaps &amp;amp; wastage. We broke down the total build execution into build, deployment on staging environment &amp;amp; acceptance.&lt;/p&gt;
-
-&lt;p&gt;We noticed the build &amp;amp; deployment time was fair, however the acceptance tests were taking around 40-45 min to complete. Now that we have narrowed our focus. It was time to do a breakdown analysis of test.&lt;/p&gt;
-
-&lt;h2 id=&quot;challenges&quot;&gt;Challenges&lt;/h2&gt;
-
-&lt;p&gt;We often have been observing slowness of builds, sometimes intermittent failures as well. The reason were obvious, tests were using same set of users, so during parallel execution data gets corrupted. We needed a clean way test our api’s. Also after regular intervals, we had to clean the mail accounts.&lt;/p&gt;
-
-&lt;p&gt;To put simply we needed&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Unique set of user for each test.&lt;/li&gt;
-  &lt;li&gt;Local server to reduce network delays.&lt;/li&gt;
-  &lt;li&gt;Ability to automatically flush the existing data.&lt;/li&gt;
-  &lt;li&gt;Behave like a real world mail server&lt;/li&gt;
-  &lt;li&gt;Supports the standards protocols - SMTP, IMAP &amp;amp; POP3&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;greenmail-to-rescue&quot;&gt;GreenMail to rescue&lt;/h2&gt;
-&lt;p&gt;Time for us to switch to mock email server, there are good number of servers available. Some are free to use and some are paid.&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;https://mailtrap.io/&quot;&gt;MailTrap&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.mailspons.com/&quot;&gt;Mailspons&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://greenmail-mail-test.github.io/greenmail/&quot;&gt;GreenMail&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;GreenMail is open source while other solutions are paid. As stated on the main page, the benefits include:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Supports SMTP, POP3 and IMAP including SSL&lt;/li&gt;
-  &lt;li&gt;Prevents accidental email leaking to real mail servers&lt;/li&gt;
-  &lt;li&gt;Provides different deployment models, such as a simple standalone JVM process, as a WAR module or as a docker image&lt;/li&gt;
-  &lt;li&gt;Easily embeddable in JUnit tests for integration testing&lt;/li&gt;
-  &lt;li&gt;Lightweight&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This library supports both receiving and retrieving mails from java.&lt;/p&gt;
-
-&lt;h2 id=&quot;java-mail-service&quot;&gt;Java Mail Service&lt;/h2&gt;
-
-&lt;p&gt;We will create a simple method to mimic a real world functionality - to send a mail.&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/a1ba804dec4ee1bb0511a21e8c38b726.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;So now we need to test this functionality, as its clear we will need a email server to validate if our code is working fine.&lt;/p&gt;
-
-&lt;h2 id=&quot;set-up-greenmail&quot;&gt;Set up GreenMail&lt;/h2&gt;
-
-&lt;p&gt;We will embed a mock server in our test, first we will add a test dependency for &lt;strong&gt;greenmail&lt;/strong&gt;&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/226126b48c25e868610f7d11f90b0805.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;Next, we are going to write a simple test to send message and validate. In this example, we will start our mock server at 9000 port and connect to it via our api, and send the message.&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/8b2b40a0bce62854c22adb787e53c507.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;With every test I can create unique set of users, and run my test against it and finally purge the server.&lt;/p&gt;
-
-&lt;p&gt;GreenMail also gives utility to access the received messages. You can also use the standard way by connecting via IMAP/POP3 implementations.&lt;/p&gt;
-
-&lt;p&gt;Its a great way to avoid message spill over, cleanup managed exchange server and improves reliability.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/testing/greenmail&quot;&gt;Complete code&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="testing" /><summary type="html">I checked in my changes, time to wait for the build to be completed in jenkins. It was time to pick up coffee and play the waiting game, as it would take another hour before I can proceed with deployment of the code. We obviously had to do something !!</summary></entry></feed>
+&lt;p&gt;We have fixed the issue with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Collectors.toMap&lt;/code&gt; with our custom implementation.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="java" /><category term="streams" /><summary type="html">In Java 8, Collectors.toMap throws NullPointerException when one of the mapped value is null. This is a known bug in OpenJDK. There are many workaround to handle this.</summary></entry></feed>

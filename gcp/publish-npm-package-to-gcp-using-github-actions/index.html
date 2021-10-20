@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Authentication in NestJS using firebase token - Kuros.in</title>
-<meta name="description" content="Setting up firebase authentication in NestJS application">
+<!-- begin _includes/seo.html --><title>Publish npm packages to gcp artifact registry using github actions - Kuros.in</title>
+<meta name="description" content="Publish your npm package to gcp repository using github actions.">
 
 
   <meta name="author" content="Kumar Rohit">
@@ -22,28 +22,28 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Kuros.in">
-<meta property="og:title" content="Authentication in NestJS using firebase token">
-<meta property="og:url" content="https://kuros.in/typescript/nestjs-firebase-token-authentication/">
+<meta property="og:title" content="Publish npm packages to gcp artifact registry using github actions">
+<meta property="og:url" content="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/">
 
 
-  <meta property="og:description" content="Setting up firebase authentication in NestJS application">
-
-
-
-  <meta property="og:image" content="https://kuros.in/images/2021/lock.webp">
+  <meta property="og:description" content="Publish your npm package to gcp repository using github actions.">
 
 
 
-
-
-  <meta property="article:published_time" content="2021-08-29T00:00:00+00:00">
+  <meta property="og:image" content="https://kuros.in/images/2021/github-cat.webp">
 
 
 
 
 
+  <meta property="article:published_time" content="2021-10-20T00:00:00+00:00">
 
-<link rel="canonical" href="https://kuros.in/typescript/nestjs-firebase-token-authentication/">
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/">
 
 
 
@@ -169,18 +169,18 @@
 
 
 <div class="page__hero--overlay"
-  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/lock.webp');"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/github-cat.webp');"
 >
   
     <div class="wrapper">
       <h1 id="page-title" class="page__title" itemprop="headline">
         
-          Authentication in NestJS using firebase token
+          Publish npm packages to gcp artifact registry using github actions
 
         
       </h1>
       
-        <p class="page__lead">Setting up firebase authentication in NestJS application
+        <p class="page__lead">Publish your npm package to gcp repository using github actions.
 </p>
       
       
@@ -197,7 +197,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
@@ -209,7 +209,7 @@
     </div>
   
   
-    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/mT7lXZPjk7U"><strong>Unsplash</strong></a>
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/wX2L8L-fGeA"><strong>Unsplash</strong></a>
 </span>
   
 </div>
@@ -224,20 +224,10 @@
         <nav class="toc">
           <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
             <ul class="toc__menu">
-  <li><a href="#initialize-firebase">Initialize firebase</a>
-    <ul>
-      <li><a href="#service-account">Service account</a></li>
-      <li><a href="#config">config</a></li>
-      <li><a href="#creating-firebaseapp-service">Creating FirebaseApp service</a></li>
-    </ul>
-  </li>
-  <li><a href="#nestjs-middleware">NestJs Middleware</a>
-    <ul>
-      <li><a href="#pre-auth-middleware">Pre-auth middleware</a></li>
-      <li><a href="#add-middleware-to-the-nestjs-app">Add middleware to the nestJS app</a></li>
-    </ul>
-  </li>
-  <li><a href="#test-controller">Test Controller</a></li>
+  <li><a href="#setting-up-service-account">Setting up service account</a></li>
+  <li><a href="#setup-tokens">Setup Tokens</a></li>
+  <li><a href="#publish-packages-to-gcp-artifact-registry">Publish packages to GCP artifact registry</a></li>
+  <li><a href="#using-packages-from-gcp-repository">Using packages from GCP repository</a></li>
 </ul>
 
         </nav>
@@ -251,9 +241,9 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Authentication in NestJS using firebase token">
-    <meta itemprop="description" content="You have build your nest microservice, but you want to secure your application using firebase tokens.">
-    <meta itemprop="datePublished" content="2021-08-29T00:00:00+00:00">
+    <meta itemprop="headline" content="Publish npm packages to gcp artifact registry using github actions">
+    <meta itemprop="description" content="Github gives a generous limits for your private projects, its to good for your private repos or even small startups.However, Github package has a constraint of 500mb size, which is quite low.">
+    <meta itemprop="datePublished" content="2021-10-20T00:00:00+00:00">
     
 
     <div class="page__inner-wrap">
@@ -340,97 +330,126 @@
             
           </aside>
         
-        <p>You have build your nest microservice, but you want to secure your application using firebase tokens.</p>
+        <p>Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
+However, Github package has a constraint of 500mb size, which is quite low.</p>
 
-<p>In earlier post, we had <a href="/typescript/nestjs-getting-started/">set up a nestJs application</a> with simple controller. 
-Now we will set up authentication using firebase auth tokens.</p>
+<p>Lets compare the pricing for both github &amp; gcp (as of July 2021)</p>
 
-<h1 id="initialize-firebase">Initialize firebase</h1>
-<p>The first step is to initialize firebase app.</p>
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Storage (per GB)</th>
+      <th>Data Transfer (per GB)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Github</td>
+      <td>$0.25</td>
+      <td>$0.50</td>
+    </tr>
+    <tr>
+      <td>GCP artifactory</td>
+      <td>$0.10</td>
+      <td>$0.01 - $0.15</td>
+    </tr>
+  </tbody>
+</table>
 
-<h2 id="service-account">Service account</h2>
-<p>Login to your firebase account, create/open the project and goto project settings.</p>
+<p>Looking at pricing, storing artifacts in GCP is a good idea.</p>
 
-<p><img src="/images/2021/firebase-auth-link.webp" alt="" title="Firebase auth link" width="60%" /></p>
+<h1 id="setting-up-service-account">Setting up service account</h1>
 
-<p>Go to service account</p>
+<p>The first thing, we need to set up our service account, so that github has required permission to publish the packages.</p>
 
-<p><img src="/images/2021/firebase-service-account.webp" alt="" title="Firebase service account" width="60%" /></p>
+<p>Login to <a href="https://console.cloud.google.com">google console</a> and navigate to `IAM</p>
 
-<p>And generate key, download this file.</p>
+<p><img src="/images/2021/gcp-iam.webp" alt="" width="80%" /></p>
 
-<p><img src="/images/2021/firebase-generate-key.webp" alt="" title="Firebase generate key" width="60%" /></p>
+<p>You need to add following permission for publishing artifacts (optionally you can provide <code class="language-plaintext highlighter-rouge">Cloud Run Service Agent</code> for
+cloud run deployments)</p>
 
-<p>Keep this file secure. We will now set up our config.</p>
+<p><img src="/images/2021/gcp-artifactory-sa.webp" alt="" width="80%" /></p>
 
-<h2 id="config">config</h2>
+<p>Then generate &amp; download key in json format</p>
 
-<p>we will create a file <strong>firebase-config.ts</strong>, and populate the values from generated keys
-(for better security, you should pass the values using environment values).</p>
+<p><img src="/images/2021/gcp-generate-key.webp" alt="" width="80%" /></p>
 
-<script src="https://gist.github.com/kuros/7e645a79b42a261efd17417f0e55bc34.js"></script>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-<h2 id="creating-firebaseapp-service">Creating FirebaseApp service</h2>
-<p>For that lets create a service which will provide us with the instance of firebase auth object.</p>
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
-<script src="https://gist.github.com/kuros/1c0b425f0016cde0e60fe7adda69d309.js"></script>
+<h1 id="setup-tokens">Setup Tokens</h1>
 
-<p><strong>Note:</strong> we will add <code class="language-plaintext highlighter-rouge">FirebaseApp</code> as a provider into our app.module.ts</p>
+<p>The first step is to set up a personal access token.</p>
 
-<h1 id="nestjs-middleware">NestJs Middleware</h1>
-<p>So middleware are functions which are called before route handlers. Middleware functions has access to http request, response and next function which points to next middleware.</p>
+<p>Go to your profile and click to settings.</p>
 
-<p><img src="/images/2021/nest-middleware.webp" alt="" title="Firebase generate key" width="100%" /></p>
+<p><img src="/images/2021/github_profile.png" alt="" width="20%" /></p>
 
-<p>Middleware functions can perform the following tasks:</p>
-<ul>
-  <li>execute any code.</li>
-  <li>make changes to the request and the response objects.</li>
-  <li>end the request-response cycle.</li>
-  <li>call the next middleware function in the stack.</li>
-  <li>if the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging</li>
-</ul>
+<p>Go to developer section</p>
 
-<p>For more details refer <a href="https://docs.nestjs.com/middleware">docs</a></p>
+<p><img src="/images/2021/github-developer.webp" alt="" width="60%" float="right" /></p>
 
-<h2 id="pre-auth-middleware">Pre-auth middleware</h2>
-<p>Let’s create our middleware which will validate if the request has <code class="language-plaintext highlighter-rouge">Bearer</code> token and verify it.</p>
+<p>Add a new token <code class="language-plaintext highlighter-rouge">GCP_ARTIFACTORY_SERVICE_ACCOUNT</code> with the contents for download service account key. Also add another
+token <code class="language-plaintext highlighter-rouge">GCP_PROJECT_ID</code> with your GCP project id.</p>
 
-<script src="https://gist.github.com/kuros/9ded11c1e6d7ef93dd11f1e114f2ed30.js"></script>
+<h1 id="publish-packages-to-gcp-artifact-registry">Publish packages to GCP artifact registry</h1>
 
-<p>In order to create a middleware we need to implement <code class="language-plaintext highlighter-rouge">NestMiddleware</code> and implement the <code class="language-plaintext highlighter-rouge">use</code> method. As said earlier, we get handle of request, response and next methods.</p>
+<p>Time to setup a github action to push npm package to repository. You will need to add <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yaml</code>
+<script src="https://gist.github.com/kuros/a89149662c81c73478619e854f8ffc8b.js"></script></p>
 
-<p>In here, we are initializing the <code class="language-plaintext highlighter-rouge">auth</code> in constructor, and in the <code class="language-plaintext highlighter-rouge">use</code> method we evaluate the token and pass it to <code class="language-plaintext highlighter-rouge">firebaseAuth.verfiyIdToken()</code>
-to verify against firebase.</p>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
-<p>Once validated make sure to call <code class="language-plaintext highlighter-rouge">next()</code> on success, else your request won’t proceed to next middleware, and it will hang.
-Here, I am adding user information to request object which I extracted from the token.</p>
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
 
-<p>In case we don’t find the token or token verification fails we are writing an error response to response object.</p>
+<p>There are 5 steps performed here:</p>
 
-<p><strong>Note:</strong> Here I am using firebase token, but you can setup any authentication mechanism.</p>
-<h2 id="add-middleware-to-the-nestjs-app">Add middleware to the nestJS app</h2>
+<ol>
+  <li>Checkout the project</li>
+  <li>Set version using <code class="language-plaintext highlighter-rouge">sed</code> command (In my package.json, I have kept the version 1.0.0-SNAPSHOT, and using the sed command update it to build version).</li>
+  <li>Next we are setting up GCP credentials</li>
+  <li>The we are builing package.</li>
+  <li>Finally, deploying our package to the artifactory.</li>
+</ol>
 
-<p>Next we will plugin our middle to app. Open your <code class="language-plaintext highlighter-rouge">AppModule</code>, make sure it implements <code class="language-plaintext highlighter-rouge">NestModule</code>.</p>
+<p>We are using <code class="language-plaintext highlighter-rouge">--registry</code> argument to point to our package repository.</p>
 
-<p>In the configure method we will apply our middleware and also specify which path/methods you want to apply this middleware.
-Here, I am saying I want to have authentication on all the urls which starts with <code class="language-plaintext highlighter-rouge">/secure</code> 
-<script src="https://gist.github.com/kuros/dc87948f2449e69c0c4d8af58bdc4ef9.js"></script></p>
+<p><strong>Note:</strong> You will have to use <a href="https://docs.npmjs.com/about-scopes">npm scope</a> to associate this repository. i.e. your package name should be like <code class="language-plaintext highlighter-rouge">@&lt;YOUR-SCOPE&gt;/&lt;YOUR-PACKAGE-NAME&gt;</code>.</p>
 
-<p>And, you authentication configuration is complete.</p>
+<h1 id="using-packages-from-gcp-repository">Using packages from GCP repository</h1>
 
-<h1 id="test-controller">Test Controller</h1>
-<p>In our app controller, let’s add get methods and test if our middleware is working fine.</p>
+<p>Go to artifact registry on <a href="https://console.cloud.google.com/">gcp console</a></p>
 
-<script src="https://gist.github.com/kuros/c900b1df724a2758e2a4668d3549684b.js"></script>
+<p><img src="/images/2021/gcp-artifact-registry.webp" alt="" width="50%" /></p>
 
-<p>Now try to access <code class="language-plaintext highlighter-rouge">http://localhost:3000/ping</code>, you should be able to pong response.
-But when you will try to access <code class="language-plaintext highlighter-rouge">http://localhost:3000/secure/ping</code> you will get an error response</p>
+<p>Select your repository, and click on the Setup instructions, and copy the snippet into a file <code class="language-plaintext highlighter-rouge">npmrc</code>
+<img src="/images/2021/gcp-artifact-instructions.webp" alt="" /></p>
 
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"statusCode"</span><span class="p">:</span><span class="mi">403</span><span class="p">,</span><span class="nl">"timestamp"</span><span class="p">:</span><span class="s2">"2021-08-29T14:28:31.324Z"</span><span class="p">,</span><span class="nl">"path"</span><span class="p">:</span><span class="s2">"/secure/ping"</span><span class="p">,</span><span class="nl">"message"</span><span class="p">:</span><span class="s2">"access denied"</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+<p><strong>Note:</strong> <code class="language-plaintext highlighter-rouge">SCOPE</code> is the <a href="https://docs.npmjs.com/about-scopes">npm scope</a> to associate with this repository</p>
 
-<p>Now you need firebase token to access the apis.</p>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<script src="https://gist.github.com/kuros/3cf241bdefcabe59448651806b3764d6.js"></script>
+
+<p>Here we are generating a npmrc file, with registry details, followed by authenticating gcp registry by <code class="language-plaintext highlighter-rouge">npm run artifactregistry-login .npmrc</code>.</p>
+
+<p>Now you are equipped with knowlege to publish and consume packages from your gcp artifactory registry.</p>
 
 
         
@@ -440,6 +459,29 @@ But when you will try to access <code class="language-plaintext highlighter-roug
       <footer class="page__meta">
         
         
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/ci-cd" class="page__taxonomy-item" rel="tag">ci/cd</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/github-actions" class="page__taxonomy-item" rel="tag">github-actions</a>
+    
+    </span>
+  </p>
+
+
 
 
   
@@ -455,14 +497,14 @@ But when you will try to access <code class="language-plaintext highlighter-roug
     
       
       
-      <a href="/categories/typescript" class="page__taxonomy-item" rel="tag">typescript</a>
+      <a href="/categories/gcp" class="page__taxonomy-item" rel="tag">gcp</a>
     
     </span>
   </p>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-08-29T00:00:00+00:00">August 29, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-10-20T00:00:00+00:00">October 20, 2021</time></p>
 
 
         
@@ -580,23 +622,22 @@ But when you will try to access <code class="language-plaintext highlighter-roug
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Authentication+in+NestJS+using+firebase+token%20https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-firebase-token-authentication%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Publish+npm+packages+to+gcp+artifact+registry+using+github+actions%20https%3A%2F%2Fkuros.in%2Fgcp%2Fpublish-npm-package-to-gcp-using-github-actions%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-firebase-token-authentication%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fgcp%2Fpublish-npm-package-to-gcp-using-github-actions%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-firebase-token-authentication%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fgcp%2Fpublish-npm-package-to-gcp-using-github-actions%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/typescript/nestjs-getting-started/" class="pagination--pager" title="NestJs
+      <a href="/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" class="pagination--pager" title="Fixing firestore doesn’t support js object
 ">Previous</a>
     
     
-      <a href="/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" class="pagination--pager" title="Fixing firestore doesn’t support js object
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -647,46 +688,6 @@ But when you will try to access <code class="language-plaintext highlighter-roug
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/gcp/publish-npm-package-to-gcp-using-github-actions/" rel="permalink">Publish npm packages to gcp artifact registry using github actions
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
-However, Github package has a constraint...</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
         <a href="/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" rel="permalink">Fixing firestore doesn’t support js object
 </a>
       
@@ -713,6 +714,47 @@ However, Github package has a constraint...</p>
 
 
     <p class="archive__item-excerpt" itemprop="description">In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-firebase-token-authentication/" rel="permalink">Authentication in NestJS using firebase token
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You have build your nest microservice, but you want to secure your application using firebase tokens.
 
 </p>
   </article>
@@ -901,8 +943,8 @@ However, Github package has a constraint...</p>
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://kuros.in/typescript/nestjs-firebase-token-authentication/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/typescript/nestjs-firebase-token-authentication"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/gcp/publish-npm-package-to-gcp-using-github-actions"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');
