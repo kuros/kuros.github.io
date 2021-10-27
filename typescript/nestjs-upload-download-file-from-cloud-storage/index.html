@@ -197,7 +197,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          5 minute read
+          6 minute read
         
       </span>
     
@@ -379,7 +379,7 @@
 <p>Open a terminal window.
 Use the gsutil mb command and a unique name to create a bucket:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gsutil mb <span class="nt">-b</span> on <span class="nt">-l</span> us-east1 gs://my-awesome-bucket/
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>gsutil mb <span class="nt">-b</span> on <span class="nt">-l</span> us-east1 gs://my-awesome-bucket/
 </code></pre></div></div>
 
 <p>This uses a bucket named “my-awesome-bucket.” You must choose your own, globally-unique, bucket name. For more information refer <a href="https://cloud.google.com/storage/docs/introduction">docs</a></p>
@@ -413,7 +413,7 @@ cloud run deployments)</p>
 
 <p>We will be using <a href="https://docs.nestjs.com/cli/overview">nest cli</a> to scaffold the project.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nest new gcp-storage
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest new gcp-storage
 </code></pre></div></div>
 
 <p>You will be asked to choose the package manager as per your linking, I prefer pnpm as its faster and takes up less space compared to npm or yarn.</p>
@@ -424,7 +424,7 @@ cloud run deployments)</p>
 
 <p>To create a module, we will navigate to <code class="language-plaintext highlighter-rouge">gcp-storage/src</code>.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nest g module storage
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest g module storage
 </code></pre></div></div>
 
 <p>This command would generate nest module under <code class="language-plaintext highlighter-rouge">src/storage</code>.</p>
@@ -635,66 +635,65 @@ UPDATE media/media.module.ts <span class="o">(</span>170 bytes<span class="o">)<
 
 <p>Now we create the upload method in controller.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import <span class="o">{</span>
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Post,
-  Res,
-  ServiceUnavailableException,
-  UploadedFile,
-  UseInterceptors,
-<span class="o">}</span> from <span class="s1">'@nestjs/common'</span><span class="p">;</span>
-import <span class="o">{</span> FileInterceptor <span class="o">}</span> from <span class="s1">'@nestjs/platform-express'</span><span class="p">;</span>
-import <span class="o">{</span> Response <span class="o">}</span> from <span class="s1">'express'</span><span class="p">;</span>
-import <span class="o">{</span> StorageFile <span class="o">}</span> from <span class="s1">'src/storage/storage-file'</span><span class="p">;</span>
-import <span class="o">{</span> StorageService <span class="o">}</span> from <span class="s1">'src/storage/storage.service'</span><span class="p">;</span>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span>
+  <span class="nx">Body</span><span class="p">,</span>
+  <span class="nx">Controller</span><span class="p">,</span>
+  <span class="nx">Get</span><span class="p">,</span>
+  <span class="nx">NotFoundException</span><span class="p">,</span>
+  <span class="nx">Param</span><span class="p">,</span>
+  <span class="nx">Post</span><span class="p">,</span>
+  <span class="nx">Res</span><span class="p">,</span>
+  <span class="nx">ServiceUnavailableException</span><span class="p">,</span>
+  <span class="nx">UploadedFile</span><span class="p">,</span>
+  <span class="nx">UseInterceptors</span><span class="p">,</span>
+<span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">FileInterceptor</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/platform-express</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Response</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">express</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">StorageFile</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">src/storage/storage-file</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">StorageService</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">src/storage/storage.service</span><span class="dl">"</span><span class="p">;</span>
 
-@Controller<span class="o">(</span><span class="s1">'media'</span><span class="o">)</span>
-<span class="nb">export </span>class MediaController <span class="o">{</span>
-  constructor<span class="o">(</span>private storageService: StorageService<span class="o">)</span> <span class="o">{}</span>
+<span class="p">@</span><span class="nd">Controller</span><span class="p">(</span><span class="dl">"</span><span class="s2">media</span><span class="dl">"</span><span class="p">)</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">MediaController</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">storageService</span><span class="p">:</span> <span class="nx">StorageService</span><span class="p">)</span> <span class="p">{}</span>
 
-  @Post<span class="o">()</span>
-  @UseInterceptors<span class="o">(</span>
-    FileInterceptor<span class="o">(</span><span class="s1">'file'</span>, <span class="o">{</span>
-      limits: <span class="o">{</span>
-        files: 1,
-        fileSize: 1024 <span class="k">*</span> 1024,
-      <span class="o">}</span>,
-    <span class="o">})</span>,
-  <span class="o">)</span>
-  async uploadMedia<span class="o">(</span>
-    @UploadedFile<span class="o">()</span> file: Express.Multer.File,
-    @Body<span class="o">(</span><span class="s1">'mediaId'</span><span class="o">)</span> mediaId: string,
-  <span class="o">)</span> <span class="o">{</span>
-    await this.storageService.save<span class="o">(</span>
-      <span class="s1">'media/'</span> + mediaId,
-      file.mimetype,
-      file.buffer,
-      <span class="o">[{</span> mediaId: mediaId <span class="o">}]</span>,
-    <span class="o">)</span><span class="p">;</span>
-  <span class="o">}</span>
+  <span class="p">@</span><span class="nd">Post</span><span class="p">()</span>
+  <span class="p">@</span><span class="nd">UseInterceptors</span><span class="p">(</span>
+    <span class="nx">FileInterceptor</span><span class="p">(</span><span class="dl">"</span><span class="s2">file</span><span class="dl">"</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">limits</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">files</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="na">fileSize</span><span class="p">:</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>
+      <span class="p">},</span>
+    <span class="p">})</span>
+  <span class="p">)</span>
+  <span class="k">async</span> <span class="nx">uploadMedia</span><span class="p">(</span>
+    <span class="p">@</span><span class="nd">UploadedFile</span><span class="p">()</span> <span class="nx">file</span><span class="p">:</span> <span class="nx">Express</span><span class="p">.</span><span class="nx">Multer</span><span class="p">.</span><span class="nx">File</span><span class="p">,</span>
+    <span class="p">@</span><span class="nd">Body</span><span class="p">(</span><span class="dl">"</span><span class="s2">mediaId</span><span class="dl">"</span><span class="p">)</span> <span class="nx">mediaId</span><span class="p">:</span> <span class="kr">string</span>
+  <span class="p">)</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">storageService</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span>
+      <span class="dl">"</span><span class="s2">media/</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">mediaId</span><span class="p">,</span>
+      <span class="nx">file</span><span class="p">.</span><span class="nx">mimetype</span><span class="p">,</span>
+      <span class="nx">file</span><span class="p">.</span><span class="nx">buffer</span><span class="p">,</span>
+      <span class="p">[{</span> <span class="na">mediaId</span><span class="p">:</span> <span class="nx">mediaId</span> <span class="p">}]</span>
+    <span class="p">);</span>
+  <span class="p">}</span>
 
-  @Get<span class="o">(</span><span class="s1">'/:mediaId'</span><span class="o">)</span>
-  async downloadMedia<span class="o">(</span>@Param<span class="o">(</span><span class="s1">'mediaId'</span><span class="o">)</span> mediaId: string, @Res<span class="o">()</span> res: Response<span class="o">)</span> <span class="o">{</span>
-    <span class="nb">let </span>storageFile: StorageFile<span class="p">;</span>
-    try <span class="o">{</span>
-      storageFile <span class="o">=</span> await this.storageService.get<span class="o">(</span><span class="s1">'media/'</span> + mediaId<span class="o">)</span><span class="p">;</span>
-    <span class="o">}</span> catch <span class="o">(</span>e<span class="o">)</span> <span class="o">{</span>
-      <span class="k">if</span> <span class="o">(</span>e.message.toString<span class="o">()</span>.includes<span class="o">(</span><span class="s1">'No such object'</span><span class="o">))</span> <span class="o">{</span>
-        throw new NotFoundException<span class="o">(</span><span class="s1">'image not found'</span><span class="o">)</span><span class="p">;</span>
-      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-        throw new ServiceUnavailableException<span class="o">(</span><span class="s1">'internal error'</span><span class="o">)</span><span class="p">;</span>
-      <span class="o">}</span>
-    <span class="o">}</span>
-    res.setHeader<span class="o">(</span><span class="s1">'Content-Type'</span>, storageFile.contentType<span class="o">)</span><span class="p">;</span>
-    res.setHeader<span class="o">(</span><span class="s1">'Cache-Control'</span>, <span class="s1">'max-age=60d'</span><span class="o">)</span><span class="p">;</span>
-    res.end<span class="o">(</span>storageFile.buffer<span class="o">)</span><span class="p">;</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
+  <span class="p">@</span><span class="nd">Get</span><span class="p">(</span><span class="dl">"</span><span class="s2">/:mediaId</span><span class="dl">"</span><span class="p">)</span>
+  <span class="k">async</span> <span class="nx">downloadMedia</span><span class="p">(@</span><span class="nd">Param</span><span class="p">(</span><span class="dl">"</span><span class="s2">mediaId</span><span class="dl">"</span><span class="p">)</span> <span class="nx">mediaId</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="p">@</span><span class="nd">Res</span><span class="p">()</span> <span class="nx">res</span><span class="p">:</span> <span class="nx">Response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">storageFile</span><span class="p">:</span> <span class="nx">StorageFile</span><span class="p">;</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="nx">storageFile</span> <span class="o">=</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">storageService</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">media/</span><span class="dl">"</span> <span class="o">+</span> <span class="nx">mediaId</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">includes</span><span class="p">(</span><span class="dl">"</span><span class="s2">No such object</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nx">NotFoundException</span><span class="p">(</span><span class="dl">"</span><span class="s2">image not found</span><span class="dl">"</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nx">ServiceUnavailableException</span><span class="p">(</span><span class="dl">"</span><span class="s2">internal error</span><span class="dl">"</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">"</span><span class="s2">Content-Type</span><span class="dl">"</span><span class="p">,</span> <span class="nx">storageFile</span><span class="p">.</span><span class="nx">contentType</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">"</span><span class="s2">Cache-Control</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">max-age=60d</span><span class="dl">"</span><span class="p">);</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">storageFile</span><span class="p">.</span><span class="nx">buffer</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>In the upload method we are using FileInterceptors to restrict the file size and number of files to be uploaded.</p>
@@ -705,21 +704,21 @@ import <span class="o">{</span> StorageService <span class="o">}</span> from <sp
 
 <p>We will first add <code class="language-plaintext highlighter-rouge">env-cmd</code> &amp; <code class="language-plaintext highlighter-rouge">dotenv</code> packages.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pnpm <span class="nb">install</span> <span class="nt">-D</span> env-cmd dotenv
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pnpm <span class="nb">install</span> <span class="nt">-D</span> env-cmd dotenv
 </code></pre></div></div>
 
 <p>Now we change the <code class="language-plaintext highlighter-rouge">package.json</code> file and modify the start:dev script command.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"start:dev": "env-cmd -f .env nest start --watch",
-</code></pre></div></div>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">"start:dev"</span><span class="p">:</span><span class="w"> </span><span class="s2">"env-cmd -f .env nest start --watch"</span><span class="err">,</span><span class="w">
+</span></code></pre></div></div>
 
 <p>Finally we create .env file in the project folder.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PROJECT_ID = &lt;YOUR_PROJECT_ID&gt;
+<pre><code class="language-env">PROJECT_ID = &lt;YOUR_PROJECT_ID&gt;
 PRIVATE_KEY = &lt;YOUR_SERVICE_ACCOUNT_PRIVATE_KEY&gt;
 CLIENT_EMAIL = &lt;YOUR_SERVICE_ACCOUNT_EMAIL&gt;
 STORAGE_MEDIA_BUCKET = &lt;YOUR_BUCKET_NAME&gt;
-</code></pre></div></div>
+</code></pre>
 
 <p>And there you have it. A working nest application to upload and download files.
 You can download the source code from <a href="https://github.com/kuros/blog-code/tree/master/nestjs/gcp-storage">github</a>.</p>

@@ -468,7 +468,7 @@ var store = [{
         "teaser": null
       },{
         "title": "NestJs Application to upload/download file from GCP cloud storage",
-        "excerpt":"In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api. Prerequisites: Create a bucket To create a bucket: Open a terminal window. Use the gsutil mb command and a unique name to create a bucket: gsutil mb -b on...","categories": ["typescript"],
+        "excerpt":"In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api. Prerequisites: Create a bucket To create a bucket: Open a terminal window. Use the gsutil mb command and a unique name to create a bucket: $ gsutil mb -b...","categories": ["typescript"],
         "tags": [],
         "url": "https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/",
         "teaser": null
