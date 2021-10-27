@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2021-10-27T06:18:06+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning. </subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">NestJs Application to upload/download file from GCP cloud storage</title><link href="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="alternate" type="text/html" title="NestJs Application to upload/download file from GCP cloud storage" /><published>2021-10-23T00:00:00+00:00</published><updated>2021-10-23T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/">&lt;p&gt;In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2021-10-27T07:48:19+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning. </subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">NestJs Application to upload/download file from GCP cloud storage</title><link href="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="alternate" type="text/html" title="NestJs Application to upload/download file from GCP cloud storage" /><published>2021-10-23T00:00:00+00:00</published><updated>2021-10-23T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/">&lt;p&gt;In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.&lt;/p&gt;
 
 &lt;h1 id=&quot;prerequisites&quot;&gt;Prerequisites:&lt;/h1&gt;
 
@@ -101,6 +101,14 @@ cloud run deployments)&lt;/p&gt;
 &lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;StorageModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;p&gt;Let’s get back to our storage service. In the constructor we will initialize Storage object with projectId &amp;amp; credentials.&lt;/p&gt;
 
 &lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;StorageFile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./storage-file&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -189,6 +197,14 @@ cloud run deployments)&lt;/p&gt;
 
 &lt;p&gt;Now that we have our service ready lets add a controller in the main module.&lt;/p&gt;
 
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;media-module&quot;&gt;Media Module&lt;/h1&gt;
 
 &lt;p&gt;I will create a separate media module to which I will inject the storage service we created.
@@ -228,7 +244,15 @@ UPDATE media/media.module.ts &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;170 b
 
 &lt;p&gt;Also, remember we had already exported the StorageService in StorageModule, so now once we import the module all the exported providers will now be accessible in the current module.&lt;/p&gt;
 
-&lt;h1 id=&quot;media-controller&quot;&gt;Media Controller&lt;/h1&gt;
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;media-controller&quot;&gt;Media Controller&lt;/h2&gt;
 
 &lt;p&gt;To handle file uploading, Nest provides a built-in module based on the multer middleware package for Express. Multer handles data posted in the multipart/form-data format, which is primarily used for uploading files via an HTTP POST request. This module is fully configurable and you can adjust its behavior to your application requirements.&lt;/p&gt;
 
