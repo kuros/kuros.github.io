@@ -1,0 +1,1195 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>NestJs Application to upload/download file from GCP cloud storage - Kuros.in</title>
+<meta name="description" content="Create a nestjs module to upload/download file from cloud storage">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="NestJs Application to upload/download file from GCP cloud storage">
+<meta property="og:url" content="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/">
+
+
+  <meta property="og:description" content="Create a nestjs module to upload/download file from cloud storage">
+
+
+
+  <meta property="og:image" content="https://kuros.in/images/2021/gcp-storage.webp">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-10-23T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/favicon.ico">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/gcp-storage.webp');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          NestJs Application to upload/download file from GCP cloud storage
+
+        
+      </h1>
+      
+        <p class="page__lead">Create a nestjs module to upload/download file from cloud storage
+</p>
+      
+      
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/GK8x_XCcDZg"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#prerequisites">Prerequisites:</a>
+    <ul>
+      <li><a href="#create-a-bucket">Create a bucket</a></li>
+      <li><a href="#setting-up-service-account">Setting up service account</a></li>
+    </ul>
+  </li>
+  <li><a href="#creating-nestjs-application">Creating nestJs application</a></li>
+  <li><a href="#storage-module">Storage Module</a>
+    <ul>
+      <li><a href="#storage-service">Storage Service</a></li>
+    </ul>
+  </li>
+  <li><a href="#media-module">Media Module</a>
+    <ul>
+      <li><a href="#importing-storage-module">Importing Storage module</a></li>
+    </ul>
+  </li>
+  <li><a href="#media-controller">Media Controller</a></li>
+  <li><a href="#working-with-env-files">Working with .env files</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="NestJs Application to upload/download file from GCP cloud storage">
+    <meta itemprop="description" content="In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.">
+    <meta itemprop="datePublished" content="2021-10-23T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.</p>
+
+<h1 id="prerequisites">Prerequisites:</h1>
+
+<h2 id="create-a-bucket">Create a bucket</h2>
+
+<p>To create a bucket:</p>
+
+<p>Open a terminal window.
+Use the gsutil mb command and a unique name to create a bucket:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gsutil mb <span class="nt">-b</span> on <span class="nt">-l</span> us-east1 gs://my-awesome-bucket/
+</code></pre></div></div>
+
+<p>This uses a bucket named “my-awesome-bucket.” You must choose your own, globally-unique, bucket name. For more information refer <a href="https://cloud.google.com/storage/docs/introduction">docs</a></p>
+
+<h2 id="setting-up-service-account">Setting up service account</h2>
+
+<p>The first thing, we need to set up our service account, so that github has required permission to access the cloud storage.</p>
+
+<p>Login to <a href="https://console.cloud.google.com">google console</a> and navigate to <code class="language-plaintext highlighter-rouge">IAM</code></p>
+
+<p><img src="/images/2021/gcp-iam.webp" alt="" width="80%" /></p>
+
+<p>You need to add <code class="language-plaintext highlighter-rouge">Storage Admin</code> permission for publishing artifacts (optionally you can provide <code class="language-plaintext highlighter-rouge">Cloud Run Service Agent</code> for
+cloud run deployments)</p>
+
+<p>Then generate &amp; download key in json format</p>
+
+<p><img src="/images/2021/gcp-generate-key.webp" alt="" width="80%" /></p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="creating-nestjs-application">Creating nestJs application</h1>
+
+<p>We will create a nestJS application, create a module to upload to upload and download files. And then we will plugin it to the controller.</p>
+
+<p>We will be using <a href="https://docs.nestjs.com/cli/overview">nest cli</a> to scaffold the project.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nest new gcp-storage
+</code></pre></div></div>
+
+<p>You will be asked to choose the package manager as per your linking, I prefer pnpm as its faster and takes up less space compared to npm or yarn.</p>
+
+<h1 id="storage-module">Storage Module</h1>
+
+<p>NestJS provides an elegant way to organize your code into modules. Each module can comprise of providers, controller, services etc, you can also import/export modules/services/providers etc.</p>
+
+<p>To create a module, we will navigate to <code class="language-plaintext highlighter-rouge">gcp-storage/src</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nest g module storage
+</code></pre></div></div>
+
+<p>This command would generate nest module under <code class="language-plaintext highlighter-rouge">src/storage</code>.</p>
+
+<p>We now create a config file <code class="language-plaintext highlighter-rouge">storage-config.ts</code></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">StorageConfig</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">projectId</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PROJECT_ID</span><span class="p">,</span>
+  <span class="na">private_key</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PRIVATE_KEY</span><span class="p">,</span>
+  <span class="na">client_email</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CLIENT_EMAIL</span><span class="p">,</span>
+  <span class="na">mediaBucket</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">STORAGE_MEDIA_BUCKET</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">StorageConfig</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Also lets create a <code class="language-plaintext highlighter-rouge">storage-file.ts</code> to hold the file data.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">class</span> <span class="nx">StorageFile</span> <span class="p">{</span>
+  <span class="nl">buffer</span><span class="p">:</span> <span class="nx">Buffer</span><span class="p">;</span>
+  <span class="nl">metadata</span><span class="p">:</span> <span class="nb">Map</span><span class="o">&lt;</span><span class="kr">string</span><span class="p">,</span> <span class="kr">string</span><span class="o">&gt;</span><span class="p">;</span>
+  <span class="nl">contentType</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="storage-service">Storage Service</h2>
+
+<p>Let us create a service which will be responsible for uploading and downloading file from storage bucket. To do this we will again use nest cli at location <code class="language-plaintext highlighter-rouge">src</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest g service storage
+</code></pre></div></div>
+
+<p>This command will create a <code class="language-plaintext highlighter-rouge">storage.service.ts</code> at <code class="language-plaintext highlighter-rouge">src/storage</code>. I will also annotate the class with <code class="language-plaintext highlighter-rouge">@Injectable()</code> and will add reference to <code class="language-plaintext highlighter-rouge">ServiceModule</code>. Additionally, we will also export the StorageService from module, as we will be using StorageService in other modules.</p>
+
+<p>So our StorageModule class will look like this.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Module</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">StorageService</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./storage.service</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>
+  <span class="na">providers</span><span class="p">:</span> <span class="p">[</span><span class="nx">StorageService</span><span class="p">],</span>
+  <span class="na">exports</span><span class="p">:</span> <span class="p">[</span><span class="nx">StorageService</span><span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">StorageModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>Let’s get back to our storage service. In the constructor we will initialize Storage object with projectId &amp; credentials.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">StorageFile</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./storage-file</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">DownloadResponse</span><span class="p">,</span> <span class="nx">Storage</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@google-cloud/storage</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">StorageConfig</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./storage-config</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">StorageService</span> <span class="p">{</span>
+  <span class="k">private</span> <span class="nx">storage</span><span class="p">:</span> <span class="nx">Storage</span><span class="p">;</span>
+  <span class="k">private</span> <span class="nx">bucket</span><span class="p">:</span> <span class="kr">string</span><span class="p">;</span>
+
+  <span class="kd">constructor</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">storage</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Storage</span><span class="p">({</span>
+      <span class="na">projectId</span><span class="p">:</span> <span class="nx">StorageConfig</span><span class="p">.</span><span class="nx">projectId</span><span class="p">,</span>
+      <span class="na">credentials</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">client_email</span><span class="p">:</span> <span class="nx">StorageConfig</span><span class="p">.</span><span class="nx">client_email</span><span class="p">,</span>
+        <span class="na">private_key</span><span class="p">:</span> <span class="nx">StorageConfig</span><span class="p">.</span><span class="nx">private_key</span><span class="p">,</span>
+      <span class="p">},</span>
+    <span class="p">});</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">bucket</span> <span class="o">=</span> <span class="nx">StorageConfig</span><span class="p">.</span><span class="nx">mediaBucket</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">async</span> <span class="nx">save</span><span class="p">(</span>
+    <span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span>
+    <span class="nx">contentType</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span>
+    <span class="nx">media</span><span class="p">:</span> <span class="nx">Buffer</span><span class="p">,</span>
+    <span class="nx">metadata</span><span class="p">:</span> <span class="p">{</span> <span class="p">[</span><span class="nx">key</span><span class="p">:</span> <span class="kr">string</span><span class="p">]:</span> <span class="kr">string</span> <span class="p">}[]</span>
+  <span class="p">)</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">object</span> <span class="o">=</span> <span class="nx">metadata</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">item</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">assign</span><span class="p">(</span><span class="nx">obj</span><span class="p">,</span> <span class="nx">item</span><span class="p">),</span> <span class="p">{});</span>
+    <span class="kd">const</span> <span class="nx">file</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bucket</span><span class="p">).</span><span class="nx">file</span><span class="p">(</span><span class="nx">path</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">();</span>
+    <span class="nx">stream</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">"</span><span class="s2">finish</span><span class="dl">"</span><span class="p">,</span> <span class="k">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="k">await</span> <span class="nx">file</span><span class="p">.</span><span class="nx">setMetadata</span><span class="p">({</span>
+        <span class="na">metadata</span><span class="p">:</span> <span class="nx">object</span><span class="p">,</span>
+      <span class="p">});</span>
+    <span class="p">});</span>
+    <span class="nx">stream</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">media</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">async</span> <span class="k">delete</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">storage</span>
+      <span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bucket</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">file</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+      <span class="p">.</span><span class="k">delete</span><span class="p">({</span> <span class="na">ignoreNotFound</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="k">async</span> <span class="kd">get</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">StorageFile</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="na">fileResponse</span><span class="p">:</span> <span class="nx">DownloadResponse</span> <span class="o">=</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">storage</span>
+      <span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bucket</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">file</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">download</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">buffer</span><span class="p">]</span> <span class="o">=</span> <span class="nx">fileResponse</span><span class="p">;</span>
+    <span class="kd">const</span> <span class="nx">storageFile</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StorageFile</span><span class="p">();</span>
+    <span class="nx">storageFile</span><span class="p">.</span><span class="nx">buffer</span> <span class="o">=</span> <span class="nx">buffer</span><span class="p">;</span>
+    <span class="nx">storageFile</span><span class="p">.</span><span class="nx">metadata</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Map</span><span class="o">&lt;</span><span class="kr">string</span><span class="p">,</span> <span class="kr">string</span><span class="o">&gt;</span><span class="p">();</span>
+    <span class="k">return</span> <span class="nx">storageFile</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">async</span> <span class="nx">getWithMetaData</span><span class="p">(</span><span class="nx">path</span><span class="p">:</span> <span class="kr">string</span><span class="p">):</span> <span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">StorageFile</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">metadata</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">storage</span>
+      <span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bucket</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">file</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">getMetadata</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="na">fileResponse</span><span class="p">:</span> <span class="nx">DownloadResponse</span> <span class="o">=</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">storage</span>
+      <span class="p">.</span><span class="nx">bucket</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bucket</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">file</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">download</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="p">[</span><span class="nx">buffer</span><span class="p">]</span> <span class="o">=</span> <span class="nx">fileResponse</span><span class="p">;</span>
+
+    <span class="kd">const</span> <span class="nx">storageFile</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StorageFile</span><span class="p">();</span>
+    <span class="nx">storageFile</span><span class="p">.</span><span class="nx">buffer</span> <span class="o">=</span> <span class="nx">buffer</span><span class="p">;</span>
+    <span class="nx">storageFile</span><span class="p">.</span><span class="nx">metadata</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Map</span><span class="o">&lt;</span><span class="kr">string</span><span class="p">,</span> <span class="kr">string</span><span class="o">&gt;</span><span class="p">(</span>
+      <span class="nb">Object</span><span class="p">.</span><span class="nx">entries</span><span class="p">(</span><span class="nx">metadata</span> <span class="o">||</span> <span class="p">{})</span>
+    <span class="p">);</span>
+    <span class="nx">storageFile</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">=</span> <span class="nx">storageFile</span><span class="p">.</span><span class="nx">metadata</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="dl">"</span><span class="s2">contentType</span><span class="dl">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">storageFile</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In the save method, we are creating the writeStream to upload the file to the bucket. On upload we are also updating metadata information.</p>
+
+<p>There are two different implementation of get method, with &amp; without metadata information.</p>
+
+<p>Now that we have our service ready lets add a controller in the main module.</p>
+
+<h1 id="media-module">Media Module</h1>
+
+<p>I will create a separate media module to which I will inject the storage service we created.
+Again to generate module, I will goto <code class="language-plaintext highlighter-rouge">src</code> folder.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest g module media
+
+CREATE media/media.module.ts <span class="o">(</span>82 bytes<span class="o">)</span>
+UPDATE app.module.ts <span class="o">(</span>385 bytes<span class="o">)</span>
+</code></pre></div></div>
+
+<p>To expose the endpoint, I will also need a nestjs controller, so we will again use the nest cli to generate controller.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nest g controller media
+
+CREATE media/media.controller.spec.ts <span class="o">(</span>485 bytes<span class="o">)</span>
+CREATE media/media.controller.ts <span class="o">(</span>99 bytes<span class="o">)</span>
+UPDATE media/media.module.ts <span class="o">(</span>170 bytes<span class="o">)</span>
+</code></pre></div></div>
+
+<p>This command will generate a controller and also update the media module.</p>
+
+<h2 id="importing-storage-module">Importing Storage module</h2>
+
+<p>In order to use StorageService within MediaModule we will have to import the StorageModule. So let’s update our <code class="language-plaintext highlighter-rouge">media/media.module.ts</code></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Module</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">StorageModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">src/storage/storage.module</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">MediaController</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./media.controller</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Module</span><span class="p">({</span>
+  <span class="na">imports</span><span class="p">:</span> <span class="p">[</span><span class="nx">StorageModule</span><span class="p">],</span>
+  <span class="na">controllers</span><span class="p">:</span> <span class="p">[</span><span class="nx">MediaController</span><span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">MediaModule</span> <span class="p">{}</span>
+</code></pre></div></div>
+
+<p>Also, remember we had already exported the StorageService in StorageModule, so now once we import the module all the exported providers will now be accessible in the current module.</p>
+
+<h1 id="media-controller">Media Controller</h1>
+
+<p>To handle file uploading, Nest provides a built-in module based on the multer middleware package for Express. Multer handles data posted in the multipart/form-data format, which is primarily used for uploading files via an HTTP POST request. This module is fully configurable and you can adjust its behavior to your application requirements.</p>
+
+<p>For better type safety, let’s install Multer typings package</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pnpm i <span class="nt">-D</span> @types/multer
+</code></pre></div></div>
+
+<p>With this package installed, we can now use the Express.Multer.File type (you can import this type as follows: import { Express } from ‘express’).</p>
+
+<p>Now we create the upload method in controller.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import <span class="o">{</span>
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Post,
+  Res,
+  ServiceUnavailableException,
+  UploadedFile,
+  UseInterceptors,
+<span class="o">}</span> from <span class="s1">'@nestjs/common'</span><span class="p">;</span>
+import <span class="o">{</span> FileInterceptor <span class="o">}</span> from <span class="s1">'@nestjs/platform-express'</span><span class="p">;</span>
+import <span class="o">{</span> Response <span class="o">}</span> from <span class="s1">'express'</span><span class="p">;</span>
+import <span class="o">{</span> StorageFile <span class="o">}</span> from <span class="s1">'src/storage/storage-file'</span><span class="p">;</span>
+import <span class="o">{</span> StorageService <span class="o">}</span> from <span class="s1">'src/storage/storage.service'</span><span class="p">;</span>
+
+@Controller<span class="o">(</span><span class="s1">'media'</span><span class="o">)</span>
+<span class="nb">export </span>class MediaController <span class="o">{</span>
+  constructor<span class="o">(</span>private storageService: StorageService<span class="o">)</span> <span class="o">{}</span>
+
+  @Post<span class="o">()</span>
+  @UseInterceptors<span class="o">(</span>
+    FileInterceptor<span class="o">(</span><span class="s1">'file'</span>, <span class="o">{</span>
+      limits: <span class="o">{</span>
+        files: 1,
+        fileSize: 1024 <span class="k">*</span> 1024,
+      <span class="o">}</span>,
+    <span class="o">})</span>,
+  <span class="o">)</span>
+  async uploadMedia<span class="o">(</span>
+    @UploadedFile<span class="o">()</span> file: Express.Multer.File,
+    @Body<span class="o">(</span><span class="s1">'mediaId'</span><span class="o">)</span> mediaId: string,
+  <span class="o">)</span> <span class="o">{</span>
+    await this.storageService.save<span class="o">(</span>
+      <span class="s1">'media/'</span> + mediaId,
+      file.mimetype,
+      file.buffer,
+      <span class="o">[{</span> mediaId: mediaId <span class="o">}]</span>,
+    <span class="o">)</span><span class="p">;</span>
+  <span class="o">}</span>
+
+  @Get<span class="o">(</span><span class="s1">'/:mediaId'</span><span class="o">)</span>
+  async downloadMedia<span class="o">(</span>@Param<span class="o">(</span><span class="s1">'mediaId'</span><span class="o">)</span> mediaId: string, @Res<span class="o">()</span> res: Response<span class="o">)</span> <span class="o">{</span>
+    <span class="nb">let </span>storageFile: StorageFile<span class="p">;</span>
+    try <span class="o">{</span>
+      storageFile <span class="o">=</span> await this.storageService.get<span class="o">(</span><span class="s1">'media/'</span> + mediaId<span class="o">)</span><span class="p">;</span>
+    <span class="o">}</span> catch <span class="o">(</span>e<span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span>e.message.toString<span class="o">()</span>.includes<span class="o">(</span><span class="s1">'No such object'</span><span class="o">))</span> <span class="o">{</span>
+        throw new NotFoundException<span class="o">(</span><span class="s1">'image not found'</span><span class="o">)</span><span class="p">;</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        throw new ServiceUnavailableException<span class="o">(</span><span class="s1">'internal error'</span><span class="o">)</span><span class="p">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    res.setHeader<span class="o">(</span><span class="s1">'Content-Type'</span>, storageFile.contentType<span class="o">)</span><span class="p">;</span>
+    res.setHeader<span class="o">(</span><span class="s1">'Cache-Control'</span>, <span class="s1">'max-age=60d'</span><span class="o">)</span><span class="p">;</span>
+    res.end<span class="o">(</span>storageFile.buffer<span class="o">)</span><span class="p">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>In the upload method we are using FileInterceptors to restrict the file size and number of files to be uploaded.</p>
+
+<h1 id="working-with-env-files">Working with .env files</h1>
+
+<p>Only one thing remaining to set the environment variables which is being used by StorageConfig.</p>
+
+<p>We will first add <code class="language-plaintext highlighter-rouge">env-cmd</code> &amp; <code class="language-plaintext highlighter-rouge">dotenv</code> packages.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pnpm <span class="nb">install</span> <span class="nt">-D</span> env-cmd dotenv
+</code></pre></div></div>
+
+<p>Now we change the <code class="language-plaintext highlighter-rouge">package.json</code> file and modify the start:dev script command.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"start:dev": "env-cmd -f .env nest start --watch",
+</code></pre></div></div>
+
+<p>Finally we create .env file in the project folder.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PROJECT_ID = &lt;YOUR_PROJECT_ID&gt;
+PRIVATE_KEY = &lt;YOUR_SERVICE_ACCOUNT_PRIVATE_KEY&gt;
+CLIENT_EMAIL = &lt;YOUR_SERVICE_ACCOUNT_EMAIL&gt;
+STORAGE_MEDIA_BUCKET = &lt;YOUR_BUCKET_NAME&gt;
+</code></pre></div></div>
+
+<p>And there you have it. A working nest application to upload and download files.
+You can download the source code from <a href="https://github.com/kuros/blog-code/tree/master/nestjs/gcp-storage">github</a>.</p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/typescript" class="page__taxonomy-item" rel="tag">typescript</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-10-23T00:00:00+00:00">October 23, 2021</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
+      </footer>
+
+      
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=NestJs+Application+to+upload%2Fdownload+file+from+GCP+cloud+storage%20https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-upload-download-file-from-cloud-storage%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-upload-download-file-from-cloud-storage%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-upload-download-file-from-cloud-storage%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/gcp/publish-npm-package-to-gcp-using-github-actions/" class="pagination--pager" title="Publish npm packages to gcp artifact registry using github actions
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gcp/publish-npm-package-to-gcp-using-github-actions/" rel="permalink">Publish npm packages to gcp artifact registry using github actions
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
+However, Github package has a constraint...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" rel="permalink">Fixing firestore doesn’t support js object
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-firebase-token-authentication/" rel="permalink">Authentication in NestJS using firebase token
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You have build your nest microservice, but you want to secure your application using firebase tokens.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-getting-started/" rel="permalink">NestJs
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/typescript/nestjs-upload-download-file-from-cloud-storage"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>
