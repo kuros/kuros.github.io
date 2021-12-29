@@ -1,4 +1,126 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2021-10-27T13:33:34+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning. </subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">NestJs Application to upload/download file from GCP cloud storage</title><link href="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="alternate" type="text/html" title="NestJs Application to upload/download file from GCP cloud storage" /><published>2021-10-23T00:00:00+00:00</published><updated>2021-10-23T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/">&lt;p&gt;In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2021-12-29T07:24:12+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning.</subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">NestJs Application with MongoDB</title><link href="https://kuros.in/typescript/nestjs-mongodb-integration-example/" rel="alternate" type="text/html" title="NestJs Application with MongoDB" /><published>2021-12-28T00:00:00+00:00</published><updated>2021-12-28T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-mongodb-integration-example</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-mongodb-integration-example/">&lt;p&gt;This article focuses on integrating mongoDB to a Nest Application.&lt;/p&gt;
+
+&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+
+&lt;h2 id=&quot;nodejs&quot;&gt;Nodejs&lt;/h2&gt;
+
+&lt;p&gt;You will need nodejs to run the application, if you don’t have already installed,you can install node.js from https://nodejs.org/en/download/&lt;/p&gt;
+
+&lt;h2 id=&quot;nestjs&quot;&gt;NestJS&lt;/h2&gt;
+
+&lt;p&gt;Now install nest.js using command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm i -g @nestjs/cli&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;if you are using a MAC device and it throws &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm WARN checkPermissions Missing write access to /usr/local/lib/node_modules&lt;/code&gt;
+this error, run this script&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo chown&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;npm config get prefix&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;lib/node_modules,bin,share&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;adding-mongodb-to-nestjs-application&quot;&gt;Adding mongodb to nestjs application&lt;/h2&gt;
+
+&lt;p&gt;Now you can create a new project using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nest new New-proj&lt;/code&gt; command&lt;/p&gt;
+
+&lt;p&gt;Now install the mongoose dependency using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install @nestjs/mongoose mongoose&lt;/code&gt; command&lt;/p&gt;
+
+&lt;h1 id=&quot;integration&quot;&gt;Integration&lt;/h1&gt;
+
+&lt;h2 id=&quot;initialize-connection-in-appmodule&quot;&gt;Initialize connection in AppModule&lt;/h2&gt;
+
+&lt;p&gt;Now in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app.module.ts&lt;/code&gt; import mongoose module and give it the connection string to your database.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/0ce4506448d50422f3934e34aea72e28.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Now our mongoose connection to mongodb is done.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;create-a-schema&quot;&gt;Create a schema&lt;/h2&gt;
+
+&lt;p&gt;Schema the definition of data that we are going to store in database.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We Create different folders for diff domains.&lt;/li&gt;
+  &lt;li&gt;Create a users folder inside src folder which will deal with users related logic.&lt;/li&gt;
+  &lt;li&gt;Inside that create a schemas folder coz we can have more than 1 schemas.&lt;/li&gt;
+  &lt;li&gt;In this eg we will only have one.&lt;/li&gt;
+  &lt;li&gt;Create a file and lets call it user.schema.ts&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/c809ea3cb11b5581c78273bfc58e8c72.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;This is a demo schema. Now we need to tell nestjs about the new schema we have created.&lt;/p&gt;
+
+&lt;h2 id=&quot;module&quot;&gt;Module&lt;/h2&gt;
+
+&lt;p&gt;Inside users module create a new file and lets call it &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.module.ts&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/91efe0124106f8552b7ac29df1d9e378.js&quot;&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;repository&quot;&gt;Repository&lt;/h2&gt;
+
+&lt;p&gt;Now in order to use mongoose and to save or fetch data from database we will create a repository file namely &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.repository.ts&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/fc73e89602172165ce85aa4d446e8693.js&quot;&gt;&lt;/script&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;service&quot;&gt;Service&lt;/h2&gt;
+
+&lt;p&gt;In order to test the new repository I have created the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.service&lt;/code&gt; to test things out.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/fc624b57721ac6faa99ec8b1ecc300c2.js&quot;&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;controller&quot;&gt;Controller&lt;/h2&gt;
+
+&lt;p&gt;After the service, we will also need a controller to expose an api, for this we will create &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.controller.ts&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/7fd15399420d6cd1402b726bef293b4e.js&quot;&gt;&lt;/script&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Before you test the api make sure the application is running using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn start:dev&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/7fd15399420d6cd1402b726bef293b4e.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1 id=&quot;testing&quot;&gt;Testing&lt;/h1&gt;
+
+&lt;p&gt;To see this in action we can make post request to the backend using postman.&lt;/p&gt;
+
+&lt;p&gt;&lt;img width=&quot;1424&quot; alt=&quot;Screenshot 2021-12-22 at 10 13 20 PM&quot; src=&quot;/images/2021/nest-mongo-1.webp&quot; /&gt;&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;You can now view the database collection. I am using MongoDBCompass.&lt;/p&gt;
+
+&lt;p&gt;&lt;img width=&quot;1424&quot; alt=&quot;Screenshot 2021-12-22 at 10 13 20 PM&quot; src=&quot;/images/2021/nest-mongo-2.webp&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you are not familiar with services I have uploaded this code to &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/nestjs-mongo&quot;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;And now we have a fully working nestjs app with mongoDb.&lt;/p&gt;</content><author><name>Nishant Gharat</name></author><category term="typescript" /><summary type="html">This article focuses on integrating mongoDB to a Nest Application.</summary></entry><entry><title type="html">NestJs Application to upload/download file from GCP cloud storage</title><link href="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="alternate" type="text/html" title="NestJs Application to upload/download file from GCP cloud storage" /><published>2021-10-23T00:00:00+00:00</published><updated>2021-10-23T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/">&lt;p&gt;In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.&lt;/p&gt;
 
 &lt;h1 id=&quot;prerequisites&quot;&gt;Prerequisites:&lt;/h1&gt;
 
@@ -954,94 +1076,4 @@ I will be going through Jekyll site action.&lt;/p&gt;
 
 &lt;p&gt;So here you have it, when ever you push changes to your private repository. The github action will be fired which will build and publish your site to your public repo without exposing your source code.&lt;/p&gt;
 
-&lt;p&gt;I would love to know what you think.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="CI/CD" /><summary type="html">Github pages are great, it provides a free static page hosting, but the only caveat is the repository has to be public repository. And, if you want to keep your source private, you will have to opt for premium plans to host pages from private repository.</summary></entry><entry><title type="html">Sequential build numbers of artifacts in gcp cloud build</title><link href="https://kuros.in/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build/" rel="alternate" type="text/html" title="Sequential build numbers of artifacts in gcp cloud build" /><published>2021-05-31T00:00:00+00:00</published><updated>2021-05-31T00:00:00+00:00</updated><id>https://kuros.in/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build</id><content type="html" xml:base="https://kuros.in/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build/">&lt;p&gt;Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. 
-As it is quite known, these days CI/CD has become the backbone on DevOps. 
-Having a streamlined process ensures fast flow to production. 
-When building pipeline you want to &lt;strong&gt;build&lt;/strong&gt;, &lt;strong&gt;test&lt;/strong&gt;, &lt;strong&gt;deploy&lt;/strong&gt; your artifact to staging/production environments automatically whenever changes are pushed to your code base.&lt;/p&gt;
-
-&lt;h1 id=&quot;cloud-build&quot;&gt;Cloud Build&lt;/h1&gt;
-&lt;p&gt;Cloud build is CI/CD platform offered by GCP. 
-The best thing it provides a generous 120 min/day of free build time(At the time of writing this article). 
-It’s more than enough for small team to get started. It also provides seamless integration with other GCP products.&lt;/p&gt;
-
-&lt;h1 id=&quot;the-missing-feature---sequential-build-numbers&quot;&gt;The missing feature - Sequential build numbers&lt;/h1&gt;
-&lt;p&gt;However, it does have few restrictions, and one such missing feature is having sequential build numbers, cloud build manages the build numbers using SHA string. As Developers we are accustomed to working with incremental build numbers, they are lot easy to manage as compared hash string. But we can achieve it by storing the build numbers in external location, i.e. Cloud Storage.
-So lets us build a mechanism to&lt;/p&gt;
-
-&lt;h1 id=&quot;generating-cloud-builder-to-incrementing-build-numbers&quot;&gt;Generating cloud builder to incrementing build numbers&lt;/h1&gt;
-&lt;p&gt;In order to achieve the goal, first we need to create a cloud builder.
-For this I am creating a cloud builder, let me call it as cloud-build-number. 
-Then we will push this to our image repository, next step will be to use this builder to generate builds with sequential numbers.&lt;/p&gt;
-
-&lt;h1 id=&quot;build-number-cloud-builder&quot;&gt;Build number cloud builder&lt;/h1&gt;
-&lt;p&gt;In order to create this builder we need entrypoint script, and a Docker file to build our docker container.&lt;/p&gt;
-
-&lt;h2 id=&quot;entry-point-script&quot;&gt;Entry point script&lt;/h2&gt;
-&lt;p&gt;So my first file is the script which will be responsible for updating the build numbers. 
-I found one &lt;a href=&quot;https://github.com/pixiteapps/android-cloud-build/blob/master/buildnum/increment_buildnumber&quot;&gt;script&lt;/a&gt;, so I took an inspiration and modified it as per my need.&lt;/p&gt;
-
-&lt;p&gt;The idea is, we are going to have a cloud storage folder where we will be keeping all the records for our build, 
-each record will store the build number.&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/c52ba9a1d91fa68c62dedb64f99d2d51.js&quot;&gt;&lt;/script&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;This script takes name of the file (required argument). 
-I wanted the generated versions to in the format of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MAJOR:MINOR:PATCH&lt;/code&gt;, so I added additional optional parameters.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-ma&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--major&lt;/code&gt;: To use the major version.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mi&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--minor&lt;/code&gt;: To use specific version.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-e&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--env-file&lt;/code&gt;: Name of the output file (default filename: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.buildenv&lt;/code&gt;).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PATCH&lt;/code&gt; number is stored and incremented in cloud storage.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-docker-file&quot;&gt;The docker file&lt;/h2&gt;
-&lt;p&gt;The docker file is simple, we take the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gcr.io/cloud-builders/gsutil&lt;/code&gt; and add an entrypoint to our script.&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/66507857371c5f1e670ea4ed8ff31781.js&quot;&gt;&lt;/script&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;build--push-docker-image&quot;&gt;Build &amp;amp; push docker image&lt;/h2&gt;
-
-&lt;p&gt;We need to build the docker image locally, tag it with the path to the gcr.io registry in the project &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;my-project&lt;/code&gt;, and then push the image. 
-I am assuming you have setup gcp login and have write access to cloud registry. For more details refer &lt;a href=&quot;https://cloud.google.com/container-registry/docs/pushing-and-pulling&quot;&gt;gcp docs&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; gcr.io/my-project/increment_build_number &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-docker push gcr.io/my-project/increment_build_number
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Now that we have our builder pushed to registry, time to move on to generating build numbers.&lt;/p&gt;
-
-&lt;h1 id=&quot;create-storage-bucket&quot;&gt;Create storage bucket&lt;/h1&gt;
-&lt;p&gt;Before we proceed, we need to create a storage bucket on Cloud Storage.&lt;/p&gt;
-
-&lt;p&gt;To create a new storage bucket (e.g. build_numbers), use the gsutil command&lt;/p&gt;
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gsutil mb &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; PROECT_ID &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; on gs://BUCKET_NAME
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;For more details, refer &lt;a href=&quot;https://cloud.google.com/storage/docs/creating-buckets&quot;&gt;cloud storage docs&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;generating-build-numbers&quot;&gt;Generating build numbers&lt;/h1&gt;
-&lt;p&gt;Finally, it’s time to use builder in our service cloud build, build file: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cloudbuild.yaml&lt;/code&gt; looks like.&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/e11145e82060a2bec764b86fcab60314.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;The first step generates a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.buildenv&lt;/code&gt; file. 
-In the build step we use source command to export the build number to environment variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$build_num&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;So this would create a docker image with tag &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;latest&lt;/code&gt; &amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0.0.1&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Please do leave comment on what you think.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="GCP" /><category term="CI/CD" /><summary type="html">Cloud build is managed service in Google Cloud Platform Infrastructure to offer CI/CD feature. As it is quite known, these days CI/CD has become the backbone on DevOps. Having a streamlined process ensures fast flow to production. When building pipeline you want to build, test, deploy your artifact to staging/production environments automatically whenever changes are pushed to your code base.</summary></entry></feed>
+&lt;p&gt;I would love to know what you think.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="CI/CD" /><summary type="html">Github pages are great, it provides a free static page hosting, but the only caveat is the repository has to be public repository. And, if you want to keep your source private, you will have to opt for premium plans to host pages from private repository.</summary></entry></feed>

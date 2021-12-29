@@ -9,41 +9,41 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Use private repo to publish websites with github pages. - Kuros.in</title>
-<meta name="description" content="Github pages are free for public repo, but if you want to hide your source, you need to go for paid version.">
+<!-- begin _includes/seo.html --><title>NestJs Application with MongoDB - Kuros.in</title>
+<meta name="description" content="Use and configure MongoDB in NestJS application">
 
 
-  <meta name="author" content="Kumar Rohit">
+  <meta name="author" content="Nishant Gharat">
   
-  <meta property="article:author" content="Kumar Rohit">
+  <meta property="article:author" content="Nishant Gharat">
   
 
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Kuros.in">
-<meta property="og:title" content="Use private repo to publish websites with github pages.">
-<meta property="og:url" content="https://kuros.in/ci/cd/use-private-repo-to-publish-website-with-github-pages/">
+<meta property="og:title" content="NestJs Application with MongoDB">
+<meta property="og:url" content="https://kuros.in/typescript/nestjs-mongodb-integration-example/">
 
 
-  <meta property="og:description" content="Github pages are free for public repo, but if you want to hide your source, you need to go for paid version.">
-
-
-
-  <meta property="og:image" content="https://kuros.in/images/2021/website.webp">
+  <meta property="og:description" content="Use and configure MongoDB in NestJS application">
 
 
 
-
-
-  <meta property="article:published_time" content="2021-06-25T00:00:00+00:00">
+  <meta property="og:image" content="https://kuros.in/images/2021/blue-storage.jpg">
 
 
 
 
 
+  <meta property="article:published_time" content="2021-12-28T00:00:00+00:00">
 
-<link rel="canonical" href="https://kuros.in/ci/cd/use-private-repo-to-publish-website-with-github-pages/">
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/typescript/nestjs-mongodb-integration-example/">
 
 
 
@@ -169,18 +169,18 @@
 
 
 <div class="page__hero--overlay"
-  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/website.webp');"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/blue-storage.jpg');"
 >
   
     <div class="wrapper">
       <h1 id="page-title" class="page__title" itemprop="headline">
         
-          Use private repo to publish websites with github pages.
+          NestJs Application with MongoDB
 
         
       </h1>
       
-        <p class="page__lead">Github pages are free for public repo, but if you want to hide your source, you need to go for paid version. But, there is a way…
+        <p class="page__lead">Use and configure MongoDB in NestJS application
 </p>
       
       
@@ -197,7 +197,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
@@ -209,7 +209,7 @@
     </div>
   
   
-    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com"><strong>Unsplash</strong></a>
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/S0j-5wSN3YQ"><strong>Unsplash</strong></a>
 </span>
   
 </div>
@@ -224,10 +224,24 @@
         <nav class="toc">
           <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
             <ul class="toc__menu">
-  <li><a href="#my-website">My website</a></li>
-  <li><a href="#setting-up-personal-token">Setting up personal token</a></li>
-  <li><a href="#create-secret-in-private-repo">Create secret in private repo</a></li>
-  <li><a href="#create-github-action-in-private-repo">Create github action in private repo</a></li>
+  <li><a href="#installation">Installation</a>
+    <ul>
+      <li><a href="#nodejs">Nodejs</a></li>
+      <li><a href="#nestjs">NestJS</a></li>
+      <li><a href="#adding-mongodb-to-nestjs-application">Adding mongodb to nestjs application</a></li>
+    </ul>
+  </li>
+  <li><a href="#integration">Integration</a>
+    <ul>
+      <li><a href="#initialize-connection-in-appmodule">Initialize connection in AppModule</a></li>
+      <li><a href="#create-a-schema">Create a schema</a></li>
+      <li><a href="#module">Module</a></li>
+      <li><a href="#repository">Repository</a></li>
+      <li><a href="#service">Service</a></li>
+      <li><a href="#controller">Controller</a></li>
+    </ul>
+  </li>
+  <li><a href="#testing">Testing</a></li>
 </ul>
 
         </nav>
@@ -241,9 +255,9 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Use private repo to publish websites with github pages.">
-    <meta itemprop="description" content="Github pages are great, it provides a free static page hosting, but the only caveat is the repository has to be public repository.And, if you want to keep your source private,you will have to opt for premium plans to host pages from private repository.">
-    <meta itemprop="datePublished" content="2021-06-25T00:00:00+00:00">
+    <meta itemprop="headline" content="NestJs Application with MongoDB">
+    <meta itemprop="description" content="This article focuses on integrating mongoDB to a Nest Application.">
+    <meta itemprop="datePublished" content="2021-12-28T00:00:00+00:00">
     
 
     <div class="page__inner-wrap">
@@ -325,57 +339,67 @@
         
     </div>
 
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
 </div>
  
             
           </aside>
         
-        <p>Github pages are great, it provides a free static page hosting, 
-but the only caveat is the repository has to be public repository.
-And, if you want to keep your source private,
-you will have to opt for premium plans to host pages from private repository.</p>
+        <p>This article focuses on integrating mongoDB to a Nest Application.</p>
 
-<p>Here is what I have done, github allows unlimited private repositories, 
-so I created a new private repo where I kept my source code and another repo where my site is hosted.</p>
+<h1 id="installation">Installation</h1>
 
-<h2 id="my-website">My website</h2>
-<p>I am also hosting this website on github. 
-I am using <a href="https://jekyllrb.com/">Jekyll</a> as my website generator, but you can use any static web generator e.g. <a href="https://nextjs.org/">Next</a>, <a href="https://www.gatsbyjs.com/">Gatsby</a>.
-I am assuming you have your static web already in place.</p>
+<h2 id="nodejs">Nodejs</h2>
 
-<p>In this article, we will automate the process of deployment, we will build the website in private repo and then publish it to the public repo from where it will be served.
-I will be going through Jekyll site action.</p>
+<p>You will need nodejs to run the application, if you don’t have already installed,you can install node.js from https://nodejs.org/en/download/</p>
 
-<h2 id="setting-up-personal-token">Setting up personal token</h2>
-<p>The first step is to set up a personal access token.</p>
+<h2 id="nestjs">NestJS</h2>
 
-<p>Go to your profile and click to settings. <img src="/images/2021/github_profile.png" alt="" width="20%" float="left" /></p>
+<p>Now install nest.js using command <code class="language-plaintext highlighter-rouge">npm i -g @nestjs/cli</code></p>
 
-<p><img src="/images/2021/github-developer.webp" alt="" width="60%" float="right" /> Go to developer.</p>
+<p>if you are using a MAC device and it throws <code class="language-plaintext highlighter-rouge">npm WARN checkPermissions Missing write access to /usr/local/lib/node_modules</code>
+this error, run this script</p>
 
-<p>Go to Personal access token. <img src="/images/2021/github-personal-token.webp" alt="" width="50%" float="left" /></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo chown</span> <span class="nt">-R</span> <span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span> <span class="si">$(</span>npm config get prefix<span class="si">)</span>/<span class="o">{</span>lib/node_modules,bin,share<span class="o">}</span>
+</code></pre></div></div>
 
-<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<h2 id="adding-mongodb-to-nestjs-application">Adding mongodb to nestjs application</h2>
 
-<!-- horizontal - responsive -->
-<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></p>
+<p>Now you can create a new project using <code class="language-plaintext highlighter-rouge">nest new New-proj</code> command</p>
 
-<p>Now you need to <code class="language-plaintext highlighter-rouge">Generate new token</code>. with repo permissions.
-<img src="/images/2021/github-token.webp" alt="" /></p>
+<p>Now install the mongoose dependency using <code class="language-plaintext highlighter-rouge">npm install @nestjs/mongoose mongoose</code> command</p>
 
-<p>Once you are done copy the generated token, we will need to set this token during our build.</p>
+<h1 id="integration">Integration</h1>
 
-<h2 id="create-secret-in-private-repo">Create secret in private repo</h2>
+<h2 id="initialize-connection-in-appmodule">Initialize connection in AppModule</h2>
 
-<p>Go to your private repo and click the settings:
-<img src="/images/2021/github-repo-setting.webp" alt="" /></p>
+<p>Now in <code class="language-plaintext highlighter-rouge">app.module.ts</code> import mongoose module and give it the connection string to your database.</p>
 
-<p>Go to secrets and create a new secret with token we have earlier generated, I have named it <code class="language-plaintext highlighter-rouge">MY_TOKEN</code></p>
+<script src="https://gist.github.com/kuros/0ce4506448d50422f3934e34aea72e28.js"></script>
 
-<p><img src="/images/2021/github-new-secret.webp" alt="" /></p>
+<p>Now our mongoose connection to mongodb is done.</p>
 
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -385,10 +409,33 @@ I will be going through Jekyll site action.</p>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script></p>
 
-<h2 id="create-github-action-in-private-repo">Create github action in private repo</h2>
-<p>This is where the magic begins, we will build a github action in our private repo. You will need to create a file at <code class="language-plaintext highlighter-rouge">.github/workflows/ci.yml</code></p>
+<h2 id="create-a-schema">Create a schema</h2>
 
-<script src="https://gist.github.com/kuros/09a7e5254c617ac317785b4a45a3faa6.js"></script>
+<p>Schema the definition of data that we are going to store in database.</p>
+
+<ul>
+  <li>We Create different folders for diff domains.</li>
+  <li>Create a users folder inside src folder which will deal with users related logic.</li>
+  <li>Inside that create a schemas folder coz we can have more than 1 schemas.</li>
+  <li>In this eg we will only have one.</li>
+  <li>Create a file and lets call it user.schema.ts</li>
+</ul>
+
+<script src="https://gist.github.com/kuros/c809ea3cb11b5581c78273bfc58e8c72.js"></script>
+
+<p>This is a demo schema. Now we need to tell nestjs about the new schema we have created.</p>
+
+<h2 id="module">Module</h2>
+
+<p>Inside users module create a new file and lets call it <code class="language-plaintext highlighter-rouge">users.module.ts</code></p>
+
+<script src="https://gist.github.com/kuros/91efe0124106f8552b7ac29df1d9e378.js"></script>
+
+<h2 id="repository">Repository</h2>
+
+<p>Now in order to use mongoose and to save or fetch data from database we will create a repository file namely <code class="language-plaintext highlighter-rouge">users.repository.ts</code></p>
+
+<script src="https://gist.github.com/kuros/fc73e89602172165ce85aa4d446e8693.js"></script>
 
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -398,20 +445,51 @@ I will be going through Jekyll site action.</p>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script></p>
 
-<p>Steps:</p>
-<ol>
-  <li>we checkout the source code (line 15), notice we are providing path as <code class="language-plaintext highlighter-rouge">code</code> so our code will be checked out at <code class="language-plaintext highlighter-rouge">./code/</code>.</li>
-  <li>we checkout the site repository (line 19), here we are checking out <code class="language-plaintext highlighter-rouge">master</code> branch of <code class="language-plaintext highlighter-rouge">&lt;PUBLIC_REPO&gt;</code> (in my case it was <code class="language-plaintext highlighter-rouge">kuros/kuros.github.io</code>) in <code class="language-plaintext highlighter-rouge">site</code> directory, make sure you set the token here.</li>
-  <li>I am performing a Jekyll build (line 26), if you are using other site builders, this step will change.</li>
-  <li>Time to clean my old website files, so I go to site folder and delete everything (line 33).</li>
-  <li>Copy the generated build to my site folder(line 37).</li>
-  <li>Finally, commit the changes to publish your site(line 42).</li>
-</ol>
+<h2 id="service">Service</h2>
 
-<p>So here you have it, when ever you push changes to your private repository. The github action will be fired which will build and publish your site to your public repo without exposing your source code.</p>
+<p>In order to test the new repository I have created the <code class="language-plaintext highlighter-rouge">users.service</code> to test things out.</p>
 
-<p>I would love to know what you think.</p>
+<script src="https://gist.github.com/kuros/fc624b57721ac6faa99ec8b1ecc300c2.js"></script>
 
+<h2 id="controller">Controller</h2>
+
+<p>After the service, we will also need a controller to expose an api, for this we will create <code class="language-plaintext highlighter-rouge">users.controller.ts</code></p>
+
+<script src="https://gist.github.com/kuros/7fd15399420d6cd1402b726bef293b4e.js"></script>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>Before you test the api make sure the application is running using <code class="language-plaintext highlighter-rouge">yarn start:dev</code></p>
+
+<script src="https://gist.github.com/kuros/7fd15399420d6cd1402b726bef293b4e.js"></script>
+
+<h1 id="testing">Testing</h1>
+
+<p>To see this in action we can make post request to the backend using postman.</p>
+
+<p><img width="1424" alt="Screenshot 2021-12-22 at 10 13 20 PM" src="/images/2021/nest-mongo-1.webp" /></p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p>You can now view the database collection. I am using MongoDBCompass.</p>
+
+<p><img width="1424" alt="Screenshot 2021-12-22 at 10 13 20 PM" src="/images/2021/nest-mongo-2.webp" /></p>
+
+<p>If you are not familiar with services I have uploaded this code to <a href="https://github.com/kuros/blog-code/tree/master/nestjs/nestjs-mongo">github</a></p>
+
+<p>And now we have a fully working nestjs app with mongoDb.</p>
 
         
 
@@ -435,14 +513,14 @@ I will be going through Jekyll site action.</p>
     
       
       
-      <a href="/categories/ci-cd" class="page__taxonomy-item" rel="tag">CI/CD</a>
+      <a href="/categories/typescript" class="page__taxonomy-item" rel="tag">typescript</a>
     
     </span>
   </p>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-06-25T00:00:00+00:00">June 25, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-12-28T00:00:00+00:00">December 28, 2021</time></p>
 
 
         
@@ -453,7 +531,7 @@ I will be going through Jekyll site action.</p>
   
     <div class="author__avatar">
       
-        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+        <img src="/images/about/nishant.jpeg" alt="Nishant Gharat" itemprop="image">
       
     </div>
   
@@ -461,11 +539,11 @@ I will be going through Jekyll site action.</p>
   <div class="author__content">
     <div class="author__written">WRITTEN BY</div>
     
-      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+      <h3 class="author__name" itemprop="name">Nishant Gharat</h3>
     
     
       <div class="author__bio" itemprop="description">
-        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+        <p>Someone passionate about learning, and function effectively in a team. Someone who can develop a scalable working solution from an idea on a piece of paper. I like coding long rides and am a big foodie.</p>
 
       </div>
     
@@ -475,23 +553,15 @@ I will be going through Jekyll site action.</p>
     <button class="btn btn--inverse">Follow</button>
     <ul class="author__urls social-icons">
       
-        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
-        </li>
-      
 
       
         
           
-            <li><a href="https://www.linkedin.com/in/kumar-rohit-9a985517/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+            <li><a href="https://www.linkedin.com/in/nishant-gharat-36350b207/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
           
         
           
-            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
-          
-        
-          
-            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+            <li><a href="https://github.com/Nishantgharat" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
           
         
       
@@ -564,23 +634,22 @@ I will be going through Jekyll site action.</p>
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Use+private+repo+to+publish+websites+with+github+pages.%20https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fuse-private-repo-to-publish-website-with-github-pages%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=NestJs+Application+with+MongoDB%20https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-mongodb-integration-example%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fuse-private-repo-to-publish-website-with-github-pages%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-mongodb-integration-example%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fuse-private-repo-to-publish-website-with-github-pages%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-mongodb-integration-example%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/gcp/ci/cd/sequential-build-number-of-artifacts-in-gcp-cloud-build/" class="pagination--pager" title="Sequential build numbers of artifacts in gcp cloud build
+      <a href="/typescript/nestjs-upload-download-file-from-cloud-storage/" class="pagination--pager" title="NestJs Application to upload/download file from GCP cloud storage
 ">Previous</a>
     
     
-      <a href="/ci/cd/download-file-from-private-github-repo-using-curl/" class="pagination--pager" title="Download file from private github repository using curl.
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -621,47 +690,6 @@ I will be going through Jekyll site action.</p>
     <div class="page__related">
       <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/typescript/nestjs-mongodb-integration-example/" rel="permalink">NestJs Application with MongoDB
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">This article focuses on integrating mongoDB to a Nest Application.
-
-</p>
-  </article>
-</div>
-
         
           
 
@@ -731,7 +759,7 @@ I will be going through Jekyll site action.</p>
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
@@ -779,6 +807,47 @@ However, Github package has a constraint...</p>
 
 
     <p class="archive__item-excerpt" itemprop="description">In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-firebase-token-authentication/" rel="permalink">Authentication in NestJS using firebase token
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">You have build your nest microservice, but you want to secure your application using firebase tokens.
 
 </p>
   </article>
@@ -888,8 +957,8 @@ However, Github package has a constraint...</p>
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://kuros.in/ci/cd/use-private-repo-to-publish-website-with-github-pages/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/ci/cd/use-private-repo-to-publish-website-with-github-pages"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://kuros.in/typescript/nestjs-mongodb-integration-example/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/typescript/nestjs-mongodb-integration-example"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');
