@@ -1,0 +1,1109 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Role based authentication in NestJS using Guards - Kuros.in</title>
+<meta name="description" content="Secure your api’s with role based access">
+
+
+  <meta name="author" content="Nishant Gharat">
+  
+  <meta property="article:author" content="Nishant Gharat">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Role based authentication in NestJS using Guards">
+<meta property="og:url" content="https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/">
+
+
+  <meta property="og:description" content="Secure your api’s with role based access">
+
+
+
+  <meta property="og:image" content="https://kuros.in/images/2022/lock.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-12-28T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/favicon.ico">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2022/lock.jpg');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Role based authentication in NestJS using Guards
+
+        
+      </h1>
+      
+        <p class="page__lead">Secure your api’s with role based access
+</p>
+      
+      
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/Lexcm-6FHRU"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#guard">Guard</a>
+    <ul>
+      <li><a href="#authorization-guard">Authorization guard</a></li>
+    </ul>
+  </li>
+  <li><a href="#role-based-authentication">Role Based Authentication</a></li>
+  <li><a href="#creating-application">Creating application</a>
+    <ul>
+      <li><a href="#creating-initial-boilerplate-for-our-app">Creating initial boilerplate for our app:</a></li>
+      <li><a href="#defining-user-entities-and-roles-enum">Defining user entities and roles enum:</a></li>
+      <li><a href="#testing-the-initial-build">Testing the initial build</a></li>
+    </ul>
+  </li>
+  <li><a href="#implementation-and-integration">Implementation and integration</a>
+    <ul>
+      <li><a href="#creating-a-guard">Creating a guard</a></li>
+    </ul>
+  </li>
+  <li><a href="#testing">Testing</a>
+    <ul>
+      <li><a href="#generic-user">Generic User</a></li>
+      <li><a href="#admin-user">Admin User</a></li>
+    </ul>
+  </li>
+  <li><a href="#references">References</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Role based authentication in NestJS using Guards">
+    <meta itemprop="description" content="In this article, we will focus on Role Based Access Control (RBAC) using the Guards in a nestJS application.">
+    <meta itemprop="datePublished" content="2021-12-28T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>In this article, we will focus on Role Based Access Control (RBAC) using the <code class="language-plaintext highlighter-rouge">Guards</code> in a nestJS application.</p>
+
+<h1 id="guard">Guard</h1>
+
+<p>A guard is a class annotated with the <code class="language-plaintext highlighter-rouge">@Injectable()</code> decorator. Guards should implement the CanActivate interface.</p>
+
+<p><img src="/images/2022/guard.webp" alt="image" /></p>
+
+<p>Guards have a single responsibility. They determine whether a given request will be handled by the route handler or not, depending on certain conditions (like permissions, roles, ACLs, etc.) present at run-time. This is often referred to as authorization. Authorization (and its cousin, authentication, with which it usually collaborates) has typically been handled by middleware in traditional Express applications.</p>
+
+<h2 id="authorization-guard">Authorization guard</h2>
+
+<p>Authorization is a great use case for Guards because specific routes should be available only when the caller (usually a specific authenticated user) has sufficient permissions.</p>
+
+<h1 id="role-based-authentication">Role Based Authentication</h1>
+
+<p>Role-based access control (RBAC) restricts network access based on a person’s role within an organization and has become one of the main methods for advanced access control.</p>
+
+<p>The roles in RBAC refer to the levels of access that employees have to the network.
+Employees are only allowed to access the information necessary to effectively perform their job duties. Access can be based on several factors, such as authority, responsibility, and job competency.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p><img src="/images/2022/nest-auth-roles.webp" alt="image" /></p>
+
+<p>As a result, lower-level employees usually do not have access to sensitive data if they do not need it to fulfill their responsibilities.</p>
+
+<p>This is especially helpful if you have many employees and use third-parties and contractors that make it difficult to closely monitor network access. Using RBAC helps in securing your company’s sensitive data and important applications.</p>
+
+<h1 id="creating-application">Creating application</h1>
+
+<p>Lets create a new application from scratch using :
+<code class="language-plaintext highlighter-rouge">nest new nest-authorization</code></p>
+
+<h2 id="creating-initial-boilerplate-for-our-app">Creating initial boilerplate for our app:</h2>
+
+<p>To do authorization we need to know who the user is and what roles do they have.</p>
+
+<p>To do this we also need some kind of example api to allow some and protect some depending on user roles.</p>
+
+<p>Lets create a new resource users using :
+<code class="language-plaintext highlighter-rouge">nest g resource users</code></p>
+
+<p><img width="741" alt="Screenshot 2022-01-04 at 11 21 23 AM" src="/images/2022/nest-users.webp" /></p>
+
+<h2 id="defining-user-entities-and-roles-enum">Defining user entities and roles enum:</h2>
+
+<p>To get started our user needs to have roles for us to be able to do role based authorization.
+We need to have a representation of different roles. We can start with a simple enum file.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kr">enum</span> <span class="nx">Role</span> <span class="p">{</span>
+  <span class="nx">USER</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">user</span><span class="dl">"</span><span class="p">,</span>
+  <span class="nx">ADMIN</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">admin</span><span class="dl">"</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="testing-the-initial-build">Testing the initial build</h2>
+
+<p>Lets first run the application and see how it behaves originally using
+<code class="language-plaintext highlighter-rouge">npm run start:dev</code></p>
+
+<p><img width="1006" alt="Screenshot 2022-01-04 at 9 56 11 PM" src="/images/2022/nest-auth-run.webp" /></p>
+
+<p>Now we have sort of a mock api which is open to everyone right now.</p>
+
+<p><img width="1077" alt="Screenshot 2022-01-04 at 9 58 47 PM" src="/images/2022/nest-auth-post-1.webp" /></p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p><img width="1077" alt="Screenshot 2022-01-04 at 9 58 47 PM" src="/images/2022/nest-auth-post-2.webp" /></p>
+
+<h1 id="implementation-and-integration">Implementation and integration</h1>
+
+<p>Now we need to check what role does a user have and are they allowd to access these requests.</p>
+
+<p>We can do this by decorating the methods in <code class="language-plaintext highlighter-rouge">users.controllers.ts</code> by using setMetadata()
+Decorator.</p>
+
+<p><strong>There is also another way that is by using a custom decorator that represents the same thing that setMetadata( ) can do.</strong></p>
+
+<p>In users folder create a <code class="language-plaintext highlighter-rouge">roles.decorator.ts</code></p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">SetMetadata</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./entities/role.enum</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">Roles</span> <span class="o">=</span> <span class="p">(...</span><span class="nx">roles</span><span class="p">:</span> <span class="nx">Role</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="nx">SetMetadata</span><span class="p">(</span><span class="dl">"</span><span class="s2">roles</span><span class="dl">"</span><span class="p">,</span> <span class="nx">roles</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Now in <code class="language-plaintext highlighter-rouge">users.controller.ts</code> add this decorator .</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span>
+  <span class="nx">Controller</span><span class="p">,</span>
+  <span class="nx">Get</span><span class="p">,</span>
+  <span class="nx">Post</span><span class="p">,</span>
+  <span class="nx">Body</span><span class="p">,</span>
+  <span class="nx">Patch</span><span class="p">,</span>
+  <span class="nx">Param</span><span class="p">,</span>
+  <span class="nx">Delete</span><span class="p">,</span>
+  <span class="nx">SetMetadata</span><span class="p">,</span>
+<span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">UsersService</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./users.service</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">CreateUserDto</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./dto/create-user.dto</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">UpdateUserDto</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./dto/update-user.dto</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./entities/role.enum</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Roles</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./roles.decorator</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">@</span><span class="nd">Controller</span><span class="p">(</span><span class="dl">"</span><span class="s2">users</span><span class="dl">"</span><span class="p">)</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">UsersController</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="k">readonly</span> <span class="nx">usersService</span><span class="p">:</span> <span class="nx">UsersService</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="p">@</span><span class="nd">Post</span><span class="p">()</span>
+  <span class="p">@</span><span class="nd">Roles</span><span class="p">(</span><span class="nx">Role</span><span class="p">.</span><span class="nx">ADMIN</span><span class="p">)</span>
+  <span class="nx">create</span><span class="p">(@</span><span class="nd">Body</span><span class="p">()</span> <span class="nx">createUserDto</span><span class="p">:</span> <span class="nx">CreateUserDto</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">createUserDto</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="p">@</span><span class="nd">Get</span><span class="p">()</span>
+  <span class="nx">findAll</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">findAll</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="p">@</span><span class="nd">Get</span><span class="p">(</span><span class="dl">"</span><span class="s2">:id</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">findOne</span><span class="p">(@</span><span class="nd">Param</span><span class="p">(</span><span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">)</span> <span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">findOne</span><span class="p">(</span><span class="o">+</span><span class="nx">id</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="p">@</span><span class="nd">Patch</span><span class="p">(</span><span class="dl">"</span><span class="s2">:id</span><span class="dl">"</span><span class="p">)</span>
+  <span class="p">@</span><span class="nd">Roles</span><span class="p">(</span><span class="nx">Role</span><span class="p">.</span><span class="nx">ADMIN</span><span class="p">)</span>
+  <span class="nx">update</span><span class="p">(@</span><span class="nd">Param</span><span class="p">(</span><span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">)</span> <span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">,</span> <span class="p">@</span><span class="nd">Body</span><span class="p">()</span> <span class="nx">updateUserDto</span><span class="p">:</span> <span class="nx">UpdateUserDto</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="o">+</span><span class="nx">id</span><span class="p">,</span> <span class="nx">updateUserDto</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="p">@</span><span class="nd">Delete</span><span class="p">(</span><span class="dl">"</span><span class="s2">:id</span><span class="dl">"</span><span class="p">)</span>
+  <span class="p">@</span><span class="nd">Roles</span><span class="p">(</span><span class="nx">Role</span><span class="p">.</span><span class="nx">ADMIN</span><span class="p">)</span>
+  <span class="nx">remove</span><span class="p">(@</span><span class="nd">Param</span><span class="p">(</span><span class="dl">"</span><span class="s2">id</span><span class="dl">"</span><span class="p">)</span> <span class="nx">id</span><span class="p">:</span> <span class="kr">string</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">usersService</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="o">+</span><span class="nx">id</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>This doesn’t protect the method yet we are just providing metadata.</strong></p>
+
+<p>Now lets add the piece that adds the actual security i.e. lets create a guard.</p>
+
+<h2 id="creating-a-guard">Creating a guard</h2>
+
+<p>Inside users create a new Roles guard roles.guard.ts</p>
+
+<p>Here we need to check if the user has the required roles to allow the user.</p>
+
+<p>Because we do not have authentication in place which you should to identify the user here we will keep it really simple and mock a user considering we did the authentication.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">Injectable</span><span class="p">,</span> <span class="nx">CanActivate</span><span class="p">,</span> <span class="nx">ExecutionContext</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/common</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Reflector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/core</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Observable</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">rxjs</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./entities/role.enum</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">User</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./entities/user.entity</span><span class="dl">"</span><span class="p">;</span>
+<span class="p">@</span><span class="nd">Injectable</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">RolesGuard</span> <span class="k">implements</span> <span class="nx">CanActivate</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="k">private</span> <span class="nx">reflector</span><span class="p">:</span> <span class="nx">Reflector</span><span class="p">)</span> <span class="p">{}</span>
+  <span class="nx">canActivate</span><span class="p">(</span><span class="nx">context</span><span class="p">:</span> <span class="nx">ExecutionContext</span><span class="p">):</span> <span class="nx">boolean</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">requireRoles</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">reflector</span><span class="p">.</span><span class="nx">getAllAndOverride</span><span class="o">&lt;</span><span class="nx">Role</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="dl">"</span><span class="s2">roles</span><span class="dl">"</span><span class="p">,</span> <span class="p">[</span>
+      <span class="nx">context</span><span class="p">.</span><span class="nx">getHandler</span><span class="p">(),</span>
+      <span class="nx">context</span><span class="p">.</span><span class="nx">getClass</span><span class="p">(),</span>
+    <span class="p">]);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">requireRoles</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//const {user}=context.switchToHttp().getRequest();</span>
+    <span class="kd">const</span> <span class="nx">user</span><span class="p">:</span> <span class="nx">User</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nishant</span><span class="dl">"</span><span class="p">,</span>
+      <span class="na">roles</span><span class="p">:</span> <span class="p">[</span><span class="nx">Role</span><span class="p">.</span><span class="nx">USER</span><span class="p">],</span>
+    <span class="p">};</span>
+    <span class="k">return</span> <span class="nx">requireRoles</span><span class="p">.</span><span class="nx">some</span><span class="p">((</span><span class="nx">role</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">user</span><span class="p">.</span><span class="nx">roles</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">role</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="testing">Testing</h1>
+
+<h2 id="generic-user">Generic User</h2>
+
+<p>If a user is a generic. Then</p>
+
+<p><img width="554" alt="Screenshot 2022-01-08 at 3 21 55 PM" src="/images/2022/nest-auth-role-generic.webp" /></p>
+
+<p>It will only be able to perform get request. Because here generic user is only allowed get request by the guard.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p><img width="1077" alt="Screenshot 2022-01-04 at 9 58 47 PM" src="/images/2022/nest-auth-post-1.webp" /></p>
+
+<p>For a post request by the user it will give a 403 forbidden error.</p>
+
+<p><img width="1077" alt="Screenshot 2022-01-04 at 9 58 47 PM" src="/images/2022/nest-auth-post-3.webp" /></p>
+
+<h2 id="admin-user">Admin User</h2>
+
+<p>If a user has admin role.</p>
+
+<p><img width="554" alt="Screenshot 2022-01-08 at 3 21 55 PM" src="/images/2022/nest-auth-role-admin.webp" /></p>
+
+<p>it will be able to perform get request, post, Patch, delete.
+<img width="1077" alt="Screenshot 2022-01-04 at 9 58 47 PM" src="/images/2022/nest-auth-post-1.webp" /></p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- horizontal - responsive -->
+<p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4166026699724584" data-ad-slot="7276848543" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<p><img width="1077" alt="Screenshot 2022-01-04 at 9 58 47 PM" src="/images/2022/nest-auth-post-2.webp" /></p>
+
+<h1 id="references">References</h1>
+
+<ol>
+  <li>https://docs.nestjs.com/guards</li>
+  <li>https://digitalguardian.com/blog/what-role-based-access-control-rbac-examples-benefits-and-more</li>
+</ol>
+
+<p>This was all about using guards in a nestJS application to authorize. You can find the code example <a href="https://github.com/kuros/blog-code/tree/master/nestjs/nest-auth">here</a></p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/typescript" class="page__taxonomy-item" rel="tag">typescript</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-12-28T00:00:00+00:00">December 28, 2021</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/nishant.jpeg" alt="Nishant Gharat" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Nishant Gharat</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Someone passionate about learning, and function effectively in a team. Someone who can develop a scalable working solution from an idea on a piece of paper. I like coding long rides and am a big foodie.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://www.linkedin.com/in/nishant-gharat-36350b207/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/Nishantgharat" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
+      </footer>
+
+      
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Role+based+authentication+in+NestJS+using+Guards%20https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-role-based-authentication-and-authorization-using-guards%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-role-based-authentication-and-authorization-using-guards%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Ftypescript%2Fnestjs-role-based-authentication-and-authorization-using-guards%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/typescript/nestjs-mongodb-integration-example/" class="pagination--pager" title="NestJs Application with MongoDB
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-mongodb-integration-example/" rel="permalink">NestJs Application with MongoDB
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">This article focuses on integrating mongoDB to a Nest Application.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="permalink">NestJs Application to upload/download file from GCP cloud storage
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gcp/publish-npm-package-to-gcp-using-github-actions/" rel="permalink">Publish npm packages to gcp artifact registry using github actions
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
+However, Github package has a constraint...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" rel="permalink">Fixing firestore doesn’t support js object
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/typescript/nestjs-role-based-authentication-and-authorization-using-guards"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

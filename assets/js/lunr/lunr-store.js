@@ -478,4 +478,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/typescript/nestjs-mongodb-integration-example/",
         "teaser": null
+      },{
+        "title": "Role based authentication in NestJS using Guards",
+        "excerpt":"In this article, we will focus on Role Based Access Control (RBAC) using the Guards in a nestJS application. Guard A guard is a class annotated with the @Injectable() decorator. Guards should implement the CanActivate interface. Guards have a single responsibility. They determine whether a given request will be handled...","categories": ["typescript"],
+        "tags": [],
+        "url": "https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/",
+        "teaser": null
       }]
