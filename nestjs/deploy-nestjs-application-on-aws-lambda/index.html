@@ -1,0 +1,1052 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Deploy NestJS application on AWS Lambda - Kuros.in</title>
+<meta name="description" content="Time to go serverless with lambda">
+
+
+  <meta name="author" content="Nishant Gharat">
+  
+  <meta property="article:author" content="Nishant Gharat">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Deploy NestJS application on AWS Lambda">
+<meta property="og:url" content="https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/">
+
+
+  <meta property="og:description" content="Time to go serverless with lambda">
+
+
+
+  <meta property="og:image" content="https://kuros.in/images/2022/cloud.webp">
+
+
+
+
+
+  <meta property="article:published_time" content="2021-12-28T00:00:00+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/favicon.ico">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2022/cloud.webp');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Deploy NestJS application on AWS Lambda
+
+        
+      </h1>
+      
+        <p class="page__lead">Time to go serverless with lambda
+</p>
+      
+      
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/BWCgQw25XUE"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#application">Application</a></li>
+  <li><a href="#serverless-dependencies">Serverless Dependencies</a></li>
+  <li><a href="#creating-handler">Creating Handler</a>
+    <ul>
+      <li><a href="#the-yaml-file">The yaml file</a></li>
+    </ul>
+  </li>
+  <li><a href="#running-the-lambda-locally">Running the lambda locally</a>
+    <ul>
+      <li><a href="#verify">Verify</a></li>
+    </ul>
+  </li>
+  <li><a href="#deploying">Deploying</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Deploy NestJS application on AWS Lambda">
+    <meta itemprop="description" content="Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you have less traffic on your website.">
+    <meta itemprop="datePublished" content="2021-12-28T00:00:00+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you have less traffic on your website.</p>
+
+<p>When you create a simplest lambda can be created by creating a function which takes <code class="language-plaintext highlighter-rouge">event</code>, <code class="language-plaintext highlighter-rouge">context</code>, &amp; <code class="language-plaintext highlighter-rouge">callback</code> params like this which returns a <code class="language-plaintext highlighter-rouge">Hello World!</code>.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Hello World!</span><span class="dl">"</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>But it real world, each service might be having multiple endpoints. So we are going to convert our simple nest application to be aws compatible, so in this article, we will focus on deploying a nestJS app on aws lambda.</p>
+
+<h1 id="application">Application</h1>
+
+<p>To start we will create a nest application.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i <span class="nt">-g</span> @nestjs/cli
+<span class="nv">$ </span>nest new nestjs-aws-lambda
+</code></pre></div></div>
+
+<p>Now we can run and test if our application is working.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nv">$ </span><span class="nb">cd </span>nestjs-aws-lambda
+<span class="nv">$ </span>npm start
+
+</code></pre></div></div>
+
+<p>Our default application is running, so lets get back to our primary goal, i.e. to convert this app to serverless.</p>
+
+<h1 id="serverless-dependencies">Serverless Dependencies</h1>
+
+<p>There are multiple package already available to convert a node applications to aws compatible.
+Let install the required packages</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>npm i <span class="nt">-S</span> @vendia/serverless-express aws-lambda serverless
+<span class="nv">$ </span>npm i <span class="nt">-D</span> @types/aws-lambda serverless-offline
+</code></pre></div></div>
+
+<h1 id="creating-handler">Creating Handler</h1>
+
+<p>We will create a new file <code class="language-plaintext highlighter-rouge">serverless.ts</code> in our source directory.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">NestFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/core</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./app.module</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">serverlessExpress</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@vendia/serverless-express</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Callback</span><span class="p">,</span> <span class="nx">Context</span><span class="p">,</span> <span class="nx">Handler</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">aws-lambda</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">let</span> <span class="nx">server</span><span class="p">:</span> <span class="nx">Handler</span><span class="p">;</span>
+
+<span class="k">async</span> <span class="kd">function</span> <span class="nx">bootstrap</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">NestFactory</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">AppModule</span><span class="p">);</span>
+  <span class="k">await</span> <span class="nx">app</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+
+  <span class="kd">const</span> <span class="nx">expressApp</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getHttpAdapter</span><span class="p">().</span><span class="nx">getInstance</span><span class="p">();</span>
+  <span class="k">return</span> <span class="nx">serverlessExpress</span><span class="p">({</span> <span class="na">app</span><span class="p">:</span> <span class="nx">expressApp</span> <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">handler</span><span class="p">:</span> <span class="nx">Handler</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span>
+  <span class="nx">event</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span>
+  <span class="nx">context</span><span class="p">:</span> <span class="nx">Context</span><span class="p">,</span>
+  <span class="nx">callback</span><span class="p">:</span> <span class="nx">Callback</span>
+<span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">server</span> <span class="o">=</span> <span class="nx">server</span> <span class="o">??</span> <span class="p">(</span><span class="k">await</span> <span class="nx">bootstrap</span><span class="p">());</span>
+  <span class="k">return</span> <span class="nx">server</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h2 id="the-yaml-file">The yaml file</h2>
+
+<p>Now that we have created a handler function, we need to tell the lambda to find the handler method in <code class="language-plaintext highlighter-rouge">serverless.ts</code> file. To do this we will create a <code class="language-plaintext highlighter-rouge">serverless.yaml</code></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">service</span><span class="pi">:</span> <span class="s">nest-auth</span>
+
+<span class="na">plugins</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">serverless-offline</span>
+
+<span class="na">provider</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">aws</span>
+  <span class="na">runtime</span><span class="pi">:</span> <span class="s">nodejs12.x</span>
+  <span class="na">region</span><span class="pi">:</span> <span class="s">eu-west-1</span>
+  <span class="na">profile</span><span class="pi">:</span> <span class="s">default</span>
+  <span class="na">memorySize</span><span class="pi">:</span> <span class="m">256</span> <span class="c1"># optional, in MB, default is 1024</span>
+  <span class="c1"># stage: dev</span>
+
+<span class="na">functions</span><span class="pi">:</span>
+  <span class="na">main</span><span class="pi">:</span>
+    <span class="na">handler</span><span class="pi">:</span> <span class="s">dist/serverless.handler</span>
+    <span class="na">events</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+          <span class="na">method</span><span class="pi">:</span> <span class="s">ANY</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+      <span class="pi">-</span> <span class="na">http</span><span class="pi">:</span>
+          <span class="na">method</span><span class="pi">:</span> <span class="s">ANY</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">{proxy+}"</span>
+
+<span class="na">custom</span><span class="pi">:</span>
+  <span class="na">serverless-offline</span><span class="pi">:</span>
+    <span class="na">noPrependStageInUrl</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<h1 id="running-the-lambda-locally">Running the lambda locally</h1>
+
+<p>There are two ways of running the application in lambda locally</p>
+
+<ol>
+  <li>You can install <code class="language-plaintext highlighter-rouge">serverless</code> globally by <code class="language-plaintext highlighter-rouge">npm install -g serverless</code> and then run <code class="language-plaintext highlighter-rouge">sls offline</code>.</li>
+  <li>
+    <p>Other way is use locally installed serverless module. To do that:</p>
+
+    <ul>
+      <li>
+        <p>execute command <code class="language-plaintext highlighter-rouge">node ./node_modules/serverless/bin/serverless.js offline</code></p>
+      </li>
+      <li>
+        <p>I like to include the above command in package.json scripts.</p>
+      </li>
+    </ul>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
+...
+"scripts": {
+ "prebuild": "rimraf dist",
+ "build": "nest build",
+ "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+ "start": "nest start",
+ "start:dev": "nest start --watch",
+ "start:debug": "nest start --debug --watch",
+ "start:prod": "node dist/main",
+ "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+ "test": "jest",
+ "test:watch": "jest --watch",
+ "test:cov": "jest --coverage",
+ "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+ "test:e2e": "jest --config ./test/jest-e2e.json",
+ "deploy:local": "node ./node_modules/serverless/bin/serverless.js offline"
+}
+
+...
+...
+</code></pre></div>    </div>
+
+    <p>And now we can simply do <code class="language-plaintext highlighter-rouge">npm run deploy:local</code></p>
+  </li>
+</ol>
+
+<p>You might need to add flag to enable interop, in your tsconfig.ts, if you get an error function not found.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"esModuleInterop": true
+</code></pre></div></div>
+
+<h2 id="verify">Verify</h2>
+
+<p>Once the application is ready, you will see your service started locally</p>
+
+<p><img src="/images/2022/nest-aws-serverless.webp" alt="nest-aws-serverless" /></p>
+
+<p>Now as we see server is listening to <code class="language-plaintext highlighter-rouge">http://localhost:3000</code></p>
+
+<p>Let’s do a curl to see if we can get a response from our lambda.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nv">$ </span>curl <span class="nt">-i</span> http://localhost:3000
+
+HTTP/1.1 200 OK
+x-powered-by: Express
+content-type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+content-length: 12
+etag: W/<span class="s2">"c-Lve95gjOVATpfV8EL5X4nxwjKHE"</span>
+cache-control: no-cache
+accept-ranges: bytes
+Date: Sat, 12 Feb 2022 08:57:38 GMT
+Connection: keep-alive
+Keep-Alive: <span class="nb">timeout</span><span class="o">=</span>5
+
+Hello World!%
+</code></pre></div></div>
+
+<p>Looking at the logs we can see as soon as request is sent nest application starting up and after it completes we get a request id a duration and amount of time it will be built for once deployed to production.</p>
+
+<p><img src="/images/2022/nest-aws-serverless-response.webp" alt="nest-aws-serverless-response" /></p>
+
+<h1 id="deploying">Deploying</h1>
+
+<p>Now we can run <code class="language-plaintext highlighter-rouge">sls deploy –-stage prod</code> and this will package our application and upload to s3 and create all the necessary resources for us.</p>
+
+<p>Once it completes we will get a api url that we can test out and use in production.</p>
+
+<p><img src="/images/2022/nest-aws-prod.webp" alt="nest-aws-prod" /></p>
+
+<p>After our application is deployed we get some information and we get the endpoints here that we can use to make requests to this lambda in production.</p>
+
+<p>Now if we open postman and replace the url with the production url and we get a response after we created a user which is great.</p>
+
+<p><img src="/images/2022/nest-aws-prod-postman.webp" alt="nest-aws-prod-postman" /></p>
+
+<p>And here we have nestjs serverless application running on lambda. You can find the code here.</p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/nestjs" class="page__taxonomy-item" rel="tag">nestjs</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-12-28T00:00:00+00:00">December 28, 2021</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/nishant.jpeg" alt="Nishant Gharat" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Nishant Gharat</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>Someone passionate about learning, and function effectively in a team. Someone who can develop a scalable working solution from an idea on a piece of paper. I like coding long rides and am a big foodie.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://www.linkedin.com/in/nishant-gharat-36350b207/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/Nishantgharat" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
+      </footer>
+
+      
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Deploy+NestJS+application+on+AWS+Lambda%20https%3A%2F%2Fkuros.in%2Fnestjs%2Fdeploy-nestjs-application-on-aws-lambda%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fnestjs%2Fdeploy-nestjs-application-on-aws-lambda%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fnestjs%2Fdeploy-nestjs-application-on-aws-lambda%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/typescript/nestjs-role-based-authentication-and-authorization-using-guards/" class="pagination--pager" title="Role based authentication in NestJS using Guards
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-role-based-authentication-and-authorization-using-guards/" rel="permalink">Role based authentication in NestJS using Guards
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In this article, we will focus on Role Based Access Control (RBAC) using the Guards in a nestJS application.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-mongodb-integration-example/" rel="permalink">NestJs Application with MongoDB
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">This article focuses on integrating mongoDB to a Nest Application.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="permalink">NestJs Application to upload/download file from GCP cloud storage
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/gcp/publish-npm-package-to-gcp-using-github-actions/" rel="permalink">Publish npm packages to gcp artifact registry using github actions
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
+However, Github package has a constraint...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/nestjs/deploy-nestjs-application-on-aws-lambda"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

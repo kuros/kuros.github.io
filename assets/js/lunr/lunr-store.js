@@ -484,4 +484,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/",
         "teaser": null
+      },{
+        "title": "Deploy NestJS application on AWS Lambda",
+        "excerpt":"Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you have less traffic on your website. When you create a simplest lambda can be created by creating a function which takes...","categories": ["nestjs"],
+        "tags": [],
+        "url": "https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/",
+        "teaser": null
       }]
