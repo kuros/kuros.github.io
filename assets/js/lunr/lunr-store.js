@@ -490,4 +490,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/",
         "teaser": null
+      },{
+        "title": "Create Docker Container to Run Jekyll",
+        "excerpt":"I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I always get into trouble of installing/managing ruby version, bundles etc. To my rescue comes the docker, I have created a simple...","categories": ["docker"],
+        "tags": [],
+        "url": "https://kuros.in/docker/docker-jekyll-container-to-serve-locally/",
+        "teaser": null
       }]

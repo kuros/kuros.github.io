@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Fixing Sass invalid ascii character errors - Kuros.in</title>
-<meta name="description" content="Steps to fix">
+<!-- begin _includes/seo.html --><title>Create Docker Container to Run Jekyll - Kuros.in</title>
+<meta name="description" content="Run Jekyll inside a docker container">
 
 
   <meta name="author" content="Kumar Rohit">
@@ -22,28 +22,28 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Kuros.in">
-<meta property="og:title" content="Fixing Sass invalid ascii character errors">
-<meta property="og:url" content="https://kuros.in/ci/cd/sass-invalid-ascii-character/">
+<meta property="og:title" content="Create Docker Container to Run Jekyll">
+<meta property="og:url" content="https://kuros.in/docker/docker-jekyll-container-to-serve-locally/">
 
 
-  <meta property="og:description" content="Steps to fix">
-
-
-
-  <meta property="og:image" content="https://kuros.in/images/2021/screwdriver.webp">
+  <meta property="og:description" content="Run Jekyll inside a docker container">
 
 
 
-
-
-  <meta property="article:published_time" content="2021-07-19T00:00:00-05:00">
+  <meta property="og:image" content="https://kuros.in/images/2021/fix.webp">
 
 
 
 
 
+  <meta property="article:published_time" content="2022-06-26T00:00:00-05:00">
 
-<link rel="canonical" href="https://kuros.in/ci/cd/sass-invalid-ascii-character/">
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/docker/docker-jekyll-container-to-serve-locally/">
 
 
 
@@ -169,18 +169,18 @@
 
 
 <div class="page__hero--overlay"
-  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/screwdriver.webp');"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/fix.webp');"
 >
   
     <div class="wrapper">
       <h1 id="page-title" class="page__title" itemprop="headline">
         
-          Fixing Sass invalid ascii character errors
+          Create Docker Container to Run Jekyll
 
         
       </h1>
       
-        <p class="page__lead">Steps to fix
+        <p class="page__lead">Run Jekyll inside a docker container
 </p>
       
       
@@ -197,7 +197,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          less than 1 minute read
+          2 minute read
         
       </span>
     
@@ -209,7 +209,7 @@
     </div>
   
   
-    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/lH-UZuoG-aY"><strong>Unsplash</strong></a>
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/CrhsIRY3JWY"><strong>Unsplash</strong></a>
 </span>
   
 </div>
@@ -224,7 +224,9 @@
         <nav class="toc">
           <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
             <ul class="toc__menu">
-  <li><a href="#the-fix">The Fix</a></li>
+  <li><a href="#dockerfile">Dockerfile</a></li>
+  <li><a href="#execution-script">Execution Script</a></li>
+  <li><a href="#run-the-jekyll-container">Run the Jekyll container</a></li>
 </ul>
 
         </nav>
@@ -238,9 +240,9 @@
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Fixing Sass invalid ascii character errors">
-    <meta itemprop="description" content="I was working with my jekyll site, and I started getting the below error.">
-    <meta itemprop="datePublished" content="2021-07-19T00:00:00-05:00">
+    <meta itemprop="headline" content="Create Docker Container to Run Jekyll">
+    <meta itemprop="description" content="I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I always get into trouble of installing/managing ruby version, bundles etc. To my rescue comes the docker, I have created a simple a docker file and script to serve my jekyll pages locally, and it now works like a charm.">
+    <meta itemprop="datePublished" content="2022-06-26T00:00:00-05:00">
     
 
     <div class="page__inner-wrap">
@@ -281,26 +283,103 @@
             
           </aside>
         
-        <p>I was working with my jekyll site, and I started getting the below error.</p>
+        <p>I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I always get into trouble of installing/managing ruby version, bundles etc. To my rescue comes the docker, I have created a simple a docker file and script to serve my jekyll pages locally, and it now works like a charm.</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Jekyll Feed: Generating feed <span class="k">for </span>posts
-GitHub Metadata: No GitHub API authentication could be found. Some fields may be missing or have incorrect data.
-Conversion error: Jekyll::Converters::Scss encountered an error <span class="k">while </span>converting <span class="s1">'assets/css/main.scss'</span>:
-					Invalid US-ASCII character <span class="s2">"</span><span class="se">\x</span><span class="s2">E2"</span> on line 54
-jekyll 3.9.0 | Error:  Invalid US-ASCII character <span class="s2">"</span><span class="se">\x</span><span class="s2">E2"</span> on line 54
+<p>I always have been admirer of docker, I tend to use docker more often if have to install any dev app, databases etc or package but still want to keep my machine clean.
+In this case as well I wanted a consistent mechanism to run my blogs locally.</p>
+
+<h1 id="dockerfile">Dockerfile</h1>
+<p>The first thing I do is create a simple dockerfile in my Jekyll app. I copy my Gemfile and Gemfile.lock to install the bundles.</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> jekyll/jekyll:3.8</span>
+
+<span class="k">COPY</span><span class="s"> Gemfile* ./</span>
+
+<span class="k">RUN </span>gem <span class="nb">install </span>bundler:2.2.24 <span class="o">&amp;&amp;</span> bundle <span class="nb">install</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> [ "jekyll" ]</span>
+
+<span class="k">CMD</span><span class="s"> [ "build" ]</span>
 </code></pre></div></div>
 
-<p>Spend a lot of time flustered and googling round, I did try to run in debug more, identifying each error and trying to fix it.
-But it was mundane. So after, lots of googling, here is what I found out which worked for me.</p>
+<p>The reason I copied Gemfile is because sometimes the bundle version is different, so now I install the required bundler (in my case its 2.2.24), and install all the dependencies.</p>
 
-<h2 id="the-fix">The Fix</h2>
-<p>In order to fix this, you add below variable in your .bashrc/.zshrc file (in your home folder).</p>
+<h1 id="execution-script">Execution Script</h1>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">LC_ALL</span><span class="o">=</span>en_US.UTF-8
-<span class="nb">export </span><span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8
+<p>Next I created a simple script <code class="language-plaintext highlighter-rouge">local_serve.sh</code> to build and serve my code, so that i don’t keep on typing the commands every time.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nb">set</span> <span class="nt">-e</span>
+
+<span class="k">case</span> <span class="nv">$1</span> <span class="k">in</span>
+    <span class="s1">'prod-build'</span><span class="p">)</span>
+        <span class="nb">echo</span> <span class="s2">"Building docker image of Jekyll"</span>
+        docker build <span class="nt">-t</span> jekyll <span class="nb">.</span>
+
+        <span class="nb">echo</span> <span class="s2">"Building Jekyll site"</span>    
+        docker run <span class="se">\</span>
+            <span class="nt">--volume</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">:/srv/jekyll:Z"</span> <span class="se">\</span>
+            <span class="nt">-e</span> <span class="nv">JEKYLL_ENV</span><span class="o">=</span>prod <span class="se">\</span>
+            <span class="nt">-t</span> jekyll <span class="se">\</span>
+            build
+    <span class="p">;;</span>
+    <span class="s1">'build'</span><span class="p">)</span>
+        <span class="nb">echo</span> <span class="s2">"Building docker image of Jekyll"</span>
+        docker build <span class="nt">-t</span> jekyll <span class="nb">.</span>
+
+        <span class="nb">echo</span> <span class="s2">"Building Jekyll site"</span>    
+        docker run <span class="se">\</span>
+            <span class="nt">--volume</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">:/srv/jekyll:Z"</span> <span class="se">\</span>
+            <span class="nt">-t</span> jekyll
+    <span class="p">;;</span>
+    <span class="s1">'serve'</span><span class="p">)</span>
+    docker run <span class="se">\</span>
+            <span class="nt">--volume</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">:/srv/jekyll:Z"</span> <span class="se">\</span>
+            <span class="nt">-p</span> 4000:4000 <span class="se">\</span>
+            <span class="nt">-it</span> jekyll serve
+    <span class="p">;;</span>
+<span class="k">esac</span>
+
 </code></pre></div></div>
 
-<p>Once you have exported the language, the issue got resolved.</p>
+<p>In the build command, I am creating the jekyll image. I can mapping the current directory to /srv/jekyll and running my jekyll container to build the site.</p>
+
+<p>In the serve command, I using the same directory to serve my pages at port 4000 and using interactive mode to explicitly invoke serve command.</p>
+
+<h1 id="run-the-jekyll-container">Run the Jekyll container</h1>
+
+<p>Before we proceed do not forget to give executable permission to <code class="language-plaintext highlighter-rouge">local_service.sh</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">chmod </span>a+x local_serve.sh
+</code></pre></div></div>
+
+<p>So, first thing to do is to build our Jekyll app so that all the dependencies are downloaded. We will just run</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./local_serve.sh build
+</code></pre></div></div>
+
+<p>Once the dependencies are downloaded, now lets start our Jekyll server</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>./local_serve.sh serve
+</code></pre></div></div>
+<p>And we can see the server started</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ruby 2.6.3p62 (2019-04-16 revision 67580) [x86_64-linux-musl]
+Configuration file: /srv/jekyll/_config.yml
+            Source: /srv/jekyll
+       Destination: /srv/jekyll/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+       Jekyll Feed: Generating feed for posts
+   GitHub Metadata: No GitHub API authentication could be found. Some fields may be missing or have incorrect data.
+                    done in 17.778 seconds.
+ Auto-regeneration: enabled for '/srv/jekyll'
+    Server address: http://0.0.0.0:4000/
+  Server running... press ctrl-c to stop.
+</code></pre></div></div>
+
+<p>Enjoy running Jekyll locally without installing ruby or jekyll directly on your system.</p>
 
 
         
@@ -325,14 +404,14 @@ But it was mundane. So after, lots of googling, here is what I found out which w
     
       
       
-      <a href="/categories/ci-cd" class="page__taxonomy-item" rel="tag">CI/CD</a>
+      <a href="/categories/docker" class="page__taxonomy-item" rel="tag">docker</a>
     
     </span>
   </p>
 
 
         
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-07-19T00:00:00-05:00">July 19, 2021</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-06-26T00:00:00-05:00">June 26, 2022</time></p>
 
 
         
@@ -454,23 +533,22 @@ But it was mundane. So after, lots of googling, here is what I found out which w
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Fixing+Sass+invalid+ascii+character+errors%20https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Create+Docker+Container+to+Run+Jekyll%20https%3A%2F%2Fkuros.in%2Fdocker%2Fdocker-jekyll-container-to-serve-locally%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fdocker%2Fdocker-jekyll-container-to-serve-locally%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fci%2Fcd%2Fsass-invalid-ascii-character%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fdocker%2Fdocker-jekyll-container-to-serve-locally%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/ci/cd/download-file-from-private-github-repo-using-curl/" class="pagination--pager" title="Download file from private github repository using curl.
+      <a href="/nestjs/deploy-nestjs-application-on-aws-lambda/" class="pagination--pager" title="Deploy NestJS application on AWS Lambda
 ">Previous</a>
     
     
-      <a href="/gcp/publish-artifacts-to-gcp-using-github-actions/" class="pagination--pager" title="Publish artifacts to gcp using github actions.
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -511,45 +589,6 @@ But it was mundane. So after, lots of googling, here is what I found out which w
     <div class="page__related">
       <h4 class="page__related-title">You may also enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/docker/docker-jekyll-container-to-serve-locally/" rel="permalink">Create Docker Container to Run Jekyll
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I al...</p>
-  </article>
-</div>
-
         
           
 
@@ -672,6 +711,47 @@ But it was mundane. So after, lots of googling, here is what I found out which w
 </div>
 
         
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="permalink">NestJs Application to upload/download file from GCP cloud storage
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.
+
+</p>
+  </article>
+</div>
+
+        
       </div>
     </div>
   
@@ -775,8 +855,8 @@ But it was mundane. So after, lots of googling, here is what I found out which w
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://kuros.in/ci/cd/sass-invalid-ascii-character/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/ci/cd/sass-invalid-ascii-character"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://kuros.in/docker/docker-jekyll-container-to-serve-locally/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/docker/docker-jekyll-container-to-serve-locally"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');

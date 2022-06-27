@@ -1,126 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2022-02-12T22:51:36+00:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning.</subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">NestJs Application with MongoDB</title><link href="https://kuros.in/typescript/nestjs-mongodb-integration-example/" rel="alternate" type="text/html" title="NestJs Application with MongoDB" /><published>2021-12-28T00:00:00+00:00</published><updated>2021-12-28T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-mongodb-integration-example</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-mongodb-integration-example/">&lt;p&gt;This article focuses on integrating mongoDB to a Nest Application.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2022-06-27T13:49:53-05:00</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning.</subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">Create Docker Container to Run Jekyll</title><link href="https://kuros.in/docker/docker-jekyll-container-to-serve-locally/" rel="alternate" type="text/html" title="Create Docker Container to Run Jekyll" /><published>2022-06-26T00:00:00-05:00</published><updated>2022-06-26T00:00:00-05:00</updated><id>https://kuros.in/docker/docker-jekyll-container-to-serve-locally</id><content type="html" xml:base="https://kuros.in/docker/docker-jekyll-container-to-serve-locally/">&lt;p&gt;I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I always get into trouble of installing/managing ruby version, bundles etc. To my rescue comes the docker, I have created a simple a docker file and script to serve my jekyll pages locally, and it now works like a charm.&lt;/p&gt;
 
-&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+&lt;p&gt;I always have been admirer of docker, I tend to use docker more often if have to install any dev app, databases etc or package but still want to keep my machine clean.
+In this case as well I wanted a consistent mechanism to run my blogs locally.&lt;/p&gt;
 
-&lt;h2 id=&quot;nodejs&quot;&gt;Nodejs&lt;/h2&gt;
+&lt;h1 id=&quot;dockerfile&quot;&gt;Dockerfile&lt;/h1&gt;
+&lt;p&gt;The first thing I do is create a simple dockerfile in my Jekyll app. I copy my Gemfile and Gemfile.lock to install the bundles.&lt;/p&gt;
 
-&lt;p&gt;You will need nodejs to run the application, if you don’t have already installed,you can install node.js from https://nodejs.org/en/download/&lt;/p&gt;
+&lt;div class=&quot;language-dockerfile highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; jekyll/jekyll:3.8&lt;/span&gt;
 
-&lt;h2 id=&quot;nestjs&quot;&gt;NestJS&lt;/h2&gt;
+&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; Gemfile* ./&lt;/span&gt;
 
-&lt;p&gt;Now install nest.js using command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm i -g @nestjs/cli&lt;/code&gt;&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;gem &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;bundler:2.2.24 &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; bundle &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
 
-&lt;p&gt;if you are using a MAC device and it throws &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm WARN checkPermissions Missing write access to /usr/local/lib/node_modules&lt;/code&gt;
-this error, run this script&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;ENTRYPOINT&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; [ &quot;jekyll&quot; ]&lt;/span&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo chown&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;npm config get prefix&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;lib/node_modules,bin,share&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;CMD&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; [ &quot;build&quot; ]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;adding-mongodb-to-nestjs-application&quot;&gt;Adding mongodb to nestjs application&lt;/h2&gt;
+&lt;p&gt;The reason I copied Gemfile is because sometimes the bundle version is different, so now I install the required bundler (in my case its 2.2.24), and install all the dependencies.&lt;/p&gt;
 
-&lt;p&gt;Now you can create a new project using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nest new New-proj&lt;/code&gt; command&lt;/p&gt;
+&lt;h1 id=&quot;execution-script&quot;&gt;Execution Script&lt;/h1&gt;
 
-&lt;p&gt;Now install the mongoose dependency using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install @nestjs/mongoose mongoose&lt;/code&gt; command&lt;/p&gt;
+&lt;p&gt;Next I created a simple script &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;local_serve.sh&lt;/code&gt; to build and serve my code, so that i don’t keep on typing the commands every time.&lt;/p&gt;
 
-&lt;h1 id=&quot;integration&quot;&gt;Integration&lt;/h1&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env bash&lt;/span&gt;
 
-&lt;h2 id=&quot;initialize-connection-in-appmodule&quot;&gt;Initialize connection in AppModule&lt;/h2&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt;
 
-&lt;p&gt;Now in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app.module.ts&lt;/code&gt; import mongoose module and give it the connection string to your database.&lt;/p&gt;
+&lt;span class=&quot;k&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'prod-build'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Building docker image of Jekyll&quot;&lt;/span&gt;
+        docker build &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; jekyll &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
 
-&lt;script src=&quot;https://gist.github.com/kuros/0ce4506448d50422f3934e34aea72e28.js&quot;&gt;&lt;/script&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Building Jekyll site&quot;&lt;/span&gt;    
+        docker run &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PWD&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:/srv/jekyll:Z&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;JEKYLL_ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;prod &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; jekyll &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            build
+    &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'build'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Building docker image of Jekyll&quot;&lt;/span&gt;
+        docker build &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; jekyll &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
 
-&lt;p&gt;Now our mongoose connection to mongodb is done.&lt;/p&gt;
+        &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Building Jekyll site&quot;&lt;/span&gt;    
+        docker run &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PWD&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:/srv/jekyll:Z&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; jekyll
+    &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;'serve'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    docker run &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;--volume&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PWD&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;:/srv/jekyll:Z&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 4000:4000 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; jekyll serve
+    &lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;esac&lt;/span&gt;
 
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
+&lt;p&gt;In the build command, I am creating the jekyll image. I can mapping the current directory to /srv/jekyll and running my jekyll container to build the site.&lt;/p&gt;
 
-&lt;h2 id=&quot;create-a-schema&quot;&gt;Create a schema&lt;/h2&gt;
+&lt;p&gt;In the serve command, I using the same directory to serve my pages at port 4000 and using interactive mode to explicitly invoke serve command.&lt;/p&gt;
 
-&lt;p&gt;Schema the definition of data that we are going to store in database.&lt;/p&gt;
+&lt;h1 id=&quot;run-the-jekyll-container&quot;&gt;Run the Jekyll container&lt;/h1&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;We Create different folders for diff domains.&lt;/li&gt;
-  &lt;li&gt;Create a users folder inside src folder which will deal with users related logic.&lt;/li&gt;
-  &lt;li&gt;Inside that create a schemas folder coz we can have more than 1 schemas.&lt;/li&gt;
-  &lt;li&gt;In this eg we will only have one.&lt;/li&gt;
-  &lt;li&gt;Create a file and lets call it user.schema.ts&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Before we proceed do not forget to give executable permission to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;local_service.sh&lt;/code&gt;&lt;/p&gt;
 
-&lt;script src=&quot;https://gist.github.com/kuros/c809ea3cb11b5581c78273bfc58e8c72.js&quot;&gt;&lt;/script&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;a+x local_serve.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;This is a demo schema. Now we need to tell nestjs about the new schema we have created.&lt;/p&gt;
+&lt;p&gt;So, first thing to do is to build our Jekyll app so that all the dependencies are downloaded. We will just run&lt;/p&gt;
 
-&lt;h2 id=&quot;module&quot;&gt;Module&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./local_serve.sh build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Inside users module create a new file and lets call it &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.module.ts&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Once the dependencies are downloaded, now lets start our Jekyll server&lt;/p&gt;
 
-&lt;script src=&quot;https://gist.github.com/kuros/91efe0124106f8552b7ac29df1d9e378.js&quot;&gt;&lt;/script&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./local_serve.sh serve
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;And we can see the server started&lt;/p&gt;
 
-&lt;h2 id=&quot;repository&quot;&gt;Repository&lt;/h2&gt;
+&lt;div class=&quot;language-text highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby 2.6.3p62 (2019-04-16 revision 67580) [x86_64-linux-musl]
+Configuration file: /srv/jekyll/_config.yml
+            Source: /srv/jekyll
+       Destination: /srv/jekyll/_site
+ Incremental build: disabled. Enable with --incremental
+      Generating... 
+       Jekyll Feed: Generating feed for posts
+   GitHub Metadata: No GitHub API authentication could be found. Some fields may be missing or have incorrect data.
+                    done in 17.778 seconds.
+ Auto-regeneration: enabled for '/srv/jekyll'
+    Server address: http://0.0.0.0:4000/
+  Server running... press ctrl-c to stop.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Now in order to use mongoose and to save or fetch data from database we will create a repository file namely &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.repository.ts&lt;/code&gt;&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/fc73e89602172165ce85aa4d446e8693.js&quot;&gt;&lt;/script&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;service&quot;&gt;Service&lt;/h2&gt;
-
-&lt;p&gt;In order to test the new repository I have created the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.service&lt;/code&gt; to test things out.&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/fc624b57721ac6faa99ec8b1ecc300c2.js&quot;&gt;&lt;/script&gt;
-
-&lt;h2 id=&quot;controller&quot;&gt;Controller&lt;/h2&gt;
-
-&lt;p&gt;After the service, we will also need a controller to expose an api, for this we will create &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.controller.ts&lt;/code&gt;&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/7fd15399420d6cd1402b726bef293b4e.js&quot;&gt;&lt;/script&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;Before you test the api make sure the application is running using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn start:dev&lt;/code&gt;&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/7fd15399420d6cd1402b726bef293b4e.js&quot;&gt;&lt;/script&gt;
-
-&lt;h1 id=&quot;testing&quot;&gt;Testing&lt;/h1&gt;
-
-&lt;p&gt;To see this in action we can make post request to the backend using postman.&lt;/p&gt;
-
-&lt;p&gt;&lt;img width=&quot;1424&quot; alt=&quot;Screenshot 2021-12-22 at 10 13 20 PM&quot; src=&quot;/images/2021/nest-mongo-1.webp&quot; /&gt;&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;You can now view the database collection. I am using MongoDBCompass.&lt;/p&gt;
-
-&lt;p&gt;&lt;img width=&quot;1424&quot; alt=&quot;Screenshot 2021-12-22 at 10 13 20 PM&quot; src=&quot;/images/2021/nest-mongo-2.webp&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you are not familiar with services I have uploaded this code to &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/nestjs-mongo&quot;&gt;github&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;And now we have a fully working nestjs app with mongoDb.&lt;/p&gt;</content><author><name>Nishant Gharat</name></author><category term="typescript" /><summary type="html">This article focuses on integrating mongoDB to a Nest Application.</summary></entry><entry><title type="html">Deploy NestJS application on AWS Lambda</title><link href="https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/" rel="alternate" type="text/html" title="Deploy NestJS application on AWS Lambda" /><published>2021-12-28T00:00:00+00:00</published><updated>2021-12-28T00:00:00+00:00</updated><id>https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda</id><content type="html" xml:base="https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/">&lt;p&gt;Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you have less traffic on your website.&lt;/p&gt;
+&lt;p&gt;Enjoy running Jekyll locally without installing ruby or jekyll directly on your system.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="docker" /><summary type="html">I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I always get into trouble of installing/managing ruby version, bundles etc. To my rescue comes the docker, I have created a simple a docker file and script to serve my jekyll pages locally, and it now works like a charm.</summary></entry><entry><title type="html">Deploy NestJS application on AWS Lambda</title><link href="https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/" rel="alternate" type="text/html" title="Deploy NestJS application on AWS Lambda" /><published>2021-12-28T00:00:00-06:00</published><updated>2021-12-28T00:00:00-06:00</updated><id>https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda</id><content type="html" xml:base="https://kuros.in/nestjs/deploy-nestjs-application-on-aws-lambda/">&lt;p&gt;Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you have less traffic on your website.&lt;/p&gt;
 
 &lt;p&gt;When you create a simplest lambda can be created by creating a function which takes &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;event&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;context&lt;/code&gt;, &amp;amp; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;callback&lt;/code&gt; params like this which returns a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Hello World!&lt;/code&gt;.&lt;/p&gt;
 
@@ -315,7 +289,7 @@ Hello World!%
 
 &lt;p&gt;&lt;img src=&quot;/images/2022/nest-aws-prod-postman.webp&quot; alt=&quot;nest-aws-prod-postman&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;And here we have nestjs serverless application running on lambda. You can find the code here.&lt;/p&gt;</content><author><name>Nishant Gharat</name></author><category term="nestjs" /><summary type="html">Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you have less traffic on your website.</summary></entry><entry><title type="html">Role based authentication in NestJS using Guards</title><link href="https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/" rel="alternate" type="text/html" title="Role based authentication in NestJS using Guards" /><published>2021-12-28T00:00:00+00:00</published><updated>2021-12-28T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/">&lt;p&gt;In this article, we will focus on Role Based Access Control (RBAC) using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Guards&lt;/code&gt; in a nestJS application.&lt;/p&gt;
+&lt;p&gt;And here we have nestjs serverless application running on lambda. You can find the code here.&lt;/p&gt;</content><author><name>Nishant Gharat</name></author><category term="nestjs" /><summary type="html">Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you have less traffic on your website.</summary></entry><entry><title type="html">Role based authentication in NestJS using Guards</title><link href="https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/" rel="alternate" type="text/html" title="Role based authentication in NestJS using Guards" /><published>2021-12-28T00:00:00-06:00</published><updated>2021-12-28T00:00:00-06:00</updated><id>https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-role-based-authentication-and-authorization-using-guards/">&lt;p&gt;In this article, we will focus on Role Based Access Control (RBAC) using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Guards&lt;/code&gt; in a nestJS application.&lt;/p&gt;
 
 &lt;h1 id=&quot;guard&quot;&gt;Guard&lt;/h1&gt;
 
@@ -555,7 +529,129 @@ Decorator.&lt;/p&gt;
   &lt;li&gt;https://digitalguardian.com/blog/what-role-based-access-control-rbac-examples-benefits-and-more&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;This was all about using guards in a nestJS application to authorize. You can find the code example &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/nest-auth&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Nishant Gharat</name></author><category term="typescript" /><summary type="html">In this article, we will focus on Role Based Access Control (RBAC) using the Guards in a nestJS application.</summary></entry><entry><title type="html">NestJs Application to upload/download file from GCP cloud storage</title><link href="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="alternate" type="text/html" title="NestJs Application to upload/download file from GCP cloud storage" /><published>2021-10-23T00:00:00+00:00</published><updated>2021-10-23T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/">&lt;p&gt;In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.&lt;/p&gt;
+&lt;p&gt;This was all about using guards in a nestJS application to authorize. You can find the code example &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/nest-auth&quot;&gt;here&lt;/a&gt;&lt;/p&gt;</content><author><name>Nishant Gharat</name></author><category term="typescript" /><summary type="html">In this article, we will focus on Role Based Access Control (RBAC) using the Guards in a nestJS application.</summary></entry><entry><title type="html">NestJs Application with MongoDB</title><link href="https://kuros.in/typescript/nestjs-mongodb-integration-example/" rel="alternate" type="text/html" title="NestJs Application with MongoDB" /><published>2021-12-28T00:00:00-06:00</published><updated>2021-12-28T00:00:00-06:00</updated><id>https://kuros.in/typescript/nestjs-mongodb-integration-example</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-mongodb-integration-example/">&lt;p&gt;This article focuses on integrating mongoDB to a Nest Application.&lt;/p&gt;
+
+&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+
+&lt;h2 id=&quot;nodejs&quot;&gt;Nodejs&lt;/h2&gt;
+
+&lt;p&gt;You will need nodejs to run the application, if you don’t have already installed,you can install node.js from https://nodejs.org/en/download/&lt;/p&gt;
+
+&lt;h2 id=&quot;nestjs&quot;&gt;NestJS&lt;/h2&gt;
+
+&lt;p&gt;Now install nest.js using command &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm i -g @nestjs/cli&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;if you are using a MAC device and it throws &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm WARN checkPermissions Missing write access to /usr/local/lib/node_modules&lt;/code&gt;
+this error, run this script&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo chown&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;whoami&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;npm config get prefix&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;lib/node_modules,bin,share&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;adding-mongodb-to-nestjs-application&quot;&gt;Adding mongodb to nestjs application&lt;/h2&gt;
+
+&lt;p&gt;Now you can create a new project using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nest new New-proj&lt;/code&gt; command&lt;/p&gt;
+
+&lt;p&gt;Now install the mongoose dependency using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install @nestjs/mongoose mongoose&lt;/code&gt; command&lt;/p&gt;
+
+&lt;h1 id=&quot;integration&quot;&gt;Integration&lt;/h1&gt;
+
+&lt;h2 id=&quot;initialize-connection-in-appmodule&quot;&gt;Initialize connection in AppModule&lt;/h2&gt;
+
+&lt;p&gt;Now in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;app.module.ts&lt;/code&gt; import mongoose module and give it the connection string to your database.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/0ce4506448d50422f3934e34aea72e28.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;Now our mongoose connection to mongodb is done.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;create-a-schema&quot;&gt;Create a schema&lt;/h2&gt;
+
+&lt;p&gt;Schema the definition of data that we are going to store in database.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We Create different folders for diff domains.&lt;/li&gt;
+  &lt;li&gt;Create a users folder inside src folder which will deal with users related logic.&lt;/li&gt;
+  &lt;li&gt;Inside that create a schemas folder coz we can have more than 1 schemas.&lt;/li&gt;
+  &lt;li&gt;In this eg we will only have one.&lt;/li&gt;
+  &lt;li&gt;Create a file and lets call it user.schema.ts&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/c809ea3cb11b5581c78273bfc58e8c72.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;This is a demo schema. Now we need to tell nestjs about the new schema we have created.&lt;/p&gt;
+
+&lt;h2 id=&quot;module&quot;&gt;Module&lt;/h2&gt;
+
+&lt;p&gt;Inside users module create a new file and lets call it &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.module.ts&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/91efe0124106f8552b7ac29df1d9e378.js&quot;&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;repository&quot;&gt;Repository&lt;/h2&gt;
+
+&lt;p&gt;Now in order to use mongoose and to save or fetch data from database we will create a repository file namely &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.repository.ts&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/fc73e89602172165ce85aa4d446e8693.js&quot;&gt;&lt;/script&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;service&quot;&gt;Service&lt;/h2&gt;
+
+&lt;p&gt;In order to test the new repository I have created the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.service&lt;/code&gt; to test things out.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/fc624b57721ac6faa99ec8b1ecc300c2.js&quot;&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;controller&quot;&gt;Controller&lt;/h2&gt;
+
+&lt;p&gt;After the service, we will also need a controller to expose an api, for this we will create &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users.controller.ts&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/7fd15399420d6cd1402b726bef293b4e.js&quot;&gt;&lt;/script&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Before you test the api make sure the application is running using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yarn start:dev&lt;/code&gt;&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/kuros/7fd15399420d6cd1402b726bef293b4e.js&quot;&gt;&lt;/script&gt;
+
+&lt;h1 id=&quot;testing&quot;&gt;Testing&lt;/h1&gt;
+
+&lt;p&gt;To see this in action we can make post request to the backend using postman.&lt;/p&gt;
+
+&lt;p&gt;&lt;img width=&quot;1424&quot; alt=&quot;Screenshot 2021-12-22 at 10 13 20 PM&quot; src=&quot;/images/2021/nest-mongo-1.webp&quot; /&gt;&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;!-- horizontal - responsive --&gt;
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;You can now view the database collection. I am using MongoDBCompass.&lt;/p&gt;
+
+&lt;p&gt;&lt;img width=&quot;1424&quot; alt=&quot;Screenshot 2021-12-22 at 10 13 20 PM&quot; src=&quot;/images/2021/nest-mongo-2.webp&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you are not familiar with services I have uploaded this code to &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/nestjs-mongo&quot;&gt;github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;And now we have a fully working nestjs app with mongoDb.&lt;/p&gt;</content><author><name>Nishant Gharat</name></author><category term="typescript" /><summary type="html">This article focuses on integrating mongoDB to a Nest Application.</summary></entry><entry><title type="html">NestJs Application to upload/download file from GCP cloud storage</title><link href="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/" rel="alternate" type="text/html" title="NestJs Application to upload/download file from GCP cloud storage" /><published>2021-10-23T00:00:00-05:00</published><updated>2021-10-23T00:00:00-05:00</updated><id>https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-upload-download-file-from-cloud-storage/">&lt;p&gt;In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.&lt;/p&gt;
 
 &lt;h1 id=&quot;prerequisites&quot;&gt;Prerequisites:&lt;/h1&gt;
 
@@ -908,7 +1004,7 @@ STORAGE_MEDIA_BUCKET = &amp;lt;YOUR_BUCKET_NAME&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;And there you have it. A working nest application to upload and download files.
-You can download the source code from &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/gcp-storage&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.</summary></entry><entry><title type="html">Publish npm packages to gcp artifact registry using github actions</title><link href="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/" rel="alternate" type="text/html" title="Publish npm packages to gcp artifact registry using github actions" /><published>2021-10-20T00:00:00+00:00</published><updated>2021-10-20T00:00:00+00:00</updated><id>https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions</id><content type="html" xml:base="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/">&lt;p&gt;Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
+You can download the source code from &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/gcp-storage&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.</summary></entry><entry><title type="html">Publish npm packages to gcp artifact registry using github actions</title><link href="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/" rel="alternate" type="text/html" title="Publish npm packages to gcp artifact registry using github actions" /><published>2021-10-20T00:00:00-05:00</published><updated>2021-10-20T00:00:00-05:00</updated><id>https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions</id><content type="html" xml:base="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/">&lt;p&gt;Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
 However, Github package has a constraint of 500mb size, which is quite low.&lt;/p&gt;
 
 &lt;p&gt;Lets compare the pricing for both github &amp;amp; gcp (as of July 2021)&lt;/p&gt;
@@ -1027,7 +1123,7 @@ token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_PRO
 
 &lt;p&gt;Here we are generating a npmrc file, with registry details, followed by authenticating gcp registry by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm run artifactregistry-login .npmrc&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Now you are equipped with knowlege to publish and consume packages from your gcp artifactory registry.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gcp" /><category term="ci/cd" /><category term="github-actions" /><summary type="html">Github gives a generous limits for your private projects, its to good for your private repos or even small startups. However, Github package has a constraint of 500mb size, which is quite low.</summary></entry><entry><title type="html">Fixing firestore doesn’t support js object</title><link href="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" rel="alternate" type="text/html" title="Fixing firestore doesn’t support js object" /><published>2021-09-25T00:00:00+00:00</published><updated>2021-09-25T00:00:00+00:00</updated><id>https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes</id><content type="html" xml:base="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/">&lt;p&gt;In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.&lt;/p&gt;
+&lt;p&gt;Now you are equipped with knowlege to publish and consume packages from your gcp artifactory registry.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gcp" /><category term="ci/cd" /><category term="github-actions" /><summary type="html">Github gives a generous limits for your private projects, its to good for your private repos or even small startups. However, Github package has a constraint of 500mb size, which is quite low.</summary></entry><entry><title type="html">Fixing firestore doesn’t support js object</title><link href="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/" rel="alternate" type="text/html" title="Fixing firestore doesn’t support js object" /><published>2021-09-25T00:00:00-05:00</published><updated>2021-09-25T00:00:00-05:00</updated><id>https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes</id><content type="html" xml:base="https://kuros.in/fixes/firestore-doesnot-support-javascript-object-with-custom-prototypes/">&lt;p&gt;In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Firestore doesn&lt;span class=&quot;s1&quot;&gt;'t support JavaScript objects with custom prototypes (i.e. objects that were created via the &quot;new&quot; operator)
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -1050,7 +1146,7 @@ token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_PRO
 
 &lt;p&gt;This method is capable of converting to array as well as object to plain.&lt;/p&gt;
 
-&lt;p&gt;Hope this helps.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="fixes" /><summary type="html">In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.</summary></entry><entry><title type="html">Authentication in NestJS using firebase token</title><link href="https://kuros.in/typescript/nestjs-firebase-token-authentication/" rel="alternate" type="text/html" title="Authentication in NestJS using firebase token" /><published>2021-08-29T00:00:00+00:00</published><updated>2021-08-29T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-firebase-token-authentication</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-firebase-token-authentication/">&lt;p&gt;You have build your nest microservice, but you want to secure your application using firebase tokens.&lt;/p&gt;
+&lt;p&gt;Hope this helps.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="fixes" /><summary type="html">In node, working with firestore models can be tricky. When you use a new keyword to initialise an object, Firestore throws error.</summary></entry><entry><title type="html">Authentication in NestJS using firebase token</title><link href="https://kuros.in/typescript/nestjs-firebase-token-authentication/" rel="alternate" type="text/html" title="Authentication in NestJS using firebase token" /><published>2021-08-29T00:00:00-05:00</published><updated>2021-08-29T00:00:00-05:00</updated><id>https://kuros.in/typescript/nestjs-firebase-token-authentication</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-firebase-token-authentication/">&lt;p&gt;You have build your nest microservice, but you want to secure your application using firebase tokens.&lt;/p&gt;
 
 &lt;p&gt;In earlier post, we had &lt;a href=&quot;/typescript/nestjs-getting-started/&quot;&gt;set up a nestJs application&lt;/a&gt; with simple controller. 
 Now we will set up authentication using firebase auth tokens.&lt;/p&gt;
@@ -1140,7 +1236,7 @@ But when you will try to access &lt;code class=&quot;language-plaintext highligh
 &lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;statusCode&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;403&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;timestamp&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2021-08-29T14:28:31.324Z&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;path&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/secure/ping&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;message&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;access denied&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Now you need firebase token to access the apis.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">You have build your nest microservice, but you want to secure your application using firebase tokens.</summary></entry><entry><title type="html">NestJs</title><link href="https://kuros.in/typescript/nestjs-getting-started/" rel="alternate" type="text/html" title="NestJs" /><published>2021-08-16T00:00:00+00:00</published><updated>2021-08-16T00:00:00+00:00</updated><id>https://kuros.in/typescript/nestjs-getting-started</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-getting-started/">&lt;p&gt;Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code.
+&lt;p&gt;Now you need firebase token to access the apis.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">You have build your nest microservice, but you want to secure your application using firebase tokens.</summary></entry><entry><title type="html">NestJs</title><link href="https://kuros.in/typescript/nestjs-getting-started/" rel="alternate" type="text/html" title="NestJs" /><published>2021-08-16T00:00:00-05:00</published><updated>2021-08-16T00:00:00-05:00</updated><id>https://kuros.in/typescript/nestjs-getting-started</id><content type="html" xml:base="https://kuros.in/typescript/nestjs-getting-started/">&lt;p&gt;Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code.
 At the same time, I had to write a lot of boilerplate code to follow SOLID principles.&lt;/p&gt;
 
 &lt;p&gt;I started to look for js framework which would simplify these things.
@@ -1259,7 +1355,7 @@ The starting for point for any NestJs application in &lt;code class=&quot;langua
   &lt;li&gt;Learning curve&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;I found it really easy to get started, hope you also find it interesting.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code. At the same time, I had to write a lot of boilerplate code to follow SOLID principles.</summary></entry><entry><title type="html">Publish artifacts to gcp using github actions.</title><link href="https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/" rel="alternate" type="text/html" title="Publish artifacts to gcp using github actions." /><published>2021-07-20T00:00:00+00:00</published><updated>2021-07-20T00:00:00+00:00</updated><id>https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions</id><content type="html" xml:base="https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/">&lt;p&gt;Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
+&lt;p&gt;I found it really easy to get started, hope you also find it interesting.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code. At the same time, I had to write a lot of boilerplate code to follow SOLID principles.</summary></entry><entry><title type="html">Publish artifacts to gcp using github actions.</title><link href="https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/" rel="alternate" type="text/html" title="Publish artifacts to gcp using github actions." /><published>2021-07-20T00:00:00-05:00</published><updated>2021-07-20T00:00:00-05:00</updated><id>https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions</id><content type="html" xml:base="https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/">&lt;p&gt;Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
 However, Github package has a constraint of 500mb size, which is quite low.&lt;/p&gt;
 
 &lt;p&gt;Lets compare the pricing for both github &amp;amp; gcp (as of July 2021)&lt;/p&gt;
@@ -1401,23 +1497,4 @@ token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_PRO
 
 &lt;p&gt;This is required because the extensions are not build to load parent pom, so it has to be run in the pre-build step.&lt;/p&gt;
 
-&lt;p&gt;And, there you have it, publish &amp;amp; use artifacts from GCP&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gcp" /><category term="ci/cd" /><category term="github-actions" /><summary type="html">Github gives a generous limits for your private projects, its to good for your private repos or even small startups. However, Github package has a constraint of 500mb size, which is quite low.</summary></entry><entry><title type="html">Fixing Sass invalid ascii character errors</title><link href="https://kuros.in/ci/cd/sass-invalid-ascii-character/" rel="alternate" type="text/html" title="Fixing Sass invalid ascii character errors" /><published>2021-07-19T00:00:00+00:00</published><updated>2021-07-19T00:00:00+00:00</updated><id>https://kuros.in/ci/cd/sass-invalid-ascii-character</id><content type="html" xml:base="https://kuros.in/ci/cd/sass-invalid-ascii-character/">&lt;p&gt;I was working with my jekyll site, and I started getting the below error.&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Jekyll Feed: Generating feed &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;posts
-GitHub Metadata: No GitHub API authentication could be found. Some fields may be missing or have incorrect data.
-Conversion error: Jekyll::Converters::Scss encountered an error &lt;span class=&quot;k&quot;&gt;while &lt;/span&gt;converting &lt;span class=&quot;s1&quot;&gt;'assets/css/main.scss'&lt;/span&gt;:
-					Invalid US-ASCII character &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E2&quot;&lt;/span&gt; on line 54
-jekyll 3.9.0 | Error:  Invalid US-ASCII character &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;E2&quot;&lt;/span&gt; on line 54
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Spend a lot of time flustered and googling round, I did try to run in debug more, identifying each error and trying to fix it.
-But it was mundane. So after, lots of googling, here is what I found out which worked for me.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-fix&quot;&gt;The Fix&lt;/h2&gt;
-&lt;p&gt;In order to fix this, you add below variable in your .bashrc/.zshrc file (in your home folder).&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;LC_ALL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;en_US.UTF-8
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;LANG&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;en_US.UTF-8
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Once you have exported the language, the issue got resolved.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="CI/CD" /><summary type="html">I was working with my jekyll site, and I started getting the below error.</summary></entry></feed>
+&lt;p&gt;And, there you have it, publish &amp;amp; use artifacts from GCP&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gcp" /><category term="ci/cd" /><category term="github-actions" /><summary type="html">Github gives a generous limits for your private projects, its to good for your private repos or even small startups. However, Github package has a constraint of 500mb size, which is quite low.</summary></entry></feed>
