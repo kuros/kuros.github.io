@@ -4,6 +4,8 @@ COPY Gemfile* ./
 
 RUN gem install bundler:2.2.24 && bundle install
 
+ENV TZ="Asia/Kolkata"
+
 ENTRYPOINT [ "jekyll" ]
 
 CMD [ "build" ]
