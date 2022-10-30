@@ -24,9 +24,13 @@ case $1 in
             -t jekyll
     ;;
     'serve')
-    docker run \
+        echo "Building docker image of Jekyll"
+            docker build -t jekyll .
+
+        docker run \
             --volume="$PWD:/srv/jekyll:Z" \
             -p 4000:4000 \
-            -it jekyll serve
+            -e JEKYLL_ENV=dev \
+            -it jekyll serve --incremental --config _config.yml,_config.dev.yml
     ;;
 esac

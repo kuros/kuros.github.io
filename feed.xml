@@ -1,4 +1,598 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2022-10-31T00:19:49+05:30</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning.</subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">Create Docker Container to Run Jekyll</title><link href="https://kuros.in/docker/docker-jekyll-container-to-serve-locally/" rel="alternate" type="text/html" title="Create Docker Container to Run Jekyll" /><published>2022-06-26T00:00:00+05:30</published><updated>2022-06-26T00:00:00+05:30</updated><id>https://kuros.in/docker/docker-jekyll-container-to-serve-locally</id><content type="html" xml:base="https://kuros.in/docker/docker-jekyll-container-to-serve-locally/">&lt;p&gt;I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I always get into trouble of installing/managing ruby version, bundles etc. To my rescue comes the docker, I have created a simple a docker file and script to serve my jekyll pages locally, and it now works like a charm.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2022-10-31T02:06:00+05:30</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning.</subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">Testing lambda &amp;amp; sqs integration locally using localstack</title><link href="https://kuros.in/aws/terraform/test-lambda-events-locally-using-localstack/" rel="alternate" type="text/html" title="Testing lambda &amp;amp; sqs integration locally using localstack" /><published>2022-10-29T00:00:00+05:30</published><updated>2022-10-29T00:00:00+05:30</updated><id>https://kuros.in/aws/terraform/test-lambda-events-locally-using-localstack</id><content type="html" xml:base="https://kuros.in/aws/terraform/test-lambda-events-locally-using-localstack/">&lt;p&gt;Running serverless is fun, cost-effective and scalable especially if your application is still growing.
+But at the same time I found testing lambdas locally to be a pain, especially if you want to test your application integration with SQS or SNS.
+In this article, I will share my take on how I did it to test my applications.&lt;/p&gt;
+
+&lt;h1 id=&quot;problem-statement&quot;&gt;Problem Statement&lt;/h1&gt;
+&lt;p&gt;I have created many microservices using NestJS as my core framework. 
+Each of my microservice is designed to handle one business feature (e.g. each microservice will have GET/POST/PATCH/PUT/DELETE per business entity).&lt;/p&gt;
+
+&lt;p&gt;Logical grouping helps us keep our microservices small and at the same time prevents us from service explosion, thus letting us do a population control of microservices.&lt;/p&gt;
+
+&lt;p&gt;As a part of logical grouping, in my microservice, I am also handling SQS/SNS messages within the same lambda.&lt;/p&gt;
+
+&lt;h1 id=&quot;solution&quot;&gt;Solution&lt;/h1&gt;
+&lt;p&gt;Since my aim was to test the events on my local server, here is what I will do.&lt;/p&gt;
+
+&lt;p&gt;Create a lambda which routes all the events to my web application. Setup SQS with this as target lambda, simple.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2022/localstack-sqs-handler.svg&quot; alt=&quot;sqs-handler-arch&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You can skip the initial setup and jump directly to &lt;a href=&quot;/aws/terraform/test-lambda-events-locally-using-localstack//#sqs--lambda-integration&quot;&gt;SQS &amp;amp; Lambda integration&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;setting-up-sample-nestjs-app&quot;&gt;Setting up sample NestJS app&lt;/h1&gt;
+&lt;p&gt;I am using a nodejs application but the idea can be leveraged across any other language. I will create a sample lambda function using NestJS, for details refer &lt;a href=&quot;/typescript/nestjs-getting-started/&quot;&gt;set up a nestJs application&lt;/a&gt;
+Once the NestJS application is set up, we need to add wrappers to convert it into lambda function, for which we will add &lt;a href=&quot;/nestjs/deploy-nestjs-application-on-aws-lambda//#serverless-dependencies&quot;&gt;serverless dependencies&lt;/a&gt;
+Then we add &lt;a href=&quot;/nestjs/deploy-nestjs-application-on-aws-lambda//#creating-handler&quot;&gt;handlers&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So now our lambda is all setup to be deployed on aws. In this article, I am not going in details on how to deploy it on aws, but you can refer this &lt;a href=&quot;/nestjs/deploy-nestjs-application-on-aws-lambda/&quot;&gt;article to do via serverless framework&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;sqs-message-handler&quot;&gt;SQS message handler&lt;/h2&gt;
+&lt;p&gt;If the lambda event contains we will be processing the received messages. For simplicity, I am just logging the message event, in real world application, you would have a factory which will handle each type of messages.&lt;/p&gt;
+
+&lt;p&gt;The modified handler will look something like this.&lt;/p&gt;
+
+&lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NestFactory&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@nestjs/core&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppModule&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;./app.module&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serverlessExpress&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;@vendia/serverless-express&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Handler&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;aws-lambda&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bootstrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;NestFactory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;AppModule&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+  &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;expressApp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getHttpAdapter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getInstance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;serverlessExpress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;expressApp&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;handleMessage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Message received: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; 
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Handler&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;handleMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Records&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; 
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;nx&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;??&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;bootstrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;());&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;callback&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Here I have a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;handleMessage&lt;/code&gt; function which is just printing all the records.
+Now our application is ready to receive messages&lt;/p&gt;
+
+&lt;h1 id=&quot;setup-localstack&quot;&gt;Setup Localstack&lt;/h1&gt;
+&lt;p&gt;First thing we need to install &lt;a href=&quot;https://localstack.cloud/&quot;&gt;Localstack&lt;/a&gt; on my local, I will be using a docker image for it. 
+So create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt; to initialize localstack&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3.7&quot;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;localstack&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;${LOCALSTACK_DOCKER_NAME-localstack_main}&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;localstack/localstack:1.2.0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;network_mode&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bridge&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1:53:53&quot;&lt;/span&gt;                &lt;span class=&quot;c1&quot;&gt;# only required for Pro (DNS)&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1:53:53/udp&quot;&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;# only required for Pro (DNS)&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1:443:443&quot;&lt;/span&gt;              &lt;span class=&quot;c1&quot;&gt;# only required for Pro (LocalStack HTTPS Edge Proxy)&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1:4510-4559:4510-4559&quot;&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# external service port range&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;127.0.0.1:4566:4566&quot;&lt;/span&gt;            &lt;span class=&quot;c1&quot;&gt;# LocalStack Edge Proxy&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;SERVICES=${SERVICES-}&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DEBUG=${DEBUG-}&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DATA_DIR=${DATA_DIR-}&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY-}&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# only required for Pro&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DOCKER_HOST=unix:///var/run/docker.sock&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;${TMPDIR:-/tmp}/localstack:/tmp/localstack&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/run/docker.sock:/var/run/docker.sock&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./localstack_bootstrap:/docker-entrypoint-initaws.d/&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;now when do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up&lt;/code&gt;, this will download the localstack (v1.2.0) and start it. To verify weather the service are up and running, 
+just to go &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://localhost:4566/health&lt;/code&gt; in your browser, it would be something like this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2022/localstack-health.webp&quot; alt=&quot;sqs-handler-arch&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;install-terraform&quot;&gt;Install Terraform&lt;/h1&gt;
+
+&lt;p&gt;I will be using &lt;a href=&quot;https://developer.hashicorp.com/terraform&quot;&gt;Terraform&lt;/a&gt; to set up my infrastructure. 
+To install follow the instructions given &lt;a href=&quot;https://developer.hashicorp.com/terraform/downloads&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;sqs--lambda-integration&quot;&gt;SQS &amp;amp; Lambda Integration&lt;/h1&gt;
+&lt;p&gt;This is main section where all the magic happens.&lt;/p&gt;
+
+&lt;h2 id=&quot;setup-terraform-provider&quot;&gt;Setup Terraform Provider&lt;/h2&gt;
+
+&lt;p&gt;We need to setup localstack as out aws provider, to do this, we will override the endpoints and provide random secrets.&lt;/p&gt;
+
+&lt;div class=&quot;language-terraform highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;provider&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;aws&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;access_key&lt;/span&gt;                  &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;secret_key&lt;/span&gt;                  &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;test&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;region&lt;/span&gt;                      &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;us-east-1&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;s3_force_path_style&lt;/span&gt;         &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;skip_credentials_validation&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;skip_metadata_api_check&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;skip_requesting_account_id&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+
+  &lt;span class=&quot;nx&quot;&gt;endpoints&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;apigateway&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;apigatewayv2&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;cloudformation&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;cloudwatch&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;dynamodb&lt;/span&gt;       &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;ec2&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;es&lt;/span&gt;             &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;elasticache&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;firehose&lt;/span&gt;       &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;iam&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;kinesis&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;lambda&lt;/span&gt;         &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;rds&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;redshift&lt;/span&gt;       &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;route53&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;s3&lt;/span&gt;             &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://s3.localhost.localstack.cloud:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;secretsmanager&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;ses&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;sns&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;sqs&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;ssm&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;stepfunctions&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;sts&lt;/span&gt;            &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566&quot;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;helper-lambda&quot;&gt;Helper Lambda&lt;/h2&gt;
+&lt;p&gt;We will create a lambda which will forward the event to my application.
+This is very simple lambda, create in file &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lambda/src/main.ts&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;axios&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axiosResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axios&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;statusCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Content-Type&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;application/json&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axiosResponse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;?.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;axiosResponse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;statusCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Content-Type&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;application/json&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;JSON&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stringify&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;We are using axios to make post request to the given url.&lt;/p&gt;
+
+&lt;p&gt;I created a script to compile the application &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scripts/build.sh&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; lambda_function.zip
+&lt;span class=&quot;nb&quot;&gt;pushd &lt;/span&gt;lambda &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
+npm &lt;span class=&quot;nb&quot;&gt;install
+&lt;/span&gt;npm run build
+&lt;span class=&quot;nb&quot;&gt;popd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;creating-lambda-in-localstack&quot;&gt;Creating lambda in localstack&lt;/h2&gt;
+&lt;p&gt;I am creating &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lambda.tf&lt;/code&gt;, in this file,&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;we will create &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aws_iam_role&lt;/code&gt; for this lambda.&lt;/li&gt;
+  &lt;li&gt;We will use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;null_resource&lt;/code&gt; to execute the above script created, it will be triggered if &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;main.ts&lt;/code&gt; gets modified&lt;/li&gt;
+  &lt;li&gt;Then we create a zip file for our lambda using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;archive_file&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Finally, we create lambda by the name of helper lambda &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aws_lambda_function&lt;/code&gt;. We are also passing the environment variable here.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-terraform highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;resource&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;aws_iam_role&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;iam_for_lambda&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;iam_for_lambda&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;nx&quot;&gt;assume_role_policy&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+{
+  &quot;Version&quot;: &quot;2012-10-17&quot;,
+  &quot;Statement&quot;: [
+    {
+      &quot;Action&quot;: &quot;sts:AssumeRole&quot;,
+      &quot;Principal&quot;: {
+        &quot;Service&quot;: &quot;lambda.amazonaws.com&quot;
+      },
+      &quot;Effect&quot;: &quot;Allow&quot;,
+      &quot;Sid&quot;: &quot;&quot;
+    }
+  ]
+}
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;resource&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;null_resource&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;build&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;triggers&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;versions&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;filesha256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./lambda/src/main.ts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;provisioner&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;local-exec&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/bin/bash ./scripts/build.sh&quot;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;archive_file&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda_zip&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;zip&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;source_dir&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;./lambda&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;output_path&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda_function.zip&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;excludes&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;./lambda/src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+  &lt;span class=&quot;nx&quot;&gt;depends_on&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;null_resource&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;resource&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;aws_lambda_function&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;filename&lt;/span&gt;         &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda_function.zip&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;function_name&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;helper-lambda&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;role&lt;/span&gt;             &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aws_iam_role&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;iam_for_lambda&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arn&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt;          &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;dist/main.handler&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;source_code_hash&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;filebase64sha256&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;lambda_function.zip&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;runtime&lt;/span&gt;          &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;nodejs16.x&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;environment&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;variables&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;URL&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;nx&quot;&gt;depends_on&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;archive_file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lambda_zip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;sqs&quot;&gt;SQS&lt;/h2&gt;
+&lt;p&gt;Next we will create the queue and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;helper-lambda&lt;/code&gt; as its trigger, so that when ever the message is received by SQS it would trigger the lambda with that message.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aws_sqs_queue&lt;/code&gt; creates a queue with name ‘test-queue’, i&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-terraform highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;resource&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;aws_sqs_queue&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;test-queue&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;test-queue&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;visibility_timeout_seconds&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;300&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;resource&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;aws_lambda_event_source_mapping&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;test_queue_lambda_mapping&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;batch_size&lt;/span&gt;        &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;event_source_arn&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aws_sqs_queue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arn&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;enabled&lt;/span&gt;           &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;function_name&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;aws_lambda_function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lambda&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;function_name&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;variabletf&quot;&gt;variable.tf&lt;/h2&gt;
+&lt;p&gt;Finally, we create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;variable.tf&lt;/code&gt; to store variables, in this case I want to create variable named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;url&lt;/code&gt; which I am using in my lambda environment variable.&lt;/p&gt;
+
+&lt;div class=&quot;language-terraform highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;variable&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;url&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;string&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Url for forwarding the event&quot;&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://host.docker.internal:3001/lambda-handler&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Notice&lt;/strong&gt; I am using &lt;strong&gt;host.docker.internal&lt;/strong&gt; instead of &lt;del&gt;localhost&lt;/del&gt;, it’s because the lambda would be running inside my docker, 
+and to access my host ip from within docker container I use ‘host.docker.internal’.&lt;/p&gt;
+
+&lt;p&gt;So, our terraform script are ready.&lt;/p&gt;
+
+&lt;p&gt;now we will do:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;terraform init&lt;/code&gt;, it will download module dependencies for aws.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;terraform plan&lt;/code&gt;, this will generate details of the resources to be created. In this case it will be like this.&lt;/p&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;terraform plan
+  
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+ &amp;lt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;read&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;data resources&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  
+Terraform will perform the following actions:
+  
+  &lt;span class=&quot;c&quot;&gt;# data.archive_file.lambda_zip will be read during apply&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# (depends on a resource or a module with changes pending)&lt;/span&gt;
+ &amp;lt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; data &lt;span class=&quot;s2&quot;&gt;&quot;archive_file&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda_zip&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      + excludes            &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
+          + &lt;span class=&quot;s2&quot;&gt;&quot;./lambda/src&quot;&lt;/span&gt;,
+        &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+      + &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + output_base64sha256 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + output_md5          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + output_path         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda_function.zip&quot;&lt;/span&gt;
+      + output_sha          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + output_size         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + source_dir          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;./lambda&quot;&lt;/span&gt;
+      + &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;                &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;zip&quot;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;c&quot;&gt;# aws_iam_role.iam_for_lambda_tf will be created&lt;/span&gt;
+  + resource &lt;span class=&quot;s2&quot;&gt;&quot;aws_iam_role&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;iam_for_lambda&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      + arn                   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + assume_role_policy    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; jsonencode&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+              + Statement &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;
+                  + &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                      + Action    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;sts:AssumeRole&quot;&lt;/span&gt;
+                      + Effect    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Allow&quot;&lt;/span&gt;
+                      + Principal &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                          + Service &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda.amazonaws.com&quot;&lt;/span&gt;
+                        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+                      + Sid       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+                    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+                &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+              + Version   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;2012-10-17&quot;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + create_date           &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + force_detach_policies &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+      + &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;                    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + managed_policy_arns   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + max_session_duration  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3600
+      + name                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;iam_for_lambda&quot;&lt;/span&gt;
+      + name_prefix           &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + path                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;
+      + tags_all              &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + unique_id             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  
+      + inline_policy &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          + name   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+          + policy &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;c&quot;&gt;# aws_lambda_event_source_mapping.test_queue_lambda_mapping will be created&lt;/span&gt;
+  + resource &lt;span class=&quot;s2&quot;&gt;&quot;aws_lambda_event_source_mapping&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;test_queue_lambda_mapping&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      + batch_size                    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 10
+      + enabled                       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+      + event_source_arn              &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + function_arn                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + function_name                 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;helper-lambda&quot;&lt;/span&gt;
+      + &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;                            &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + last_modified                 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + last_processing_result        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + maximum_record_age_in_seconds &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + maximum_retry_attempts        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + parallelization_factor        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + state                         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + state_transition_reason       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + uuid                          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  
+      + amazon_managed_kafka_event_source_config &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          + consumer_group_id &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+      + self_managed_kafka_event_source_config &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          + consumer_group_id &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;c&quot;&gt;# aws_lambda_function.lambda will be created&lt;/span&gt;
+  + resource &lt;span class=&quot;s2&quot;&gt;&quot;aws_lambda_function&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      + architectures                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + arn                            &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + filename                       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;lambda_function.zip&quot;&lt;/span&gt;
+      + function_name                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;helper-lambda&quot;&lt;/span&gt;
+      + handler                        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;dist/main.handler&quot;&lt;/span&gt;
+      + &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;                             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + invoke_arn                     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + last_modified                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + memory_size                    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 128
+      + package_type                   &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Zip&quot;&lt;/span&gt;
+      + publish                        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+      + qualified_arn                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + qualified_invoke_arn           &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + reserved_concurrent_executions &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-1&lt;/span&gt;
+      + role                           &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + runtime                        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;nodejs16.x&quot;&lt;/span&gt;
+      + signing_job_arn                &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + signing_profile_version_arn    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + source_code_hash               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;
+      + source_code_size               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + tags_all                       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + &lt;span class=&quot;nb&quot;&gt;timeout&lt;/span&gt;                        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3
+      + version                        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  
+      + environment &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          + variables &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+              + &lt;span class=&quot;s2&quot;&gt;&quot;URL&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:3001/lambda-handler&quot;&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+      + ephemeral_storage &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          + size &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+      + tracing_config &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          + mode &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;c&quot;&gt;# aws_sqs_queue.test-queue will be created&lt;/span&gt;
+  + resource &lt;span class=&quot;s2&quot;&gt;&quot;aws_sqs_queue&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;test-queue&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      + arn                               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + content_based_deduplication       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+      + deduplication_scope               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + delay_seconds                     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+      + fifo_queue                        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+      + fifo_throughput_limit             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;                                &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + kms_data_key_reuse_period_seconds &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + max_message_size                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 262144
+      + message_retention_seconds         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 345600
+      + name                              &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;test-queue&quot;&lt;/span&gt;
+      + name_prefix                       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + policy                            &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + receive_wait_time_seconds         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0
+      + redrive_allow_policy              &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + redrive_policy                    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + sqs_managed_sse_enabled           &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + tags_all                          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + url                               &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + visibility_timeout_seconds        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 300
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+  &lt;span class=&quot;c&quot;&gt;# null_resource.build will be created&lt;/span&gt;
+  + resource &lt;span class=&quot;s2&quot;&gt;&quot;null_resource&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;build&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+      + &lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+      + triggers &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+          + &lt;span class=&quot;s2&quot;&gt;&quot;versions&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;ffef874951cd9c637c7d1699b1604f6b6c5f957a14ca3bc9686bb44731fff0e9&quot;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+  
+Plan: 5 to add, 0 to change, 0 to destroy.
+  
+Changes to Outputs:
+  + lambda     &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  + test-queue &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;known after apply&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+╷
+│ Warning: Argument is deprecated
+│ 
+│   with provider[&lt;span class=&quot;s2&quot;&gt;&quot;registry.terraform.io/hashicorp/aws&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
+│   on provider.tf line 5, &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;provider &lt;span class=&quot;s2&quot;&gt;&quot;aws&quot;&lt;/span&gt;:
+│    5:   s3_force_path_style         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+│ 
+│ Use s3_use_path_style instead.
+│ 
+│ &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;and one more similar warning elsewhere&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+╵
+╷
+│ Warning: Attribute Deprecated
+│ 
+│   with provider[&lt;span class=&quot;s2&quot;&gt;&quot;registry.terraform.io/hashicorp/aws&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
+│   on provider.tf line 5, &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;provider &lt;span class=&quot;s2&quot;&gt;&quot;aws&quot;&lt;/span&gt;:
+│    5:   s3_force_path_style         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+│ 
+│ Use s3_use_path_style instead.
+│ 
+│ &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;and one more similar warning elsewhere&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+╵
+  
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  
+Note: You didn&lt;span class=&quot;s1&quot;&gt;'t use the -out option to save this plan, so Terraform can'&lt;/span&gt;t guarantee to take exactly these actions &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;you run &lt;span class=&quot;s2&quot;&gt;&quot;terraform apply&quot;&lt;/span&gt; now.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;terraform apply --auto-approve&lt;/code&gt; to finally create the resources.&lt;/p&gt;
+
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;null_resource.build: Creating...
+null_resource.build: Provisioning with &lt;span class=&quot;s1&quot;&gt;'local-exec'&lt;/span&gt;...
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: Executing: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/bin/sh&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;-c&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/bin/bash ./scripts/build.sh&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: ~/Documents/github/blog-code/terraform/sqs-lambda-integration-localstack/lambda ~/Documents/github/blog-code/terraform/sqs-lambda-integration-localstack
+aws_iam_role.iam_for_lambda: Creating...
+aws_sqs_queue.test-queue: Creating...
+aws_iam_role.iam_for_lambda: Creation &lt;span class=&quot;nb&quot;&gt;complete &lt;/span&gt;after 0s &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;iam_for_lambda]
+  
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: up to &lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;, audited 322 packages &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;2s
+  
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: 41 packages are looking &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;funding
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:   run &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;npm fund&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;details
+  
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: found 0 vulnerabilities
+  
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; lamda@0.0.1 prebuild
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; rimraf dist
+  
+  
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; lamda@0.0.1 build
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; npm run tsc
+  
+  
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; lamda@0.0.1 tsc
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; tsc &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tsconfig.json &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; tsc &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tsconfig.build.json
+  
+null_resource.build &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;local-exec&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: ~/Documents/github/blog-code/terraform/sqs-lambda-integration-localstack
+null_resource.build: Creation &lt;span class=&quot;nb&quot;&gt;complete &lt;/span&gt;after 8s &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5577006791947779410]
+data.archive_file.lambda_zip: Reading...
+aws_sqs_queue.test-queue: Still creating... &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10s elapsed]
+data.archive_file.lambda_zip: Read &lt;span class=&quot;nb&quot;&gt;complete &lt;/span&gt;after 8s &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;245dcc34cbcf937d81b543bffd855dcda246f144]
+aws_lambda_function.lambda: Creating...
+aws_sqs_queue.test-queue: Still creating... &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;20s elapsed]
+aws_lambda_function.lambda: Creation &lt;span class=&quot;nb&quot;&gt;complete &lt;/span&gt;after 8s &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;helper-lambda]
+aws_sqs_queue.test-queue: Creation &lt;span class=&quot;nb&quot;&gt;complete &lt;/span&gt;after 25s &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://localhost:4566/000000000000/test-queue]
+aws_lambda_event_source_mapping.test_queue_lambda_mapping: Creating...
+aws_lambda_event_source_mapping.test_queue_lambda_mapping: Creation &lt;span class=&quot;nb&quot;&gt;complete &lt;/span&gt;after 0s &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;d6634787-8cc0-4366-aedc-cfd18ab75c9c]
+╷
+│ Warning: Argument is deprecated
+│ 
+│   with provider[&lt;span class=&quot;s2&quot;&gt;&quot;registry.terraform.io/hashicorp/aws&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
+│   on provider.tf line 5, &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;provider &lt;span class=&quot;s2&quot;&gt;&quot;aws&quot;&lt;/span&gt;:
+│    5:   s3_force_path_style         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+│ 
+│ Use s3_use_path_style instead.
+│ 
+│ &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;and 2 more similar warnings elsewhere&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+╵
+╷
+│ Warning: Attribute Deprecated
+│ 
+│   with provider[&lt;span class=&quot;s2&quot;&gt;&quot;registry.terraform.io/hashicorp/aws&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
+│   on provider.tf line 5, &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;provider &lt;span class=&quot;s2&quot;&gt;&quot;aws&quot;&lt;/span&gt;:
+│    5:   s3_force_path_style         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;
+│ 
+│ Use s3_use_path_style instead.
+│ 
+│ &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;and 2 more similar warnings elsewhere&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+╵
+  
+Apply &lt;span class=&quot;nb&quot;&gt;complete&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; Resources: 5 added, 0 changed, 0 destroyed.
+  
+Outputs:
+  
+lambda &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:helper-lambda/invocations&quot;&lt;/span&gt;
+test-queue &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://localhost:4566/000000000000/test-queue&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And you have your lambda &amp;amp; sqs integration created.&lt;/p&gt;
+&lt;h1 id=&quot;lambda-handler-in-main-app&quot;&gt;Lambda handler in main app&lt;/h1&gt;
+
+&lt;p&gt;Before, we start our test, we need to create a post controller in our main application, which will be triggered by our deployed lambda.&lt;/p&gt;
+
+&lt;div class=&quot;language-typescript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;@nestjs/common&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;./lambda&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;Controller&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppController&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+  &lt;span class=&quot;p&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;Post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/lambda-handler&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;lambdaHandler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(@&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;Body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reqeust&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;handler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reqeust&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reqeust&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;Time to test our integration, I am using aws cli to send the message to SQS.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;aws sqs send-message &lt;span class=&quot;nt&quot;&gt;--endpoint&lt;/span&gt; http://localhost:4566  &lt;span class=&quot;nt&quot;&gt;--queue-url&lt;/span&gt; http://localhost:4566/000000000000/test-queue &lt;span class=&quot;nt&quot;&gt;--message-body&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;hello&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# generated output&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&quot;MD5OfMessageBody&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;5d41402abc4b2a76b9719d911017c592&quot;&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&quot;MessageId&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;2d0fc032-64ca-49a6-9f98-868854013942&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After a moment later, we can see the output in our main application’s log:&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Message received: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;body&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;hello&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;receiptHandle&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;YjhjNDBlZGMtYjAxNi00YTNhLWFmZjEtZWU4MjI5YmE4NDZiIGFybjphd3M6c3FzOnVzLWVhc3QtMTowMDAwMDAwMDAwMDA6dGVzdC1xdWV1ZSAyZDBmYzAzMi02NGNhLTQ5YTYtOWY5OC04Njg4NTQwMTM5NDIgMTY2NzExOTA4My43NjI1NA==&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;md5OfBody&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;5d41402abc4b2a76b9719d911017c592&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;eventSourceARN&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;arn:aws:sqs:us-east-1:000000000000:test-queue&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;eventSource&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;aws:sqs&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;awsRegion&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;us-east-1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;messageId&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;2d0fc032-64ca-49a6-9f98-868854013942&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;attributes&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SenderId&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;000000000000&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;SentTimestamp&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;1667119082819&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;ApproximateReceiveCount&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;1&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;ApproximateFirstReceiveTimestamp&quot;&lt;/span&gt;:&lt;span class=&quot;s2&quot;&gt;&quot;1667119083762&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;messageAttributes&quot;&lt;/span&gt;:&lt;span class=&quot;o&quot;&gt;{}}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For me this architecture has reduced my efforts in testing SQS events integration with lambda(I am running more than 20 copies of this helper lambda for all my microservices endpoint)&lt;/p&gt;
+
+&lt;p&gt;I would surely love to listen to you as well, how are you testing SQS &amp;amp; Lambda in your local environment.
+You can find terraform &amp;amp; lambda code on &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/terraform/sqs-lambda-integration-localstack&quot;&gt;github&lt;/a&gt;&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="aws" /><category term="terraform" /><summary type="html">Running serverless is fun, cost-effective and scalable especially if your application is still growing. But at the same time I found testing lambdas locally to be a pain, especially if you want to test your application integration with SQS or SNS. In this article, I will share my take on how I did it to test my applications.</summary></entry><entry><title type="html">Create Docker Container to Run Jekyll</title><link href="https://kuros.in/docker/docker-jekyll-container-to-serve-locally/" rel="alternate" type="text/html" title="Create Docker Container to Run Jekyll" /><published>2022-06-26T00:00:00+05:30</published><updated>2022-06-26T00:00:00+05:30</updated><id>https://kuros.in/docker/docker-jekyll-container-to-serve-locally</id><content type="html" xml:base="https://kuros.in/docker/docker-jekyll-container-to-serve-locally/">&lt;p&gt;I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I always get into trouble of installing/managing ruby version, bundles etc. To my rescue comes the docker, I have created a simple a docker file and script to serve my jekyll pages locally, and it now works like a charm.&lt;/p&gt;
 
 &lt;p&gt;I always have been admirer of docker, I tend to use docker more often if have to install any dev app, databases etc or package but still want to keep my machine clean.
 In this case as well I wanted a consistent mechanism to run my blogs locally.&lt;/p&gt;
@@ -1355,146 +1949,4 @@ The starting for point for any NestJs application in &lt;code class=&quot;langua
   &lt;li&gt;Learning curve&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;I found it really easy to get started, hope you also find it interesting.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code. At the same time, I had to write a lot of boilerplate code to follow SOLID principles.</summary></entry><entry><title type="html">Publish artifacts to gcp using github actions.</title><link href="https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/" rel="alternate" type="text/html" title="Publish artifacts to gcp using github actions." /><published>2021-07-20T00:00:00+05:30</published><updated>2021-07-20T00:00:00+05:30</updated><id>https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions</id><content type="html" xml:base="https://kuros.in/gcp/publish-artifacts-to-gcp-using-github-actions/">&lt;p&gt;Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
-However, Github package has a constraint of 500mb size, which is quite low.&lt;/p&gt;
-
-&lt;p&gt;Lets compare the pricing for both github &amp;amp; gcp (as of July 2021)&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Storage (per GB)&lt;/th&gt;
-      &lt;th&gt;Data Transfer (per GB)&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Github&lt;/td&gt;
-      &lt;td&gt;$0.25&lt;/td&gt;
-      &lt;td&gt;$0.50&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;GCP artifactory&lt;/td&gt;
-      &lt;td&gt;$0.10&lt;/td&gt;
-      &lt;td&gt;$0.01 - $0.15&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Looking at pricing, storing artifacts in GCP is a good idea.&lt;/p&gt;
-
-&lt;h1 id=&quot;setting-up-service-account&quot;&gt;Setting up service account&lt;/h1&gt;
-
-&lt;p&gt;The first thing, we need to set up our service account, so that github has required permission to publish the packages.&lt;/p&gt;
-
-&lt;p&gt;Login to &lt;a href=&quot;https://console.cloud.google.com&quot;&gt;google console&lt;/a&gt; and navigate to `IAM&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-iam.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;You need to add following permission for publishing artifacts (optionally you can provide &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cloud Run Service Agent&lt;/code&gt; for
-cloud run deployments)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-artifactory-sa.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Then generate &amp;amp; download key in json format&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-generate-key.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;setup-tokens&quot;&gt;Setup Tokens&lt;/h1&gt;
-
-&lt;p&gt;The first step is to set up a personal access token.&lt;/p&gt;
-
-&lt;p&gt;Go to your profile and click to settings.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/github_profile.png&quot; alt=&quot;&quot; width=&quot;20%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Go to developer section&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/github-developer.webp&quot; alt=&quot;&quot; width=&quot;60%&quot; float=&quot;right&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Add a new token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_ARTIFACTORY_SERVICE_ACCOUNT&lt;/code&gt; with the contents for download service account key. Also add another
-token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_PROJECT_ID&lt;/code&gt; with your GCP project id.&lt;/p&gt;
-
-&lt;h1 id=&quot;github-action&quot;&gt;Github Action&lt;/h1&gt;
-
-&lt;p&gt;Time to setup a github action to push artifacts to repository. You will need to add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows/ci.yaml&lt;/code&gt;
-&lt;script src=&quot;https://gist.github.com/kuros/9ab5508b6883cc9bc70abb31a88e852b.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;There are 5 steps here:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Checkout the project&lt;/li&gt;
-  &lt;li&gt;Next we are setting up GCP credentials&lt;/li&gt;
-  &lt;li&gt;Although not required, but in step 3, we are caching the .m2 folder to speed up the builds&lt;/li&gt;
-  &lt;li&gt;We are setting up Java 11&lt;/li&gt;
-  &lt;li&gt;Finally, we are deploying our package to the artifactory.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;We are using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-DaltReleaseDeploymentRepository&lt;/code&gt; argument of maven to point to our artifactory.&lt;/p&gt;
-
-&lt;h1 id=&quot;using-dependencies-from-gcp-artifactory&quot;&gt;Using dependencies from gcp artifactory&lt;/h1&gt;
-
-&lt;p&gt;In order to use the artifacts, you need to specify the repository in your pom file&lt;/p&gt;
-
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;repositories&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;repository&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;id&amp;gt;&lt;/span&gt;artifact-registry&lt;span class=&quot;nt&quot;&gt;&amp;lt;/id&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;url&amp;gt;&lt;/span&gt;artifactregistry://&lt;span class=&quot;nt&quot;&gt;&amp;lt;YOUR-ARTIFACTORY-REPO&amp;gt;&amp;lt;/url&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;releases&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;enabled&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/enabled&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/releases&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;snapshots&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;enabled&amp;gt;&lt;/span&gt;true&lt;span class=&quot;nt&quot;&gt;&amp;lt;/enabled&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/snapshots&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/repository&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/repositories&amp;gt;&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;We will also need to add wagon extension for GCP in your pom file:&lt;/p&gt;
-&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nt&quot;&gt;&amp;lt;build&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;extensions&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;extension&amp;gt;&lt;/span&gt;
-                &lt;span class=&quot;nt&quot;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;com.google.cloud.artifactregistry&lt;span class=&quot;nt&quot;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
-                &lt;span class=&quot;nt&quot;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;artifactregistry-maven-wagon&lt;span class=&quot;nt&quot;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
-                &lt;span class=&quot;nt&quot;&gt;&amp;lt;version&amp;gt;&lt;/span&gt;2.1.1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
-            &lt;span class=&quot;nt&quot;&gt;&amp;lt;/extension&amp;gt;&lt;/span&gt;
-        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/extensions&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h1 id=&quot;using-parent-from-your-artifactory&quot;&gt;Using parent from your artifactory&lt;/h1&gt;
-
-&lt;p&gt;Finally, if want to extend from parent POM from your artifactory. You will have create &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.mvn/extensions.xml&lt;/code&gt;.&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/fbe8c2a750fdbc16b7eee6434cbf598e.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;This is required because the extensions are not build to load parent pom, so it has to be run in the pre-build step.&lt;/p&gt;
-
-&lt;p&gt;And, there you have it, publish &amp;amp; use artifacts from GCP&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gcp" /><category term="ci/cd" /><category term="github-actions" /><summary type="html">Github gives a generous limits for your private projects, its to good for your private repos or even small startups. However, Github package has a constraint of 500mb size, which is quite low.</summary></entry></feed>
+&lt;p&gt;I found it really easy to get started, hope you also find it interesting.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">Coming from the Java background, I was always troubled when using javascript. To my rescue came the typescript, it was easy to co-relate and write structured code. At the same time, I had to write a lot of boilerplate code to follow SOLID principles.</summary></entry></feed>

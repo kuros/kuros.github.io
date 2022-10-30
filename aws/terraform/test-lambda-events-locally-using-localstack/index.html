@@ -1,0 +1,1628 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Testing lambda &amp; sqs integration locally using localstack - Kuros.in</title>
+<meta name="description" content="Simplify local testing of handling messages from SQS to Lambda">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Testing lambda &amp; sqs integration locally using localstack">
+<meta property="og:url" content="https://kuros.in/aws/terraform/test-lambda-events-locally-using-localstack/">
+
+
+  <meta property="og:description" content="Simplify local testing of handling messages from SQS to Lambda">
+
+
+
+  <meta property="og:image" content="https://kuros.in/images/2022/message.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-10-29T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/aws/terraform/test-lambda-events-locally-using-localstack/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/favicon.ico">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2022/message.jpg');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Testing lambda &amp; sqs integration locally using localstack
+
+        
+      </h1>
+      
+        <p class="page__lead">Simplify local testing of handling messages from SQS to Lambda
+</p>
+      
+      
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://images.unsplash.com/photo-1515879128292-964efc3ebb25?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#problem-statement">Problem Statement</a></li>
+  <li><a href="#solution">Solution</a></li>
+  <li><a href="#setting-up-sample-nestjs-app">Setting up sample NestJS app</a>
+    <ul>
+      <li><a href="#sqs-message-handler">SQS message handler</a></li>
+    </ul>
+  </li>
+  <li><a href="#setup-localstack">Setup Localstack</a></li>
+  <li><a href="#install-terraform">Install Terraform</a></li>
+  <li><a href="#sqs--lambda-integration">SQS &amp; Lambda Integration</a>
+    <ul>
+      <li><a href="#setup-terraform-provider">Setup Terraform Provider</a></li>
+      <li><a href="#helper-lambda">Helper Lambda</a></li>
+      <li><a href="#creating-lambda-in-localstack">Creating lambda in localstack</a></li>
+      <li><a href="#sqs">SQS</a></li>
+      <li><a href="#variabletf">variable.tf</a></li>
+    </ul>
+  </li>
+  <li><a href="#lambda-handler-in-main-app">Lambda handler in main app</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Testing lambda &amp; sqs integration locally using localstack">
+    <meta itemprop="description" content="Running serverless is fun, cost-effective and scalable especially if your application is still growing.But at the same time I found testing lambdas locally to be a pain, especially if you want to test your application integration with SQS or SNS.In this article, I will share my take on how I did it to test my applications.">
+    <meta itemprop="datePublished" content="2022-10-29T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>Running serverless is fun, cost-effective and scalable especially if your application is still growing.
+But at the same time I found testing lambdas locally to be a pain, especially if you want to test your application integration with SQS or SNS.
+In this article, I will share my take on how I did it to test my applications.</p>
+
+<h1 id="problem-statement">Problem Statement</h1>
+<p>I have created many microservices using NestJS as my core framework. 
+Each of my microservice is designed to handle one business feature (e.g. each microservice will have GET/POST/PATCH/PUT/DELETE per business entity).</p>
+
+<p>Logical grouping helps us keep our microservices small and at the same time prevents us from service explosion, thus letting us do a population control of microservices.</p>
+
+<p>As a part of logical grouping, in my microservice, I am also handling SQS/SNS messages within the same lambda.</p>
+
+<h1 id="solution">Solution</h1>
+<p>Since my aim was to test the events on my local server, here is what I will do.</p>
+
+<p>Create a lambda which routes all the events to my web application. Setup SQS with this as target lambda, simple.</p>
+
+<p><img src="/images/2022/localstack-sqs-handler.svg" alt="sqs-handler-arch" /></p>
+
+<p>You can skip the initial setup and jump directly to <a href="/aws/terraform/test-lambda-events-locally-using-localstack//#sqs--lambda-integration">SQS &amp; Lambda integration</a></p>
+
+<h1 id="setting-up-sample-nestjs-app">Setting up sample NestJS app</h1>
+<p>I am using a nodejs application but the idea can be leveraged across any other language. I will create a sample lambda function using NestJS, for details refer <a href="/typescript/nestjs-getting-started/">set up a nestJs application</a>
+Once the NestJS application is set up, we need to add wrappers to convert it into lambda function, for which we will add <a href="/nestjs/deploy-nestjs-application-on-aws-lambda//#serverless-dependencies">serverless dependencies</a>
+Then we add <a href="/nestjs/deploy-nestjs-application-on-aws-lambda//#creating-handler">handlers</a></p>
+
+<p>So now our lambda is all setup to be deployed on aws. In this article, I am not going in details on how to deploy it on aws, but you can refer this <a href="/nestjs/deploy-nestjs-application-on-aws-lambda/">article to do via serverless framework</a></p>
+
+<h2 id="sqs-message-handler">SQS message handler</h2>
+<p>If the lambda event contains we will be processing the received messages. For simplicity, I am just logging the message event, in real world application, you would have a factory which will handle each type of messages.</p>
+
+<p>The modified handler will look something like this.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">NestFactory</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@nestjs/core</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">AppModule</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">./app.module</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">serverlessExpress</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">@vendia/serverless-express</span><span class="dl">"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Callback</span><span class="p">,</span> <span class="nx">Context</span><span class="p">,</span> <span class="nx">Handler</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">aws-lambda</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">let</span> <span class="nx">server</span><span class="p">:</span> <span class="nx">Handler</span><span class="p">;</span>
+
+<span class="k">async</span> <span class="kd">function</span> <span class="nx">bootstrap</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">NestFactory</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">AppModule</span><span class="p">);</span>
+  <span class="k">await</span> <span class="nx">app</span><span class="p">.</span><span class="nx">init</span><span class="p">();</span>
+
+  <span class="kd">const</span> <span class="nx">expressApp</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">getHttpAdapter</span><span class="p">().</span><span class="nx">getInstance</span><span class="p">();</span>
+  <span class="k">return</span> <span class="nx">serverlessExpress</span><span class="p">({</span> <span class="na">app</span><span class="p">:</span> <span class="nx">expressApp</span> <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">handleMessage</span> <span class="o">=</span> <span class="p">(</span><span class="nx">messages</span><span class="p">:</span> <span class="kr">any</span><span class="p">[])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">messages</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">message</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Message received: </span><span class="p">${</span><span class="nx">message</span><span class="p">}</span><span class="s2">`</span><span class="p">))</span> 
+<span class="p">}</span>
+
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">handler</span><span class="p">:</span> <span class="nx">Handler</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span><span class="nx">event</span><span class="p">:</span> <span class="kr">any</span><span class="p">,</span> <span class="nx">context</span><span class="p">:</span> <span class="nx">Context</span><span class="p">,</span> <span class="nx">callback</span><span class="p">:</span> <span class="nx">Callback</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">Records</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">handleMessage</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">Records</span><span class="p">);</span>
+    <span class="k">return</span> 
+  <span class="p">}</span>
+  
+  <span class="nx">server</span> <span class="o">=</span> <span class="nx">server</span> <span class="o">??</span> <span class="p">(</span><span class="k">await</span> <span class="nx">bootstrap</span><span class="p">());</span>
+  <span class="k">return</span> <span class="nx">server</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">,</span> <span class="nx">callback</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div></div>
+<p>Here I have a <code class="language-plaintext highlighter-rouge">handleMessage</code> function which is just printing all the records.
+Now our application is ready to receive messages</p>
+
+<h1 id="setup-localstack">Setup Localstack</h1>
+<p>First thing we need to install <a href="https://localstack.cloud/">Localstack</a> on my local, I will be using a docker image for it. 
+So create a <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> to initialize localstack</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.7"</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">localstack</span><span class="pi">:</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">${LOCALSTACK_DOCKER_NAME-localstack_main}"</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">localstack/localstack:1.2.0</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">bridge</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">127.0.0.1:53:53"</span>                <span class="c1"># only required for Pro (DNS)</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">127.0.0.1:53:53/udp"</span>            <span class="c1"># only required for Pro (DNS)</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">127.0.0.1:443:443"</span>              <span class="c1"># only required for Pro (LocalStack HTTPS Edge Proxy)</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">127.0.0.1:4510-4559:4510-4559"</span>  <span class="c1"># external service port range</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">127.0.0.1:4566:4566"</span>            <span class="c1"># LocalStack Edge Proxy</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">SERVICES=${SERVICES-}</span>
+      <span class="pi">-</span> <span class="s">DEBUG=${DEBUG-}</span>
+      <span class="pi">-</span> <span class="s">DATA_DIR=${DATA_DIR-}</span>
+      <span class="pi">-</span> <span class="s">LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}</span>
+      <span class="pi">-</span> <span class="s">LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY-}</span>  <span class="c1"># only required for Pro</span>
+      <span class="pi">-</span> <span class="s">HOST_TMP_FOLDER=${TMPDIR:-/tmp/}localstack</span>
+      <span class="pi">-</span> <span class="s">DOCKER_HOST=unix:///var/run/docker.sock</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">${TMPDIR:-/tmp}/localstack:/tmp/localstack"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">/var/run/docker.sock:/var/run/docker.sock"</span>
+      <span class="pi">-</span> <span class="s">./localstack_bootstrap:/docker-entrypoint-initaws.d/</span>
+
+</code></pre></div></div>
+
+<p>now when do <code class="language-plaintext highlighter-rouge">docker-compose up</code>, this will download the localstack (v1.2.0) and start it. To verify weather the service are up and running, 
+just to go <code class="language-plaintext highlighter-rouge">http://localhost:4566/health</code> in your browser, it would be something like this.</p>
+
+<p><img src="/images/2022/localstack-health.webp" alt="sqs-handler-arch" /></p>
+
+<h1 id="install-terraform">Install Terraform</h1>
+
+<p>I will be using <a href="https://developer.hashicorp.com/terraform">Terraform</a> to set up my infrastructure. 
+To install follow the instructions given <a href="https://developer.hashicorp.com/terraform/downloads">here</a></p>
+
+<h1 id="sqs--lambda-integration">SQS &amp; Lambda Integration</h1>
+<p>This is main section where all the magic happens.</p>
+
+<h2 id="setup-terraform-provider">Setup Terraform Provider</h2>
+
+<p>We need to setup localstack as out aws provider, to do this, we will override the endpoints and provide random secrets.</p>
+
+<div class="language-terraform highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">provider</span> <span class="s2">"aws"</span> <span class="p">{</span>
+  <span class="nx">access_key</span>                  <span class="p">=</span> <span class="s2">"test"</span>
+  <span class="nx">secret_key</span>                  <span class="p">=</span> <span class="s2">"test"</span>
+  <span class="nx">region</span>                      <span class="p">=</span> <span class="s2">"us-east-1"</span>
+  <span class="nx">s3_force_path_style</span>         <span class="p">=</span> <span class="kc">false</span>
+  <span class="nx">skip_credentials_validation</span> <span class="p">=</span> <span class="kc">true</span>
+  <span class="nx">skip_metadata_api_check</span>     <span class="p">=</span> <span class="kc">true</span>
+  <span class="nx">skip_requesting_account_id</span>  <span class="p">=</span> <span class="kc">true</span>
+
+  <span class="nx">endpoints</span> <span class="p">{</span>
+    <span class="nx">apigateway</span>     <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">apigatewayv2</span>   <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">cloudformation</span> <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">cloudwatch</span>     <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">dynamodb</span>       <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">ec2</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">es</span>             <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">elasticache</span>    <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">firehose</span>       <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">iam</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">kinesis</span>        <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">lambda</span>         <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">rds</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">redshift</span>       <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">route53</span>        <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">s3</span>             <span class="p">=</span> <span class="s2">"http://s3.localhost.localstack.cloud:4566"</span>
+    <span class="nx">secretsmanager</span> <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">ses</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">sns</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">sqs</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">ssm</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">stepfunctions</span>  <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">sts</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="helper-lambda">Helper Lambda</h2>
+<p>We will create a lambda which will forward the event to my application.
+This is very simple lambda, create in file <code class="language-plaintext highlighter-rouge">lambda/src/main.ts</code></p>
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">axios</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">axios</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="p">{</span><span class="na">event</span><span class="p">:</span> <span class="nx">event</span><span class="p">,</span> <span class="na">context</span><span class="p">:</span> <span class="nx">context</span><span class="p">}</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">axiosResponse</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">URL</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">statusCode</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+      <span class="na">headers</span><span class="p">:</span> <span class="p">{</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">},</span>
+      <span class="na">body</span><span class="p">:</span> <span class="nx">axiosResponse</span><span class="p">.</span><span class="nx">data</span><span class="p">?.</span><span class="nx">body</span> <span class="o">||</span> <span class="nx">axiosResponse</span><span class="p">.</span><span class="nx">data</span>
+    <span class="p">}</span>
+  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="na">statusCode</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+      <span class="na">headers</span><span class="p">:</span> <span class="p">{</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">},</span>
+      <span class="na">body</span><span class="p">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">message</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>We are using axios to make post request to the given url.</p>
+
+<p>I created a script to compile the application <code class="language-plaintext highlighter-rouge">scripts/build.sh</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">rm</span> <span class="nt">-rf</span> lambda_function.zip
+<span class="nb">pushd </span>lambda <span class="o">||</span> <span class="nb">exit </span>1
+npm <span class="nb">install
+</span>npm run build
+<span class="nb">popd</span> <span class="o">||</span> <span class="nb">exit </span>1
+</code></pre></div></div>
+
+<h2 id="creating-lambda-in-localstack">Creating lambda in localstack</h2>
+<p>I am creating <code class="language-plaintext highlighter-rouge">lambda.tf</code>, in this file,</p>
+<ol>
+  <li>we will create <code class="language-plaintext highlighter-rouge">aws_iam_role</code> for this lambda.</li>
+  <li>We will use <code class="language-plaintext highlighter-rouge">null_resource</code> to execute the above script created, it will be triggered if <code class="language-plaintext highlighter-rouge">main.ts</code> gets modified</li>
+  <li>Then we create a zip file for our lambda using <code class="language-plaintext highlighter-rouge">archive_file</code></li>
+  <li>Finally, we create lambda by the name of helper lambda <code class="language-plaintext highlighter-rouge">aws_lambda_function</code>. We are also passing the environment variable here.</li>
+</ol>
+
+<div class="language-terraform highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">resource</span> <span class="s2">"aws_iam_role"</span> <span class="s2">"iam_for_lambda"</span> <span class="p">{</span>
+  <span class="nx">name</span> <span class="p">=</span> <span class="s2">"iam_for_lambda"</span>
+
+  <span class="nx">assume_role_policy</span> <span class="p">=</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+</span><span class="no">EOF
+</span><span class="p">}</span>
+
+<span class="k">resource</span> <span class="s2">"null_resource"</span> <span class="s2">"build"</span> <span class="p">{</span>
+  <span class="nx">triggers</span> <span class="p">=</span> <span class="p">{</span>
+    <span class="nx">versions</span> <span class="p">=</span> <span class="nx">filesha256</span><span class="p">(</span><span class="s2">"./lambda/src/main.ts"</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">provisioner</span> <span class="s2">"local-exec"</span> <span class="p">{</span>
+    <span class="nx">command</span> <span class="p">=</span> <span class="s2">"/bin/bash ./scripts/build.sh"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">data</span> <span class="s2">"archive_file"</span> <span class="s2">"lambda_zip"</span> <span class="p">{</span>
+  <span class="nx">type</span>        <span class="p">=</span> <span class="s2">"zip"</span>
+  <span class="nx">source_dir</span> <span class="p">=</span> <span class="s2">"./lambda"</span>
+  <span class="nx">output_path</span> <span class="p">=</span> <span class="s2">"lambda_function.zip"</span>
+  <span class="nx">excludes</span> <span class="p">=</span> <span class="p">[</span><span class="s2">"./lambda/src"</span><span class="p">]</span>
+
+  <span class="nx">depends_on</span> <span class="p">=</span> <span class="p">[</span><span class="nx">null_resource</span><span class="p">.</span><span class="nx">build</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="k">resource</span> <span class="s2">"aws_lambda_function"</span> <span class="s2">"lambda"</span> <span class="p">{</span>
+  <span class="nx">filename</span>         <span class="p">=</span> <span class="s2">"lambda_function.zip"</span>
+  <span class="nx">function_name</span>    <span class="p">=</span> <span class="s2">"helper-lambda"</span>
+  <span class="nx">role</span>             <span class="p">=</span> <span class="nx">aws_iam_role</span><span class="p">.</span><span class="nx">iam_for_lambda</span><span class="p">.</span><span class="nx">arn</span>
+  <span class="nx">handler</span>          <span class="p">=</span> <span class="s2">"dist/main.handler"</span>
+  <span class="nx">source_code_hash</span> <span class="p">=</span> <span class="nx">filebase64sha256</span><span class="p">(</span><span class="s2">"lambda_function.zip"</span><span class="p">)</span>
+  <span class="nx">runtime</span>          <span class="p">=</span> <span class="s2">"nodejs16.x"</span>
+  <span class="nx">environment</span> <span class="p">{</span>
+    <span class="nx">variables</span> <span class="p">=</span> <span class="p">{</span>
+      <span class="nx">URL</span> <span class="p">=</span> <span class="kd">var</span><span class="p">.</span><span class="nx">url</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="nx">depends_on</span> <span class="p">=</span> <span class="p">[</span><span class="k">data</span><span class="p">.</span><span class="nx">archive_file</span><span class="p">.</span><span class="nx">lambda_zip</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="sqs">SQS</h2>
+<p>Next we will create the queue and the <code class="language-plaintext highlighter-rouge">helper-lambda</code> as its trigger, so that when ever the message is received by SQS it would trigger the lambda with that message.</p>
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">aws_sqs_queue</code> creates a queue with name ‘test-queue’, i</li>
+</ol>
+
+<div class="language-terraform highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">resource</span> <span class="s2">"aws_sqs_queue"</span> <span class="s2">"test-queue"</span> <span class="p">{</span>
+  <span class="nx">name</span> <span class="p">=</span> <span class="s2">"test-queue"</span>
+  <span class="nx">visibility_timeout_seconds</span> <span class="p">=</span> <span class="mi">300</span>
+<span class="p">}</span>
+
+
+<span class="k">resource</span> <span class="s2">"aws_lambda_event_source_mapping"</span> <span class="s2">"test_queue_lambda_mapping"</span> <span class="p">{</span>
+  <span class="nx">batch_size</span>        <span class="p">=</span> <span class="mi">10</span>
+  <span class="nx">event_source_arn</span>  <span class="p">=</span> <span class="nx">aws_sqs_queue</span><span class="p">.</span><span class="nx">test</span><span class="err">-</span><span class="nx">queue</span><span class="p">.</span><span class="nx">arn</span>
+  <span class="nx">enabled</span>           <span class="p">=</span> <span class="kc">true</span>
+  <span class="nx">function_name</span>     <span class="p">=</span> <span class="nx">aws_lambda_function</span><span class="p">.</span><span class="nx">lambda</span><span class="p">.</span><span class="nx">function_name</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="variabletf">variable.tf</h2>
+<p>Finally, we create a <code class="language-plaintext highlighter-rouge">variable.tf</code> to store variables, in this case I want to create variable named <code class="language-plaintext highlighter-rouge">url</code> which I am using in my lambda environment variable.</p>
+
+<div class="language-terraform highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">variable</span> <span class="s2">"url"</span> <span class="p">{</span>
+  <span class="nx">type</span> <span class="p">=</span> <span class="nx">string</span>
+  <span class="nx">description</span> <span class="p">=</span> <span class="s2">"Url for forwarding the event"</span>
+  <span class="nx">default</span> <span class="p">=</span> <span class="s2">"http://host.docker.internal:3001/lambda-handler"</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Notice</strong> I am using <strong>host.docker.internal</strong> instead of <del>localhost</del>, it’s because the lambda would be running inside my docker, 
+and to access my host ip from within docker container I use ‘host.docker.internal’.</p>
+
+<p>So, our terraform script are ready.</p>
+
+<p>now we will do:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">terraform init</code>, it will download module dependencies for aws.</li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">terraform plan</code>, this will generate details of the resources to be created. In this case it will be like this.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>terraform plan
+  
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+ &lt;<span class="o">=</span> <span class="nb">read</span> <span class="o">(</span>data resources<span class="o">)</span>
+  
+Terraform will perform the following actions:
+  
+  <span class="c"># data.archive_file.lambda_zip will be read during apply</span>
+  <span class="c"># (depends on a resource or a module with changes pending)</span>
+ &lt;<span class="o">=</span> data <span class="s2">"archive_file"</span> <span class="s2">"lambda_zip"</span> <span class="o">{</span>
+      + excludes            <span class="o">=</span> <span class="o">[</span>
+          + <span class="s2">"./lambda/src"</span>,
+        <span class="o">]</span>
+      + <span class="nb">id</span>                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + output_base64sha256 <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + output_md5          <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + output_path         <span class="o">=</span> <span class="s2">"lambda_function.zip"</span>
+      + output_sha          <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + output_size         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + source_dir          <span class="o">=</span> <span class="s2">"./lambda"</span>
+      + <span class="nb">type</span>                <span class="o">=</span> <span class="s2">"zip"</span>
+    <span class="o">}</span>
+  
+  <span class="c"># aws_iam_role.iam_for_lambda_tf will be created</span>
+  + resource <span class="s2">"aws_iam_role"</span> <span class="s2">"iam_for_lambda"</span> <span class="o">{</span>
+      + arn                   <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + assume_role_policy    <span class="o">=</span> jsonencode<span class="o">(</span>
+            <span class="o">{</span>
+              + Statement <span class="o">=</span> <span class="o">[</span>
+                  + <span class="o">{</span>
+                      + Action    <span class="o">=</span> <span class="s2">"sts:AssumeRole"</span>
+                      + Effect    <span class="o">=</span> <span class="s2">"Allow"</span>
+                      + Principal <span class="o">=</span> <span class="o">{</span>
+                          + Service <span class="o">=</span> <span class="s2">"lambda.amazonaws.com"</span>
+                        <span class="o">}</span>
+                      + Sid       <span class="o">=</span> <span class="s2">""</span>
+                    <span class="o">}</span>,
+                <span class="o">]</span>
+              + Version   <span class="o">=</span> <span class="s2">"2012-10-17"</span>
+            <span class="o">}</span>
+        <span class="o">)</span>
+      + create_date           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + force_detach_policies <span class="o">=</span> <span class="nb">false</span>
+      + <span class="nb">id</span>                    <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + managed_policy_arns   <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + max_session_duration  <span class="o">=</span> 3600
+      + name                  <span class="o">=</span> <span class="s2">"iam_for_lambda"</span>
+      + name_prefix           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + path                  <span class="o">=</span> <span class="s2">"/"</span>
+      + tags_all              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + unique_id             <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+  
+      + inline_policy <span class="o">{</span>
+          + name   <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+          + policy <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+  
+  <span class="c"># aws_lambda_event_source_mapping.test_queue_lambda_mapping will be created</span>
+  + resource <span class="s2">"aws_lambda_event_source_mapping"</span> <span class="s2">"test_queue_lambda_mapping"</span> <span class="o">{</span>
+      + batch_size                    <span class="o">=</span> 10
+      + enabled                       <span class="o">=</span> <span class="nb">true</span>
+      + event_source_arn              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + function_arn                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + function_name                 <span class="o">=</span> <span class="s2">"helper-lambda"</span>
+      + <span class="nb">id</span>                            <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + last_modified                 <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + last_processing_result        <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + maximum_record_age_in_seconds <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + maximum_retry_attempts        <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + parallelization_factor        <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + state                         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + state_transition_reason       <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + uuid                          <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+  
+      + amazon_managed_kafka_event_source_config <span class="o">{</span>
+          + consumer_group_id <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+        <span class="o">}</span>
+  
+      + self_managed_kafka_event_source_config <span class="o">{</span>
+          + consumer_group_id <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+  
+  <span class="c"># aws_lambda_function.lambda will be created</span>
+  + resource <span class="s2">"aws_lambda_function"</span> <span class="s2">"lambda"</span> <span class="o">{</span>
+      + architectures                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + arn                            <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + filename                       <span class="o">=</span> <span class="s2">"lambda_function.zip"</span>
+      + function_name                  <span class="o">=</span> <span class="s2">"helper-lambda"</span>
+      + handler                        <span class="o">=</span> <span class="s2">"dist/main.handler"</span>
+      + <span class="nb">id</span>                             <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + invoke_arn                     <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + last_modified                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + memory_size                    <span class="o">=</span> 128
+      + package_type                   <span class="o">=</span> <span class="s2">"Zip"</span>
+      + publish                        <span class="o">=</span> <span class="nb">false</span>
+      + qualified_arn                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + qualified_invoke_arn           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + reserved_concurrent_executions <span class="o">=</span> <span class="nt">-1</span>
+      + role                           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + runtime                        <span class="o">=</span> <span class="s2">"nodejs16.x"</span>
+      + signing_job_arn                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + signing_profile_version_arn    <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + source_code_hash               <span class="o">=</span> <span class="s2">"1"</span>
+      + source_code_size               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + tags_all                       <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + <span class="nb">timeout</span>                        <span class="o">=</span> 3
+      + version                        <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+  
+      + environment <span class="o">{</span>
+          + variables <span class="o">=</span> <span class="o">{</span>
+              + <span class="s2">"URL"</span> <span class="o">=</span> <span class="s2">"http://localhost:3001/lambda-handler"</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+  
+      + ephemeral_storage <span class="o">{</span>
+          + size <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+        <span class="o">}</span>
+  
+      + tracing_config <span class="o">{</span>
+          + mode <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+  
+  <span class="c"># aws_sqs_queue.test-queue will be created</span>
+  + resource <span class="s2">"aws_sqs_queue"</span> <span class="s2">"test-queue"</span> <span class="o">{</span>
+      + arn                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + content_based_deduplication       <span class="o">=</span> <span class="nb">false</span>
+      + deduplication_scope               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + delay_seconds                     <span class="o">=</span> 0
+      + fifo_queue                        <span class="o">=</span> <span class="nb">false</span>
+      + fifo_throughput_limit             <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + <span class="nb">id</span>                                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + kms_data_key_reuse_period_seconds <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + max_message_size                  <span class="o">=</span> 262144
+      + message_retention_seconds         <span class="o">=</span> 345600
+      + name                              <span class="o">=</span> <span class="s2">"test-queue"</span>
+      + name_prefix                       <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + policy                            <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + receive_wait_time_seconds         <span class="o">=</span> 0
+      + redrive_allow_policy              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + redrive_policy                    <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + sqs_managed_sse_enabled           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + tags_all                          <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + url                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + visibility_timeout_seconds        <span class="o">=</span> 300
+    <span class="o">}</span>
+  
+  <span class="c"># null_resource.build will be created</span>
+  + resource <span class="s2">"null_resource"</span> <span class="s2">"build"</span> <span class="o">{</span>
+      + <span class="nb">id</span>       <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+      + triggers <span class="o">=</span> <span class="o">{</span>
+          + <span class="s2">"versions"</span> <span class="o">=</span> <span class="s2">"ffef874951cd9c637c7d1699b1604f6b6c5f957a14ca3bc9686bb44731fff0e9"</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+  
+Plan: 5 to add, 0 to change, 0 to destroy.
+  
+Changes to Outputs:
+  + lambda     <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+  + test-queue <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
+╷
+│ Warning: Argument is deprecated
+│ 
+│   with provider[<span class="s2">"registry.terraform.io/hashicorp/aws"</span><span class="o">]</span>,
+│   on provider.tf line 5, <span class="k">in </span>provider <span class="s2">"aws"</span>:
+│    5:   s3_force_path_style         <span class="o">=</span> <span class="nb">false</span>
+│ 
+│ Use s3_use_path_style instead.
+│ 
+│ <span class="o">(</span>and one more similar warning elsewhere<span class="o">)</span>
+╵
+╷
+│ Warning: Attribute Deprecated
+│ 
+│   with provider[<span class="s2">"registry.terraform.io/hashicorp/aws"</span><span class="o">]</span>,
+│   on provider.tf line 5, <span class="k">in </span>provider <span class="s2">"aws"</span>:
+│    5:   s3_force_path_style         <span class="o">=</span> <span class="nb">false</span>
+│ 
+│ Use s3_use_path_style instead.
+│ 
+│ <span class="o">(</span>and one more similar warning elsewhere<span class="o">)</span>
+╵
+  
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  
+Note: You didn<span class="s1">'t use the -out option to save this plan, so Terraform can'</span>t guarantee to take exactly these actions <span class="k">if </span>you run <span class="s2">"terraform apply"</span> now.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><code class="language-plaintext highlighter-rouge">terraform apply --auto-approve</code> to finally create the resources.</p>
+
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>null_resource.build: Creating...
+null_resource.build: Provisioning with <span class="s1">'local-exec'</span>...
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: Executing: <span class="o">[</span><span class="s2">"/bin/sh"</span> <span class="s2">"-c"</span> <span class="s2">"/bin/bash ./scripts/build.sh"</span><span class="o">]</span>
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: ~/Documents/github/blog-code/terraform/sqs-lambda-integration-localstack/lambda ~/Documents/github/blog-code/terraform/sqs-lambda-integration-localstack
+aws_iam_role.iam_for_lambda: Creating...
+aws_sqs_queue.test-queue: Creating...
+aws_iam_role.iam_for_lambda: Creation <span class="nb">complete </span>after 0s <span class="o">[</span><span class="nb">id</span><span class="o">=</span>iam_for_lambda]
+  
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: up to <span class="nb">date</span>, audited 322 packages <span class="k">in </span>2s
+  
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: 41 packages are looking <span class="k">for </span>funding
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>:   run <span class="sb">`</span>npm fund<span class="sb">`</span> <span class="k">for </span>details
+  
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: found 0 vulnerabilities
+  
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: <span class="o">&gt;</span> lamda@0.0.1 prebuild
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: <span class="o">&gt;</span> rimraf dist
+  
+  
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: <span class="o">&gt;</span> lamda@0.0.1 build
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: <span class="o">&gt;</span> npm run tsc
+  
+  
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: <span class="o">&gt;</span> lamda@0.0.1 tsc
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: <span class="o">&gt;</span> tsc <span class="nt">-p</span> tsconfig.json <span class="o">&amp;&amp;</span> tsc <span class="nt">-p</span> tsconfig.build.json
+  
+null_resource.build <span class="o">(</span>local-exec<span class="o">)</span>: ~/Documents/github/blog-code/terraform/sqs-lambda-integration-localstack
+null_resource.build: Creation <span class="nb">complete </span>after 8s <span class="o">[</span><span class="nb">id</span><span class="o">=</span>5577006791947779410]
+data.archive_file.lambda_zip: Reading...
+aws_sqs_queue.test-queue: Still creating... <span class="o">[</span>10s elapsed]
+data.archive_file.lambda_zip: Read <span class="nb">complete </span>after 8s <span class="o">[</span><span class="nb">id</span><span class="o">=</span>245dcc34cbcf937d81b543bffd855dcda246f144]
+aws_lambda_function.lambda: Creating...
+aws_sqs_queue.test-queue: Still creating... <span class="o">[</span>20s elapsed]
+aws_lambda_function.lambda: Creation <span class="nb">complete </span>after 8s <span class="o">[</span><span class="nb">id</span><span class="o">=</span>helper-lambda]
+aws_sqs_queue.test-queue: Creation <span class="nb">complete </span>after 25s <span class="o">[</span><span class="nb">id</span><span class="o">=</span>http://localhost:4566/000000000000/test-queue]
+aws_lambda_event_source_mapping.test_queue_lambda_mapping: Creating...
+aws_lambda_event_source_mapping.test_queue_lambda_mapping: Creation <span class="nb">complete </span>after 0s <span class="o">[</span><span class="nb">id</span><span class="o">=</span>d6634787-8cc0-4366-aedc-cfd18ab75c9c]
+╷
+│ Warning: Argument is deprecated
+│ 
+│   with provider[<span class="s2">"registry.terraform.io/hashicorp/aws"</span><span class="o">]</span>,
+│   on provider.tf line 5, <span class="k">in </span>provider <span class="s2">"aws"</span>:
+│    5:   s3_force_path_style         <span class="o">=</span> <span class="nb">false</span>
+│ 
+│ Use s3_use_path_style instead.
+│ 
+│ <span class="o">(</span>and 2 more similar warnings elsewhere<span class="o">)</span>
+╵
+╷
+│ Warning: Attribute Deprecated
+│ 
+│   with provider[<span class="s2">"registry.terraform.io/hashicorp/aws"</span><span class="o">]</span>,
+│   on provider.tf line 5, <span class="k">in </span>provider <span class="s2">"aws"</span>:
+│    5:   s3_force_path_style         <span class="o">=</span> <span class="nb">false</span>
+│ 
+│ Use s3_use_path_style instead.
+│ 
+│ <span class="o">(</span>and 2 more similar warnings elsewhere<span class="o">)</span>
+╵
+  
+Apply <span class="nb">complete</span><span class="o">!</span> Resources: 5 added, 0 changed, 0 destroyed.
+  
+Outputs:
+  
+lambda <span class="o">=</span> <span class="s2">"arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:000000000000:function:helper-lambda/invocations"</span>
+test-queue <span class="o">=</span> <span class="s2">"http://localhost:4566/000000000000/test-queue"</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>And you have your lambda &amp; sqs integration created.</p>
+<h1 id="lambda-handler-in-main-app">Lambda handler in main app</h1>
+
+<p>Before, we start our test, we need to create a post controller in our main application, which will be triggered by our deployed lambda.</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span><span class="nx">Controller</span><span class="p">,</span> <span class="nx">Post</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@nestjs/common</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span><span class="nx">handler</span><span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./lambda</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="p">@</span><span class="nd">Controller</span><span class="p">()</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">AppController</span> <span class="p">{</span>
+
+  <span class="p">@</span><span class="nd">Post</span><span class="p">(</span><span class="dl">'</span><span class="s1">/lambda-handler</span><span class="dl">'</span><span class="p">)</span>
+  <span class="k">async</span> <span class="nx">lambdaHandler</span><span class="p">(@</span><span class="nd">Body</span><span class="p">()</span> <span class="nx">reqeust</span><span class="p">:</span> <span class="kr">any</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="nx">handler</span><span class="p">(</span><span class="nx">reqeust</span><span class="p">.</span><span class="nx">event</span><span class="p">,</span> <span class="nx">reqeust</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h1 id="conclusion">Conclusion</h1>
+
+<p>Time to test our integration, I am using aws cli to send the message to SQS.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>aws sqs send-message <span class="nt">--endpoint</span> http://localhost:4566  <span class="nt">--queue-url</span> http://localhost:4566/000000000000/test-queue <span class="nt">--message-body</span> <span class="s2">"hello"</span>
+
+<span class="c"># generated output</span>
+<span class="o">{</span>
+    <span class="s2">"MD5OfMessageBody"</span>: <span class="s2">"5d41402abc4b2a76b9719d911017c592"</span>,
+    <span class="s2">"MessageId"</span>: <span class="s2">"2d0fc032-64ca-49a6-9f98-868854013942"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>After a moment later, we can see the output in our main application’s log:</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Message received: <span class="o">{</span><span class="s2">"body"</span>:<span class="s2">"hello"</span>,<span class="s2">"receiptHandle"</span>:<span class="s2">"YjhjNDBlZGMtYjAxNi00YTNhLWFmZjEtZWU4MjI5YmE4NDZiIGFybjphd3M6c3FzOnVzLWVhc3QtMTowMDAwMDAwMDAwMDA6dGVzdC1xdWV1ZSAyZDBmYzAzMi02NGNhLTQ5YTYtOWY5OC04Njg4NTQwMTM5NDIgMTY2NzExOTA4My43NjI1NA=="</span>,<span class="s2">"md5OfBody"</span>:<span class="s2">"5d41402abc4b2a76b9719d911017c592"</span>,<span class="s2">"eventSourceARN"</span>:<span class="s2">"arn:aws:sqs:us-east-1:000000000000:test-queue"</span>,<span class="s2">"eventSource"</span>:<span class="s2">"aws:sqs"</span>,<span class="s2">"awsRegion"</span>:<span class="s2">"us-east-1"</span>,<span class="s2">"messageId"</span>:<span class="s2">"2d0fc032-64ca-49a6-9f98-868854013942"</span>,<span class="s2">"attributes"</span>:<span class="o">{</span><span class="s2">"SenderId"</span>:<span class="s2">"000000000000"</span>,<span class="s2">"SentTimestamp"</span>:<span class="s2">"1667119082819"</span>,<span class="s2">"ApproximateReceiveCount"</span>:<span class="s2">"1"</span>,<span class="s2">"ApproximateFirstReceiveTimestamp"</span>:<span class="s2">"1667119083762"</span><span class="o">}</span>,<span class="s2">"messageAttributes"</span>:<span class="o">{}}</span>
+</code></pre></div></div>
+
+<p>For me this architecture has reduced my efforts in testing SQS events integration with lambda(I am running more than 20 copies of this helper lambda for all my microservices endpoint)</p>
+
+<p>I would surely love to listen to you as well, how are you testing SQS &amp; Lambda in your local environment.
+You can find terraform &amp; lambda code on <a href="https://github.com/kuros/blog-code/tree/master/terraform/sqs-lambda-integration-localstack">github</a></p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/aws" class="page__taxonomy-item" rel="tag">aws</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/terraform" class="page__taxonomy-item" rel="tag">terraform</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-10-29T00:00:00+05:30">October 29, 2022</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://www.linkedin.com/in/kumar-rohit-9a985517/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
+      </footer>
+
+      
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Testing+lambda+%26+sqs+integration+locally+using+localstack%20https%3A%2F%2Fkuros.in%2Faws%2Fterraform%2Ftest-lambda-events-locally-using-localstack%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Faws%2Fterraform%2Ftest-lambda-events-locally-using-localstack%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Faws%2Fterraform%2Ftest-lambda-events-locally-using-localstack%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/docker/docker-jekyll-container-to-serve-locally/" class="pagination--pager" title="Create Docker Container to Run Jekyll
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/docker/docker-jekyll-container-to-serve-locally/" rel="permalink">Create Docker Container to Run Jekyll
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I al...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/nestjs/deploy-nestjs-application-on-aws-lambda/" rel="permalink">Deploy NestJS application on AWS Lambda
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-role-based-authentication-and-authorization-using-guards/" rel="permalink">Role based authentication in NestJS using Guards
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In this article, we will focus on Role Based Access Control (RBAC) using the Guards in a nestJS application.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-mongodb-integration-example/" rel="permalink">NestJs Application with MongoDB
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">This article focuses on integrating mongoDB to a Nest Application.
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/aws/terraform/test-lambda-events-locally-using-localstack/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/aws/terraform/test-lambda-events-locally-using-localstack"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

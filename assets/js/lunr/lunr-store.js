@@ -496,4 +496,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/docker/docker-jekyll-container-to-serve-locally/",
         "teaser": null
+      },{
+        "title": "Testing lambda & sqs integration locally using localstack",
+        "excerpt":"Running serverless is fun, cost-effective and scalable especially if your application is still growing. But at the same time I found testing lambdas locally to be a pain, especially if you want to test your application integration with SQS or SNS. In this article, I will share my take on...","categories": ["aws","terraform"],
+        "tags": [],
+        "url": "https://kuros.in/aws/terraform/test-lambda-events-locally-using-localstack/",
+        "teaser": null
       }]
