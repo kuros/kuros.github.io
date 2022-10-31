@@ -785,12 +785,13 @@ npm <span class="nb">install
 <h2 id="sqs">SQS</h2>
 <p>Next we will create the queue and the <code class="language-plaintext highlighter-rouge">helper-lambda</code> as its trigger, so that when ever the message is received by SQS it would trigger the lambda with that message.</p>
 <ol>
-  <li><code class="language-plaintext highlighter-rouge">aws_sqs_queue</code> creates a queue with name ‘test-queue’, i</li>
+  <li><code class="language-plaintext highlighter-rouge">aws_sqs_queue</code> creates a queue with name ‘test-queue’, we need to keep <code class="language-plaintext highlighter-rouge">visibility_timeout_seconds</code> high since we need to make sure that the message doesn’t get replayed.</li>
+  <li><code class="language-plaintext highlighter-rouge">aws_lambda_event_source_mapping</code> sets up the lambda function as a target to our sqs queue.</li>
 </ol>
 
 <div class="language-terraform highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">resource</span> <span class="s2">"aws_sqs_queue"</span> <span class="s2">"test-queue"</span> <span class="p">{</span>
   <span class="nx">name</span> <span class="p">=</span> <span class="s2">"test-queue"</span>
-  <span class="nx">visibility_timeout_seconds</span> <span class="p">=</span> <span class="mi">300</span>
+  <span class="nx">visibility_timeout_seconds</span> <span class="p">=</span> <span class="mi">600</span>
 <span class="p">}</span>
 
 
