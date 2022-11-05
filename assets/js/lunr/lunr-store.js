@@ -502,4 +502,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/aws/terraform/test-lambda-events-locally-using-localstack/",
         "teaser": null
+      },{
+        "title": "Fix error for lambda function url in localstack",
+        "excerpt":"Spent more than half a day, struggled with this error when I was testing an async lambda on my local. Error I created a lambda which had an async implementation, but when I deployed it on lambda, and used function url to access it. It started giving an error in...","categories": ["aws","terraform"],
+        "tags": [],
+        "url": "https://kuros.in/aws/terraform/fix-lambda-function-url-on-localstack/",
+        "teaser": null
       }]

@@ -27,6 +27,8 @@ case $1 in
         echo "Building docker image of Jekyll"
             docker build -t jekyll .
 
+        rm -rf _site
+
         docker run \
             --volume="$PWD:/srv/jekyll:Z" \
             -p 4000:4000 \

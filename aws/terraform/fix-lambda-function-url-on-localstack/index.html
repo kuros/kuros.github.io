@@ -1,0 +1,1080 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Fix error for lambda function url in localstack - Kuros.in</title>
+<meta name="description" content="exception while calling lambda with unknown operation ‘str’ object has no attribute ‘get’">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Fix error for lambda function url in localstack">
+<meta property="og:url" content="https://kuros.in/aws/terraform/fix-lambda-function-url-on-localstack/">
+
+
+  <meta property="og:description" content="exception while calling lambda with unknown operation ‘str’ object has no attribute ‘get’">
+
+
+
+  <meta property="og:image" content="https://kuros.in/images/2021/fix.webp">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-11-05T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/aws/terraform/fix-lambda-function-url-on-localstack/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/favicon.ico">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2021/fix.webp');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Fix error for lambda function url in localstack
+
+        
+      </h1>
+      
+        <p class="page__lead">exception while calling lambda with unknown operation ‘str’ object has no attribute ‘get’
+</p>
+      
+      
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/CrhsIRY3JWY"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#error">Error</a></li>
+  <li><a href="#steps-to-recreate">Steps to recreate</a></li>
+  <li><a href="#deploying-to-localstack">Deploying to localstack</a>
+    <ul>
+      <li><a href="#terraform">Terraform</a></li>
+    </ul>
+  </li>
+  <li><a href="#fix">Fix</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Fix error for lambda function url in localstack">
+    <meta itemprop="description" content="Spent more than half a day, struggled with this error when I was testing an async lambda on my local.">
+    <meta itemprop="datePublished" content="2022-11-05T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>Spent more than half a day, struggled with this error when I was testing an async lambda on my local.</p>
+
+<h1 id="error">Error</h1>
+<p>I created a lambda which had an async implementation, but when I deployed it on lambda, and used function url to access it.</p>
+
+<p>It started giving an error in response</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span><span class="s2">"__type"</span>: <span class="s2">"InternalError"</span>, <span class="s2">"message"</span>: <span class="s2">"exception while calling lambda with unknown operation: 'str' object has no attribute 'get'"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="steps-to-recreate">Steps to recreate</h1>
+<p>Let us create a lambda with simple wait function.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">sleep</span> <span class="o">=</span> <span class="p">(</span><span class="nx">ms</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">ms</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="na">statusCode</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="na">headers</span><span class="p">:</span> <span class="p">{</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">},</span>
+        <span class="na">body</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span><span class="p">,</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h1 id="deploying-to-localstack">Deploying to localstack</h1>
+<p>So we have our code ready to deploy, I will use terraform to deploy the code to localstack. 
+But first make sure, you have your localstack setup, follow the <a href="/aws/terraform/test-lambda-events-locally-using-localstack/#setup-localstack">instructions</a> if you have not.</p>
+
+<h2 id="terraform">Terraform</h2>
+<p>Now we will create <code class="language-plaintext highlighter-rouge">provider.tf</code> to point our aws provider to localstack.</p>
+
+<div class="language-terraform highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">terraform</span> <span class="p">{</span>
+  <span class="nx">required_version</span> <span class="p">=</span> <span class="s2">"~&gt; 1.3.3"</span>
+<span class="p">}</span>
+
+<span class="k">provider</span> <span class="s2">"aws"</span> <span class="p">{</span>
+  <span class="nx">access_key</span>                  <span class="p">=</span> <span class="s2">"test"</span>
+  <span class="nx">secret_key</span>                  <span class="p">=</span> <span class="s2">"test"</span>
+  <span class="nx">region</span>                      <span class="p">=</span> <span class="s2">"us-east-1"</span>
+  <span class="nx">s3_force_path_style</span>         <span class="p">=</span> <span class="kc">false</span>
+  <span class="nx">skip_credentials_validation</span> <span class="p">=</span> <span class="kc">true</span>
+  <span class="nx">skip_metadata_api_check</span>     <span class="p">=</span> <span class="kc">true</span>
+  <span class="nx">skip_requesting_account_id</span>  <span class="p">=</span> <span class="kc">true</span>
+
+  <span class="nx">endpoints</span> <span class="p">{</span>
+    <span class="nx">apigateway</span>     <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">apigatewayv2</span>   <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">cloudformation</span> <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">cloudwatch</span>     <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">dynamodb</span>       <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">ec2</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">es</span>             <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">elasticache</span>    <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">firehose</span>       <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">iam</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">kinesis</span>        <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">lambda</span>         <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">rds</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">redshift</span>       <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">route53</span>        <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">s3</span>             <span class="p">=</span> <span class="s2">"http://s3.localhost.localstack.cloud:4566"</span>
+    <span class="nx">secretsmanager</span> <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">ses</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">sns</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">sqs</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">ssm</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">stepfunctions</span>  <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+    <span class="nx">sts</span>            <span class="p">=</span> <span class="s2">"http://localhost:4566"</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+</code></pre></div></div>
+
+<p>As we have the provider setup, lets deploy the lambda.</p>
+
+<div class="language-terraform highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">resource</span> <span class="s2">"aws_iam_role"</span> <span class="s2">"iam_for_lambda_fix"</span> <span class="p">{</span>
+  <span class="nx">name</span> <span class="p">=</span> <span class="s2">"iam_for_lambda_fix"</span>
+
+  <span class="nx">assume_role_policy</span> <span class="p">=</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh">
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+</span><span class="no">EOF
+</span><span class="p">}</span>
+
+<span class="k">data</span> <span class="s2">"archive_file"</span> <span class="s2">"lambda_zip"</span> <span class="p">{</span>
+  <span class="nx">type</span>        <span class="p">=</span> <span class="s2">"zip"</span>
+  <span class="nx">source_file</span> <span class="p">=</span> <span class="s2">"./index.js"</span>
+  <span class="nx">output_path</span> <span class="p">=</span> <span class="s2">"lambda.zip"</span>
+
+<span class="p">}</span>
+
+<span class="k">resource</span> <span class="s2">"aws_lambda_function"</span> <span class="s2">"lambda"</span> <span class="p">{</span>
+  <span class="nx">filename</span>         <span class="p">=</span> <span class="s2">"lambda.zip"</span>
+  <span class="nx">function_name</span>    <span class="p">=</span> <span class="s2">"lambda_fix"</span>
+  <span class="nx">role</span>             <span class="p">=</span> <span class="nx">aws_iam_role</span><span class="p">.</span><span class="nx">iam_for_lambda_fix</span><span class="p">.</span><span class="nx">arn</span>
+  <span class="nx">handler</span>          <span class="p">=</span> <span class="s2">"./index.handler"</span>
+  <span class="nx">source_code_hash</span> <span class="p">=</span> <span class="s2">"</span><span class="k">${</span><span class="nx">filebase64sha256</span><span class="p">(</span><span class="s2">"./index.js"</span><span class="p">)</span><span class="k">}</span><span class="s2">"</span>
+  <span class="nx">runtime</span>          <span class="p">=</span> <span class="s2">"nodejs16.x"</span>
+  <span class="nx">timeout</span> <span class="p">=</span> <span class="mi">30</span>
+
+  <span class="nx">depends_on</span> <span class="p">=</span> <span class="p">[</span><span class="k">data</span><span class="p">.</span><span class="nx">archive_file</span><span class="p">.</span><span class="nx">lambda_zip</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="k">resource</span> <span class="s2">"aws_lambda_function_url"</span> <span class="s2">"function_url"</span> <span class="p">{</span>
+
+  <span class="nx">function_name</span> <span class="p">=</span> <span class="nx">aws_lambda_function</span><span class="p">.</span><span class="nx">lambda</span><span class="p">.</span><span class="nx">function_name</span>
+  <span class="nx">authorization_type</span> <span class="p">=</span> <span class="s2">"NONE"</span>
+
+<span class="p">}</span>
+
+<span class="k">output</span> <span class="s2">"url"</span> <span class="p">{</span>
+  <span class="nx">value</span> <span class="p">=</span> <span class="nx">aws_lambda_function_url</span><span class="p">.</span><span class="nx">function_url</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Here, we have created an iam policy, then archived the js file, and deploy a function.</p>
+
+<p>All set, now to run this application.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>terraform init
+<span class="nv">$ </span>terraform plan
+<span class="nv">$ </span>terraform apply <span class="nt">--auto-approve</span>
+</code></pre></div></div>
+
+<p>Once the commands are executed.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Apply <span class="nb">complete</span><span class="o">!</span> Resources: 2 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+url <span class="o">=</span> <span class="o">{</span>
+  <span class="s2">"authorization_type"</span> <span class="o">=</span> <span class="s2">"NONE"</span>
+  <span class="s2">"cors"</span> <span class="o">=</span> tolist<span class="o">([])</span>
+  <span class="s2">"function_arn"</span> <span class="o">=</span> <span class="s2">"arn:aws:lambda:us-east-1:000000000000:function:lambda_fix"</span>
+  <span class="s2">"function_name"</span> <span class="o">=</span> <span class="s2">"lambda_fix"</span>
+  <span class="s2">"function_url"</span> <span class="o">=</span> <span class="s2">"http://cdd7e6500eb91965c99dc0eb42b1613a.lambda-url.us-east-1.localhost.localstack.cloud:4566/"</span>
+  <span class="s2">"id"</span> <span class="o">=</span> <span class="s2">"lambda_fix"</span>
+  <span class="s2">"qualifier"</span> <span class="o">=</span> <span class="s2">""</span>
+  <span class="s2">"timeouts"</span> <span class="o">=</span> null /<span class="k">*</span> object <span class="k">*</span>/
+  <span class="s2">"url_id"</span> <span class="o">=</span> <span class="s2">"cdd7e6500eb91965c99dc0eb42b1613a"</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>now if we do curl, we will get the error</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl http://cdd7e6500eb91965c99dc0eb42b1613a.lambda-url.us-east-1.localhost.localstack.cloud:4566/
+
+<span class="o">{</span><span class="s2">"__type"</span>: <span class="s2">"InternalError"</span>, <span class="s2">"message"</span>: <span class="s2">"exception while calling lambda with unknown operation: the JSON object must be str, bytes or bytearray, not Response"</span><span class="o">}</span>% 
+</code></pre></div></div>
+
+<p>But if you deploy the same lambda to aws , it works fine. To my surprise if I remove the async operation, the application works fine on localstack as well.</p>
+
+<h1 id="fix">Fix</h1>
+
+<p>The fix is rather simple, for unknown reason, localstack is unable to convert the async/await to promise result.</p>
+
+<p>So to fix the above issue lets do a simple modification.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">export</span> <span class="kd">const</span> <span class="nx">sleep</span> <span class="o">=</span> <span class="p">(</span><span class="nx">ms</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">(</span><span class="nx">resolve</span> <span class="o">=&gt;</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">ms</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="k">async</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">({</span>
+        <span class="na">statusCode</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+        <span class="na">headers</span><span class="p">:</span> <span class="p">{</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">},</span>
+        <span class="na">body</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Hello World</span><span class="dl">"</span><span class="p">,</span>
+    <span class="p">});</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>We just add the Promise.resolve() explicitly. And that solve the issue with localstack function url</p>
+
+<p>Apply our change again using <code class="language-plaintext highlighter-rouge">terraform apply</code> &amp; finally do a curl.</p>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl http://cdd7e6500eb91965c99dc0eb42b1613a.lambda-url.us-east-1.localhost.localstack.cloud:4566/
+Hello World
+</code></pre></div></div>
+
+<p>You can find the code <a href="https://github.com/kuros/blog-code/tree/master/terraform/fix-lambda-localstack">here</a>.</p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/aws" class="page__taxonomy-item" rel="tag">aws</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/terraform" class="page__taxonomy-item" rel="tag">terraform</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-11-05T00:00:00+05:30">November 5, 2022</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://www.linkedin.com/in/kumar-rohit-9a985517/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
+      </footer>
+
+      
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Fix+error+for+lambda+function+url+in+localstack%20https%3A%2F%2Fkuros.in%2Faws%2Fterraform%2Ffix-lambda-function-url-on-localstack%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Faws%2Fterraform%2Ffix-lambda-function-url-on-localstack%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Faws%2Fterraform%2Ffix-lambda-function-url-on-localstack%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/aws/terraform/test-lambda-events-locally-using-localstack/" class="pagination--pager" title="Testing lambda &amp; sqs integration locally using localstack
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/aws/terraform/test-lambda-events-locally-using-localstack/" rel="permalink">Testing lambda &amp; sqs integration locally using localstack
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Running serverless is fun, cost-effective and scalable especially if your application is still growing.
+But at the same time I found testing lambdas locally ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/docker/docker-jekyll-container-to-serve-locally/" rel="permalink">Create Docker Container to Run Jekyll
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I al...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/nestjs/deploy-nestjs-application-on-aws-lambda/" rel="permalink">Deploy NestJS application on AWS Lambda
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-role-based-authentication-and-authorization-using-guards/" rel="permalink">Role based authentication in NestJS using Guards
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">In this article, we will focus on Role Based Access Control (RBAC) using the Guards in a nestJS application.
+
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/aws/terraform/fix-lambda-function-url-on-localstack/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/aws/terraform/fix-lambda-function-url-on-localstack"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>
