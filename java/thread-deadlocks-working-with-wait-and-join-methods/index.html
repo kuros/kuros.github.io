@@ -409,6 +409,8 @@ Thread 2: locked resource 2
 <p>In the above program, we have two resources, resource1 and resource2. We create two different threads, t1 and t2. In t1 thread we have locked the resource1 and wait for 50 milliseconds and then we are trying to lock resource2. Where as in t2 we have locked resource2 first and then we are trying to lock resource1. So now we have a problem t1 will try to capture resource which is already locked by t2, hence it will wait for resource2 to be released. Whereas t2 has locked the resource2 and t2 is waiting for the resource1 to be released. So none of the two threads can move forward hence we call that the two threads are in deadlock condition.</p>
 
 
+        <p>If you liked this article, you can <a href="https://www.buymeacoffee.com/kuros.in">buy me a coffee</a></p>
+
         
 
       </section>
