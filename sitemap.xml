@@ -344,7 +344,16 @@
 <loc>https://kuros.in/about/</loc>
 </url>
 <url>
+<loc>https://kuros.in/contact-us/</loc>
+</url>
+<url>
 <loc>https://kuros.in/</loc>
+</url>
+<url>
+<loc>https://kuros.in/privacy-policy/</loc>
+</url>
+<url>
+<loc>https://kuros.in/tos/</loc>
 </url>
 <url>
 <loc>https://kuros.in/tags/i-o/</loc>
@@ -489,6 +498,6 @@
 </url>
 <url>
 <loc>https://kuros.in/googlef84fd82e0e7dbd58.html</loc>
-<lastmod>2022-11-06T01:36:30+05:30</lastmod>
+<lastmod>2022-12-16T00:19:26+05:30</lastmod>
 </url>
 </urlset>
