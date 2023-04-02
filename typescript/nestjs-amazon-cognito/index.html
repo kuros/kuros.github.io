@@ -456,10 +456,10 @@
 <h2 id="set-up-a-cognito-user-pool">Set up a Cognito User Pool</h2>
 <p>To use Amazon Cognito with NestJS, we need to first set up a user pool in the AWS console. A user pool is a user directory in Amazon Cognito. It allows users to sign up and sign in to our application.</p>
 
-<p>To create a user pool, navigate to the Amazon Cognito console, and click on “Manage User Pools”. Then click on “Create a user pool” button. Fill in the details like pool name, policies, attributes, and other configuration as required. Finally, create the user pool.</p>
+<p>To create a user pool, navigate to the Amazon Cognito console, and click on <code class="language-plaintext highlighter-rouge">Manage User Pools</code>. Then click on <code class="language-plaintext highlighter-rouge">Create a user pool</code> button. Fill in the details like pool name, policies, attributes, and other configuration as required. Finally, create the user pool.</p>
 
 <h2 id="create-an-app-client">Create an App Client</h2>
-<p>Now that we have created a user pool, we need to create an app client to enable our NestJS application to interact with the user pool. To create an app client, navigate to the “App clients” tab in the user pool settings, and click on “Add an app client” button. Fill in the details like app client name, app client settings, and other configuration as required. Finally, create the app client.</p>
+<p>Now that we have created a user pool, we need to create an app client to enable our NestJS application to interact with the user pool. To create an app client, navigate to the <code class="language-plaintext highlighter-rouge">App clients</code> tab in the user pool settings, and click on <code class="language-plaintext highlighter-rouge">Add an app client</code> button. Fill in the details like app client name, app client settings, and other configuration as required. Finally, create the app client.</p>
 
 <h2 id="install-required-libraries">Install Required Libraries</h2>
 <p>To use the Cognito service in our NestJS application, we need to install the following packages:</p>
@@ -553,17 +553,17 @@ Run the following command to install the required packages:</li>
         <span class="p">});</span>
     <span class="p">}</span>
 </code></pre></div></div>
-<p>The “registerUser” function is responsible for registering a user with the Cognito User Pool. It receives a “RegisterRequest” object containing the email and password of the user.</p>
+<p>The <code class="language-plaintext highlighter-rouge">registerUser</code> function is responsible for registering a user with the Cognito User Pool. It receives a <code class="language-plaintext highlighter-rouge">RegisterRequest</code> object containing the email and password of the user.</p>
 
-<p>To accomplish this task, the function utilizes the “userPool” object, which is created during the initialization of the constructor. It then invokes the “signUp” method by passing in the email and password provided, along with a new instance of the “CognitoUserAttribute” object. The attribute object specifies the email attribute to be passed to the Cognito service during registration.</p>
+<p>To accomplish this task, the function utilizes the <code class="language-plaintext highlighter-rouge">userPool</code> object, which is created during the initialization of the constructor. It then invokes the <code class="language-plaintext highlighter-rouge">signUp</code> method by passing in the email and password provided, along with a new instance of the <code class="language-plaintext highlighter-rouge">CognitoUserAttribute</code> object. The attribute object specifies the email attribute to be passed to the Cognito service during registration.</p>
 
-<p>Upon successful registration, the “signUp” method returns a promise that resolves with an “ISignUpResult” object, containing information about the newly registered user. If the registration fails, the promise is rejected with an error object.</p>
+<p>Upon successful registration, the <code class="language-plaintext highlighter-rouge">signUp</code> method returns a promise that resolves with an <code class="language-plaintext highlighter-rouge">ISignUpResult</code> object, containing information about the newly registered user. If the registration fails, the promise is rejected with an error object.</p>
 
-<p>The function uses a new Promise object to wrap the “signUp” method, allowing for convenient error handling using the “reject” and “resolve” methods. If the “signUp” method resolves successfully, the “resolve” method is called with the “ISignUpResult” object. In the case of an error, the “reject” method is called with the error object.</p>
+<p>The function uses a new Promise object to wrap the <code class="language-plaintext highlighter-rouge">signUp</code> method, allowing for convenient error handling using the <code class="language-plaintext highlighter-rouge">reject</code> and <code class="language-plaintext highlighter-rouge">resolve</code> methods. If the <code class="language-plaintext highlighter-rouge">signUp</code> method resolves successfully, the <code class="language-plaintext highlighter-rouge">resolve</code> method is called with the <code class="language-plaintext highlighter-rouge">ISignUpResult</code> object. In the case of an error, the <code class="language-plaintext highlighter-rouge">reject</code> method is called with the error object.</p>
 
 <h2 id="verify-user-using-email">Verify user using email</h2>
 
-<p>The verifyUser function is responsible for verifying the registration of a user with the provided verification code. It takes in two parameters: the user’s email and the verification code.</p>
+<p>The <code class="language-plaintext highlighter-rouge">verifyUser</code> function is responsible for verifying the registration of a user with the provided verification code. It takes in two parameters: the user’s email and the verification code.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nx">verifyUser</span><span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">verificationCode</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -583,7 +583,7 @@ Run the following command to install the required packages:</li>
 
 <p>To handle the asynchronous nature of the confirmation process, the function returns a new Promise object that resolves with a successful confirmation or rejects with an error.</p>
 
-<p>The function creates a new instance of the CognitoUser object using the provided email and the userPool object created during the constructor initialization. It then calls the confirmRegistration method of the CognitoUser object, passing in the verification code and a boolean flag to force alias creation if necessary. The callback function takes two parameters, err and result.</p>
+<p>The function creates a new instance of the <code class="language-plaintext highlighter-rouge">CognitoUser</code> object using the provided <code class="language-plaintext highlighter-rouge">email</code> and the <code class="language-plaintext highlighter-rouge">userPool</code> object created during the constructor initialization. It then calls the confirmRegistration method of the CognitoUser object, passing in the verification code and a boolean flag to force alias creation if necessary. The callback function takes two parameters, err and result.</p>
 
 <p>If there is an error during the confirmation process, the promise is rejected with the err object. If the confirmation process is successful, the promise is resolved with the result object.</p>
 
@@ -596,7 +596,7 @@ Run the following command to install the required packages:</li>
 
 <h1 id="authenticate-user">Authenticate User</h1>
 
-<p>Create a function that will be used to authenticate a user with the Cognito User Pool. It takes a LoginRequest object as input, which contains the user’s email and password.</p>
+<p>Create a function that will be used to authenticate a user with the Cognito User Pool. It takes a <code class="language-plaintext highlighter-rouge">LoginRequest</code> object as input, which contains the user’s <code class="language-plaintext highlighter-rouge">email</code> and <code class="language-plaintext highlighter-rouge">password</code>.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nx">authenticateUser</span><span class="p">(</span><span class="nx">loginRequest</span><span class="p">:</span> <span class="nx">LoginRequest</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">const</span> <span class="p">{</span> <span class="nx">email</span><span class="p">,</span> <span class="nx">password</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">loginRequest</span><span class="p">;</span>
@@ -626,13 +626,13 @@ Run the following command to install the required packages:</li>
     <span class="p">}</span>
 </code></pre></div></div>
 
-<p>The function creates an instance of the AuthenticationDetails class, which is used to store the user’s email and password. It also creates an object userData with the user’s email and a reference to the userPool object.</p>
+<p>The function creates an instance of the <code class="language-plaintext highlighter-rouge">AuthenticationDetails</code> class, which is used to store the user’s email and password. It also creates an object <code class="language-plaintext highlighter-rouge">userData</code> with the user’s email and a reference to the <code class="language-plaintext highlighter-rouge">userPool</code> object.</p>
 
 <p>The function then creates a new instance of the CognitoUser class using the userData object.</p>
 
-<p>The function returns a Promise object that resolves with a CognitoUserSession object if the authentication is successful, or rejects with an error if the authentication fails. The newUser object’s authenticateUser method is called with the authenticationDetails object and an object containing two properties, onSuccess and onFailure.</p>
+<p>The function returns a Promise object that resolves with a <code class="language-plaintext highlighter-rouge">CognitoUserSession</code> object if the authentication is successful, or rejects with an error if the authentication fails. The newUser object’s <code class="language-plaintext highlighter-rouge">authenticateUser</code> method is called with the <code class="language-plaintext highlighter-rouge">authenticationDetails</code> object and an object containing two properties, onSuccess and onFailure.</p>
 
-<p>If the authentication is successful, the onSuccess method is called with the CognitoUserSession object, which is then resolved with the Promise object. If the authentication fails, the onFailure method is called with an error object, which is then rejected with the Promise object.</p>
+<p>If the authentication is successful, the onSuccess method is called with the <code class="language-plaintext highlighter-rouge">CognitoUserSession</code> object, which is then resolved with the Promise object. If the authentication fails, the onFailure method is called with an error object, which is then rejected with the Promise object.</p>
 
 <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -651,7 +651,7 @@ Run the following command to install the required packages:</li>
 </ul>
 
 <h2 id="send-forgot-password-email">Send forgot password email</h2>
-<p>The forgotPassword function is used to initiate the forgotten password flow for a user in a Cognito User Pool. The function takes an email as input and creates a new CognitoUser object with the Username set to the email and a reference to the userPool object.</p>
+<p>The <code class="language-plaintext highlighter-rouge">forgotPassword</code> function is used to initiate the forgotten password flow for a user in a Cognito User Pool. The function takes an email as input and creates a new CognitoUser object with the Username set to the email and a reference to the userPool object.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nx">forgotPassword</span><span class="p">(</span><span class="nx">email</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -670,7 +670,7 @@ Run the following command to install the required packages:</li>
 
 <h2 id="set-new-password">Set new password</h2>
 
-<p>The setNewPassword function is used to set a new password for a user who has forgotten their password and gone through the password reset process. It takes three parameters: the user’s email, the verification code sent to the user to confirm their identity, and the new password they want to set.</p>
+<p>The <code class="language-plaintext highlighter-rouge">setNewPassword</code> function is used to set a new password for a user who has forgotten their password and gone through the password reset process. It takes three parameters: the user’s email, the verification code sent to the user to confirm their identity, and the new password they want to set.</p>
 
 <div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nx">confirmPassword</span><span class="p">(</span><span class="nx">email</span><span class="p">,</span> <span class="nx">verificationCode</span><span class="p">,</span> <span class="nx">newPassword</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -688,7 +688,7 @@ Run the following command to install the required packages:</li>
 
 <p>Inside the function, a new Promise object is created to handle the asynchronous nature of the password reset process. The function creates a new instance of the CognitoUser class using the user’s email and the userPool object.</p>
 
-<p>The confirmPassword method of the CognitoUser object is then called with the verificationCode and newPassword parameters, along with an object containing two properties, onSuccess and onFailure.</p>
+<p>The <code class="language-plaintext highlighter-rouge">confirmPassword</code> method of the CognitoUser object is then called with the <code class="language-plaintext highlighter-rouge">verificationCode</code> and <code class="language-plaintext highlighter-rouge">newPassword</code> parameters, along with an object containing two properties, onSuccess and onFailure.</p>
 
 <p>If the password reset is successful, the onSuccess method is called with the result object, which is then resolved with the Promise object. If there is an error during the password reset process, the onFailure method is called with the error object, which is then rejected with the Promise object.</p>
 
