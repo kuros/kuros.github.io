@@ -1,0 +1,1153 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>React hooks in typescripts - Kuros.in</title>
+<meta name="description" content="Learn the basics of react hooks">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="React hooks in typescripts">
+<meta property="og:url" content="https://kuros.in/react/typescript-react-hooks/">
+
+
+  <meta property="og:description" content="Learn the basics of react hooks">
+
+
+
+  <meta property="og:image" content="https://kuros.in/images/2022/cloud.webp">
+
+
+
+
+
+  <meta property="article:published_time" content="2023-04-02T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/react/typescript-react-hooks/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/favicon.ico">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2022/cloud.webp');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          React hooks in typescripts
+
+        
+      </h1>
+      
+        <p class="page__lead">Learn the basics of react hooks
+</p>
+      
+      
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://unsplash.com/photos/BWCgQw25XUE"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#usestate-hook">useState Hook</a></li>
+  <li><a href="#useeffect-hook">useEffect Hook</a></li>
+  <li><a href="#usecontext-hook">useContext Hook</a></li>
+  <li><a href="#usereducer-hook">useReducer Hook</a></li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="React hooks in typescripts">
+    <meta itemprop="description" content="React Hooks are a recent addition to React that allows developers to add state and other React features to functional components. Typescript, a statically typed superset of JavaScript, adds more power and reliability to the development process by providing type checking during compile time.">
+    <meta itemprop="datePublished" content="2023-04-02T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>React Hooks are a recent addition to React that allows developers to add state and other React features to functional components. Typescript, a statically typed superset of JavaScript, adds more power and reliability to the development process by providing type checking during compile time.</p>
+
+<p>In this blog post, we’ll go over some common React Hooks and explore how they can be used with Typescript.</p>
+
+<h1 id="usestate-hook">useState Hook</h1>
+
+<p>The useState Hook is used to add state to functional components. It returns an array containing the current state value and a function to update the state. The type of the state value can be inferred from the initial value passed to useState or explicitly declared using Typescript.</p>
+
+<p>Suppose you have a simple form with two input fields, a name and an email. You can use the useState Hook to manage the state of the input fields, and update them as the user types.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Form</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FC</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">name</span><span class="p">,</span> <span class="nx">setName</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="dl">""</span><span class="p">);</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">email</span><span class="p">,</span> <span class="nx">setEmail</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="dl">""</span><span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">handleNameChange</span> <span class="o">=</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">ChangeEvent</span><span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="p">):</span> <span class="k">void</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">setName</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="kd">const</span> <span class="nx">handleEmailChange</span> <span class="o">=</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">ChangeEvent</span><span class="o">&lt;</span><span class="nx">HTMLInputElement</span><span class="o">&gt;</span><span class="p">):</span> <span class="k">void</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">setEmail</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="kd">const</span> <span class="nx">handleSubmit</span> <span class="o">=</span> <span class="p">(</span><span class="na">event</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FormEvent</span><span class="o">&lt;</span><span class="nx">HTMLFormElement</span><span class="o">&gt;</span><span class="p">):</span> <span class="k">void</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">`Name: </span><span class="p">${</span><span class="nx">name</span><span class="p">}</span><span class="s2">, Email: </span><span class="p">${</span><span class="nx">email</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+  <span class="p">};</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">form</span> <span class="nx">onSubmit</span><span class="o">=</span><span class="p">{</span><span class="nx">handleSubmit</span><span class="p">}</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="o">&gt;</span><span class="na">Name</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="dl">"</span><span class="s2">text</span><span class="dl">"</span> <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">handleNameChange</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>
+      <span class="o">&lt;</span><span class="nx">label</span> <span class="nx">htmlFor</span><span class="o">=</span><span class="dl">"</span><span class="s2">email</span><span class="dl">"</span><span class="o">&gt;</span><span class="na">Email</span><span class="p">:</span><span class="o">&lt;</span><span class="sr">/label</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="dl">"</span><span class="s2">email</span><span class="dl">"</span> <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">email</span><span class="dl">"</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">email</span><span class="p">}</span> <span class="nx">onChange</span><span class="o">=</span><span class="p">{</span><span class="nx">handleEmailChange</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>
+      <span class="o">&lt;</span><span class="nx">button</span> <span class="nx">type</span><span class="o">=</span><span class="dl">"</span><span class="s2">submit</span><span class="dl">"</span><span class="o">&gt;</span><span class="nx">Submit</span><span class="o">&lt;</span><span class="sr">/button</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/form</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Form</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>In the example above, the useState Hook is used to handle the state of the name and email input fields, and we assign an initial empty string value to each state variable.</p>
+
+<p>Two functions are created to update the state variables based on user input in the input fields, which are then integrated into the onChange handlers of the input elements.</p>
+
+<p>Finally, the handleSubmit function is implemented to print the current values of the name and email state variables when the form is submitted.</p>
+
+<p>By using the useState Hook, we are able to manage and update the simple state in our components as the user interacts with it.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="useeffect-hook">useEffect Hook</h1>
+<p>The useEffect Hook is used to handle side effects in functional components. It’s similar to the componentDidMount, componentDidUpdate, and componentWillUnmount lifecycle methods in class components. The useEffect Hook takes two arguments: a function that contains the side effect logic and an array of dependencies.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useState</span><span class="p">,</span> <span class="nx">useEffect</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">Timer</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FC</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">seconds</span><span class="p">,</span> <span class="nx">setSeconds</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">intervalId</span> <span class="o">=</span> <span class="nx">setInterval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="nx">setSeconds</span><span class="p">((</span><span class="nx">prevSeconds</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">prevSeconds</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">clearInterval</span><span class="p">(</span><span class="nx">intervalId</span><span class="p">);</span>
+  <span class="p">},</span> <span class="p">[]);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="na">Timer</span><span class="p">:</span> <span class="p">{</span><span class="nx">seconds</span><span class="p">}</span><span class="nx">s</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Timer</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>In this example, the useEffect Hook is used to create a timer that updates the number of seconds displayed in the component every second.</p>
+
+<p>The useEffect Hook requires two arguments: a function to execute after the component has rendered, and an optional array of dependencies.</p>
+
+<p>The first argument is an anonymous function that sets up a timer using the setInterval function, and updates the seconds state variable every second using the setSeconds function.</p>
+
+<p>The second argument is an empty array, indicating that this effect should only be executed once when the component mounts and not again unless the component is unmounted and mounted again.</p>
+
+<p>In addition, the useEffect Hook provides a cleanup function that clears the interval to prevent memory leaks when the component is unmounted.</p>
+
+<p>Lastly, the current value of the seconds state variable is displayed in the component.</p>
+
+<p>Using the useEffect Hook allows for performing actions after rendering, such as setting up timers, fetching data, or subscribing to events.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="usecontext-hook">useContext Hook</h1>
+
+<p>The useContext Hook is used to access data from the React context in functional components. It takes a context object created by the React.createContext method and returns the current context value.</p>
+
+<p>Suppose you have a theme that you want to apply to your entire application. You can create a ThemeContext using the createContext method and provide it with a default theme. Then, you can use the useContext Hook to access the current theme value in your components.</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useContext</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kr">interface</span> <span class="nx">Theme</span> <span class="p">{</span>
+  <span class="nl">backgroundColor</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nl">color</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">defaultTheme</span><span class="p">:</span> <span class="nx">Theme</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">backgroundColor</span><span class="p">:</span> <span class="dl">"</span><span class="s2">white</span><span class="dl">"</span><span class="p">,</span>
+  <span class="na">color</span><span class="p">:</span> <span class="dl">"</span><span class="s2">black</span><span class="dl">"</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">ThemeContext</span> <span class="o">=</span> <span class="nx">React</span><span class="p">.</span><span class="nx">createContext</span><span class="p">(</span><span class="nx">defaultTheme</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">App</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FC</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">ThemeContext</span><span class="p">.</span><span class="nx">Provider</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">defaultTheme</span><span class="p">}</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Header</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Main</span> <span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Footer</span> <span class="o">/&gt;</span>
+      <span class="o">&lt;</span><span class="sr">/div</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/ThemeContext.Provider</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">Header</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FC</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">theme</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ThemeContext</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">header</span> <span class="nx">style</span><span class="o">=&gt;</span>
+      <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="nx">My</span> <span class="nx">App</span><span class="o">&lt;</span><span class="sr">/h1</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/header</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">Main</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FC</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">theme</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ThemeContext</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">main</span> <span class="nx">style</span><span class="o">=&gt;</span>
+      <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Welcome</span> <span class="nx">to</span> <span class="nx">my</span> <span class="nx">app</span><span class="o">!&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/main</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">Footer</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FC</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="nx">theme</span> <span class="o">=</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">ThemeContext</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">footer</span> <span class="nx">style</span><span class="o">=&gt;</span>
+      <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">Copyright</span> <span class="err">©</span> <span class="mi">2023</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/footer</span><span class="err">&gt;
+</span>  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">App</span><span class="p">;</span>
+
+</code></pre></div></div>
+
+<p>In the above example, a ThemeContext is established using the createContext function with a default theme provided. The useContext Hook is then utilized in the Header, Main, and Footer components to retrieve the current theme value. By doing so, the same theme can be applied to all components without the need to pass it down via props.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="usereducer-hook">useReducer Hook</h1>
+<p>The useReducer Hook is used to manage state in more complex components. It takes a reducer function and an initial state value as arguments and returns an array containing the current state value and a dispatch function to update the state.</p>
+
+<p>Suppose you have a simple counter that you want to increment or decrement by clicking buttons. You can use the useReducer Hook to manage the state of the counter, and handle different actions like incrementing or decrementing the counter value.</p>
+
+<div class="language-jsx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">React</span><span class="p">,</span> <span class="p">{</span> <span class="nx">useReducer</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">"</span><span class="s2">react</span><span class="dl">"</span><span class="p">;</span>
+
+<span class="kr">interface</span> <span class="nx">CounterState</span> <span class="p">{</span>
+  <span class="nl">count</span><span class="p">:</span> <span class="nx">number</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">interface</span> <span class="nx">CounterAction</span> <span class="p">{</span>
+  <span class="nl">type</span><span class="p">:</span> <span class="nx">string</span><span class="p">;</span>
+  <span class="nx">payload</span><span class="p">?:</span> <span class="nx">any</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">const</span> <span class="nx">initialState</span><span class="p">:</span> <span class="nx">CounterState</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">count</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">reducer</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span><span class="p">:</span> <span class="nx">CounterState</span><span class="p">,</span> <span class="nx">action</span><span class="p">:</span> <span class="nx">CounterAction</span><span class="p">):</span> <span class="nx">CounterState</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">switch</span> <span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">INCREMENT</span><span class="dl">"</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="na">count</span><span class="p">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">count</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">};</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">DECREMENT</span><span class="dl">"</span><span class="p">:</span>
+      <span class="k">return</span> <span class="p">{</span> <span class="p">...</span><span class="nx">state</span><span class="p">,</span> <span class="na">count</span><span class="p">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">count</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">};</span>
+    <span class="k">case</span> <span class="dl">"</span><span class="s2">RESET</span><span class="dl">"</span><span class="p">:</span>
+      <span class="k">return</span> <span class="nx">initialState</span><span class="p">;</span>
+    <span class="nl">default</span><span class="p">:</span>
+      <span class="k">return</span> <span class="nx">state</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">Counter</span><span class="p">:</span> <span class="nx">React</span><span class="p">.</span><span class="nx">FC</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kd">const</span> <span class="p">[</span><span class="nx">state</span><span class="p">,</span> <span class="nx">dispatch</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useReducer</span><span class="p">(</span><span class="nx">reducer</span><span class="p">,</span> <span class="nx">initialState</span><span class="p">);</span>
+
+  <span class="kd">const</span> <span class="nx">handleIncrement</span> <span class="o">=</span> <span class="p">():</span> <span class="k">void</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">dispatch</span><span class="p">({</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">INCREMENT</span><span class="dl">"</span> <span class="p">});</span>
+  <span class="p">};</span>
+
+  <span class="kd">const</span> <span class="nx">handleDecrement</span> <span class="o">=</span> <span class="p">():</span> <span class="k">void</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">dispatch</span><span class="p">({</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">DECREMENT</span><span class="dl">"</span> <span class="p">});</span>
+  <span class="p">};</span>
+
+  <span class="kd">const</span> <span class="nx">handleReset</span> <span class="o">=</span> <span class="p">():</span> <span class="k">void</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">dispatch</span><span class="p">({</span> <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">RESET</span><span class="dl">"</span> <span class="p">});</span>
+  <span class="p">};</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="p">&lt;</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Count: <span class="si">{</span><span class="nx">state</span><span class="p">.</span><span class="nx">count</span><span class="si">}</span><span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleIncrement</span><span class="si">}</span><span class="p">&gt;</span>Increment<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleDecrement</span><span class="si">}</span><span class="p">&gt;</span>Decrement<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">button</span> <span class="na">onClick</span><span class="p">=</span><span class="si">{</span><span class="nx">handleReset</span><span class="si">}</span><span class="p">&gt;</span>Reset<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">);</span>
+<span class="p">};</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="nx">Counter</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>In the example shown above, a reducer function is created to handle various actions such as incrementing, decrementing, or resetting the counter value. To manage the counter state, the useReducer Hook is used along with the reducer function and the initial state.</p>
+
+<p>Three functions are also created that dispatch different actions to the reducer function, which are then used in the onClick handlers of three buttons. Finally, the current count value is displayed using the state variable returned by useReducer.</p>
+
+<p>This approach enables managing more complex state in components using the useReducer Hook and handling different actions in a type-safe manner.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+<p>React Hooks offer an intuitive and powerful way to incorporate state and other React features into functional components. When paired with Typescript, they provide even greater reliability and type safety to the development process.</p>
+
+<p>This blog post has explored several common React Hooks and demonstrated how they can be used effectively with Typescript. We have demonstrated how the useState Hook can be utilized to add state to a component, how the useEffect Hook can be utilized to manage side effects, how the useContext Hook can be utilized to access data from the context, and how the useReducer Hook can be utilized to handle more complex state. By utilizing these tools, developers can create more efficient, reliable, and type-safe React applications.</p>
+
+        <p>If you liked this article, you can <a href="https://www.buymeacoffee.com/kuros.in">buy me a coffee</a></p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/react" class="page__taxonomy-item" rel="tag">react</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-04-02T00:00:00+05:30">April 2, 2023</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://www.linkedin.com/in/kumar-rohit-9a985517/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
+      </footer>
+
+      
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=React+hooks+in+typescripts%20https%3A%2F%2Fkuros.in%2Freact%2Ftypescript-react-hooks%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Freact%2Ftypescript-react-hooks%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Freact%2Ftypescript-react-hooks%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/aws/terraform/fix-lambda-function-url-on-localstack/" class="pagination--pager" title="Fix error for lambda function url in localstack
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/aws/terraform/fix-lambda-function-url-on-localstack/" rel="permalink">Fix error for lambda function url in localstack
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Spent more than half a day, struggled with this error when I was testing an async lambda on my local.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/aws/terraform/test-lambda-events-locally-using-localstack/" rel="permalink">Testing lambda &amp; sqs integration locally using localstack
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Running serverless is fun, cost-effective and scalable especially if your application is still growing.
+But at the same time I found testing lambdas locally ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/docker/docker-jekyll-container-to-serve-locally/" rel="permalink">Create Docker Container to Run Jekyll
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">I always faced issues when running jekyll locally, my blog uses jekyll to generate static pages, but every time my os is upgraded or I change my laptop, I al...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/nestjs/deploy-nestjs-application-on-aws-lambda/" rel="permalink">Deploy NestJS application on AWS Lambda
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Lets go serverless, in todays world deploying an application might just cost you cents, you can run a full fledged application for less than $1 a year if you...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/react/typescript-react-hooks/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/react/typescript-react-hooks"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

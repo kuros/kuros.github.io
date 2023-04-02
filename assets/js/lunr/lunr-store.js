@@ -508,4 +508,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/aws/terraform/fix-lambda-function-url-on-localstack/",
         "teaser": null
+      },{
+        "title": "React hooks in typescripts",
+        "excerpt":"React Hooks are a recent addition to React that allows developers to add state and other React features to functional components. Typescript, a statically typed superset of JavaScript, adds more power and reliability to the development process by providing type checking during compile time. In this blog post, we’ll go...","categories": ["react"],
+        "tags": [],
+        "url": "https://kuros.in/react/typescript-react-hooks/",
+        "teaser": null
       }]
