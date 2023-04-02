@@ -509,6 +509,12 @@ var store = [{
         "url": "https://kuros.in/aws/terraform/fix-lambda-function-url-on-localstack/",
         "teaser": null
       },{
+        "title": "Using Amazon Cognito with NestJS for User Authentication and Management",
+        "excerpt":"Amazon Cognito is a user authentication and management service that makes it easy to add sign-up, sign-in, and access control to your web and mobile applications. In this blog post, we will explore how to use Amazon Cognito with NestJS to manage user authentication and authorization. Prerequisites Basic knowledge of...","categories": ["typescript"],
+        "tags": [],
+        "url": "https://kuros.in/typescript/nestjs-amazon-cognito/",
+        "teaser": null
+      },{
         "title": "React hooks in typescripts",
         "excerpt":"React Hooks are a recent addition to React that allows developers to add state and other React features to functional components. Typescript, a statically typed superset of JavaScript, adds more power and reliability to the development process by providing type checking during compile time. In this blog post, we’ll go...","categories": ["react"],
         "tags": [],
