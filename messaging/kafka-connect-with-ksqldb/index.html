@@ -1,0 +1,1195 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Real-time Data Streaming with Kafka Connect, ksqlDB, and MySQL using Docker Compose - Kuros.in</title>
+<meta name="description" content="Learn how to build powerful real-time data pipelines with Kafka Connect and ksqlDB to process and analyze MySQL data in real-time, all using Docker Compose.">
+
+
+  <meta name="author" content="Kumar Rohit">
+  
+  <meta property="article:author" content="Kumar Rohit">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Kuros.in">
+<meta property="og:title" content="Real-time Data Streaming with Kafka Connect, ksqlDB, and MySQL using Docker Compose">
+<meta property="og:url" content="https://kuros.in/messaging/kafka-connect-with-ksqldb/">
+
+
+  <meta property="og:description" content="Learn how to build powerful real-time data pipelines with Kafka Connect and ksqlDB to process and analyze MySQL data in real-time, all using Docker Compose.">
+
+
+
+  <meta property="og:image" content="https://kuros.in/images/2022/workflow.webp">
+
+
+
+
+
+  <meta property="article:published_time" content="2023-04-10T00:00:00+05:30">
+
+
+
+
+
+
+<link rel="canonical" href="https://kuros.in/messaging/kafka-connect-with-ksqldb/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "https://kuros.in/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Kuros.in Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+<link rel="icon" type="image/png" href="/images/favicon.ico" sizes="192x192">
+<link rel="icon" type="image/png" href="/images/favicon.ico">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/images/logo/logo-dark.svg" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Kuros.in
+          <span class="site-subtitle">A collection of things I learn and try, simplified.</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/random-jpa/">Random-JPA</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/jfirebase/">jFirebase</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/2022/workflow.webp');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        
+          Real-time Data Streaming with Kafka Connect, ksqlDB, and MySQL using Docker Compose
+
+        
+      </h1>
+      
+        <p class="page__lead">Learn how to build powerful real-time data pipelines with Kafka Connect and ksqlDB to process and analyze MySQL data in real-time, all using Docker Compose.
+</p>
+      
+      
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+    <span class="page__hero-caption">Photo credit: <a href="https://images.unsplash.com/photo-1501104082524-a5d76b946311?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=2200&amp;q=80"><strong>Unsplash</strong></a>
+</span>
+  
+</div>
+
+
+
+
+
+<div id="main" role="main">
+    <div class="sidebar sidebar__sticky">
+    
+        <nav class="toc">
+          <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> Contents</h4></header>
+            <ul class="toc__menu">
+  <li><a href="#setup">Setup</a>
+    <ul>
+      <li><a href="#configure-kafka-connect">Configure Kafka Connect</a></li>
+    </ul>
+  </li>
+  <li><a href="#start-the-kafka-connect-service">Start the Kafka Connect service</a></li>
+  <li><a href="#create-a-kafka-topic">Create a Kafka topic</a></li>
+  <li><a href="#start-streaming-data">Start streaming data</a></li>
+  <li><a href="#verify-data-is-streaming">Verify data is streaming</a></li>
+  <li><a href="#ksqldb">ksqlDB</a>
+    <ul>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#start-ksqldb">Start ksqlDB</a></li>
+      <li><a href="#connect-ksqldb-to-kafka">Connect ksqlDB to Kafka</a></li>
+      <li><a href="#create-a-ksqldb-stream">Create a ksqlDB stream</a></li>
+      <li><a href="#query-the-ksqldb-stream">Query the ksqlDB stream</a></li>
+    </ul>
+  </li>
+  <li><a href="#conclusion">Conclusion</a></li>
+</ul>
+
+        </nav>
+    
+    
+      
+    
+  </div>
+  
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Real-time Data Streaming with Kafka Connect, ksqlDB, and MySQL using Docker Compose">
+    <meta itemprop="description" content="Kafka is a popular distributed streaming platform that can be used for building real-time streaming data pipelines and applications. Kafka Connect is a tool that makes it easy to integrate Kafka with other systems. In this blog post, we’ll show you how to use Kafka Connect to connect Kafka with MySQL.">
+    <meta itemprop="datePublished" content="2023-04-10T00:00:00+05:30">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right  " style="height: 100%;">
+            
+            
+                
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<div class="sidebar_ads">
+
+
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+
+    
+        <div class="ad_gap"></div>
+    
+
+    <div class="ad">
+        
+
+        
+            <!-- sky-scrapper -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-4166026699724584"
+                data-ad-slot="5730852605"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        
+    </div>
+
+</div>
+ 
+            
+          </aside>
+        
+        <p>Kafka is a popular distributed streaming platform that can be used for building real-time streaming data pipelines and applications. Kafka Connect is a tool that makes it easy to integrate Kafka with other systems. In this blog post, we’ll show you how to use Kafka Connect to connect Kafka with MySQL.</p>
+
+<h1 id="setup">Setup</h1>
+
+<p>Before we can connect Kafka with MySQL, we need to set up the required services. We’ll use Docker and Docker Compose to do this. Create a file called docker-compose.yaml with the following contents:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">zookeeper</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">confluentinc/cp-zookeeper:7.0.0</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">zookeeper</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">zookeeper</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">2181:2181"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">ZOOKEEPER_CLIENT_PORT</span><span class="pi">:</span> <span class="m">2181</span>
+
+  <span class="na">kafka</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">confluentinc/cp-kafka:7.0.0</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">kafka</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">kafka</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">9092:9092"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">zookeeper</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">KAFKA_BROKER_ID</span><span class="pi">:</span> <span class="m">1</span>
+      <span class="na">KAFKA_ZOOKEEPER_CONNECT</span><span class="pi">:</span> <span class="s">zookeeper:2181</span>
+      <span class="na">KAFKA_ADVERTISED_LISTENERS</span><span class="pi">:</span> <span class="s">PLAINTEXT://kafka:9092</span>
+      <span class="na">KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR</span><span class="pi">:</span> <span class="m">1</span>
+
+  <span class="na">schema-registry</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">confluentinc/cp-schema-registry:7.0.0</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">schema-registry</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">schema-registry</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8081:8081"</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">kafka</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL</span><span class="pi">:</span> <span class="s">zookeeper:2181</span>
+      <span class="na">SCHEMA_REGISTRY_HOST_NAME</span><span class="pi">:</span> <span class="s">schema-registry</span>
+      <span class="na">SCHEMA_REGISTRY_LISTENERS</span><span class="pi">:</span> <span class="s">http://0.0.0.0:8081</span>
+      <span class="na">SCHEMA_REGISTRY_DEBUG</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+
+  <span class="na">mysql</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mysql:5.7</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">mysql</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">mysql</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">3306:3306"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">MYSQL_ROOT_PASSWORD</span><span class="pi">:</span> <span class="s">root</span>
+      <span class="na">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">my_database</span>
+</code></pre></div></div>
+
+<p>This will create four services:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">zookeeper</code>: A ZooKeeper service that Kafka depends on.</li>
+  <li><code class="language-plaintext highlighter-rouge">kafka</code>: A Kafka service that will be used to send and receive messages.</li>
+  <li><code class="language-plaintext highlighter-rouge">schema-registry</code>: A schema registry service that will be used to manage Avro schemas.</li>
+  <li><code class="language-plaintext highlighter-rouge">mysql</code>: A MySQL service that will be used to store data.</li>
+</ul>
+
+<p>Run the following command to start the services:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h2 id="configure-kafka-connect">Configure Kafka Connect</h2>
+
+<p>Now that we have set up the required services using Docker, let’s move on to configuring Kafka Connect to connect Kafka with MySQL.</p>
+
+<p>Create a file called <code class="language-plaintext highlighter-rouge">mysql.properties</code> with the following contents:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">name</span><span class="p">=</span><span class="s">mysql-source</span>
+<span class="py">connector.class</span><span class="p">=</span><span class="s">io.confluent.connect.jdbc.JdbcSourceConnector</span>
+<span class="py">tasks.max</span><span class="p">=</span><span class="s">1</span>
+<span class="py">connection.url</span><span class="p">=</span><span class="s">jdbc:mysql://mysql:3306/my_database</span>
+<span class="py">connection.user</span><span class="p">=</span><span class="s">root</span>
+<span class="py">connection.password</span><span class="p">=</span><span class="s">root</span>
+<span class="py">topic.prefix</span><span class="p">=</span><span class="s">mysql-</span>
+<span class="py">mode</span><span class="p">=</span><span class="s">timestamp+incrementing</span>
+<span class="py">incrementing.column.name</span><span class="p">=</span><span class="s">id</span>
+<span class="py">timestamp.column.name</span><span class="p">=</span><span class="s">updated_at</span>
+<span class="py">validate.non.null</span><span class="p">=</span><span class="s">false</span>
+</code></pre></div></div>
+
+<p>In this file, we have defined the following properties:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">name</code>: The name of the connector.</li>
+  <li><code class="language-plaintext highlighter-rouge">connector.class</code>: The class of the connector to be used.</li>
+  <li><code class="language-plaintext highlighter-rouge">tasks.max</code>: The number of tasks to be used by the connector.</li>
+  <li><code class="language-plaintext highlighter-rouge">connection.url</code>: The JDBC URL for connecting to the MySQL instance running in our Docker container.</li>
+  <li><code class="language-plaintext highlighter-rouge">connection.user</code>: The username to connect to the database.</li>
+  <li><code class="language-plaintext highlighter-rouge">connection.password</code>: The password to connect to the database.</li>
+  <li><code class="language-plaintext highlighter-rouge">topic.prefix</code>: The prefix to be used for the topics that will be created.</li>
+  <li><code class="language-plaintext highlighter-rouge">mode</code>: The mode of the connector. In this case, we’re using the timestamp+incrementing mode, which tracks both the timestamp and an incrementing column to detect changes in the database.</li>
+  <li><code class="language-plaintext highlighter-rouge">incrementing.column.name</code>: The name of the column used to detect changes in the database.</li>
+  <li><code class="language-plaintext highlighter-rouge">timestamp.column.name</code>: The name of the column used to track the timestamp of the changes.</li>
+  <li><code class="language-plaintext highlighter-rouge">validate.non.null</code>: Should validate non-null columns in the database.</li>
+</ul>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="start-the-kafka-connect-service">Start the Kafka Connect service</h1>
+
+<p>With the configuration file ready, let’s start the Kafka Connect service. To do this, run the following command:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="se">\</span>
+    <span class="nt">--name</span><span class="o">=</span>kafka-connect <span class="se">\</span>
+    <span class="nt">--network</span><span class="o">=</span>kafka-connect-network <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_BOOTSTRAP_SERVERS</span><span class="o">=</span>kafka:9092 <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_REST_ADVERTISED_HOST_NAME</span><span class="o">=</span>kafka-connect <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_REST_PORT</span><span class="o">=</span>8083 <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_GROUP_ID</span><span class="o">=</span>kafka-connect-group <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_CONFIG_STORAGE_TOPIC</span><span class="o">=</span>kafka-connect-configs <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_OFFSET_STORAGE_TOPIC</span><span class="o">=</span>kafka-connect-offsets <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_STATUS_STORAGE_TOPIC</span><span class="o">=</span>kafka-connect-status <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR</span><span class="o">=</span>1 <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR</span><span class="o">=</span>1 <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_STATUS_STORAGE_REPLICATION_FACTOR</span><span class="o">=</span>1 <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">CONNECT_PLUGIN_PATH</span><span class="o">=</span>/usr/share/java <span class="se">\</span>
+    <span class="nt">-v</span> /path/to/mysql-connector-java-8.0.23.jar:/usr/share/java/kafka-connect-jdbc/mysql-connector-java-8.0.23.jar <span class="se">\</span>
+    confluentinc/cp-kafka-connect:7.0.0
+
+</code></pre></div></div>
+<p>This command will start the Kafka Connect service and configure it to use the Kafka service we set up earlier. We’ve also mounted the MySQL Connector/J JAR file to the plugin path so that Kafka Connect can use it.</p>
+
+<h1 id="create-a-kafka-topic">Create a Kafka topic</h1>
+<p>Before we can start streaming data from MySQL to Kafka, we need to create a Kafka topic. We can do this using the Kafka command line tool. Run the following command to create a topic called <code class="language-plaintext highlighter-rouge">mysql-employees</code>:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec </span>kafka <span class="se">\</span>
+    kafka-topics <span class="se">\</span>
+    <span class="nt">--create</span> <span class="se">\</span>
+    <span class="nt">--topic</span> mysql-employees <span class="se">\</span>
+    <span class="nt">--partitions</span> 1 <span class="se">\</span>
+    <span class="nt">--replication-factor</span> 1 <span class="se">\</span>
+    <span class="nt">--if-not-exists</span> <span class="se">\</span>
+    <span class="nt">--zookeeper</span> zookeeper:2181
+</code></pre></div></div>
+<p>This will create a new topic called <code class="language-plaintext highlighter-rouge">mysql-employees</code> with one partition and a replication factor of one.</p>
+
+<h1 id="start-streaming-data">Start streaming data</h1>
+
+<p>Now that everything is set up, we can start streaming data from MySQL to Kafka. Run the following command to start the MySQL connector:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-X</span> POST <span class="se">\</span>
+    <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+    <span class="nt">--data</span> <span class="s1">'{ "name": "mysql-source", "config": { "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector", "tasks.max": 1, "connection.url": "jdbc:mysql://mysql:3306/my_database", "connection.user": "root", "connection.password": "root", "topic.prefix": "mysql-", "mode": "timestamp+incrementing", "incrementing.column.name": "id", "timestamp.column.name": "updated_at", "validate.non.null": false } }'</span> <span class="se">\</span>
+    http://localhost:8083/connectors
+</code></pre></div></div>
+
+<p>This will start the MySQL connector and begin streaming data from the MySQL <code class="language-plaintext highlighter-rouge">employees</code> table to the Kafka topic we created earlier.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h1 id="verify-data-is-streaming">Verify data is streaming</h1>
+<p>To verify that data is streaming from MySQL to Kafka, let’s consume the data from the <code class="language-plaintext highlighter-rouge">mysql-employees</code> topic. Run the following command to consume the data:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--rm</span> <span class="se">\</span>
+    <span class="nt">--network</span><span class="o">=</span>kafka-connect-network <span class="se">\</span>
+    confluentinc/cp-kafkacat <span class="se">\</span>
+    kafkacat <span class="nt">-b</span> kafka:9092 <span class="se">\</span>
+    <span class="nt">-t</span> mysql-employees <span class="se">\</span>
+    <span class="nt">-C</span> <span class="nt">-q</span> <span class="se">\</span>
+    <span class="nt">-o</span> beginning
+</code></pre></div></div>
+
+<p>This command will start consuming data from the <code class="language-plaintext highlighter-rouge">mysql-employees</code> topic from the beginning. If there is data in the table, you should see it streaming in the console.</p>
+
+<h1 id="ksqldb">ksqlDB</h1>
+
+<p>ksqlDB is a powerful tool that allows you to process and analyze Kafka streams in real-time.</p>
+
+<h2 id="install">Install</h2>
+<p>To install ksqlDB, we’ll need to create a Docker Compose file that includes the ksqlDB service. Create a file called <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> with the following contents:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">ksqldb-server</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">confluentinc/ksqldb-server:0.21.0</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s">ksqldb-server</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">ksqldb-server</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">KSQL_CONFIG_DIR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/etc/ksql"</span>
+      <span class="na">KSQL_LOG4J_OPTS</span><span class="pi">:</span> <span class="s2">"</span><span class="s">-Dlog4j.configuration=file:/etc/ksql/log4j-rolling.properties"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./ksql-server:/etc/ksql</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">kafka</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">8088:8088</span>
+  <span class="na">ksqldb-cli</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">confluentinc/ksqldb-cli:0.21.0</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">ksqldb-cli</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">tty</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">ksqldb-server</span>
+
+</code></pre></div></div>
+
+<p>This <code class="language-plaintext highlighter-rouge">compose</code> file defines two services: <code class="language-plaintext highlighter-rouge">ksqldb-server</code> and <code class="language-plaintext highlighter-rouge">ksqldb-cli</code>. <code class="language-plaintext highlighter-rouge">ksqldb-server</code> is the ksqlDB service, and <code class="language-plaintext highlighter-rouge">ksqldb-cli</code> is the command-line interface for interacting with the ksqlDB service.</p>
+
+<p>Note that we’re using the <code class="language-plaintext highlighter-rouge">network_mode: host</code> setting to allow the services to communicate directly with the Kafka service without any additional configuration.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="start-ksqldb">Start ksqlDB</h2>
+<p>With the <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> file ready, let’s start the ksqlDB service. Run the following command to start the services:</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<p>This command will start the <code class="language-plaintext highlighter-rouge">ksqldb-server</code> service and the <code class="language-plaintext highlighter-rouge">ksqldb-cli</code> service. Once the services are running, you can interact with the ksqlDB service using the <code class="language-plaintext highlighter-rouge">ksqldb-cli</code> container.</p>
+
+<h2 id="connect-ksqldb-to-kafka">Connect ksqlDB to Kafka</h2>
+<p>Before we can use ksqlDB to process our Kafka streams, we need to connect it to the Kafka service. To do this, we’ll need to create a <code class="language-plaintext highlighter-rouge">ksql.properties</code> file that defines the Kafka bootstrap servers. Create a file called <code class="language-plaintext highlighter-rouge">ksql.properties</code> with the following contents:</p>
+
+<div class="language-properties highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">bootstrap.servers</span><span class="p">=</span><span class="s">kafka:9092</span>
+</code></pre></div></div>
+<p>This file specifies that ksqlDB should connect to the Kafka service at <code class="language-plaintext highlighter-rouge">kafka:9092</code>.</p>
+
+<h2 id="create-a-ksqldb-stream">Create a ksqlDB stream</h2>
+
+<p>With ksqlDB connected to Kafka, we can now create a stream that represents the data in our MySQL table. Run the following command to create a ksqlDB stream:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="n">STREAM</span> <span class="n">employees_stream</span> <span class="p">(</span>
+  <span class="n">id</span> <span class="nb">INT</span><span class="p">,</span>
+  <span class="n">name</span> <span class="nb">VARCHAR</span><span class="p">,</span>
+  <span class="n">age</span> <span class="nb">INT</span><span class="p">,</span>
+  <span class="n">salary</span> <span class="nb">FLOAT</span><span class="p">,</span>
+  <span class="n">updated_at</span> <span class="nb">BIGINT</span>
+<span class="p">)</span> <span class="k">WITH</span> <span class="p">(</span>
+  <span class="n">KAFKA_TOPIC</span><span class="o">=</span><span class="s1">'mysql-employees'</span><span class="p">,</span>
+  <span class="n">VALUE_FORMAT</span><span class="o">=</span><span class="s1">'AVRO'</span>
+<span class="p">);</span>
+</code></pre></div></div>
+<p>With this command, we’re creating a new stream called employees_stream with five fields: id, name, age, salary, and updated_at. We’re using the AVRO format, and we’re defining the schema for the stream using the employees_stream.avro file we created earlier.</p>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<p><ins class="adsbygoogle" style="display:block; text-align:center;" data-ad-layout="in-article" data-ad-format="fluid" data-ad-client="ca-pub-4166026699724584" data-ad-slot="8512487719"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></p>
+
+<h2 id="query-the-ksqldb-stream">Query the ksqlDB stream</h2>
+
+<p>Now that we have a ksqlDB stream representing the data in our MySQL table, we can use ksqlDB to query and process the data in real-time. Run the following command to query the <code class="language-plaintext highlighter-rouge">employees_stream</code>:</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">,</span> <span class="n">salary</span> <span class="k">FROM</span> <span class="n">employees_stream</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>This command will select the <code class="language-plaintext highlighter-rouge">name</code>, <code class="language-plaintext highlighter-rouge">age</code>, and <code class="language-plaintext highlighter-rouge">salary</code> fields from the <code class="language-plaintext highlighter-rouge">employees_stream</code>. If there is data in the stream, you should see it streaming in the console.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>In this tutorial, we’ve seen how to use Kafka Connect to stream data from MySQL to Kafka, and how to use ksqlDB to process and analyze the data in real-time. Kafka Connect provides an easy way to connect data sources to Kafka, and ksqlDB provides a powerful tool for processing and analyzing Kafka streams.</p>
+
+<p>By leveraging these tools, you can build powerful real-time data pipelines that allow you to process and analyze data as it streams into Kafka. Whether you’re building real-time analytics dashboards, or processing large volumes of data in real-time, Kafka Connect and ksqlDB provide the building blocks you need to get started.</p>
+
+        <p>If you liked this article, you can <a href="https://www.buymeacoffee.com/kuros.in">buy me a coffee</a></p>
+
+        
+
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/messaging" class="page__taxonomy-item" rel="tag">messaging</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-04-10T00:00:00+05:30">April 10, 2023</time></p>
+
+
+        
+
+
+<div class="author__scope" itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/images/about/myphoto.png" alt="Kumar Rohit" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    <div class="author__written">WRITTEN BY</div>
+    
+      <h3 class="author__name" itemprop="name">Kumar Rohit</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>I like long drives, bike trip &amp; good food. I have passion for coding, especially for Clean-Code.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">India</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://www.linkedin.com/in/kumar-rohit-9a985517/" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+ 
+      </footer>
+
+      
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Real-time+Data+Streaming+with+Kafka+Connect%2C+ksqlDB%2C+and+MySQL+using+Docker+Compose%20https%3A%2F%2Fkuros.in%2Fmessaging%2Fkafka-connect-with-ksqldb%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fkuros.in%2Fmessaging%2Fkafka-connect-with-ksqldb%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fkuros.in%2Fmessaging%2Fkafka-connect-with-ksqldb%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/react/typescript-react-hooks/" class="pagination--pager" title="React hooks in typescripts
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+    
+    <div class="page__ads__related">
+      
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>  
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/react/typescript-react-hooks/" rel="permalink">React hooks in typescripts
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">React Hooks are a recent addition to React that allows developers to add state and other React features to functional components. Typescript, a statically ty...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/typescript/nestjs-amazon-cognito/" rel="permalink">Using Amazon Cognito with NestJS for User Authentication and Management
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          8 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Amazon Cognito is a user authentication and management service that makes it easy to add sign-up, sign-in, and access control to your web and mobile applicat...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/aws/terraform/fix-lambda-function-url-on-localstack/" rel="permalink">Fix error for lambda function url in localstack
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Spent more than half a day, struggled with this error when I was testing an async lambda on my local.
+
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/aws/terraform/test-lambda-events-locally-using-localstack/" rel="permalink">Testing lambda &amp; sqs integration locally using localstack
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Running serverless is fun, cost-effective and scalable especially if your application is still growing.
+But at the same time I found testing lambdas locally ...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+  
+</div>
+
+<div class="page">
+  
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- horizontal - responsive -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-4166026699724584"
+     data-ad-slot="7276848543"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/incrv83" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/kuros" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Kuros.in. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-131802948-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-131802948-1', { 'anonymize_ip': false});
+</script>
+
+
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://kuros.in/messaging/kafka-connect-with-ksqldb/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/messaging/kafka-connect-with-ksqldb"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://kuros-in.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+  
+    <script src="/assets/js/custom.js"></script>
+  
+
+
+
+  </body>
+</html>

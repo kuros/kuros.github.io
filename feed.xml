@@ -1,4 +1,284 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2023-04-03T00:24:11+05:30</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning.</subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">React hooks in typescripts</title><link href="https://kuros.in/react/typescript-react-hooks/" rel="alternate" type="text/html" title="React hooks in typescripts" /><published>2023-04-02T00:00:00+05:30</published><updated>2023-04-02T00:00:00+05:30</updated><id>https://kuros.in/react/typescript-react-hooks</id><content type="html" xml:base="https://kuros.in/react/typescript-react-hooks/">&lt;p&gt;React Hooks are a recent addition to React that allows developers to add state and other React features to functional components. Typescript, a statically typed superset of JavaScript, adds more power and reliability to the development process by providing type checking during compile time.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="https://kuros.in/feed.xml" rel="self" type="application/atom+xml" /><link href="https://kuros.in/" rel="alternate" type="text/html" /><updated>2023-04-10T23:05:04+05:30</updated><id>https://kuros.in/feed.xml</id><title type="html">Kuros.in</title><subtitle>This is the place where I collect and share all the knowledge I have learned and gained over the period of time. This blog is mainily focused on capturing the technical learning.</subtitle><author><name>Kumar Rohit</name></author><entry><title type="html">Real-time Data Streaming with Kafka Connect, ksqlDB, and MySQL using Docker Compose</title><link href="https://kuros.in/messaging/kafka-connect-with-ksqldb/" rel="alternate" type="text/html" title="Real-time Data Streaming with Kafka Connect, ksqlDB, and MySQL using Docker Compose" /><published>2023-04-10T00:00:00+05:30</published><updated>2023-04-10T00:00:00+05:30</updated><id>https://kuros.in/messaging/kafka-connect-with-ksqldb</id><content type="html" xml:base="https://kuros.in/messaging/kafka-connect-with-ksqldb/">&lt;p&gt;Kafka is a popular distributed streaming platform that can be used for building real-time streaming data pipelines and applications. Kafka Connect is a tool that makes it easy to integrate Kafka with other systems. In this blog post, we’ll show you how to use Kafka Connect to connect Kafka with MySQL.&lt;/p&gt;
+
+&lt;h1 id=&quot;setup&quot;&gt;Setup&lt;/h1&gt;
+
+&lt;p&gt;Before we can connect Kafka with MySQL, we need to set up the required services. We’ll use Docker and Docker Compose to do this. Create a file called docker-compose.yaml with the following contents:&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3'&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;zookeeper&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;confluentinc/cp-zookeeper:7.0.0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zookeeper&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zookeeper&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2181:2181&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;ZOOKEEPER_CLIENT_PORT&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2181&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;kafka&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;confluentinc/cp-kafka:7.0.0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kafka&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kafka&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;9092:9092&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zookeeper&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;KAFKA_BROKER_ID&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;KAFKA_ZOOKEEPER_CONNECT&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zookeeper:2181&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;KAFKA_ADVERTISED_LISTENERS&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;PLAINTEXT://kafka:9092&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;schema-registry&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;confluentinc/cp-schema-registry:7.0.0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;schema-registry&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;schema-registry&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8081:8081&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kafka&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zookeeper:2181&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;SCHEMA_REGISTRY_HOST_NAME&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;schema-registry&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;SCHEMA_REGISTRY_LISTENERS&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://0.0.0.0:8081&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;SCHEMA_REGISTRY_DEBUG&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;true&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mysql:5.7&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mysql&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mysql&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3306:3306&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;root&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;MYSQL_DATABASE&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;my_database&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will create four services:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zookeeper&lt;/code&gt;: A ZooKeeper service that Kafka depends on.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kafka&lt;/code&gt;: A Kafka service that will be used to send and receive messages.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;schema-registry&lt;/code&gt;: A schema registry service that will be used to manage Avro schemas.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql&lt;/code&gt;: A MySQL service that will be used to store data.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Run the following command to start the services:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;configure-kafka-connect&quot;&gt;Configure Kafka Connect&lt;/h2&gt;
+
+&lt;p&gt;Now that we have set up the required services using Docker, let’s move on to configuring Kafka Connect to connect Kafka with MySQL.&lt;/p&gt;
+
+&lt;p&gt;Create a file called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql.properties&lt;/code&gt; with the following contents:&lt;/p&gt;
+
+&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;py&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;mysql-source&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;connector.class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;io.confluent.connect.jdbc.JdbcSourceConnector&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;tasks.max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;connection.url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jdbc:mysql://mysql:3306/my_database&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;connection.user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;root&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;connection.password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;root&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;topic.prefix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;mysql-&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;mode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;timestamp+incrementing&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;incrementing.column.name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;id&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;timestamp.column.name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;updated_at&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;validate.non.null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;false&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In this file, we have defined the following properties:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;name&lt;/code&gt;: The name of the connector.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;connector.class&lt;/code&gt;: The class of the connector to be used.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tasks.max&lt;/code&gt;: The number of tasks to be used by the connector.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;connection.url&lt;/code&gt;: The JDBC URL for connecting to the MySQL instance running in our Docker container.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;connection.user&lt;/code&gt;: The username to connect to the database.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;connection.password&lt;/code&gt;: The password to connect to the database.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;topic.prefix&lt;/code&gt;: The prefix to be used for the topics that will be created.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mode&lt;/code&gt;: The mode of the connector. In this case, we’re using the timestamp+incrementing mode, which tracks both the timestamp and an incrementing column to detect changes in the database.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;incrementing.column.name&lt;/code&gt;: The name of the column used to detect changes in the database.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;timestamp.column.name&lt;/code&gt;: The name of the column used to track the timestamp of the changes.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;validate.non.null&lt;/code&gt;: Should validate non-null columns in the database.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;start-the-kafka-connect-service&quot;&gt;Start the Kafka Connect service&lt;/h1&gt;
+
+&lt;p&gt;With the configuration file ready, let’s start the Kafka Connect service. To do this, run the following command:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka-connect &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka-connect-network &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_BOOTSTRAP_SERVERS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka:9092 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_REST_ADVERTISED_HOST_NAME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka-connect &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_REST_PORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;8083 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_GROUP_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka-connect-group &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_CONFIG_STORAGE_TOPIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka-connect-configs &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_OFFSET_STORAGE_TOPIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka-connect-offsets &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_STATUS_STORAGE_TOPIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka-connect-status &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_STATUS_STORAGE_REPLICATION_FACTOR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;CONNECT_PLUGIN_PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/java &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /path/to/mysql-connector-java-8.0.23.jar:/usr/share/java/kafka-connect-jdbc/mysql-connector-java-8.0.23.jar &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    confluentinc/cp-kafka-connect:7.0.0
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This command will start the Kafka Connect service and configure it to use the Kafka service we set up earlier. We’ve also mounted the MySQL Connector/J JAR file to the plugin path so that Kafka Connect can use it.&lt;/p&gt;
+
+&lt;h1 id=&quot;create-a-kafka-topic&quot;&gt;Create a Kafka topic&lt;/h1&gt;
+&lt;p&gt;Before we can start streaming data from MySQL to Kafka, we need to create a Kafka topic. We can do this using the Kafka command line tool. Run the following command to create a topic called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql-employees&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;kafka &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    kafka-topics &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--create&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--topic&lt;/span&gt; mysql-employees &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--partitions&lt;/span&gt; 1 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--replication-factor&lt;/span&gt; 1 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--if-not-exists&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--zookeeper&lt;/span&gt; zookeeper:2181
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This will create a new topic called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql-employees&lt;/code&gt; with one partition and a replication factor of one.&lt;/p&gt;
+
+&lt;h1 id=&quot;start-streaming-data&quot;&gt;Start streaming data&lt;/h1&gt;
+
+&lt;p&gt;Now that everything is set up, we can start streaming data from MySQL to Kafka. Run the following command to start the MySQL connector:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; POST &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Content-Type: application/json&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--data&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'{ &quot;name&quot;: &quot;mysql-source&quot;, &quot;config&quot;: { &quot;connector.class&quot;: &quot;io.confluent.connect.jdbc.JdbcSourceConnector&quot;, &quot;tasks.max&quot;: 1, &quot;connection.url&quot;: &quot;jdbc:mysql://mysql:3306/my_database&quot;, &quot;connection.user&quot;: &quot;root&quot;, &quot;connection.password&quot;: &quot;root&quot;, &quot;topic.prefix&quot;: &quot;mysql-&quot;, &quot;mode&quot;: &quot;timestamp+incrementing&quot;, &quot;incrementing.column.name&quot;: &quot;id&quot;, &quot;timestamp.column.name&quot;: &quot;updated_at&quot;, &quot;validate.non.null&quot;: false } }'&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    http://localhost:8083/connectors
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This will start the MySQL connector and begin streaming data from the MySQL &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;employees&lt;/code&gt; table to the Kafka topic we created earlier.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;verify-data-is-streaming&quot;&gt;Verify data is streaming&lt;/h1&gt;
+&lt;p&gt;To verify that data is streaming from MySQL to Kafka, let’s consume the data from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql-employees&lt;/code&gt; topic. Run the following command to consume the data:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker run &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--network&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;kafka-connect-network &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    confluentinc/cp-kafkacat &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    kafkacat &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; kafka:9092 &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; mysql-employees &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-C&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; beginning
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This command will start consuming data from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysql-employees&lt;/code&gt; topic from the beginning. If there is data in the table, you should see it streaming in the console.&lt;/p&gt;
+
+&lt;h1 id=&quot;ksqldb&quot;&gt;ksqlDB&lt;/h1&gt;
+
+&lt;p&gt;ksqlDB is a powerful tool that allows you to process and analyze Kafka streams in real-time.&lt;/p&gt;
+
+&lt;h2 id=&quot;install&quot;&gt;Install&lt;/h2&gt;
+&lt;p&gt;To install ksqlDB, we’ll need to create a Docker Compose file that includes the ksqlDB service. Create a file called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt; with the following contents:&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3'&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;ksqldb-server&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;confluentinc/ksqldb-server:0.21.0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ksqldb-server&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ksqldb-server&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;network_mode&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;host&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;KSQL_CONFIG_DIR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/etc/ksql&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;KSQL_LOG4J_OPTS&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-Dlog4j.configuration=file:/etc/ksql/log4j-rolling.properties&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./ksql-server:/etc/ksql&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kafka&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;8088:8088&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;ksqldb-cli&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;confluentinc/ksqldb-cli:0.21.0&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ksqldb-cli&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;network_mode&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;host&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;tty&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ksqldb-server&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;compose&lt;/code&gt; file defines two services: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksqldb-server&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksqldb-cli&lt;/code&gt;. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksqldb-server&lt;/code&gt; is the ksqlDB service, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksqldb-cli&lt;/code&gt; is the command-line interface for interacting with the ksqlDB service.&lt;/p&gt;
+
+&lt;p&gt;Note that we’re using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;network_mode: host&lt;/code&gt; setting to allow the services to communicate directly with the Kafka service without any additional configuration.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;start-ksqldb&quot;&gt;Start ksqlDB&lt;/h2&gt;
+&lt;p&gt;With the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt; file ready, let’s start the ksqlDB service. Run the following command to start the services:&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This command will start the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksqldb-server&lt;/code&gt; service and the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksqldb-cli&lt;/code&gt; service. Once the services are running, you can interact with the ksqlDB service using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksqldb-cli&lt;/code&gt; container.&lt;/p&gt;
+
+&lt;h2 id=&quot;connect-ksqldb-to-kafka&quot;&gt;Connect ksqlDB to Kafka&lt;/h2&gt;
+&lt;p&gt;Before we can use ksqlDB to process our Kafka streams, we need to connect it to the Kafka service. To do this, we’ll need to create a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksql.properties&lt;/code&gt; file that defines the Kafka bootstrap servers. Create a file called &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ksql.properties&lt;/code&gt; with the following contents:&lt;/p&gt;
+
+&lt;div class=&quot;language-properties highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;py&quot;&gt;bootstrap.servers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;kafka:9092&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This file specifies that ksqlDB should connect to the Kafka service at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kafka:9092&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;create-a-ksqldb-stream&quot;&gt;Create a ksqlDB stream&lt;/h2&gt;
+
+&lt;p&gt;With ksqlDB connected to Kafka, we can now create a stream that represents the data in our MySQL table. Run the following command to create a ksqlDB stream:&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STREAM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;employees_stream&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;INT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;VARCHAR&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;INT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;FLOAT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;updated_at&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;BIGINT&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WITH&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;KAFKA_TOPIC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'mysql-employees'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;VALUE_FORMAT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'AVRO'&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;With this command, we’re creating a new stream called employees_stream with five fields: id, name, age, salary, and updated_at. We’re using the AVRO format, and we’re defining the schema for the stream using the employees_stream.avro file we created earlier.&lt;/p&gt;
+
+&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block; text-align:center;&quot; data-ad-layout=&quot;in-article&quot; data-ad-format=&quot;fluid&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;8512487719&quot;&gt;&lt;/ins&gt;
+&lt;script&gt;
+     (adsbygoogle = window.adsbygoogle || []).push({});
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;query-the-ksqldb-stream&quot;&gt;Query the ksqlDB stream&lt;/h2&gt;
+
+&lt;p&gt;Now that we have a ksqlDB stream representing the data in our MySQL table, we can use ksqlDB to query and process the data in real-time. Run the following command to query the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;employees_stream&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;salary&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;employees_stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This command will select the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;name&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;age&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;salary&lt;/code&gt; fields from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;employees_stream&lt;/code&gt;. If there is data in the stream, you should see it streaming in the console.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;In this tutorial, we’ve seen how to use Kafka Connect to stream data from MySQL to Kafka, and how to use ksqlDB to process and analyze the data in real-time. Kafka Connect provides an easy way to connect data sources to Kafka, and ksqlDB provides a powerful tool for processing and analyzing Kafka streams.&lt;/p&gt;
+
+&lt;p&gt;By leveraging these tools, you can build powerful real-time data pipelines that allow you to process and analyze data as it streams into Kafka. Whether you’re building real-time analytics dashboards, or processing large volumes of data in real-time, Kafka Connect and ksqlDB provide the building blocks you need to get started.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="messaging" /><summary type="html">Kafka is a popular distributed streaming platform that can be used for building real-time streaming data pipelines and applications. Kafka Connect is a tool that makes it easy to integrate Kafka with other systems. In this blog post, we’ll show you how to use Kafka Connect to connect Kafka with MySQL.</summary></entry><entry><title type="html">React hooks in typescripts</title><link href="https://kuros.in/react/typescript-react-hooks/" rel="alternate" type="text/html" title="React hooks in typescripts" /><published>2023-04-02T00:00:00+05:30</published><updated>2023-04-02T00:00:00+05:30</updated><id>https://kuros.in/react/typescript-react-hooks</id><content type="html" xml:base="https://kuros.in/react/typescript-react-hooks/">&lt;p&gt;React Hooks are a recent addition to React that allows developers to add state and other React features to functional components. Typescript, a statically typed superset of JavaScript, adds more power and reliability to the development process by providing type checking during compile time.&lt;/p&gt;
 
 &lt;p&gt;In this blog post, we’ll go over some common React Hooks and explore how they can be used with Typescript.&lt;/p&gt;
 
@@ -2326,123 +2606,4 @@ STORAGE_MEDIA_BUCKET = &amp;lt;YOUR_BUCKET_NAME&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;And there you have it. A working nest application to upload and download files.
-You can download the source code from &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/gcp-storage&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.</summary></entry><entry><title type="html">Publish npm packages to gcp artifact registry using github actions</title><link href="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/" rel="alternate" type="text/html" title="Publish npm packages to gcp artifact registry using github actions" /><published>2021-10-20T00:00:00+05:30</published><updated>2021-10-20T00:00:00+05:30</updated><id>https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions</id><content type="html" xml:base="https://kuros.in/gcp/publish-npm-package-to-gcp-using-github-actions/">&lt;p&gt;Github gives a generous limits for your private projects, its to good for your private repos or even small startups.
-However, Github package has a constraint of 500mb size, which is quite low.&lt;/p&gt;
-
-&lt;p&gt;Lets compare the pricing for both github &amp;amp; gcp (as of July 2021)&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Storage (per GB)&lt;/th&gt;
-      &lt;th&gt;Data Transfer (per GB)&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Github&lt;/td&gt;
-      &lt;td&gt;$0.25&lt;/td&gt;
-      &lt;td&gt;$0.50&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;GCP artifactory&lt;/td&gt;
-      &lt;td&gt;$0.10&lt;/td&gt;
-      &lt;td&gt;$0.01 - $0.15&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Looking at pricing, storing artifacts in GCP is a good idea.&lt;/p&gt;
-
-&lt;h1 id=&quot;setting-up-service-account&quot;&gt;Setting up service account&lt;/h1&gt;
-
-&lt;p&gt;The first thing, we need to set up our service account, so that github has required permission to publish the packages.&lt;/p&gt;
-
-&lt;p&gt;Login to &lt;a href=&quot;https://console.cloud.google.com&quot;&gt;google console&lt;/a&gt; and navigate to `IAM&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-iam.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;You need to add following permission for publishing artifacts (optionally you can provide &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Cloud Run Service Agent&lt;/code&gt; for
-cloud run deployments)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-artifactory-sa.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Then generate &amp;amp; download key in json format&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-generate-key.webp&quot; alt=&quot;&quot; width=&quot;80%&quot; /&gt;&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;setup-tokens&quot;&gt;Setup Tokens&lt;/h1&gt;
-
-&lt;p&gt;The first step is to set up a personal access token.&lt;/p&gt;
-
-&lt;p&gt;Go to your profile and click to settings.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/github_profile.png&quot; alt=&quot;&quot; width=&quot;20%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Go to developer section&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/github-developer.webp&quot; alt=&quot;&quot; width=&quot;60%&quot; float=&quot;right&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Add a new token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_ARTIFACTORY_SERVICE_ACCOUNT&lt;/code&gt; with the contents for download service account key. Also add another
-token &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GCP_PROJECT_ID&lt;/code&gt; with your GCP project id.&lt;/p&gt;
-
-&lt;h1 id=&quot;publish-packages-to-gcp-artifact-registry&quot;&gt;Publish packages to GCP artifact registry&lt;/h1&gt;
-
-&lt;p&gt;Time to setup a github action to push npm package to repository. You will need to add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows/ci.yaml&lt;/code&gt;
-&lt;script src=&quot;https://gist.github.com/kuros/a89149662c81c73478619e854f8ffc8b.js&quot;&gt;&lt;/script&gt;&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;There are 5 steps performed here:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Checkout the project&lt;/li&gt;
-  &lt;li&gt;Set version using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sed&lt;/code&gt; command (In my package.json, I have kept the version 1.0.0-SNAPSHOT, and using the sed command update it to build version).&lt;/li&gt;
-  &lt;li&gt;Next we are setting up GCP credentials&lt;/li&gt;
-  &lt;li&gt;The we are builing package.&lt;/li&gt;
-  &lt;li&gt;Finally, deploying our package to the artifactory.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;We are using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--registry&lt;/code&gt; argument to point to our package repository.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; You will have to use &lt;a href=&quot;https://docs.npmjs.com/about-scopes&quot;&gt;npm scope&lt;/a&gt; to associate this repository. i.e. your package name should be like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@&amp;lt;YOUR-SCOPE&amp;gt;/&amp;lt;YOUR-PACKAGE-NAME&amp;gt;&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h1 id=&quot;using-packages-from-gcp-repository&quot;&gt;Using packages from GCP repository&lt;/h1&gt;
-
-&lt;p&gt;Go to artifact registry on &lt;a href=&quot;https://console.cloud.google.com/&quot;&gt;gcp console&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2021/gcp-artifact-registry.webp&quot; alt=&quot;&quot; width=&quot;50%&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Select your repository, and click on the Setup instructions, and copy the snippet into a file &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npmrc&lt;/code&gt;
-&lt;img src=&quot;/images/2021/gcp-artifact-instructions.webp&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SCOPE&lt;/code&gt; is the &lt;a href=&quot;https://docs.npmjs.com/about-scopes&quot;&gt;npm scope&lt;/a&gt; to associate with this repository&lt;/p&gt;
-
-&lt;script async=&quot;&quot; src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js&quot;&gt;&lt;/script&gt;
-
-&lt;!-- horizontal - responsive --&gt;
-&lt;p&gt;&lt;ins class=&quot;adsbygoogle&quot; style=&quot;display:block&quot; data-ad-client=&quot;ca-pub-4166026699724584&quot; data-ad-slot=&quot;7276848543&quot; data-ad-format=&quot;auto&quot; data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;
-&lt;script&gt;
-     (adsbygoogle = window.adsbygoogle || []).push({});
-&lt;/script&gt;&lt;/p&gt;
-
-&lt;script src=&quot;https://gist.github.com/kuros/3cf241bdefcabe59448651806b3764d6.js&quot;&gt;&lt;/script&gt;
-
-&lt;p&gt;Here we are generating a npmrc file, with registry details, followed by authenticating gcp registry by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm run artifactregistry-login .npmrc&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Now you are equipped with knowlege to publish and consume packages from your gcp artifactory registry.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="gcp" /><category term="ci/cd" /><category term="github-actions" /><summary type="html">Github gives a generous limits for your private projects, its to good for your private repos or even small startups. However, Github package has a constraint of 500mb size, which is quite low.</summary></entry></feed>
+You can download the source code from &lt;a href=&quot;https://github.com/kuros/blog-code/tree/master/nestjs/gcp-storage&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;</content><author><name>Kumar Rohit</name></author><category term="typescript" /><summary type="html">In this article, we will upload a file to cloud storage and download it to serve it from our nestJS api.</summary></entry></feed>

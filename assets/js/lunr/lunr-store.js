@@ -520,4 +520,10 @@ var store = [{
         "tags": [],
         "url": "https://kuros.in/react/typescript-react-hooks/",
         "teaser": null
+      },{
+        "title": "Real-time Data Streaming with Kafka Connect, ksqlDB, and MySQL using Docker Compose",
+        "excerpt":"Kafka is a popular distributed streaming platform that can be used for building real-time streaming data pipelines and applications. Kafka Connect is a tool that makes it easy to integrate Kafka with other systems. In this blog post, we’ll show you how to use Kafka Connect to connect Kafka with...","categories": ["messaging"],
+        "tags": [],
+        "url": "https://kuros.in/messaging/kafka-connect-with-ksqldb/",
+        "teaser": null
       }]
